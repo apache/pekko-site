@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Streams Cookbook · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-cookbook.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="active page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="active page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Streams Cookbook</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#streams-cookbook" name="streams-cookbook" class="anchor"><span class="anchor-link"></span></a>Streams Cookbook</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>This is a collection of patterns to demonstrate various usage of the Akka Streams API by solving small targeted problems in the format of &ldquo;recipes&rdquo;. The purpose of this page is to give inspiration and ideas how to approach various small tasks involving streams. The recipes in this page can be used directly as-is, but they are most powerful as starting points: customization of the code snippets is warmly encouraged. The recipes can be extended or can provide a basis for the implementation of other <a href="https://doc.akka.io/docs/alpakka/current/patterns.html">patterns</a> involving <a href="https://doc.akka.io/docs/alpakka/current">Alpakka</a>.</p>
+<p>This part also serves as supplementary material for the main body of documentation. It is a good idea to have this page open while reading the manual and look for examples demonstrating various streaming concepts as they appear in the main body of documentation.</p>
+<p>If you need a quick reference of the available operators used in the recipes see <a href="operators/index.html">operator index</a>.</p>
+<h2><a href="#working-with-flows" name="working-with-flows" class="anchor"><span class="anchor-link"></span></a>Working with Flows</h2>
+<p>In this collection we show simple recipes that involve linear flows. The recipes in this section are rather general, more targeted recipes are available as separate sections (<a href="stream-rate.html">Buffers and working with rate</a>, <a href="stream-io.html">Working with streaming IO</a>).</p>
+<h3><a href="#logging-in-streams" name="logging-in-streams" class="anchor"><span class="anchor-link"></span></a>Logging in streams</h3>
+<p><strong>Situation:</strong> During development it is sometimes helpful to see what happens in a particular section of a stream.</p>
+<p>The simplest solution is to use a <code>map</code> operation and use <code>println</code> to print the elements received to the console. While this recipe is rather simplistic, it is often suitable for a quick debug session.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeLoggingElements.scala#L33-L35" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val loggedSource = mySource.map { elem =&gt;
+  println(elem); elem
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeLoggingElements.java#L61-L65" target="_blank" title="Go to snippet source">source</a><code class="language-java">mySource.map(
+    elem -&gt; {
+      System.out.println(elem);
+      return elem;
+    });</code></pre></dd>
+</dl>
+<p>Another approach to logging is to use <code>log()</code> operation. This approach gives you more fine-grained control of logging levels for elements flowing through the stream, finish and failure of the stream.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeLoggingElements.scala#L46-L59" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// customise log levels
+mySource
+  .log(&quot;before-map&quot;)
+  .withAttributes(Attributes
+    .logLevels(onElement = Logging.WarningLevel, onFinish = Logging.InfoLevel, onFailure = Logging.DebugLevel))
+  .map(analyse)
+// or provide custom logging adapter
+implicit val adapter: LoggingAdapter = Logging(system, &quot;customLogger&quot;)
+mySource.log(&quot;custom&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeLoggingElements.java#L82-L95" target="_blank" title="Go to snippet source">source</a><code class="language-java">// customise log levels
+mySource
+    .log(&quot;before-map&quot;)
+    .withAttributes(
+        Attributes.createLogLevels(
+            Logging.WarningLevel(), // onElement
+            Logging.InfoLevel(), // onFinish
+            Logging.DebugLevel() // onFailure
+            ))
+    .map(i -&gt; analyse(i));
+
+// or provide custom logging adapter
+final LoggingAdapter adapter = Logging.getLogger(system, &quot;customLogger&quot;);
+mySource.log(&quot;custom&quot;, adapter);</code></pre></dd>
+</dl>
+<h3><a href="#creating-a-source-that-continuously-evaluates-a-function" name="creating-a-source-that-continuously-evaluates-a-function" class="anchor"><span class="anchor-link"></span></a>Creating a source that continuously evaluates a function</h3>
+<p><strong>Situation:</strong> A source is required that continuously provides elements obtained by evaluating a given function, so long as there is demand.</p>
+<p>The simplest implementation is to use a <code>Source.repeat</code> that produces some arbitrary element - e.g. <code>NotUsed</code> - and then map those elements to the function evaluation. E.g. if we have some <code>builderFunction()</code>, we can use:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSourceFromFunction.scala#L29" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val source = Source.repeat(NotUsed).map(_ =&gt; builderFunction())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSourceFromFunction.java#L58-L59" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;String, NotUsed&gt; source =
+    Source.repeat(NotUsed.getInstance()).map(elem -&gt; builderFunction());</code></pre></dd>
+</dl>
+<p>Note: if the element-builder function touches mutable state, then a guaranteed single-threaded source should be used instead; e.g. <code>Source.unfold</code> or <code>Source.unfoldResource</code>.</p>
+<h3><a href="#flattening-a-stream-of-sequences" name="flattening-a-stream-of-sequences" class="anchor"><span class="anchor-link"></span></a>Flattening a stream of sequences</h3>
+<p><strong>Situation:</strong> A stream is given as a stream of sequence of elements, but a stream of elements needed instead, streaming all the nested elements inside the sequences separately.</p>
+<p>The <code>mapConcat</code> operation can be used to implement a one-to-many transformation of elements using a mapper function in the form of <span class="group-scala"><code>In =&gt; immutable.Seq[Out]</code></span> <span class="group-java"><code>In -&gt; List&lt;Out&gt;</code></span>. In this case we want to map a <span class="group-scala"><code>Seq</code></span> <span class="group-java"><code>List</code></span> of elements to the elements in the collection itself, so we can call <span class="group-scala"><code>mapConcat(identity)</code></span> <span class="group-java"><code>mapConcat(l -&gt; l)</code></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeFlattenSeq.scala#L31-L32" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val myData: Source[List[Message], NotUsed] = someDataSource
+val flattened: Source[Message, NotUsed] = myData.mapConcat(identity)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeFlattenList.java#L56-L57" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;List&lt;Message&gt;, NotUsed&gt; myData = someDataSource;
+Source&lt;Message, NotUsed&gt; flattened = myData.mapConcat(i -&gt; i);</code></pre></dd>
+</dl>
+<h3><a href="#draining-a-stream-to-a-strict-collection" name="draining-a-stream-to-a-strict-collection" class="anchor"><span class="anchor-link"></span></a>Draining a stream to a strict collection</h3>
+<p><strong>Situation:</strong> A possibly unbounded sequence of elements is given as a stream, which needs to be collected into a Scala collection while ensuring boundedness</p>
+<p>A common situation when working with streams is one where we need to collect incoming elements into a Scala collection. This operation is supported via <code>Sink.seq</code> which materializes into a <span class="group-scala"><code>Future[Seq[T]]</code></span> <span class="group-java"><code>CompletionStage&lt;List&lt;T&gt;&gt;</code></span>.</p>
+<p>The function <code>limit</code> or <code>take</code> should always be used in conjunction in order to guarantee stream boundedness, thus preventing the program from running out of memory.</p>
+<p>For example, this is best avoided:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSeq.scala#L26-L27" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Dangerous: might produce a collection with 2 billion elements!
+val f: Future[Seq[String]] = mySource.runWith(Sink.seq)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSeq.java#L50-L51" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Dangerous: might produce a collection with 2 billion elements!
+final CompletionStage&lt;List&lt;String&gt;&gt; strings = mySource.runWith(Sink.seq(), system);</code></pre></dd>
+</dl>
+<p>Rather, use <code>limit</code> or <code>take</code> to ensure that the resulting <span class="group-scala"><code>Seq</code></span> <span class="group-java"><code>List</code></span> will contain only up to <span class="group-scala"><code>max</code></span> <span class="group-java"><code>MAX_ALLOWED_SIZE</code></span> elements:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSeq.scala#L35-L44" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val MAX_ALLOWED_SIZE = 100
+
+// OK. Future will fail with a `StreamLimitReachedException`
+// if the number of incoming elements is larger than max
+val limited: Future[Seq[String]] =
+  mySource.limit(MAX_ALLOWED_SIZE).runWith(Sink.seq)
+
+// OK. Collect up until max-th elements only, then cancel upstream
+val ignoreOverflow: Future[Seq[String]] =
+  mySource.take(MAX_ALLOWED_SIZE).runWith(Sink.seq)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSeq.java#L65-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">final int MAX_ALLOWED_SIZE = 100;
+
+// OK. Future will fail with a `StreamLimitReachedException`
+// if the number of incoming elements is larger than max
+final CompletionStage&lt;List&lt;String&gt;&gt; strings =
+    mySource.limit(MAX_ALLOWED_SIZE).runWith(Sink.seq(), system);
+
+// OK. Collect up until max-th elements only, then cancel upstream
+final CompletionStage&lt;List&lt;String&gt;&gt; strings =
+    mySource.take(MAX_ALLOWED_SIZE).runWith(Sink.seq(), system);</code></pre></dd>
+</dl>
+<h3><a href="#calculating-the-digest-of-a-bytestring-stream" name="calculating-the-digest-of-a-bytestring-stream" class="anchor"><span class="anchor-link"></span></a>Calculating the digest of a ByteString stream</h3>
+<p><strong>Situation:</strong> A stream of bytes is given as a stream of <code>ByteString</code> s and we want to calculate the cryptographic digest of the stream.</p>
+<p>This recipe uses a <a href="stream-customize.html"><code>GraphStage</code></a> to define a custom Akka Stream operator, to host a mutable <code>MessageDigest</code> class (part of the Java Cryptography API) and update it with the bytes arriving from the stream. When the stream starts, the <code>onPull</code> handler of the operator is called, which bubbles up the <code>pull</code> event to its upstream. As a response to this pull, a ByteString chunk will arrive (<code>onPush</code>) which we use to update the digest, then it will pull for the next chunk.</p>
+<p>Eventually the stream of <code>ByteString</code> s depletes and we get a notification about this event via <code>onUpstreamFinish</code>. At this point we want to emit the digest value, but we cannot do it with <code>push</code> in this handler directly since there may be no downstream demand. Instead we call <code>emit</code> which will temporarily replace the handlers, emit the provided value when demand comes in and then reset the operator state. It will then complete the operator.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeDigest.scala#L26-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import java.security.MessageDigest
+
+import org.apache.pekko
+import pekko.NotUsed
+import pekko.stream.{ Attributes, FlowShape, Inlet, Outlet }
+import pekko.stream.scaladsl.{ Sink, Source }
+import pekko.util.ByteString
+
+import pekko.stream.stage._
+
+val data: Source[ByteString, NotUsed] = Source.single(ByteString(&quot;abc&quot;))
+
+class DigestCalculator(algorithm: String) extends GraphStage[FlowShape[ByteString, ByteString]] {
+  val in = Inlet[ByteString](&quot;DigestCalculator.in&quot;)
+  val out = Outlet[ByteString](&quot;DigestCalculator.out&quot;)
+  override val shape = FlowShape(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    private val digest = MessageDigest.getInstance(algorithm)
+
+    setHandler(out,
+      new OutHandler {
+        override def onPull(): Unit = pull(in)
+      })
+
+    setHandler(in,
+      new InHandler {
+        override def onPush(): Unit = {
+          val chunk = grab(in)
+          digest.update(chunk.toArray)
+          pull(in)
+        }
+
+        override def onUpstreamFinish(): Unit = {
+          emit(out, ByteString(digest.digest()))
+          completeStage()
+        }
+      })
+  }
+}
+
+val digest: Source[ByteString, NotUsed] = data.via(new DigestCalculator(&quot;SHA-256&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeDigest.java#L49-L106" target="_blank" title="Go to snippet source">source</a><code class="language-java">class DigestCalculator extends GraphStage&lt;FlowShape&lt;ByteString, ByteString&gt;&gt; {
+  private final String algorithm;
+  public Inlet&lt;ByteString&gt; in = Inlet.create(&quot;DigestCalculator.in&quot;);
+  public Outlet&lt;ByteString&gt; out = Outlet.create(&quot;DigestCalculator.out&quot;);
+  private FlowShape&lt;ByteString, ByteString&gt; shape = FlowShape.of(in, out);
+
+  public DigestCalculator(String algorithm) {
+    this.algorithm = algorithm;
+  }
+
+  @Override
+  public FlowShape&lt;ByteString, ByteString&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      final MessageDigest digest;
+
+      {
+        try {
+          digest = MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException ex) {
+          throw new RuntimeException(ex);
+        }
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() {
+                pull(in);
+              }
+            });
+
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                ByteString chunk = grab(in);
+                digest.update(chunk.toArray());
+                pull(in);
+              }
+
+              @Override
+              public void onUpstreamFinish() {
+                // If the stream is finished, we need to emit the digest
+                // before completing
+                emit(out, ByteString.fromArray(digest.digest()));
+                completeStage();
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeDigest.java#L116" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;ByteString, NotUsed&gt; digest = data.via(new DigestCalculator(&quot;SHA-256&quot;));</code></pre></dd>
+</dl>
+<a id="cookbook-parse-lines"></a>
+<h3><a href="#parsing-lines-from-a-stream-of-bytestrings" name="parsing-lines-from-a-stream-of-bytestrings" class="anchor"><span class="anchor-link"></span></a>Parsing lines from a stream of ByteStrings</h3>
+<p><strong>Situation:</strong> A stream of bytes is given as a stream of <code>ByteString</code> s containing lines terminated by line ending characters (or, alternatively, containing binary frames delimited by a special delimiter byte sequence) which needs to be parsed.</p>
+<p>The <code>Framing</code> helper <span class="group-scala">object</span> <span class="group-java">class</span> contains a convenience method to parse messages from a stream of <code>ByteString</code> s:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeParseLines.scala#L37-L40" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.scaladsl.Framing
+val linesStream = rawData
+  .via(Framing.delimiter(ByteString(&quot;\r\n&quot;), maximumFrameLength = 100, allowTruncation = true))
+  .map(_.utf8String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeParseLines.java#L58-L61" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;String, NotUsed&gt; lines =
+    rawData
+        .via(Framing.delimiter(ByteString.fromString(&quot;\r\n&quot;), 100, FramingTruncation.ALLOW))
+        .map(b -&gt; b.utf8String());</code></pre></dd>
+</dl>
+<h3><a href="#dealing-with-compressed-data-streams" name="dealing-with-compressed-data-streams" class="anchor"><span class="anchor-link"></span></a>Dealing with compressed data streams</h3>
+<p><strong>Situation:</strong> A gzipped stream of bytes is given as a stream of <code>ByteString</code> s, for example from a <code>FileIO</code> source.</p>
+<p>The <code>Compression</code> helper <span class="group-scala">object</span> <span class="group-java">class</span> contains convenience methods for decompressing data streams compressed with Gzip or Deflate.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeDecompress.scala#L27-L34" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.scaladsl.Compression
+val uncompressed = compressed.via(Compression.gunzip()).map(_.utf8String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeDecompress.java#L53-L54" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;ByteString, NotUsed&gt; decompressedStream =
+    compressedStream.via(Compression.gunzip(100));</code></pre></dd>
+</dl>
+<h3><a href="#implementing-a-splitter" name="implementing-a-splitter" class="anchor"><span class="anchor-link"></span></a>Implementing a Splitter</h3>
+<p><strong>Situation:</strong> Given a stream of messages, where each message is a composition of different elements, we want to split the message into a series of individual sub-messages, each of which may be processed in a different way.</p>
+<p>The <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/Sequencer.html">Splitter</a> is an integration pattern as described in <a href="https://www.enterpriseintegrationpatterns.com">Enterprise Integration Patterns</a>. Let&rsquo;s say that we have a stream containing strings. Each string contains a few numbers separated by &ldquo;-&rdquo;. We want to create out of this a stream that only contains the numbers.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSplitter.scala#L32-L44" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Sample Source
+val source: Source[String, NotUsed] = Source(List(&quot;1-2-3&quot;, &quot;2-3&quot;, &quot;3-4&quot;))
+
+val ret = source
+  .map(s =&gt; s.split(&quot;-&quot;).toList)
+  .mapConcat(identity)
+  // Sub-streams logic
+  .map(s =&gt; s.toInt)
+  .runWith(Sink.seq)
+
+// Verify results
+
+ret.futureValue should be(Vector(1, 2, 3, 2, 3, 3, 4))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSplitter.java#L36-L49" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Sample Source
+Source&lt;String, NotUsed&gt; source = Source.from(Arrays.asList(&quot;1-2-3&quot;, &quot;2-3&quot;, &quot;3-4&quot;));
+
+CompletionStage&lt;List&lt;Integer&gt;&gt; ret =
+    source
+        .map(s -&gt; Arrays.asList(s.split(&quot;-&quot;)))
+        .mapConcat(f -&gt; f)
+        // Sub-streams logic
+        .map(s -&gt; Integer.valueOf(s))
+        .runWith(Sink.seq(), system);
+
+// Verify results
+List&lt;Integer&gt; list = ret.toCompletableFuture().get();
+assert list.equals(Arrays.asList(1, 2, 3, 2, 3, 3, 4));</code></pre></dd>
+</dl>
+<h3><a href="#implementing-a-splitter-and-aggregator" name="implementing-a-splitter-and-aggregator" class="anchor"><span class="anchor-link"></span></a>Implementing a Splitter and Aggregator</h3>
+<p><strong>Situation:</strong> Given a message, we want to split the message and aggregate its sub-messages into a new message</p>
+<p>Sometimes it&rsquo;s very useful to split a message and aggregate its sub-messages into a new message. This involves a combination of <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/Sequencer.html">Splitter</a> and <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/Aggregator.html">Aggregator</a></p>
+<p>Let&rsquo;s say that now we want to create a new stream containing the sums of the numbers in each original string.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSplitter.scala#L52-L70" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Sample Source
+val source: Source[String, NotUsed] = Source(List(&quot;1-2-3&quot;, &quot;2-3&quot;, &quot;3-4&quot;))
+
+val result = source
+  .map(s =&gt; s.split(&quot;-&quot;).toList)
+  // split all messages into sub-streams
+  .splitWhen(a =&gt; true)
+  // now split each collection
+  .mapConcat(identity)
+  // Sub-streams logic
+  .map(s =&gt; s.toInt)
+  // aggregate each sub-stream
+  .reduce((a, b) =&gt; a + b)
+  // and merge back the result into the original stream
+  .mergeSubstreams
+  .runWith(Sink.seq);
+
+// Verify results
+result.futureValue should be(Vector(6, 5, 7))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSplitter.java#L56-L76" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Sample Source
+Source&lt;String, NotUsed&gt; source = Source.from(Arrays.asList(&quot;1-2-3&quot;, &quot;2-3&quot;, &quot;3-4&quot;));
+
+CompletionStage&lt;List&lt;Integer&gt;&gt; ret =
+    source
+        .map(s -&gt; Arrays.asList(s.split(&quot;-&quot;)))
+        // split all messages into sub-streams
+        .splitWhen(a -&gt; true)
+        // now split each collection
+        .mapConcat(f -&gt; f)
+        // Sub-streams logic
+        .map(s -&gt; Integer.valueOf(s))
+        // aggregate each sub-stream
+        .reduce((a, b) -&gt; a + b)
+        // and merge back the result into the original stream
+        .mergeSubstreams()
+        .runWith(Sink.seq(), system);
+
+// Verify results
+List&lt;Integer&gt; list = ret.toCompletableFuture().get();
+assert list.equals(Arrays.asList(6, 5, 7));</code></pre></dd>
+</dl>
+<p>While in real life this solution is overkill for such a simple problem (you can just do everything in a map), more complex scenarios, involving in particular I/O, will benefit from the fact that you can parallelize sub-streams and get back-pressure for &ldquo;free&rdquo;.</p>
+<h3><a href="#implementing-reduce-by-key" name="implementing-reduce-by-key" class="anchor"><span class="anchor-link"></span></a>Implementing reduce-by-key</h3>
+<p><strong>Situation:</strong> Given a stream of elements, we want to calculate some aggregated value on different subgroups of the elements.</p>
+<p>The &ldquo;hello world&rdquo; of reduce-by-key style operations is <em>wordcount</em> which we demonstrate below. Given a stream of words we first create a new stream that groups the words according to the <span class="group-scala"><code>identity</code></span> <span class="group-java"><code>i -&gt; i</code></span> function, i.e. now we have a stream of streams, where every substream will serve identical words.</p>
+<p>To count the words, we need to process the stream of streams (the actual groups containing identical words). <code>groupBy</code> returns a <span class="group-scala"><code>SubFlow</code></span> <span class="group-java"><code>SubSource</code></span>, which means that we transform the resulting substreams directly. In this case we use the <code>reduce</code> operator to aggregate the word itself and the number of its occurrences within a <span class="group-scala">tuple <code>(String, Integer)</code></span> <span class="group-java"><code>Pair&lt;String, Integer&gt;</code></span>. Each substream will then emit one final value—precisely such a pair—when the overall input completes. As a last step we merge back these values from the substreams into one single output stream.</p>
+<p>One noteworthy detail pertains to the <span class="group-scala"><code>MaximumDistinctWords</code></span> <span class="group-java"><code>MAXIMUM_DISTINCT_WORDS</code></span> parameter: this defines the breadth of the groupBy and merge operations. Akka Streams is focused on bounded resource consumption and the number of concurrently open inputs to the merge operator describes the amount of resources needed by the merge itself. Therefore only a finite number of substreams can be active at any given time. If the <code>groupBy</code> operator encounters more keys than this number then the stream cannot continue without violating its resource bound, in this case <code>groupBy</code> will terminate with a failure.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeReduceByKey.scala#L32-L40" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val counts: Source[(String, Int), NotUsed] = words
+  // split the words into separate streams first
+  .groupBy(MaximumDistinctWords, identity)
+  // transform each element to pair with number of words in it
+  .map(_ -&gt; 1)
+  // add counting logic to the streams
+  .reduce((l, r) =&gt; (l._1, l._2 + r._2))
+  // get a stream of word counts
+  .mergeSubstreams</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeReduceByKeyTest.java#L60-L71" target="_blank" title="Go to snippet source">source</a><code class="language-java">final int MAXIMUM_DISTINCT_WORDS = 1000;
+
+final Source&lt;Pair&lt;String, Integer&gt;, NotUsed&gt; counts =
+    words
+        // split the words into separate streams first
+        .groupBy(MAXIMUM_DISTINCT_WORDS, i -&gt; i)
+        // transform each element to pair with number of words in it
+        .map(i -&gt; new Pair&lt;&gt;(i, 1))
+        // add counting logic to the streams
+        .reduce((left, right) -&gt; new Pair&lt;&gt;(left.first(), left.second() + right.second()))
+        // get a stream of word counts
+        .mergeSubstreams();</code></pre></dd>
+</dl>
+<p>By extracting the parts specific to <em>wordcount</em> into</p>
+<ul>
+  <li>a <code>groupKey</code> function that defines the groups</li>
+  <li>a <code>map</code> map each element to value that is used by the reduce on the substream</li>
+  <li>a <code>reduce</code> function that does the actual reduction</li>
+</ul>
+<p>we get a generalized version below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeReduceByKey.scala#L52-L64" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def reduceByKey[In, K, Out](maximumGroupSize: Int, groupKey: (In) =&gt; K, map: (In) =&gt; Out)(
+    reduce: (Out, Out) =&gt; Out): Flow[In, (K, Out), NotUsed] = {
+
+  Flow[In]
+    .groupBy[K](maximumGroupSize, groupKey)
+    .map(e =&gt; groupKey(e) -&gt; map(e))
+    .reduce((l, r) =&gt; l._1 -&gt; reduce(l._2, r._2))
+    .mergeSubstreams
+}
+
+val wordCounts = words.via(
+  reduceByKey(MaximumDistinctWords, groupKey = (word: String) =&gt; word, map = (word: String) =&gt; 1)(
+    (left: Int, right: Int) =&gt; left + right))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeReduceByKeyTest.java#L89-L101" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static &lt;In, K, Out&gt; Flow&lt;In, Pair&lt;K, Out&gt;, NotUsed&gt; reduceByKey(
+    int maximumGroupSize,
+    Function&lt;In, K&gt; groupKey,
+    Function&lt;In, Out&gt; map,
+    Function2&lt;Out, Out, Out&gt; reduce) {
+
+  return Flow.&lt;In&gt;create()
+      .groupBy(maximumGroupSize, groupKey)
+      .map(i -&gt; new Pair&lt;&gt;(groupKey.apply(i), map.apply(i)))
+      .reduce(
+          (left, right) -&gt; new Pair&lt;&gt;(left.first(), reduce.apply(left.second(), right.second())))
+      .mergeSubstreams();
+}</code></pre></dd>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeReduceByKeyTest.java#L112-L121" target="_blank" title="Go to snippet source">source</a><code class="language-java">final int MAXIMUM_DISTINCT_WORDS = 1000;
+
+Source&lt;Pair&lt;String, Integer&gt;, NotUsed&gt; counts =
+    words.via(
+        reduceByKey(
+            MAXIMUM_DISTINCT_WORDS,
+            word -&gt; word,
+            word -&gt; 1,
+            (left, right) -&gt; left + right));
+</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>Please note that the reduce-by-key version we discussed above is sequential in reading the overall input stream, in other words it is <strong>NOT</strong> a parallelization pattern like MapReduce and similar frameworks.</p></div>
+<h3><a href="#sorting-elements-to-multiple-groups-with-groupby" name="sorting-elements-to-multiple-groups-with-groupby" class="anchor"><span class="anchor-link"></span></a>Sorting elements to multiple groups with groupBy</h3>
+<p><strong>Situation:</strong> The <code>groupBy</code> operation strictly partitions incoming elements, each element belongs to exactly one group. Sometimes we want to map elements into multiple groups simultaneously.</p>
+<p>To achieve the desired result, we attack the problem in two steps:</p>
+<ul>
+  <li>first, using a function <code>topicMapper</code> that gives a list of topics (groups) a message belongs to, we transform our stream of <code>Message</code> to a stream of <span class="group-scala"><code>(Message, Topic)</code></span> <span class="group-java"><code>Pair&lt;Message, Topic&gt;</code></span> where for each topic the message belongs to a separate pair will be emitted. This is achieved by using <code>mapConcat</code></li>
+  <li>Then we take this new stream of message topic pairs (containing a separate pair for each topic a given message belongs to) and feed it into groupBy, using the topic as the group key.</li>
+</ul>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeMultiGroupBy.scala#L38-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val topicMapper: (Message) =&gt; immutable.Seq[Topic] = extractTopics
+
+val messageAndTopic: Source[(Message, Topic), NotUsed] = elems.mapConcat { (msg: Message) =&gt;
+  val topicsForMessage = topicMapper(msg)
+  // Create a (Msg, Topic) pair for each of the topics
+  // the message belongs to
+  topicsForMessage.map(msg -&gt; _)
+}
+
+val multiGroups = messageAndTopic.groupBy(2, _._2).map {
+  case (msg, topic) =&gt;
+    // do what needs to be done
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeMultiGroupByTest.java#L104-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Function&lt;Message, List&lt;Topic&gt;&gt; topicMapper = m -&gt; extractTopics(m);
+
+final Source&lt;Pair&lt;Message, Topic&gt;, NotUsed&gt; messageAndTopic =
+    elems.mapConcat(
+        (Message msg) -&gt; {
+          List&lt;Topic&gt; topicsForMessage = topicMapper.apply(msg);
+          // Create a (Msg, Topic) pair for each of the topics
+
+          // the message belongs to
+          return topicsForMessage.stream()
+              .map(topic -&gt; new Pair&lt;Message, Topic&gt;(msg, topic))
+              .collect(toList());
+        });
+
+SubSource&lt;Pair&lt;Message, Topic&gt;, NotUsed&gt; multiGroups =
+    messageAndTopic
+        .groupBy(2, pair -&gt; pair.second())
+        .map(
+            pair -&gt; {
+              Message message = pair.first();
+              Topic topic = pair.second();
+
+              // do what needs to be done
+            });</code></pre></dd>
+</dl>
+<h3><a href="#adhoc-source" name="adhoc-source" class="anchor"><span class="anchor-link"></span></a>Adhoc source</h3>
+<p><strong>Situation:</strong> The idea is that you have a source which you don&rsquo;t want to start until you have a demand. Also, you want to shut it down when there is no more demand, and start it up again there is new demand again.</p>
+<p>You can achieve this behavior by combining <code>lazySource</code>, <code>backpressureTimeout</code> and <code>recoverWithRetries</code> as follows:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeAdhocSource.scala#L29-L37" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def adhocSource[T](source: Source[T, _], timeout: FiniteDuration, maxRetries: Int): Source[T, _] =
+  Source.lazySource(() =&gt;
+    source
+      .backpressureTimeout(timeout)
+      .recoverWithRetries(maxRetries,
+        {
+          case t: TimeoutException =&gt;
+            Source.lazySource(() =&gt; source.backpressureTimeout(timeout)).mapMaterializedValue(_ =&gt; NotUsed)
+        }))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeAdhocSourceTest.java#L57-L71" target="_blank" title="Go to snippet source">source</a><code class="language-java">public &lt;T&gt; Source&lt;T, ?&gt; adhocSource(Source&lt;T, ?&gt; source, Duration timeout, int maxRetries) {
+  return Source.lazySource(
+      () -&gt;
+          source
+              .backpressureTimeout(timeout)
+              .recoverWithRetries(
+                  maxRetries,
+                  new PFBuilder&lt;Throwable, Source&lt;T, NotUsed&gt;&gt;()
+                      .match(
+                          TimeoutException.class,
+                          ex -&gt;
+                              Source.lazySource(() -&gt; source.backpressureTimeout(timeout))
+                                  .mapMaterializedValue(v -&gt; NotUsed.getInstance()))
+                      .build()));
+}</code></pre></dd>
+</dl>
+<h2><a href="#working-with-operators" name="working-with-operators" class="anchor"><span class="anchor-link"></span></a>Working with Operators</h2>
+<p>In this collection we show recipes that use stream operators to achieve various goals.</p>
+<h3><a href="#triggering-the-flow-of-elements-programmatically" name="triggering-the-flow-of-elements-programmatically" class="anchor"><span class="anchor-link"></span></a>Triggering the flow of elements programmatically</h3>
+<p><strong>Situation:</strong> Given a stream of elements we want to control the emission of those elements according to a trigger signal. In other words, even if the stream would be able to flow (not being backpressured) we want to hold back elements until a trigger signal arrives.</p>
+<p>This recipe solves the problem by zipping the stream of <code>Message</code> elements with the stream of <code>Trigger</code> signals. Since <code>Zip</code> produces pairs, we map the output stream selecting the first element of the pair.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeManualTrigger.scala#L35-L42" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val graph = RunnableGraph.fromGraph(GraphDSL.create() { implicit builder =&gt;
+  import GraphDSL.Implicits._
+  val zip = builder.add(Zip[Message, Trigger]())
+  elements      ~&gt; zip.in0
+  triggerSource ~&gt; zip.in1
+  zip.out       ~&gt; Flow[(Message, Trigger)].map { case (msg, trigger) =&gt; msg } ~&gt; sink
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeManualTrigger.java#L60-L81" target="_blank" title="Go to snippet source">source</a><code class="language-java">final RunnableGraph&lt;Pair&lt;TestPublisher.Probe&lt;Trigger&gt;, TestSubscriber.Probe&lt;Message&gt;&gt;&gt; g =
+    RunnableGraph
+        .&lt;Pair&lt;TestPublisher.Probe&lt;Trigger&gt;, TestSubscriber.Probe&lt;Message&gt;&gt;&gt;fromGraph(
+            GraphDSL.create(
+                triggerSource,
+                messageSink,
+                (p, s) -&gt; new Pair&lt;&gt;(p, s),
+                (builder, source, sink) -&gt; {
+                  SourceShape&lt;Message&gt; elements =
+                      builder.add(
+                          Source.from(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;))
+                              .map(t -&gt; new Message(t)));
+                  FlowShape&lt;Pair&lt;Message, Trigger&gt;, Message&gt; takeMessage =
+                      builder.add(
+                          Flow.&lt;Pair&lt;Message, Trigger&gt;&gt;create().map(p -&gt; p.first()));
+                  final FanInShape2&lt;Message, Trigger, Pair&lt;Message, Trigger&gt;&gt; zip =
+                      builder.add(Zip.create());
+                  builder.from(elements).toInlet(zip.in0());
+                  builder.from(source).toInlet(zip.in1());
+                  builder.from(zip.out()).via(takeMessage).to(sink);
+                  return ClosedShape.getInstance();
+                }));</code></pre></dd>
+</dl>
+<p>Alternatively, instead of using a <code>Zip</code>, and then using <code>map</code> to get the first element of the pairs, we can avoid creating the pairs in the first place by using <code>ZipWith</code> which takes a two argument function to produce the output element. If this function would return a pair of the two argument it would be exactly the behavior of <code>Zip</code> so <code>ZipWith</code> is a generalization of zipping.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeManualTrigger.scala#L74-L82" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val graph = RunnableGraph.fromGraph(GraphDSL.create() { implicit builder =&gt;
+  import GraphDSL.Implicits._
+  val zip = builder.add(ZipWith((msg: Message, trigger: Trigger) =&gt; msg))
+
+  elements      ~&gt; zip.in0
+  triggerSource ~&gt; zip.in1
+  zip.out       ~&gt; sink
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeManualTrigger.java#L118-L136" target="_blank" title="Go to snippet source">source</a><code class="language-java">final RunnableGraph&lt;Pair&lt;TestPublisher.Probe&lt;Trigger&gt;, TestSubscriber.Probe&lt;Message&gt;&gt;&gt; g =
+    RunnableGraph
+        .&lt;Pair&lt;TestPublisher.Probe&lt;Trigger&gt;, TestSubscriber.Probe&lt;Message&gt;&gt;&gt;fromGraph(
+            GraphDSL.create(
+                triggerSource,
+                messageSink,
+                (p, s) -&gt; new Pair&lt;&gt;(p, s),
+                (builder, source, sink) -&gt; {
+                  final SourceShape&lt;Message&gt; elements =
+                      builder.add(
+                          Source.from(Arrays.asList(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;))
+                              .map(t -&gt; new Message(t)));
+                  final FanInShape2&lt;Message, Trigger, Message&gt; zipWith =
+                      builder.add(ZipWith.create((msg, trigger) -&gt; msg));
+                  builder.from(elements).toInlet(zipWith.in0());
+                  builder.from(source).toInlet(zipWith.in1());
+                  builder.from(zipWith.out()).to(sink);
+                  return ClosedShape.getInstance();
+                }));</code></pre></dd>
+</dl>
+<a id="cookbook-balance"></a>
+<h3><a href="#balancing-jobs-to-a-fixed-pool-of-workers" name="balancing-jobs-to-a-fixed-pool-of-workers" class="anchor"><span class="anchor-link"></span></a>Balancing jobs to a fixed pool of workers</h3>
+<p><strong>Situation:</strong> Given a stream of jobs and a worker process expressed as a <code>Flow</code> create a pool of workers that automatically balances incoming jobs to available workers, then merges the results.</p>
+<p>We will express our solution as a function that takes a worker flow and the number of workers to be allocated and gives a flow that internally contains a pool of these workers. To achieve the desired result we will create a <code>Flow</code> from an operator.</p>
+<p>The operator consists of a <code>Balance</code> node which is a special fan-out operation that tries to route elements to available downstream consumers. In a <code>for</code> loop we wire all of our desired workers as outputs of this balancer element, then we wire the outputs of these workers to a <code>Merge</code> element that will collect the results from the workers.</p>
+<p>To make the worker operators run in parallel we mark them as asynchronous with <em>async</em>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeWorkerPool.scala#L34-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def balancer[In, Out](worker: Flow[In, Out, Any], workerCount: Int): Flow[In, Out, NotUsed] = {
+  import GraphDSL.Implicits._
+
+  Flow.fromGraph(GraphDSL.create() { implicit b =&gt;
+    val balancer = b.add(Balance[In](workerCount, waitForAllDownstreams = true))
+    val merge = b.add(Merge[Out](workerCount))
+
+    for (_ &lt;- 1 to workerCount) {
+      // for each worker, add an edge from the balancer to the worker, then wire
+      // it to the merge element
+      balancer ~&gt; worker.async ~&gt; merge
+    }
+
+    FlowShape(balancer.in, merge.out)
+  })
+}
+
+val processedJobs: Source[Result, NotUsed] = myJobs.via(balancer(worker, 3))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeWorkerPool.java#L48-L64" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static &lt;In, Out&gt; Flow&lt;In, Out, NotUsed&gt; balancer(
+    Flow&lt;In, Out, NotUsed&gt; worker, int workerCount) {
+  return Flow.fromGraph(
+      GraphDSL.create(
+          b -&gt; {
+            boolean waitForAllDownstreams = true;
+            final UniformFanOutShape&lt;In, In&gt; balance =
+                b.add(Balance.&lt;In&gt;create(workerCount, waitForAllDownstreams));
+            final UniformFanInShape&lt;Out, Out&gt; merge = b.add(Merge.&lt;Out&gt;create(workerCount));
+
+            for (int i = 0; i &lt; workerCount; i++) {
+              b.from(balance.out(i)).via(b.add(worker.async())).toInlet(merge.in(i));
+            }
+
+            return FlowShape.of(balance.in(), merge.out());
+          }));
+}</code></pre></dd>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeWorkerPool.java#L78-L79" target="_blank" title="Go to snippet source">source</a><code class="language-java">Flow&lt;Message, Message, NotUsed&gt; balancer = balancer(worker, 3);
+Source&lt;Message, NotUsed&gt; processedJobs = data.via(balancer);</code></pre></dd>
+</dl>
+<h2><a href="#working-with-rate" name="working-with-rate" class="anchor"><span class="anchor-link"></span></a>Working with rate</h2>
+<p>This collection of recipes demonstrate various patterns where rate differences between upstream and downstream needs to be handled by other strategies than simple backpressure.</p>
+<h3><a href="#dropping-elements" name="dropping-elements" class="anchor"><span class="anchor-link"></span></a>Dropping elements</h3>
+<p><strong>Situation:</strong> Given a fast producer and a slow consumer, we want to drop elements if necessary to not slow down the producer too much.</p>
+<p>This can be solved by using a versatile rate-transforming operation, <code>conflate</code>. Conflate can be thought as a special <code>reduce</code> operation that collapses multiple upstream elements into one aggregate element if needed to keep the speed of the upstream unaffected by the downstream.</p>
+<p>When the upstream is faster, the reducing process of the <code>conflate</code> starts. Our reducer function takes the freshest element. This in a simple dropping operation.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeSimpleDrop.scala#L30-L31" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val droppyStream: Flow[Message, Message, NotUsed] =
+  Flow[Message].conflate((lastMessage, newMessage) =&gt; newMessage)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeSimpleDrop.java#L54-L55" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Message, Message, NotUsed&gt; droppyStream =
+    Flow.of(Message.class).conflate((lastMessage, newMessage) -&gt; newMessage);</code></pre></dd>
+</dl>
+<p>There is a more general version of <code>conflate</code> named <code>conflateWithSeed</code> that allows to express more complex aggregations, more similar to a <code>fold</code>.</p>
+<h3><a href="#dropping-broadcast" name="dropping-broadcast" class="anchor"><span class="anchor-link"></span></a>Dropping broadcast</h3>
+<p><strong>Situation:</strong> The default <code>Broadcast</code> operator is properly backpressured, but that means that a slow downstream consumer can hold back the other downstream consumers resulting in lowered throughput. In other words the rate of <code>Broadcast</code> is the rate of its slowest downstream consumer. In certain cases it is desirable to allow faster consumers to progress independently of their slower siblings by dropping elements if necessary.</p>
+<p>One solution to this problem is to append a <code>buffer</code> element in front of all of the downstream consumers defining a dropping strategy instead of the default <code>Backpressure</code>. This allows small temporary rate differences between the different consumers (the buffer smooths out small rate variances), but also allows faster consumers to progress by dropping from the buffer of the slow consumers if necessary.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeDroppyBroadcast.scala#L36-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val graph = RunnableGraph.fromGraph(GraphDSL.createGraph(mySink1, mySink2, mySink3)((_, _, _)) {
+  implicit b =&gt; (sink1, sink2, sink3) =&gt;
+    import GraphDSL.Implicits._
+
+    val bcast = b.add(Broadcast[Int](3))
+    myElements ~&gt; bcast
+
+    bcast.buffer(10, OverflowStrategy.dropHead) ~&gt; sink1
+    bcast.buffer(10, OverflowStrategy.dropHead) ~&gt; sink2
+    bcast.buffer(10, OverflowStrategy.dropHead) ~&gt; sink3
+    ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeDroppyBroadcast.java#L48-L52" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Makes a sink drop elements if too slow
+public &lt;T&gt; Sink&lt;T, CompletionStage&lt;Done&gt;&gt; droppySink(
+    Sink&lt;T, CompletionStage&lt;Done&gt;&gt; sink, int size) {
+  return Flow.&lt;T&gt;create().buffer(size, OverflowStrategy.dropHead()).toMat(sink, Keep.right());
+}</code></pre></dd>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeDroppyBroadcast.java#L68-L79" target="_blank" title="Go to snippet source">source</a><code class="language-java">RunnableGraph.fromGraph(
+    GraphDSL.create(
+        builder -&gt; {
+          final int outputCount = 3;
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast =
+              builder.add(Broadcast.create(outputCount));
+          builder.from(builder.add(myData)).toFanOut(bcast);
+          builder.from(bcast).to(builder.add(droppySink(mySink1, 10)));
+          builder.from(bcast).to(builder.add(droppySink(mySink2, 10)));
+          builder.from(bcast).to(builder.add(droppySink(mySink3, 10)));
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<h3><a href="#collecting-missed-ticks" name="collecting-missed-ticks" class="anchor"><span class="anchor-link"></span></a>Collecting missed ticks</h3>
+<p><strong>Situation:</strong> Given a regular (stream) source of ticks, instead of trying to backpressure the producer of the ticks we want to keep a counter of the missed ticks instead and pass it down when possible.</p>
+<p>We will use <code>conflateWithSeed</code> to solve the problem. The seed version of conflate takes two functions:</p>
+<ul>
+  <li>A seed function that produces the zero element for the folding process that happens when the upstream is faster than the downstream. In our case the seed function is a constant function that returns 0 since there were no missed ticks at that point.</li>
+  <li>A fold function that is invoked when multiple upstream messages needs to be collapsed to an aggregate value due to the insufficient processing rate of the downstream. Our folding function increments the currently stored count of the missed ticks so far.</li>
+</ul>
+<p>As a result, we have a flow of <code>Int</code> where the number represents the missed ticks. A number 0 means that we were able to consume the tick fast enough (i.e. zero means: 1 non-missed tick + 0 missed ticks)</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeMissedTicks.scala#L36-L37" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val missedTicks: Flow[Tick, Int, NotUsed] =
+  Flow[Tick].conflateWithSeed(seed = _ =&gt; 0)((missedTicks, tick) =&gt; missedTicks + 1)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeMissedTicks.java#L63-L64" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Tick, Integer, NotUsed&gt; missedTicks =
+    Flow.of(Tick.class).conflateWithSeed(tick -&gt; 0, (missed, tick) -&gt; missed + 1);</code></pre></dd>
+</dl>
+<h3><a href="#create-a-stream-processor-that-repeats-the-last-element-seen" name="create-a-stream-processor-that-repeats-the-last-element-seen" class="anchor"><span class="anchor-link"></span></a>Create a stream processor that repeats the last element seen</h3>
+<p><strong>Situation:</strong> Given a producer and consumer, where the rate of neither is known in advance, we want to ensure that none of them is slowing down the other by dropping earlier unconsumed elements from the upstream if necessary, and repeating the last value for the downstream if necessary.</p>
+<p>We have two options to implement this feature. In both cases we will use <a href="stream-customize.html"><code>GraphStage</code></a>, to build our custom operator. In the first version we will use a provided initial value <code>initial</code> that will be used to feed the downstream if no upstream element is ready yet. In the <code>onPush()</code> handler we overwrite the <code>currentValue</code> variable and immediately relieve the upstream by calling <code>pull()</code>. The downstream <code>onPull</code> handler is very similar, we immediately relieve the downstream by emitting <code>currentValue</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeHold.scala#L24-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream._
+import pekko.stream.stage._
+final class HoldWithInitial[T](initial: T) extends GraphStage[FlowShape[T, T]] {
+  val in = Inlet[T](&quot;HoldWithInitial.in&quot;)
+  val out = Outlet[T](&quot;HoldWithInitial.out&quot;)
+
+  override val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    private var currentValue: T = initial
+
+    setHandlers(in, out,
+      new InHandler with OutHandler {
+        override def onPush(): Unit = {
+          currentValue = grab(in)
+          pull(in)
+        }
+
+        override def onPull(): Unit = {
+          push(out, currentValue)
+        }
+      })
+
+    override def preStart(): Unit = {
+      pull(in)
+    }
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeHold.java#L50-L98" target="_blank" title="Go to snippet source">source</a><code class="language-java">class HoldWithInitial&lt;T&gt; extends GraphStage&lt;FlowShape&lt;T, T&gt;&gt; {
+
+  public Inlet&lt;T&gt; in = Inlet.&lt;T&gt;create(&quot;HoldWithInitial.in&quot;);
+  public Outlet&lt;T&gt; out = Outlet.&lt;T&gt;create(&quot;HoldWithInitial.out&quot;);
+  private FlowShape&lt;T, T&gt; shape = FlowShape.of(in, out);
+
+  private final T initial;
+
+  public HoldWithInitial(T initial) {
+    this.initial = initial;
+  }
+
+  @Override
+  public FlowShape&lt;T, T&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      private T currentValue = initial;
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                currentValue = grab(in);
+                pull(in);
+              }
+            });
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                push(out, currentValue);
+              }
+            });
+      }
+
+      @Override
+      public void preStart() {
+        pull(in);
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>While it is relatively simple, the drawback of the first version is that it needs an arbitrary initial element which is not always possible to provide. Hence, we create a second version where the downstream might need to wait in one single case: if the very first element is not yet available.</p>
+<p>We introduce a boolean variable <code>waitingFirstValue</code> to denote whether the first element has been provided or not (alternatively an <span class="group-scala"><code>Option</code></span> <span class="group-java"><code>Optional</code></span> can be used for <code>currentValue</code> or if the element type is a subclass of <span class="group-scala"><code>AnyRef</code></span> <span class="group-java"><code>Object</code></span> a null can be used with the same purpose). In the downstream <code>onPull()</code> handler the difference from the previous version is that we check if we have received the first value and only emit if we have. This leads to that when the first element comes in we must check if there possibly already was demand from downstream so that we in that case can push the element directly.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeHold.scala#L57-L92" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream._
+import pekko.stream.stage._
+final class HoldWithWait[T] extends GraphStage[FlowShape[T, T]] {
+  val in = Inlet[T](&quot;HoldWithWait.in&quot;)
+  val out = Outlet[T](&quot;HoldWithWait.out&quot;)
+
+  override val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    private var currentValue: T = _
+    private var waitingFirstValue = true
+
+    setHandlers(
+      in,
+      out,
+      new InHandler with OutHandler {
+        override def onPush(): Unit = {
+          currentValue = grab(in)
+          if (waitingFirstValue) {
+            waitingFirstValue = false
+            if (isAvailable(out)) push(out, currentValue)
+          }
+          pull(in)
+        }
+
+        override def onPull(): Unit = {
+          if (!waitingFirstValue) push(out, currentValue)
+        }
+      })
+
+    override def preStart(): Unit = {
+      pull(in)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeHold.java#L102-L148" target="_blank" title="Go to snippet source">source</a><code class="language-java">class HoldWithWait&lt;T&gt; extends GraphStage&lt;FlowShape&lt;T, T&gt;&gt; {
+  public Inlet&lt;T&gt; in = Inlet.&lt;T&gt;create(&quot;HoldWithInitial.in&quot;);
+  public Outlet&lt;T&gt; out = Outlet.&lt;T&gt;create(&quot;HoldWithInitial.out&quot;);
+  private FlowShape&lt;T, T&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;T, T&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      private T currentValue = null;
+      private boolean waitingFirstValue = true;
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                currentValue = grab(in);
+                if (waitingFirstValue) {
+                  waitingFirstValue = false;
+                  if (isAvailable(out)) push(out, currentValue);
+                }
+                pull(in);
+              }
+            });
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                if (!waitingFirstValue) push(out, currentValue);
+              }
+            });
+      }
+
+      @Override
+      public void preStart() {
+        pull(in);
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#globally-limiting-the-rate-of-a-set-of-streams" name="globally-limiting-the-rate-of-a-set-of-streams" class="anchor"><span class="anchor-link"></span></a>Globally limiting the rate of a set of streams</h3>
+<p><strong>Situation:</strong> Given a set of independent streams that we cannot merge, we want to globally limit the aggregate throughput of the set of streams.</p>
+<p>One possible solution uses a shared actor as the global limiter combined with mapAsync to create a reusable <code>Flow</code> that can be plugged into a stream to limit its rate.</p>
+<p>As the first step we define an actor that will do the accounting for the global rate limit. The actor maintains a timer, a counter for pending permit tokens and a queue for possibly waiting participants. The actor has an <code>open</code> and <code>closed</code> state. The actor is in the <code>open</code> state while it has still pending permits. Whenever a request for permit arrives as a <code>WantToPass</code> message to the actor the number of available permits is decremented and we notify the sender that it can pass by answering with a <code>MayPass</code> message. If the amount of permits reaches zero, the actor transitions to the <code>closed</code> state. In this state requests are not immediately answered, instead the reference of the sender is added to a queue. Once the timer for replenishing the pending permits fires by sending a <code>ReplenishTokens</code> message, we increment the pending permits counter and send a reply to each of the waiting senders. If there are more waiting senders than permits available we will stay in the <code>closed</code> state.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeGlobalRateLimit.scala#L31-L86" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Limiter {
+  case object WantToPass
+  case object MayPass
+
+  case object ReplenishTokens
+
+  def props(maxAvailableTokens: Int, tokenRefreshPeriod: FiniteDuration, tokenRefreshAmount: Int): Props =
+    Props(new Limiter(maxAvailableTokens, tokenRefreshPeriod, tokenRefreshAmount))
+}
+
+class Limiter(val maxAvailableTokens: Int, val tokenRefreshPeriod: FiniteDuration, val tokenRefreshAmount: Int)
+    extends Actor {
+  import Limiter._
+  import context.dispatcher
+  import org.apache.pekko.actor.Status
+
+  private var waitQueue = immutable.Queue.empty[ActorRef]
+  private var permitTokens = maxAvailableTokens
+  private val replenishTimer = system.scheduler.scheduleWithFixedDelay(
+    initialDelay = tokenRefreshPeriod,
+    delay = tokenRefreshPeriod,
+    receiver = self,
+    ReplenishTokens)
+
+  override def receive: Receive = open
+
+  val open: Receive = {
+    case ReplenishTokens =&gt;
+      permitTokens = math.min(permitTokens + tokenRefreshAmount, maxAvailableTokens)
+    case WantToPass =&gt;
+      permitTokens -= 1
+      sender() ! MayPass
+      if (permitTokens == 0) context.become(closed)
+  }
+
+  val closed: Receive = {
+    case ReplenishTokens =&gt;
+      permitTokens = math.min(permitTokens + tokenRefreshAmount, maxAvailableTokens)
+      releaseWaiting()
+    case WantToPass =&gt;
+      waitQueue = waitQueue.enqueue(sender())
+  }
+
+  private def releaseWaiting(): Unit = {
+    val (toBeReleased, remainingQueue) = waitQueue.splitAt(permitTokens)
+    waitQueue = remainingQueue
+    permitTokens -= toBeReleased.size
+    toBeReleased.foreach(_ ! MayPass)
+    if (permitTokens &gt; 0) context.become(open)
+  }
+
+  override def postStop(): Unit = {
+    replenishTimer.cancel()
+    waitQueue.foreach(_ ! Status.Failure(new IllegalStateException(&quot;limiter stopped&quot;)))
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeGlobalRateLimit.java#L50-L161" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Limiter extends AbstractActor {
+
+  public static class WantToPass {}
+
+  public static final WantToPass WANT_TO_PASS = new WantToPass();
+
+  public static class MayPass {}
+
+  public static final MayPass MAY_PASS = new MayPass();
+
+  public static class ReplenishTokens {}
+
+  public static final ReplenishTokens REPLENISH_TOKENS = new ReplenishTokens();
+
+  private final int maxAvailableTokens;
+  private final Duration tokenRefreshPeriod;
+  private final int tokenRefreshAmount;
+
+  private final List&lt;ActorRef&gt; waitQueue = new ArrayList&lt;&gt;();
+  private final Cancellable replenishTimer;
+
+  private int permitTokens;
+
+  public static Props props(
+      int maxAvailableTokens, Duration tokenRefreshPeriod, int tokenRefreshAmount) {
+    return Props.create(
+        Limiter.class, maxAvailableTokens, tokenRefreshPeriod, tokenRefreshAmount);
+  }
+
+  private Limiter(int maxAvailableTokens, Duration tokenRefreshPeriod, int tokenRefreshAmount) {
+    this.maxAvailableTokens = maxAvailableTokens;
+    this.tokenRefreshPeriod = tokenRefreshPeriod;
+    this.tokenRefreshAmount = tokenRefreshAmount;
+    this.permitTokens = maxAvailableTokens;
+
+    this.replenishTimer =
+        system
+            .scheduler()
+            .scheduleWithFixedDelay(
+                this.tokenRefreshPeriod,
+                this.tokenRefreshPeriod,
+                getSelf(),
+                REPLENISH_TOKENS,
+                getContext().getSystem().dispatcher(),
+                getSelf());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return open();
+  }
+
+  private Receive open() {
+    return receiveBuilder()
+        .match(
+            ReplenishTokens.class,
+            rt -&gt; {
+              permitTokens = Math.min(permitTokens + tokenRefreshAmount, maxAvailableTokens);
+            })
+        .match(
+            WantToPass.class,
+            wtp -&gt; {
+              permitTokens -= 1;
+              getSender().tell(MAY_PASS, getSelf());
+              if (permitTokens == 0) {
+                getContext().become(closed());
+              }
+            })
+        .build();
+  }
+
+  private Receive closed() {
+    return receiveBuilder()
+        .match(
+            ReplenishTokens.class,
+            rt -&gt; {
+              permitTokens = Math.min(permitTokens + tokenRefreshAmount, maxAvailableTokens);
+              releaseWaiting();
+            })
+        .match(
+            WantToPass.class,
+            wtp -&gt; {
+              waitQueue.add(getSender());
+            })
+        .build();
+  }
+
+  private void releaseWaiting() {
+    final List&lt;ActorRef&gt; toBeReleased = new ArrayList&lt;&gt;(permitTokens);
+    for (Iterator&lt;ActorRef&gt; it = waitQueue.iterator(); permitTokens &gt; 0 &amp;&amp; it.hasNext(); ) {
+      toBeReleased.add(it.next());
+      it.remove();
+      permitTokens--;
+    }
+
+    toBeReleased.stream().forEach(ref -&gt; ref.tell(MAY_PASS, getSelf()));
+    if (permitTokens &gt; 0) {
+      getContext().become(open());
+    }
+  }
+
+  @Override
+  public void postStop() {
+    replenishTimer.cancel();
+    waitQueue.stream()
+        .forEach(
+            ref -&gt; {
+              ref.tell(
+                  new Status.Failure(new IllegalStateException(&quot;limiter stopped&quot;)), getSelf());
+            });
+  }
+}</code></pre></dd>
+</dl>
+<p>To create a Flow that uses this global limiter actor we use the <code>mapAsync</code> function with the combination of the <code>ask</code> pattern. We also define a timeout, so if a reply is not received during the configured maximum wait period the returned future from <code>ask</code> will fail, which will fail the corresponding stream as well.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeGlobalRateLimit.scala#L92-L103" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def limitGlobal[T](limiter: ActorRef, maxAllowedWait: FiniteDuration): Flow[T, T, NotUsed] = {
+  import org.apache.pekko
+  import pekko.pattern.ask
+  import pekko.util.Timeout
+  Flow[T].mapAsync(4)((element: T) =&gt; {
+    import system.dispatcher
+    implicit val triggerTimeout = Timeout(maxAllowedWait)
+    val limiterTriggerFuture = limiter ? Limiter.WantToPass
+    limiterTriggerFuture.map(_ =&gt; element)
+  })
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeGlobalRateLimit.java#L168-L179" target="_blank" title="Go to snippet source">source</a><code class="language-java">public &lt;T&gt; Flow&lt;T, T, NotUsed&gt; limitGlobal(ActorRef limiter, Duration maxAllowedWait) {
+  final int parallelism = 4;
+  final Flow&lt;T, T, NotUsed&gt; f = Flow.create();
+
+  return f.mapAsync(
+      parallelism,
+      element -&gt; {
+        final CompletionStage&lt;Object&gt; limiterTriggerFuture =
+            Patterns.ask(limiter, Limiter.WANT_TO_PASS, maxAllowedWait);
+        return limiterTriggerFuture.thenApplyAsync(response -&gt; element, system.dispatcher());
+      });
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>The global actor used for limiting introduces a global bottleneck. You might want to assign a dedicated dispatcher for this actor.</p></div>
+<h2><a href="#working-with-io" name="working-with-io" class="anchor"><span class="anchor-link"></span></a>Working with IO</h2>
+<h3><a href="#chunking-up-a-stream-of-bytestrings-into-limited-size-bytestrings" name="chunking-up-a-stream-of-bytestrings-into-limited-size-bytestrings" class="anchor"><span class="anchor-link"></span></a>Chunking up a stream of ByteStrings into limited size ByteStrings</h3>
+<p><strong>Situation:</strong> Given a stream of <code>ByteString</code> s we want to produce a stream of <code>ByteString</code> s containing the same bytes in the same sequence, but capping the size of <code>ByteString</code> s. In other words we want to slice up <code>ByteString</code> s into smaller chunks if they exceed a size threshold.</p>
+<p>This can be achieved with a single <a href="stream-customize.html"><code>GraphStage</code></a> to define a custom Akka Stream operator. The main logic of our operator is in <code>emitChunk()</code> which implements the following logic:</p>
+<ul>
+  <li>if the buffer is empty, and upstream is not closed we pull for more bytes, if it is closed we complete</li>
+  <li>if the buffer is nonEmpty, we split it according to the <code>chunkSize</code>. This will give a next chunk that we will emit, and an empty or nonempty remaining buffer.</li>
+</ul>
+<p>Both <code>onPush()</code> and <code>onPull()</code> calls <code>emitChunk()</code> the only difference is that the push handler also stores the incoming chunk by appending to the end of the buffer.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeByteStrings.scala#L33-L84" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.stage._
+
+class Chunker(val chunkSize: Int) extends GraphStage[FlowShape[ByteString, ByteString]] {
+  val in = Inlet[ByteString](&quot;Chunker.in&quot;)
+  val out = Outlet[ByteString](&quot;Chunker.out&quot;)
+  override val shape = FlowShape.of(in, out)
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    private var buffer = ByteString.empty
+
+    setHandler(out,
+      new OutHandler {
+        override def onPull(): Unit = {
+          emitChunk()
+        }
+      })
+    setHandler(
+      in,
+      new InHandler {
+        override def onPush(): Unit = {
+          val elem = grab(in)
+          buffer ++= elem
+          emitChunk()
+        }
+
+        override def onUpstreamFinish(): Unit = {
+          if (buffer.isEmpty) completeStage()
+          else {
+            // There are elements left in buffer, so
+            // we keep accepting downstream pulls and push from buffer until emptied.
+            //
+            // It might be though, that the upstream finished while it was pulled, in which
+            // case we will not get an onPull from the downstream, because we already had one.
+            // In that case we need to emit from the buffer.
+            if (isAvailable(out)) emitChunk()
+          }
+        }
+      })
+
+    private def emitChunk(): Unit = {
+      if (buffer.isEmpty) {
+        if (isClosed(in)) completeStage()
+        else pull(in)
+      } else {
+        val (chunk, nextBuffer) = buffer.splitAt(chunkSize)
+        buffer = nextBuffer
+        push(out, chunk)
+      }
+    }
+  }
+}
+
+val chunksStream = rawBytes.via(new Chunker(ChunkLimit))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeByteStrings.java#L68-L142" target="_blank" title="Go to snippet source">source</a><code class="language-java">class Chunker extends GraphStage&lt;FlowShape&lt;ByteString, ByteString&gt;&gt; {
+
+  private final int chunkSize;
+
+  public Inlet&lt;ByteString&gt; in = Inlet.&lt;ByteString&gt;create(&quot;Chunker.in&quot;);
+  public Outlet&lt;ByteString&gt; out = Outlet.&lt;ByteString&gt;create(&quot;Chunker.out&quot;);
+  private FlowShape&lt;ByteString, ByteString&gt; shape = FlowShape.of(in, out);
+
+  public Chunker(int chunkSize) {
+    this.chunkSize = chunkSize;
+  }
+
+  @Override
+  public FlowShape&lt;ByteString, ByteString&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      private ByteString buffer = emptyByteString();
+
+      {
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                emitChunk();
+              }
+            });
+
+        setHandler(
+            in,
+            new AbstractInHandler() {
+
+              @Override
+              public void onPush() throws Exception {
+                ByteString elem = grab(in);
+                buffer = buffer.concat(elem);
+                emitChunk();
+              }
+
+              @Override
+              public void onUpstreamFinish() throws Exception {
+                if (buffer.isEmpty()) completeStage();
+                else {
+                  // There are elements left in buffer, so
+                  // we keep accepting downstream pulls and push from buffer until emptied.
+                  //
+                  // It might be though, that the upstream finished while it was pulled, in
+                  // which
+                  // case we will not get an onPull from the downstream, because we already
+                  // had one.
+                  // In that case we need to emit from the buffer.
+                  if (isAvailable(out)) emitChunk();
+                }
+              }
+            });
+      }
+
+      private void emitChunk() {
+        if (buffer.isEmpty()) {
+          if (isClosed(in)) completeStage();
+          else pull(in);
+        } else {
+          Tuple2&lt;ByteString, ByteString&gt; split = buffer.splitAt(chunkSize);
+          ByteString chunk = split._1();
+          buffer = split._2();
+          push(out, chunk);
+        }
+      }
+    };
+  }
+}</code></pre></dd>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeByteStrings.java#L147" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;ByteString, NotUsed&gt; chunksStream = rawBytes.via(new Chunker(CHUNK_LIMIT));</code></pre></dd>
+</dl>
+<h3><a href="#limit-the-number-of-bytes-passing-through-a-stream-of-bytestrings" name="limit-the-number-of-bytes-passing-through-a-stream-of-bytestrings" class="anchor"><span class="anchor-link"></span></a>Limit the number of bytes passing through a stream of ByteStrings</h3>
+<p><strong>Situation:</strong> Given a stream of <code>ByteString</code> s we want to fail the stream if more than a given maximum of bytes has been consumed.</p>
+<p>This recipe uses a <a href="stream-customize.html"><code>GraphStage</code></a> to implement the desired feature. In the only handler we override, <code>onPush()</code> we update a counter and see if it gets larger than <code>maximumBytes</code>. If a violation happens we signal failure, otherwise we forward the chunk we have received.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeByteStrings.scala#L98-L124" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.stage._
+class ByteLimiter(val maximumBytes: Long) extends GraphStage[FlowShape[ByteString, ByteString]] {
+  val in = Inlet[ByteString](&quot;ByteLimiter.in&quot;)
+  val out = Outlet[ByteString](&quot;ByteLimiter.out&quot;)
+  override val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+    private var count = 0
+
+    setHandlers(in, out,
+      new InHandler with OutHandler {
+
+        override def onPull(): Unit = {
+          pull(in)
+        }
+
+        override def onPush(): Unit = {
+          val chunk = grab(in)
+          count += chunk.size
+          if (count &gt; maximumBytes) failStage(new IllegalStateException(&quot;Too much bytes&quot;))
+          else push(out, chunk)
+        }
+      })
+  }
+}
+
+val limiter = Flow[ByteString].via(new ByteLimiter(SizeLimit))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeByteStrings.java#L174-L222" target="_blank" title="Go to snippet source">source</a><code class="language-java">class ByteLimiter extends GraphStage&lt;FlowShape&lt;ByteString, ByteString&gt;&gt; {
+
+  final long maximumBytes;
+
+  public Inlet&lt;ByteString&gt; in = Inlet.&lt;ByteString&gt;create(&quot;ByteLimiter.in&quot;);
+  public Outlet&lt;ByteString&gt; out = Outlet.&lt;ByteString&gt;create(&quot;ByteLimiter.out&quot;);
+  private FlowShape&lt;ByteString, ByteString&gt; shape = FlowShape.of(in, out);
+
+  public ByteLimiter(long maximumBytes) {
+    this.maximumBytes = maximumBytes;
+  }
+
+  @Override
+  public FlowShape&lt;ByteString, ByteString&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      private int count = 0;
+
+      {
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                ByteString chunk = grab(in);
+                count += chunk.size();
+                if (count &gt; maximumBytes) {
+                  failStage(new IllegalStateException(&quot;Too much bytes&quot;));
+                } else {
+                  push(out, chunk);
+                }
+              }
+            });
+      }
+    };
+  }
+}</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeByteStrings.java#L227-L228" target="_blank" title="Go to snippet source">source</a><code class="language-java">Flow&lt;ByteString, ByteString, NotUsed&gt; limiter =
+    Flow.of(ByteString.class).via(new ByteLimiter(SIZE_LIMIT));</code></pre></dd>
+</dl>
+<h3><a href="#compact-bytestrings-in-a-stream-of-bytestrings" name="compact-bytestrings-in-a-stream-of-bytestrings" class="anchor"><span class="anchor-link"></span></a>Compact ByteStrings in a stream of ByteStrings</h3>
+<p><strong>Situation:</strong> After a long stream of transformations, due to their immutable, structural sharing nature <code>ByteString</code> s may refer to multiple original ByteString instances unnecessarily retaining memory. As the final step of a transformation chain we want to have clean copies that are no longer referencing the original <code>ByteString</code> s.</p>
+<p>The recipe is a simple use of map, calling the <code>compact()</code> method of the <code>ByteString</code> elements. This does copying of the underlying arrays, so this should be the last element of a long chain if used.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeByteStrings.scala#L143" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val compacted: Source[ByteString, NotUsed] = data.map(_.compact)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeByteStrings.java#L290" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;ByteString, NotUsed&gt; compacted = rawBytes.map(ByteString::compact);</code></pre></dd>
+</dl>
+<h3><a href="#injecting-keep-alive-messages-into-a-stream-of-bytestrings" name="injecting-keep-alive-messages-into-a-stream-of-bytestrings" class="anchor"><span class="anchor-link"></span></a>Injecting keep-alive messages into a stream of ByteStrings</h3>
+<p><strong>Situation:</strong> Given a communication channel expressed as a stream of <code>ByteString</code> s we want to inject keep-alive messages but only if this does not interfere with normal traffic.</p>
+<p>There is a built-in operation that allows to do this directly:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeKeepAlive.scala#L28-L30" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration._
+val injectKeepAlive: Flow[ByteString, ByteString, NotUsed] =
+  Flow[ByteString].keepAlive(1.second, () =&gt; keepaliveMessage)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeKeepAlive.java#L53-L54" target="_blank" title="Go to snippet source">source</a><code class="language-java">Flow&lt;ByteString, ByteString, NotUsed&gt; keepAliveInject =
+    Flow.of(ByteString.class).keepAlive(Duration.ofSeconds(1), () -&gt; keepAliveMessage);</code></pre></dd>
+</dl>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-cookbook.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../general/stream/stream-configuration.html">Configuration</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-cookbook.html#streams-cookbook" class="header">Streams Cookbook</a>
+  <ul>
+    <li><a href="../stream/stream-cookbook.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-cookbook.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-cookbook.html#working-with-flows" class="header">Working with Flows</a></li>
+    <li><a href="../stream/stream-cookbook.html#working-with-operators" class="header">Working with Operators</a></li>
+    <li><a href="../stream/stream-cookbook.html#working-with-rate" class="header">Working with rate</a></li>
+    <li><a href="../stream/stream-cookbook.html#working-with-io" class="header">Working with IO</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

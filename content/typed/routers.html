@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Routers · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/routers.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="active page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="active page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index.html">Actors</a></li>
+  <li>Routers</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#routers" name="routers" class="anchor"><span class="anchor-link"></span></a>Routers</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Akka Classic documentation, see <a href="../routing.html">Classic Routing</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Actor Typed, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>In some cases it is useful to distribute messages of the same type over a set of actors, so that messages can be processed in parallel - a single actor will only process one message at a time.</p>
+<p>The router itself is a behavior that is spawned into a running actor that will then forward any message sent to it to one final recipient out of the set of routees.</p>
+<p>There are two kinds of routers included in Akka Typed - the pool router and the group router.</p>
+<h2><a href="#pool-router" name="pool-router" class="anchor"><span class="anchor-link"></span></a>Pool Router</h2>
+<p>The pool router is created with a routee <code>Behavior</code> and spawns a number of children with that behavior which it will then forward messages to.</p>
+<p>If a child is stopped the pool router removes it from its set of routees. When the last child stops the router itself stops. To make a resilient router that deals with failures the routee <code>Behavior</code> must be supervised.</p>
+<p>As actor children are always local the routees are never spread across a cluster with a pool router.</p>
+<p>Let&rsquo;s first introduce the routee:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L29-L43" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Worker {
+  sealed trait Command
+  case class DoLog(text: String) extends Command
+
+  def apply(): Behavior[Command] = Behaviors.setup { context =&gt;
+    context.log.info(&quot;Starting worker&quot;)
+
+    Behaviors.receiveMessage {
+      case DoLog(text) =&gt;
+        context.log.info(&quot;Got message {}&quot;, text)
+        Behaviors.same
+    }
+  }
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L47-L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">class Worker {
+  interface Command {}
+
+  static class DoLog implements Command {
+    public final String text;
+
+    public DoLog(String text) {
+      this.text = text;
+    }
+  }
+
+  static final Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(
+        context -&gt; {
+          context.getLog().info(&quot;Starting worker&quot;);
+
+          return Behaviors.receive(Command.class)
+              .onMessage(DoLog.class, doLog -&gt; onDoLog(context, doLog))
+              .build();
+        });
+  }
+
+  private static Behavior&lt;Command&gt; onDoLog(ActorContext&lt;Command&gt; context, DoLog doLog) {
+    context.getLog().info(&quot;Got message {}&quot;, doLog.text);
+    return Behaviors.same();
+  }
+}
+
+static class Proxy {
+
+  public final ServiceKey&lt;Message&gt; registeringKey =
+      ServiceKey.create(Message.class, &quot;aggregator-key&quot;);
+
+  public String mapping(Message message) {
+    return message.getId();
+  }
+
+  static class Message {
+
+    public Message(String id, String content) {
+      this.id = id;
+      this.content = content;
+    }
+
+    private String content;
+    private String id;
+
+    public final String getContent() {
+      return content;
+    }
+
+    public final String getId() {
+      return id;
+    }
+  }
+
+  static Behavior&lt;Message&gt; create(ActorRef&lt;String&gt; monitor) {
+    return Behaviors.receive(Message.class)
+        .onMessage(Message.class, in -&gt; onMyMessage(monitor, in))
+        .build();
+  }
+
+  private static Behavior&lt;Message&gt; onMyMessage(ActorRef&lt;String&gt; monitor, Message message) {
+    monitor.tell(message.getId());
+    return Behaviors.same();
+  }
+}
+</code></pre></dd>
+</dl>
+<p>After having defined the routee, we can now concentrate on configuring the router itself. Note again the the router is an Actor in itself:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L18-L115" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.testkit.typed.scaladsl.{ LogCapturing, ScalaTestWithActorTestKit }
+import pekko.actor.typed.{ ActorRef, Behavior, SupervisorStrategy }
+import pekko.actor.typed.receptionist.{ Receptionist, ServiceKey }
+import pekko.actor.typed.scaladsl.{ Behaviors, Routers }
+
+// This would be defined within your actor object
+Behaviors.setup[Unit] { ctx =&gt;
+  val pool = Routers.pool(poolSize = 4) {
+    // make sure the workers are restarted if they fail
+    Behaviors.supervise(Worker()).onFailure[Exception](SupervisorStrategy.restart)
+  }
+  val router = ctx.spawn(pool, &quot;worker-pool&quot;)
+
+  (0 to 10).foreach { n =&gt;
+    router ! Worker.DoLog(s&quot;msg $n&quot;)
+  }
+
+  val poolWithBroadcast = pool.withBroadcastPredicate(_.isInstanceOf[DoBroadcastLog])
+  val routerWithBroadcast = ctx.spawn(poolWithBroadcast, &quot;pool-with-broadcast&quot;)
+  // this will be sent to all 4 routees
+  routerWithBroadcast ! DoBroadcastLog(&quot;msg&quot;)
+  Behaviors.empty
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L22-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.SupervisorStrategy;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.GroupRouter;
+import org.apache.pekko.actor.typed.javadsl.PoolRouter;
+import org.apache.pekko.actor.typed.javadsl.Routers;
+import org.apache.pekko.actor.typed.receptionist.Receptionist;
+import org.apache.pekko.actor.typed.receptionist.ServiceKey;
+
+import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.scalatestplus.junit.JUnitSuite;
+
+// This would be defined within your actor class
+Behaviors.setup(
+    context -&gt; {
+      int poolSize = 4;
+      PoolRouter&lt;Worker.Command&gt; pool =
+          Routers.pool(
+              poolSize,
+              // make sure the workers are restarted if they fail
+              Behaviors.supervise(Worker.create()).onFailure(SupervisorStrategy.restart()));
+      ActorRef&lt;Worker.Command&gt; router = context.spawn(pool, &quot;worker-pool&quot;);
+
+      for (int i = 0; i &lt; 10; i++) {
+        router.tell(new Worker.DoLog(&quot;msg &quot; + i));
+      }
+    });</code></pre></dd>
+</dl>
+<h3><a href="#configuring-dispatchers" name="configuring-dispatchers" class="anchor"><span class="anchor-link"></span></a>Configuring Dispatchers</h3>
+<p>Since the router itself is spawned as an actor the dispatcher used for it can be configured directly in the call to <code>spawn</code>. The routees, however, are spawned by the router. Therefore, the <code>PoolRouter</code> has a property to configure the <code>Props</code> of its routees:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L92-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// make sure workers use the default blocking IO dispatcher
+val blockingPool = pool.withRouteeProps(routeeProps = DispatcherSelector.blocking())
+// spawn head router using the same executor as the parent
+val blockingRouter = ctx.spawn(blockingPool, &quot;blocking-pool&quot;, DispatcherSelector.sameAsParent())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L145-L150" target="_blank" title="Go to snippet source">source</a><code class="language-java">// make sure workers use the default blocking IO dispatcher
+PoolRouter&lt;Worker.Command&gt; blockingPool =
+    pool.withRouteeProps(DispatcherSelector.blocking());
+// spawn head router using the same executor as the parent
+ActorRef&lt;Worker.Command&gt; blockingRouter =
+    context.spawn(blockingPool, &quot;blocking-pool&quot;, DispatcherSelector.sameAsParent());</code></pre></dd>
+</dl>
+<h3><a href="#broadcasting-a-message-to-all-routees" name="broadcasting-a-message-to-all-routees" class="anchor"><span class="anchor-link"></span></a>Broadcasting a message to all routees</h3>
+<p>Pool routers can be configured to identify messages intended to be broad-casted to all routees. Therefore, the <code>PoolRouter</code> has a property to configure its <code>broadcastPredicate</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L109-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val poolWithBroadcast = pool.withBroadcastPredicate(_.isInstanceOf[DoBroadcastLog])
+val routerWithBroadcast = ctx.spawn(poolWithBroadcast, &quot;pool-with-broadcast&quot;)
+// this will be sent to all 4 routees
+routerWithBroadcast ! DoBroadcastLog(&quot;msg&quot;)
+Behaviors.empty</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L158-L159" target="_blank" title="Go to snippet source">source</a><code class="language-java">PoolRouter&lt;Worker.Command&gt; broadcastingPool =
+    pool.withBroadcastPredicate(msg -&gt; msg instanceof DoBroadcastLog);</code></pre></dd>
+</dl>
+<h2><a href="#group-router" name="group-router" class="anchor"><span class="anchor-link"></span></a>Group Router</h2>
+<p>The group router is created with a <code>ServiceKey</code> and uses the receptionist (see <a href="actor-discovery.html#receptionist">Receptionist</a>) to discover available actors for that key and routes messages to one of the currently known registered actors for a key.</p>
+<p>Since the receptionist is used this means the group router is cluster-aware out of the box. The router sends messages to registered actors on any node in the cluster that is reachable. If no reachable actor exists the router will fallback and route messages to actors on nodes marked as unreachable.</p>
+<p>That the receptionist is used also means that the set of routees is eventually consistent, and that immediately when the group router is started the set of routees it knows about is empty, until it has seen a listing from the receptionist it stashes incoming messages and forwards them as soon as it gets a listing from the receptionist. </p>
+<p>When the router has received a listing from the receptionist and the set of registered actors is empty the router will drop them (publish them to the event stream as <code>org.apache.pekko.actor.Dropped</code>).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L55-L150" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val serviceKey = ServiceKey[Worker.Command](&quot;log-worker&quot;)
+
+Behaviors.setup[Unit] { ctx =&gt;
+  // this would likely happen elsewhere - if we create it locally we
+  // can just as well use a pool
+  val worker = ctx.spawn(Worker(), &quot;worker&quot;)
+  ctx.system.receptionist ! Receptionist.Register(serviceKey, worker)
+
+  val group = Routers.group(serviceKey)
+  val router = ctx.spawn(group, &quot;worker-group&quot;)
+
+  // the group router will stash messages until it sees the first listing of registered
+  // services from the receptionist, so it is safe to send messages right away
+  (0 to 10).foreach { n =&gt;
+    router ! Worker.DoLog(s&quot;msg $n&quot;)
+  }
+
+  Behaviors.empty
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L171-L195" target="_blank" title="Go to snippet source">source</a><code class="language-java">ServiceKey&lt;Worker.Command&gt; serviceKey = ServiceKey.create(Worker.Command.class, &quot;log-worker&quot;);
+
+Behaviors.setup(
+    context -&gt; {
+
+      // this would likely happen elsewhere - if we create it locally we
+      // can just as well use a pool
+      ActorRef&lt;Worker.Command&gt; worker = context.spawn(Worker.create(), &quot;worker&quot;);
+      context.getSystem().receptionist().tell(Receptionist.register(serviceKey, worker));
+
+      GroupRouter&lt;Worker.Command&gt; group = Routers.group(serviceKey);
+      ActorRef&lt;Worker.Command&gt; router = context.spawn(group, &quot;worker-group&quot;);
+
+      // the group router will stash messages until it sees the first listing of
+      // registered
+      // services from the receptionist, so it is safe to send messages right away
+      for (int i = 0; i &lt; 10; i++) {
+        router.tell(new Worker.DoLog(&quot;msg &quot; + i));
+      }
+
+      return Behaviors.empty();
+    });</code></pre></dd>
+</dl>
+<h2><a href="#routing-strategies" name="routing-strategies" class="anchor"><span class="anchor-link"></span></a>Routing strategies</h2>
+<p>There are three different strategies for selecting which routee a message is forwarded to that can be selected from the router before spawning it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L101" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val alternativePool = pool.withPoolSize(2).withRoundRobinRouting()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L154" target="_blank" title="Go to snippet source">source</a><code class="language-java">PoolRouter&lt;Worker.Command&gt; alternativePool = pool.withPoolSize(2).withRoundRobinRouting();</code></pre></dd>
+</dl>
+<h3><a href="#round-robin" name="round-robin" class="anchor"><span class="anchor-link"></span></a>Round Robin</h3>
+<p>Rotates over the set of routees making sure that if there are <code>n</code> routees, then for <code>n</code> messages sent through the router, each actor is forwarded one message.</p>
+<p>Round robin gives fair routing where every available routee gets the same amount of messages as long as the set of routees stays relatively stable, but may be unfair if the set of routees changes a lot.</p>
+<p>This is the default for pool routers as the pool of routees is expected to remain the same.</p>
+<p>An optional parameter <code>preferLocalRoutees</code> can be used for this strategy. Routers will only use routees located in local actor system if <code>preferLocalRoutees</code> is true and local routees do exist. The default value for this parameter is false.</p>
+<h3><a href="#random" name="random" class="anchor"><span class="anchor-link"></span></a>Random</h3>
+<p>Randomly selects a routee when a message is sent through the router.</p>
+<p>This is the default for group routers as the group of routees is expected to change as nodes join and leave the cluster.</p>
+<p>An optional parameter <code>preferLocalRoutees</code> can be used for this strategy. Routers will only use routees located in local actor system if <code>preferLocalRoutees</code> is true and local routees do exist. The default value for this parameter is false.</p>
+<h3><a href="#consistent-hashing" name="consistent-hashing" class="anchor"><span class="anchor-link"></span></a>Consistent Hashing</h3>
+<p>Uses <a href="https://en.wikipedia.org/wiki/Consistent_hashing">consistent hashing</a> to select a routee based on the sent message. This <a href="http://www.tom-e-white.com/2007/11/consistent-hashing.html">article</a> gives good insight into how consistent hashing is implemented.</p>
+<p>Currently you have to define hashMapping of the router to map incoming messages to their consistent hash key. This makes the decision transparent for the sender.</p>
+<p>Consistent hashing delivers messages with the same hash to the same routee as long as the set of routees stays the same. When the set of routees changes, consistent hashing tries to make sure, but does not guarantee, that messages with the same hash are routed to the same routee.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L189-L196" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router = spawn(Routers.group(Proxy.RegisteringKey).withConsistentHashingRouting(10, Proxy.mapping))
+
+router ! Proxy.Message(&quot;123&quot;, &quot;Text1&quot;)
+router ! Proxy.Message(&quot;123&quot;, &quot;Text2&quot;)
+
+router ! Proxy.Message(&quot;zh3&quot;, &quot;Text3&quot;)
+router ! Proxy.Message(&quot;zh3&quot;, &quot;Text4&quot;)
+// the hash is calculated over the Proxy.Message first parameter obtained through the Proxy.mapping function</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L226-L237" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef&lt;Proxy.Message&gt; router =
+    testKit.spawn(
+        Routers.group(proxy.registeringKey)
+            .withConsistentHashingRouting(10, command -&gt; proxy.mapping(command)));
+
+router.tell(new Proxy.Message(&quot;123&quot;, &quot;Text1&quot;));
+router.tell(new Proxy.Message(&quot;123&quot;, &quot;Text2&quot;));
+
+router.tell(new Proxy.Message(&quot;zh3&quot;, &quot;Text3&quot;));
+router.tell(new Proxy.Message(&quot;zh3&quot;, &quot;Text4&quot;));
+// the hash is calculated over the Proxy.Message first parameter obtained through the
+// Proxy.mapping function</code></pre></dd>
+</dl>
+<p>See also <a href="cluster-sharding.html">Akka Cluster Sharding</a> which provides stable routing and rebalancing of the routee actors.</p>
+<h2><a href="#routers-and-performance" name="routers-and-performance" class="anchor"><span class="anchor-link"></span></a>Routers and performance</h2>
+<p>Note that if the routees are sharing a resource, the resource will determine if increasing the number of actors will actually give higher throughput or faster answers. For example if the routees are CPU bound actors it will not give better performance to create more routees than there are threads to execute the actors.</p>
+<p>Since the router itself is an actor and has a mailbox this means that messages are routed sequentially to the routees where it can be processed in parallel (depending on the available threads in the dispatcher). In a high throughput use cases the sequential routing could become a bottle neck. Akka Typed does not provide an optimized tool for this.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/routers.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/stash.html">Stash</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/routers.html#routers" class="header">Routers</a>
+  <ul>
+    <li><a href="../typed/routers.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/routers.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/routers.html#pool-router" class="header">Pool Router</a></li>
+    <li><a href="../typed/routers.html#group-router" class="header">Group Router</a></li>
+    <li><a href="../typed/routers.html#routing-strategies" class="header">Routing strategies</a></li>
+    <li><a href="../typed/routers.html#routers-and-performance" class="header">Routers and performance</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

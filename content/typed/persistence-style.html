@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Style Guide · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/persistence-style.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="active page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="active page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index-persistence.html">Persistence (Event Sourcing)</a></li>
+  <li>Style Guide</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#style-guide" name="style-guide" class="anchor"><span class="anchor-link"></span></a>Style Guide</h1>
+<h2><a href="#event-handlers-in-the-state" name="event-handlers-in-the-state" class="anchor"><span class="anchor-link"></span></a>Event handlers in the state</h2>
+<p>The section about <a href="persistence.html#changing-behavior">Changing Behavior</a> described how commands and events can be handled differently depending on the state. One can take that one step further and define the event handler inside the state classes. <span class="group-scala">In <a href="persistence-style.html#command-handlers-in-the-state">the next section</a> the command handlers are also defined in the state.</span></p>
+<p>The state can be seen as your domain object and it should contain the core business logic. Then it&rsquo;s a matter of taste if event handlers and command handlers should be defined in the state or be kept outside of it.</p>
+<p>Here we are using a bank account as the example domain. It has 3 state classes that are representing the lifecycle of the account; <code>EmptyAccount</code>, <code>OpenedAccount</code>, and <code>ClosedAccount</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.scala#L39-L183" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object AccountEntity {
+  // Command
+  sealed trait Command extends CborSerializable
+  final case class CreateAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Deposit(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Withdraw(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class GetBalance(replyTo: ActorRef[CurrentBalance]) extends Command
+  final case class CloseAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+
+  // Reply
+  final case class CurrentBalance(balance: BigDecimal) extends CborSerializable
+
+  // Event
+  sealed trait Event extends CborSerializable
+  case object AccountCreated extends Event
+  case class Deposited(amount: BigDecimal) extends Event
+  case class Withdrawn(amount: BigDecimal) extends Event
+  case object AccountClosed extends Event
+
+  val Zero = BigDecimal(0)
+
+  // State
+  sealed trait Account extends CborSerializable {
+    def applyEvent(event: Event): Account
+  }
+  case object EmptyAccount extends Account {
+    override def applyEvent(event: Event): Account = event match {
+      case AccountCreated =&gt; OpenedAccount(Zero)
+      case _              =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [EmptyAccount]&quot;)
+    }
+  }
+  case class OpenedAccount(balance: BigDecimal) extends Account {
+    require(balance &gt;= Zero, &quot;Account balance can&#39;t be negative&quot;)
+
+    override def applyEvent(event: Event): Account =
+      event match {
+        case Deposited(amount) =&gt; copy(balance = balance + amount)
+        case Withdrawn(amount) =&gt; copy(balance = balance - amount)
+        case AccountClosed     =&gt; ClosedAccount
+        case AccountCreated    =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [OpenedAccount]&quot;)
+      }
+
+    def canWithdraw(amount: BigDecimal): Boolean = {
+      balance - amount &gt;= Zero
+    }
+
+  }
+  case object ClosedAccount extends Account {
+    override def applyEvent(event: Event): Account =
+      throw new IllegalStateException(s&quot;unexpected event [$event] in state [ClosedAccount]&quot;)
+  }
+
+  // when used with sharding, this TypeKey can be used in `sharding.init` and `sharding.entityRefFor`:
+  val TypeKey: EntityTypeKey[Command] =
+    EntityTypeKey[Command](&quot;Account&quot;)
+
+  // Note that after defining command, event and state classes you would probably start here when writing this.
+  // When filling in the parameters of EventSourcedBehavior.apply you can use IntelliJ alt+Enter &gt; createValue
+  // to generate the stub with types for the command and event handlers.
+
+  def apply(accountNumber: String, persistenceId: PersistenceId): Behavior[Command] = {
+    EventSourcedBehavior.withEnforcedReplies(persistenceId, EmptyAccount, commandHandler(accountNumber), eventHandler)
+  }
+
+  private def commandHandler(accountNumber: String): (Account, Command) =&gt; ReplyEffect[Event, Account] = {
+    (state, cmd) =&gt;
+      state match {
+        case EmptyAccount =&gt;
+          cmd match {
+            case c: CreateAccount =&gt; createAccount(c)
+            case _                =&gt; Effect.unhandled.thenNoReply() // CreateAccount before handling any other commands
+          }
+
+        case acc @ OpenedAccount(_) =&gt;
+          cmd match {
+            case c: Deposit      =&gt; deposit(c)
+            case c: Withdraw     =&gt; withdraw(acc, c)
+            case c: GetBalance   =&gt; getBalance(acc, c)
+            case c: CloseAccount =&gt; closeAccount(acc, c)
+            case c: CreateAccount =&gt;
+              Effect.reply(c.replyTo)(StatusReply.Error(s&quot;Account $accountNumber is already created&quot;))
+          }
+
+        case ClosedAccount =&gt;
+          cmd match {
+            case c: Deposit =&gt;
+              replyClosed(accountNumber, c.replyTo)
+            case c: Withdraw =&gt;
+              replyClosed(accountNumber, c.replyTo)
+            case GetBalance(replyTo) =&gt;
+              Effect.reply(replyTo)(CurrentBalance(Zero))
+            case CloseAccount(replyTo) =&gt;
+              replyClosed(accountNumber, replyTo)
+            case CreateAccount(replyTo) =&gt;
+              replyClosed(accountNumber, replyTo)
+          }
+      }
+  }
+
+  private def replyClosed(
+      accountNumber: String,
+      replyTo: ActorRef[StatusReply[Done]]): ReplyEffect[Event, Account] = {
+    Effect.reply(replyTo)(StatusReply.Error(s&quot;Account $accountNumber is closed&quot;))
+  }
+
+  private val eventHandler: (Account, Event) =&gt; Account = { (state, event) =&gt;
+    state.applyEvent(event)
+  }
+
+  private def createAccount(cmd: CreateAccount): ReplyEffect[Event, Account] = {
+    Effect.persist(AccountCreated).thenReply(cmd.replyTo)(_ =&gt; StatusReply.Ack)
+  }
+
+  private def deposit(cmd: Deposit): ReplyEffect[Event, Account] = {
+    Effect.persist(Deposited(cmd.amount)).thenReply(cmd.replyTo)(_ =&gt; StatusReply.Ack)
+  }
+
+  private def withdraw(acc: OpenedAccount, cmd: Withdraw): ReplyEffect[Event, Account] = {
+    if (acc.canWithdraw(cmd.amount))
+      Effect.persist(Withdrawn(cmd.amount)).thenReply(cmd.replyTo)(_ =&gt; StatusReply.Ack)
+    else
+      Effect.reply(cmd.replyTo)(
+        StatusReply.Error(s&quot;Insufficient balance ${acc.balance} to be able to withdraw ${cmd.amount}&quot;))
+  }
+
+  private def getBalance(acc: OpenedAccount, cmd: GetBalance): ReplyEffect[Event, Account] = {
+    Effect.reply(cmd.replyTo)(CurrentBalance(acc.balance))
+  }
+
+  private def closeAccount(acc: OpenedAccount, cmd: CloseAccount): ReplyEffect[Event, Account] = {
+    if (acc.balance == Zero)
+      Effect.persist(AccountClosed).thenReply(cmd.replyTo)(_ =&gt; StatusReply.Ack)
+    else
+      Effect.reply(cmd.replyTo)(StatusReply.Error(&quot;Can&#39;t close account with non-zero balance&quot;))
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.java#L42-L273" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class AccountEntity
+    extends EventSourcedBehaviorWithEnforcedReplies&lt;
+        AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt; {
+
+  public static final EntityTypeKey&lt;Command&gt; ENTITY_TYPE_KEY =
+      EntityTypeKey.create(Command.class, &quot;Account&quot;);
+
+  // Command
+  interface Command extends CborSerializable {}
+
+  public static class CreateAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CreateAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Deposit implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Deposit(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdraw implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Withdraw(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.amount = amount;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class GetBalance implements Command {
+    public final ActorRef&lt;CurrentBalance&gt; replyTo;
+
+    @JsonCreator
+    public GetBalance(ActorRef&lt;CurrentBalance&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class CloseAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CloseAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  // Reply
+  public static class CurrentBalance implements CborSerializable {
+    public final BigDecimal balance;
+
+    @JsonCreator
+    public CurrentBalance(BigDecimal balance) {
+      this.balance = balance;
+    }
+  }
+
+  // Event
+  interface Event extends CborSerializable {}
+
+  public enum AccountCreated implements Event {
+    INSTANCE
+  }
+
+  public static class Deposited implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Deposited(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdrawn implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Withdrawn(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class AccountClosed implements Event {}
+
+  // State
+  interface Account extends CborSerializable {}
+
+  public static class EmptyAccount implements Account {
+    OpenedAccount openedAccount() {
+      return new OpenedAccount(BigDecimal.ZERO);
+    }
+  }
+
+  public static class OpenedAccount implements Account {
+    final BigDecimal balance;
+
+    @JsonCreator
+    public OpenedAccount(BigDecimal balance) {
+      this.balance = balance;
+    }
+
+    OpenedAccount makeDeposit(BigDecimal amount) {
+      return new OpenedAccount(balance.add(amount));
+    }
+
+    boolean canWithdraw(BigDecimal amount) {
+      return (balance.subtract(amount).compareTo(BigDecimal.ZERO) &gt;= 0);
+    }
+
+    OpenedAccount makeWithdraw(BigDecimal amount) {
+      if (!canWithdraw(amount))
+        throw new IllegalStateException(&quot;Account balance can&#39;t be negative&quot;);
+      return new OpenedAccount(balance.subtract(amount));
+    }
+
+    ClosedAccount closedAccount() {
+      return new ClosedAccount();
+    }
+  }
+
+  public static class ClosedAccount implements Account {}
+
+  public static AccountEntity create(String accountNumber, PersistenceId persistenceId) {
+    return new AccountEntity(accountNumber, persistenceId);
+  }
+
+  private final String accountNumber;
+
+  private AccountEntity(String accountNumber, PersistenceId persistenceId) {
+    super(persistenceId);
+    this.accountNumber = accountNumber;
+  }
+
+  @Override
+  public Account emptyState() {
+    return new EmptyAccount();
+  }
+
+  @Override
+  public CommandHandlerWithReply&lt;Command, Event, Account&gt; commandHandler() {
+    CommandHandlerWithReplyBuilder&lt;Command, Event, Account&gt; builder =
+        newCommandHandlerWithReplyBuilder();
+
+    builder.forStateType(EmptyAccount.class).onCommand(CreateAccount.class, this::createAccount);
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onCommand(Deposit.class, this::deposit)
+        .onCommand(Withdraw.class, this::withdraw)
+        .onCommand(GetBalance.class, this::getBalance)
+        .onCommand(CloseAccount.class, this::closeAccount);
+
+    builder
+        .forStateType(ClosedAccount.class)
+        .onAnyCommand(() -&gt; Effect().unhandled().thenNoReply());
+
+    return builder.build();
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; createAccount(EmptyAccount account, CreateAccount command) {
+    return Effect()
+        .persist(AccountCreated.INSTANCE)
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; deposit(OpenedAccount account, Deposit command) {
+    return Effect()
+        .persist(new Deposited(command.amount))
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; withdraw(OpenedAccount account, Withdraw command) {
+    if (!account.canWithdraw(command.amount)) {
+      return Effect()
+          .reply(
+              command.replyTo,
+              StatusReply.error(&quot;not enough funds to withdraw &quot; + command.amount));
+    } else {
+      return Effect()
+          .persist(new Withdrawn(command.amount))
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    }
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; getBalance(OpenedAccount account, GetBalance command) {
+    return Effect().reply(command.replyTo, new CurrentBalance(account.balance));
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; closeAccount(OpenedAccount account, CloseAccount command) {
+    if (account.balance.equals(BigDecimal.ZERO)) {
+      return Effect()
+          .persist(new AccountClosed())
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    } else {
+      return Effect()
+          .reply(command.replyTo, StatusReply.error(&quot;balance must be zero for closing account&quot;));
+    }
+  }
+
+  @Override
+  public EventHandler&lt;Account, Event&gt; eventHandler() {
+    EventHandlerBuilder&lt;Account, Event&gt; builder = newEventHandlerBuilder();
+
+    builder
+        .forStateType(EmptyAccount.class)
+        .onEvent(AccountCreated.class, (account, created) -&gt; account.openedAccount());
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onEvent(Deposited.class, (account, deposited) -&gt; account.makeDeposit(deposited.amount))
+        .onEvent(Withdrawn.class, (account, withdrawn) -&gt; account.makeWithdraw(withdrawn.amount))
+        .onEvent(AccountClosed.class, (account, closed) -&gt; account.closedAccount());
+
+    return builder.build();
+  }
+}
+</code></pre></dd>
+</dl>
+<p><span class="group-scala">Notice how the <code>eventHandler</code> delegates to the <code>applyEvent</code> in the <code>Account</code> (state), which is implemented in the concrete <code>EmptyAccount</code>, <code>OpenedAccount</code>, and <code>ClosedAccount</code>.</span> <span class="group-java">Notice how the <code>eventHandler</code> delegates to methods in the concrete <code>Account</code> (state) classes; <code>EmptyAccount</code>, <code>OpenedAccount</code>, and <code>ClosedAccount</code>.</span></p><div class="group-scala">
+<h2><a href="#command-handlers-in-the-state" name="command-handlers-in-the-state" class="anchor"><span class="anchor-link"></span></a>Command handlers in the state</h2>
+<p>We can take the previous bank account example one step further by handling the commands in the state too.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithCommandHandlersInState.scala#L37-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object AccountEntity {
+  // Command
+  sealed trait Command extends CborSerializable
+  final case class CreateAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Deposit(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Withdraw(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class GetBalance(replyTo: ActorRef[CurrentBalance]) extends Command
+  final case class CloseAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+
+  // Reply
+  final case class CurrentBalance(balance: BigDecimal)
+
+  // Event
+  sealed trait Event extends CborSerializable
+  case object AccountCreated extends Event
+  case class Deposited(amount: BigDecimal) extends Event
+  case class Withdrawn(amount: BigDecimal) extends Event
+  case object AccountClosed extends Event
+
+  val Zero = BigDecimal(0)
+
+  // type alias to reduce boilerplate
+  type ReplyEffect = pekko.persistence.typed.scaladsl.ReplyEffect[Event, Account]
+
+  // State
+  sealed trait Account extends CborSerializable {
+    def applyCommand(cmd: Command): ReplyEffect
+    def applyEvent(event: Event): Account
+  }
+  case object EmptyAccount extends Account {
+    override def applyCommand(cmd: Command): ReplyEffect =
+      cmd match {
+        case CreateAccount(replyTo) =&gt;
+          Effect.persist(AccountCreated).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+        case _ =&gt;
+          // CreateAccount before handling any other commands
+          Effect.unhandled.thenNoReply()
+      }
+
+    override def applyEvent(event: Event): Account =
+      event match {
+        case AccountCreated =&gt; OpenedAccount(Zero)
+        case _              =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [EmptyAccount]&quot;)
+      }
+  }
+  case class OpenedAccount(balance: BigDecimal) extends Account {
+    require(balance &gt;= Zero, &quot;Account balance can&#39;t be negative&quot;)
+
+    override def applyCommand(cmd: Command): ReplyEffect =
+      cmd match {
+        case Deposit(amount, replyTo) =&gt;
+          Effect.persist(Deposited(amount)).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+
+        case Withdraw(amount, replyTo) =&gt;
+          if (canWithdraw(amount))
+            Effect.persist(Withdrawn(amount)).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+          else
+            Effect.reply(replyTo)(StatusReply.Error(s&quot;Insufficient balance $balance to be able to withdraw $amount&quot;))
+
+        case GetBalance(replyTo) =&gt;
+          Effect.reply(replyTo)(CurrentBalance(balance))
+
+        case CloseAccount(replyTo) =&gt;
+          if (balance == Zero)
+            Effect.persist(AccountClosed).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+          else
+            Effect.reply(replyTo)(StatusReply.Error(&quot;Can&#39;t close account with non-zero balance&quot;))
+
+        case CreateAccount(replyTo) =&gt;
+          Effect.reply(replyTo)(StatusReply.Error(&quot;Account is already created&quot;))
+
+      }
+
+    override def applyEvent(event: Event): Account =
+      event match {
+        case Deposited(amount) =&gt; copy(balance = balance + amount)
+        case Withdrawn(amount) =&gt; copy(balance = balance - amount)
+        case AccountClosed     =&gt; ClosedAccount
+        case AccountCreated    =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [OpenedAccount]&quot;)
+      }
+
+    def canWithdraw(amount: BigDecimal): Boolean = {
+      balance - amount &gt;= Zero
+    }
+
+  }
+  case object ClosedAccount extends Account {
+    override def applyCommand(cmd: Command): ReplyEffect =
+      cmd match {
+        case c: Deposit =&gt;
+          replyClosed(c.replyTo)
+        case c: Withdraw =&gt;
+          replyClosed(c.replyTo)
+        case GetBalance(replyTo) =&gt;
+          Effect.reply(replyTo)(CurrentBalance(Zero))
+        case CloseAccount(replyTo) =&gt;
+          replyClosed(replyTo)
+        case CreateAccount(replyTo) =&gt;
+          replyClosed(replyTo)
+      }
+
+    private def replyClosed(replyTo: ActorRef[StatusReply[Done]]): ReplyEffect =
+      Effect.reply(replyTo)(StatusReply.Error(s&quot;Account is closed&quot;))
+
+    override def applyEvent(event: Event): Account =
+      throw new IllegalStateException(s&quot;unexpected event [$event] in state [ClosedAccount]&quot;)
+  }
+
+  // when used with sharding, this TypeKey can be used in `sharding.init` and `sharding.entityRefFor`:
+  val TypeKey: EntityTypeKey[Command] =
+    EntityTypeKey[Command](&quot;Account&quot;)
+
+  def apply(persistenceId: PersistenceId): Behavior[Command] = {
+    EventSourcedBehavior.withEnforcedReplies[Command, Event, Account](
+      persistenceId,
+      EmptyAccount,
+      (state, cmd) =&gt; state.applyCommand(cmd),
+      (state, event) =&gt; state.applyEvent(event))
+  }
+
+}</code></pre></dd>
+</dl>
+<p>Notice how the command handler is delegating to <code>applyCommand</code> in the <code>Account</code> (state), which is implemented in the concrete <code>EmptyAccount</code>, <code>OpenedAccount</code>, and <code>ClosedAccount</code>.</p></div>
+<h2><a href="#optional-initial-state" name="optional-initial-state" class="anchor"><span class="anchor-link"></span></a>Optional initial state</h2>
+<p>Sometimes it&rsquo;s not desirable to use a separate state class for the empty initial state, but rather treat that as there is no state yet. <span class="group-java"><code>null</code> can then be used as the <code>emptyState</code>, but be aware of that the <code>state</code> parameter will then be <code>null</code> for the first commands and events until the first event has be persisted to create the non-null state. It&rsquo;s possible to use <code>Optional</code> instead of <code>null</code> but that results in rather much boilerplate to unwrap the <code>Optional</code> state parameter and therefore <code>null</code> is probably preferred. The following example illustrates using <code>null</code> as the <code>emptyState</code>.</span> <span class="group-scala"><code>Option[State]</code> can be used as the state type and <code>None</code> as the <code>emptyState</code>. Pattern matching is then used in command and event handlers at the outer layer before delegating to the state or other methods.</span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithOptionState.scala#L37-L166" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object AccountEntity {
+  // Command
+  sealed trait Command extends CborSerializable
+  final case class CreateAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Deposit(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class Withdraw(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command
+  final case class GetBalance(replyTo: ActorRef[CurrentBalance]) extends Command
+  final case class CloseAccount(replyTo: ActorRef[StatusReply[Done]]) extends Command
+
+  // Reply
+  final case class CurrentBalance(balance: BigDecimal) extends CborSerializable
+
+  // Event
+  sealed trait Event extends CborSerializable
+  case object AccountCreated extends Event
+  case class Deposited(amount: BigDecimal) extends Event
+  case class Withdrawn(amount: BigDecimal) extends Event
+  case object AccountClosed extends Event
+
+  val Zero = BigDecimal(0)
+
+  // type alias to reduce boilerplate
+  type ReplyEffect = pekko.persistence.typed.scaladsl.ReplyEffect[Event, Option[Account]]
+
+  // State
+  sealed trait Account extends CborSerializable {
+    def applyCommand(cmd: Command): ReplyEffect
+    def applyEvent(event: Event): Account
+  }
+  case class OpenedAccount(balance: BigDecimal) extends Account {
+    require(balance &gt;= Zero, &quot;Account balance can&#39;t be negative&quot;)
+
+    override def applyCommand(cmd: Command): ReplyEffect =
+      cmd match {
+        case Deposit(amount, replyTo) =&gt;
+          Effect.persist(Deposited(amount)).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+
+        case Withdraw(amount, replyTo) =&gt;
+          if (canWithdraw(amount))
+            Effect.persist(Withdrawn(amount)).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+          else
+            Effect.reply(replyTo)(StatusReply.Error(s&quot;Insufficient balance $balance to be able to withdraw $amount&quot;))
+
+        case GetBalance(replyTo) =&gt;
+          Effect.reply(replyTo)(CurrentBalance(balance))
+
+        case CloseAccount(replyTo) =&gt;
+          if (balance == Zero)
+            Effect.persist(AccountClosed).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+          else
+            Effect.reply(replyTo)(StatusReply.Error(&quot;Can&#39;t close account with non-zero balance&quot;))
+
+        case CreateAccount(replyTo) =&gt;
+          Effect.reply(replyTo)(StatusReply.Error(&quot;Account is already created&quot;))
+
+      }
+
+    override def applyEvent(event: Event): Account =
+      event match {
+        case Deposited(amount) =&gt; copy(balance = balance + amount)
+        case Withdrawn(amount) =&gt; copy(balance = balance - amount)
+        case AccountClosed     =&gt; ClosedAccount
+        case AccountCreated    =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [OpenedAccount]&quot;)
+      }
+
+    def canWithdraw(amount: BigDecimal): Boolean = {
+      balance - amount &gt;= Zero
+    }
+
+  }
+  case object ClosedAccount extends Account {
+    override def applyCommand(cmd: Command): ReplyEffect =
+      cmd match {
+        case c: Deposit =&gt;
+          replyClosed(c.replyTo)
+        case c: Withdraw =&gt;
+          replyClosed(c.replyTo)
+        case GetBalance(replyTo) =&gt;
+          Effect.reply(replyTo)(CurrentBalance(Zero))
+        case CloseAccount(replyTo) =&gt;
+          replyClosed(replyTo)
+        case CreateAccount(replyTo) =&gt;
+          replyClosed(replyTo)
+      }
+
+    private def replyClosed(replyTo: ActorRef[StatusReply[Done]]): ReplyEffect =
+      Effect.reply(replyTo)(StatusReply.Error(s&quot;Account is closed&quot;))
+
+    override def applyEvent(event: Event): Account =
+      throw new IllegalStateException(s&quot;unexpected event [$event] in state [ClosedAccount]&quot;)
+  }
+
+  // when used with sharding, this TypeKey can be used in `sharding.init` and `sharding.entityRefFor`:
+  val TypeKey: EntityTypeKey[Command] =
+    EntityTypeKey[Command](&quot;Account&quot;)
+
+  def apply(persistenceId: PersistenceId): Behavior[Command] = {
+    EventSourcedBehavior.withEnforcedReplies[Command, Event, Option[Account]](
+      persistenceId,
+      None,
+      (state, cmd) =&gt;
+        state match {
+          case None          =&gt; onFirstCommand(cmd)
+          case Some(account) =&gt; account.applyCommand(cmd)
+        },
+      (state, event) =&gt;
+        state match {
+          case None          =&gt; Some(onFirstEvent(event))
+          case Some(account) =&gt; Some(account.applyEvent(event))
+        })
+  }
+
+  def onFirstCommand(cmd: Command): ReplyEffect = {
+    cmd match {
+      case CreateAccount(replyTo) =&gt;
+        Effect.persist(AccountCreated).thenReply(replyTo)(_ =&gt; StatusReply.Ack)
+      case _ =&gt;
+        // CreateAccount before handling any other commands
+        Effect.unhandled.thenNoReply()
+    }
+  }
+
+  def onFirstEvent(event: Event): Account = {
+    event match {
+      case AccountCreated =&gt; OpenedAccount(Zero)
+      case _              =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [EmptyAccount]&quot;)
+    }
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithNullState.java#L41-L263" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class AccountEntity
+    extends EventSourcedBehaviorWithEnforcedReplies&lt;
+        AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt; {
+
+  public static final EntityTypeKey&lt;Command&gt; ENTITY_TYPE_KEY =
+      EntityTypeKey.create(Command.class, &quot;Account&quot;);
+
+  // Command
+  interface Command extends CborSerializable {}
+
+  public static class CreateAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CreateAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Deposit implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Deposit(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdraw implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Withdraw(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.amount = amount;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class GetBalance implements Command {
+    public final ActorRef&lt;CurrentBalance&gt; replyTo;
+
+    @JsonCreator
+    public GetBalance(ActorRef&lt;CurrentBalance&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class CloseAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CloseAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  // Reply
+  public static class CurrentBalance implements CborSerializable {
+    public final BigDecimal balance;
+
+    @JsonCreator
+    public CurrentBalance(BigDecimal balance) {
+      this.balance = balance;
+    }
+  }
+
+  // Event
+  interface Event extends CborSerializable {}
+
+  public enum AccountCreated implements Event {
+    INSTANCE
+  }
+
+  public static class Deposited implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Deposited(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdrawn implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Withdrawn(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class AccountClosed implements Event {}
+
+  // State
+  interface Account extends CborSerializable {}
+
+  public static class OpenedAccount implements Account {
+    public final BigDecimal balance;
+
+    public OpenedAccount() {
+      this.balance = BigDecimal.ZERO;
+    }
+
+    @JsonCreator
+    public OpenedAccount(BigDecimal balance) {
+      this.balance = balance;
+    }
+
+    OpenedAccount makeDeposit(BigDecimal amount) {
+      return new OpenedAccount(balance.add(amount));
+    }
+
+    boolean canWithdraw(BigDecimal amount) {
+      return (balance.subtract(amount).compareTo(BigDecimal.ZERO) &gt;= 0);
+    }
+
+    OpenedAccount makeWithdraw(BigDecimal amount) {
+      if (!canWithdraw(amount))
+        throw new IllegalStateException(&quot;Account balance can&#39;t be negative&quot;);
+      return new OpenedAccount(balance.subtract(amount));
+    }
+
+    ClosedAccount closedAccount() {
+      return new ClosedAccount();
+    }
+  }
+
+  public static class ClosedAccount implements Account {}
+
+  public static AccountEntity create(String accountNumber, PersistenceId persistenceId) {
+    return new AccountEntity(accountNumber, persistenceId);
+  }
+
+  private final String accountNumber;
+
+  private AccountEntity(String accountNumber, PersistenceId persistenceId) {
+    super(persistenceId);
+    this.accountNumber = accountNumber;
+  }
+
+  @Override
+  public Account emptyState() {
+    return null;
+  }
+
+  @Override
+  public CommandHandlerWithReply&lt;Command, Event, Account&gt; commandHandler() {
+    CommandHandlerWithReplyBuilder&lt;Command, Event, Account&gt; builder =
+        newCommandHandlerWithReplyBuilder();
+
+    builder.forNullState().onCommand(CreateAccount.class, this::createAccount);
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onCommand(Deposit.class, this::deposit)
+        .onCommand(Withdraw.class, this::withdraw)
+        .onCommand(GetBalance.class, this::getBalance)
+        .onCommand(CloseAccount.class, this::closeAccount);
+
+    builder
+        .forStateType(ClosedAccount.class)
+        .onAnyCommand(() -&gt; Effect().unhandled().thenNoReply());
+
+    return builder.build();
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; createAccount(CreateAccount command) {
+    return Effect()
+        .persist(AccountCreated.INSTANCE)
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; deposit(OpenedAccount account, Deposit command) {
+    return Effect()
+        .persist(new Deposited(command.amount))
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; withdraw(OpenedAccount account, Withdraw command) {
+    if (!account.canWithdraw(command.amount)) {
+      return Effect()
+          .reply(
+              command.replyTo,
+              StatusReply.error(&quot;not enough funds to withdraw &quot; + command.amount));
+    } else {
+      return Effect()
+          .persist(new Withdrawn(command.amount))
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    }
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; getBalance(OpenedAccount account, GetBalance command) {
+    return Effect().reply(command.replyTo, new CurrentBalance(account.balance));
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; closeAccount(OpenedAccount account, CloseAccount command) {
+    if (account.balance.equals(BigDecimal.ZERO)) {
+      return Effect()
+          .persist(new AccountClosed())
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    } else {
+      return Effect()
+          .reply(command.replyTo, StatusReply.error(&quot;balance must be zero for closing account&quot;));
+    }
+  }
+
+  @Override
+  public EventHandler&lt;Account, Event&gt; eventHandler() {
+    EventHandlerBuilder&lt;Account, Event&gt; builder = newEventHandlerBuilder();
+
+    builder.forNullState().onEvent(AccountCreated.class, () -&gt; new OpenedAccount());
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onEvent(Deposited.class, (account, deposited) -&gt; account.makeDeposit(deposited.amount))
+        .onEvent(Withdrawn.class, (account, withdrawn) -&gt; account.makeWithdraw(withdrawn.amount))
+        .onEvent(AccountClosed.class, (account, closed) -&gt; account.closedAccount());
+
+    return builder.build();
+  }
+}
+</code></pre></dd>
+</dl><div class="group-java">
+<h2><a href="#mutable-state" name="mutable-state" class="anchor"><span class="anchor-link"></span></a>Mutable state</h2>
+<p>The state can be mutable or immutable. When it is immutable the event handler returns a new instance of the state for each change.</p>
+<p>When using mutable state it&rsquo;s important to not send the full state instance as a message to another actor, e.g. as a reply to a command. Messages must be immutable to avoid concurrency problems.</p>
+<p>The above examples are using immutable state classes and below is corresponding example with mutable state.</p>
+<dl>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithMutableState.java#L41-L276" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class AccountEntity
+    extends EventSourcedBehaviorWithEnforcedReplies&lt;
+        AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt; {
+
+  public static final EntityTypeKey&lt;Command&gt; ENTITY_TYPE_KEY =
+      EntityTypeKey.create(Command.class, &quot;Account&quot;);
+
+  // Command
+  interface Command extends CborSerializable {}
+
+  public static class CreateAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CreateAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Deposit implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Deposit(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdraw implements Command {
+    public final BigDecimal amount;
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    public Withdraw(BigDecimal amount, ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.amount = amount;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class GetBalance implements Command {
+    public final ActorRef&lt;CurrentBalance&gt; replyTo;
+
+    @JsonCreator
+    public GetBalance(ActorRef&lt;CurrentBalance&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class CloseAccount implements Command {
+    public final ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo;
+
+    @JsonCreator
+    public CloseAccount(ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  // Reply
+  public static class CurrentBalance implements CborSerializable {
+    public final BigDecimal balance;
+
+    @JsonCreator
+    public CurrentBalance(BigDecimal balance) {
+      this.balance = balance;
+    }
+  }
+
+  // Event
+  interface Event extends CborSerializable {}
+
+  public enum AccountCreated implements Event {
+    INSTANCE
+  }
+
+  public static class Deposited implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Deposited(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class Withdrawn implements Event {
+    public final BigDecimal amount;
+
+    @JsonCreator
+    Withdrawn(BigDecimal amount) {
+      this.amount = amount;
+    }
+  }
+
+  public static class AccountClosed implements Event {}
+
+  // State
+  interface Account extends CborSerializable {}
+
+  public static class EmptyAccount implements Account {
+    OpenedAccount openedAccount() {
+      return new OpenedAccount();
+    }
+  }
+
+  public static class OpenedAccount implements Account {
+    private BigDecimal balance = BigDecimal.ZERO;
+
+    public BigDecimal getBalance() {
+      return balance;
+    }
+
+    void makeDeposit(BigDecimal amount) {
+      balance = balance.add(amount);
+    }
+
+    boolean canWithdraw(BigDecimal amount) {
+      return (balance.subtract(amount).compareTo(BigDecimal.ZERO) &gt;= 0);
+    }
+
+    void makeWithdraw(BigDecimal amount) {
+      if (!canWithdraw(amount))
+        throw new IllegalStateException(&quot;Account balance can&#39;t be negative&quot;);
+      balance = balance.subtract(amount);
+    }
+
+    ClosedAccount closedAccount() {
+      return new ClosedAccount();
+    }
+  }
+
+  public static class ClosedAccount implements Account {}
+
+  public static AccountEntity create(String accountNumber, PersistenceId persistenceId) {
+    return new AccountEntity(accountNumber, persistenceId);
+  }
+
+  private final String accountNumber;
+
+  private AccountEntity(String accountNumber, PersistenceId persistenceId) {
+    super(persistenceId);
+    this.accountNumber = accountNumber;
+  }
+
+  @Override
+  public Account emptyState() {
+    return new EmptyAccount();
+  }
+
+  @Override
+  public CommandHandlerWithReply&lt;Command, Event, Account&gt; commandHandler() {
+    CommandHandlerWithReplyBuilder&lt;Command, Event, Account&gt; builder =
+        newCommandHandlerWithReplyBuilder();
+
+    builder.forStateType(EmptyAccount.class).onCommand(CreateAccount.class, this::createAccount);
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onCommand(Deposit.class, this::deposit)
+        .onCommand(Withdraw.class, this::withdraw)
+        .onCommand(GetBalance.class, this::getBalance)
+        .onCommand(CloseAccount.class, this::closeAccount);
+
+    builder
+        .forStateType(ClosedAccount.class)
+        .onAnyCommand(() -&gt; Effect().unhandled().thenNoReply());
+
+    return builder.build();
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; createAccount(EmptyAccount account, CreateAccount command) {
+    return Effect()
+        .persist(AccountCreated.INSTANCE)
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; deposit(OpenedAccount account, Deposit command) {
+    return Effect()
+        .persist(new Deposited(command.amount))
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; withdraw(OpenedAccount account, Withdraw command) {
+    if (!account.canWithdraw(command.amount)) {
+      return Effect()
+          .reply(
+              command.replyTo,
+              StatusReply.error(&quot;not enough funds to withdraw &quot; + command.amount));
+    } else {
+      return Effect()
+          .persist(new Withdrawn(command.amount))
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    }
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; getBalance(OpenedAccount account, GetBalance command) {
+    return Effect().reply(command.replyTo, new CurrentBalance(account.balance));
+  }
+
+  private ReplyEffect&lt;Event, Account&gt; closeAccount(OpenedAccount account, CloseAccount command) {
+    if (account.getBalance().equals(BigDecimal.ZERO)) {
+      return Effect()
+          .persist(new AccountClosed())
+          .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+    } else {
+      return Effect()
+          .reply(command.replyTo, StatusReply.error(&quot;balance must be zero for closing account&quot;));
+    }
+  }
+
+  @Override
+  public EventHandler&lt;Account, Event&gt; eventHandler() {
+    EventHandlerBuilder&lt;Account, Event&gt; builder = newEventHandlerBuilder();
+
+    builder
+        .forStateType(EmptyAccount.class)
+        .onEvent(AccountCreated.class, (account, event) -&gt; account.openedAccount());
+
+    builder
+        .forStateType(OpenedAccount.class)
+        .onEvent(
+            Deposited.class,
+            (account, deposited) -&gt; {
+              account.makeDeposit(deposited.amount);
+              return account;
+            })
+        .onEvent(
+            Withdrawn.class,
+            (account, withdrawn) -&gt; {
+              account.makeWithdraw(withdrawn.amount);
+              return account;
+            })
+        .onEvent(AccountClosed.class, (account, closed) -&gt; account.closedAccount());
+
+    return builder.build();
+  }
+}
+</code></pre></dd>
+</dl></div>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/persistence-style.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/persistence-snapshot.html">Snapshotting</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/persistence-style.html#style-guide" class="header">Style Guide</a>
+  <ul>
+    <li><a href="../typed/persistence-style.html#event-handlers-in-the-state" class="header">Event handlers in the state</a></li>
+    <li><a href="../typed/persistence-style.html#command-handlers-in-the-state" class="header group-scala">Command handlers in the state</a></li>
+    <li><a href="../typed/persistence-style.html#optional-initial-state" class="header">Optional initial state</a></li>
+    <li><a href="../typed/persistence-style.html#mutable-state" class="header group-java">Mutable state</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

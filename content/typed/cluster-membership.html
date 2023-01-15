@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Cluster Membership Service · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='The Akka Cluster node membership service, manages dynamic member states and lifecycle with no external infrastructure needed.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/cluster-membership.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="active page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="active page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index-cluster.html">Cluster</a></li>
+  <li>Cluster Membership Service</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#cluster-membership-service" name="cluster-membership-service" class="anchor"><span class="anchor-link"></span></a>Cluster Membership Service</h1>
+<p>The core of Akka Cluster is the cluster membership, to keep track of what nodes are part of the cluster and their health. Cluster membership is communicated using <a href="cluster-concepts.html#gossip">gossip</a> and <a href="cluster-concepts.html#failure-detector">failure detection</a>.</p>
+<p>There are several <a href="cluster.html#higher-level-cluster-tools">Higher level Cluster tools</a> that are built on top of the cluster membership service.</p>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>A cluster is made up of a set of member nodes. The identifier for each node is a <code>hostname:port:uid</code> tuple. An Akka application can be distributed over a cluster with each node hosting some part of the application. Cluster membership and the actors running on that node of the application are decoupled. A node could be a member of a cluster without hosting any actors. Joining a cluster is initiated by issuing a <code>Join</code> command to one of the nodes in the cluster to join.</p>
+<p>The node identifier internally also contains a UID that uniquely identifies this actor system instance at that <code>hostname:port</code>. Akka uses the UID to be able to reliably trigger remote death watch. This means that the same actor system can never join a cluster again once it&rsquo;s been removed from that cluster. To re-join an actor system with the same <code>hostname:port</code> to a cluster you have to stop the actor system and start a new one with the same <code>hostname:port</code> which will then receive a different UID.</p>
+<h2><a href="#member-states" name="member-states" class="anchor"><span class="anchor-link"></span></a>Member States</h2>
+<p>The cluster membership state is a specialized <a href="https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf">CRDT</a>, which means that it has a monotonic merge function. When concurrent changes occur on different nodes the updates can always be merged and converge to the same end result.</p>
+<ul>
+  <li>
+  <p><strong>joining</strong> - transient state when joining a cluster</p></li>
+  <li>
+  <p><strong>weakly up</strong> - transient state while network split (only if <code>pekko.cluster.allow-weakly-up-members=on</code>)</p></li>
+  <li>
+  <p><strong>up</strong> - normal operating state</p></li>
+  <li>
+  <p><strong>preparing for shutdown</strong> / <strong>ready for shutdown</strong> - an optional state that can be moved to before doing a full cluster shut down</p></li>
+  <li>
+  <p><strong>leaving</strong> / <strong>exiting</strong> - states during graceful removal</p></li>
+  <li>
+  <p><strong>down</strong> - marked as down (no longer part of cluster decisions)</p></li>
+  <li>
+  <p><strong>removed</strong> - tombstone state (no longer a member)</p></li>
+</ul>
+<h2><a href="#member-events" name="member-events" class="anchor"><span class="anchor-link"></span></a>Member Events</h2>
+<p>The events to track the life-cycle of members are:</p>
+<ul>
+  <li><code>ClusterEvent.MemberJoined</code> - A new member has joined the cluster and its status has been changed to <code>Joining</code></li>
+  <li><code>ClusterEvent.MemberUp</code> - A new member has joined the cluster and its status has been changed to <code>Up</code></li>
+  <li><code>ClusterEvent.MemberExited</code> - A member is leaving the cluster and its status has been changed to <code>Exiting</code> Note that the node might already have been shutdown when this event is published on another node.</li>
+  <li><code>ClusterEvent.MemberRemoved</code> - Member completely removed from the cluster.</li>
+  <li><code>ClusterEvent.UnreachableMember</code> - A member is considered as unreachable, detected by the failure detector of at least one other node.</li>
+  <li><code>ClusterEvent.ReachableMember</code> - A member is considered as reachable again, after having been unreachable. All nodes that previously detected it as unreachable has detected it as reachable again.</li>
+  <li><code>ClusterEvent.MemberPreparingForShutdown</code> - A member is preparing for a full cluster shutdown</li>
+  <li><code>ClusterEvent.MemberReadyForShutdown</code> - A member is ready for a full cluster shutdown</li>
+</ul>
+<h2><a href="#membership-lifecycle" name="membership-lifecycle" class="anchor"><span class="anchor-link"></span></a>Membership Lifecycle</h2>
+<p>A node is introduced to the cluster by invoking the <code>join</code> action which puts the node in the <code>joining</code> state. Once all nodes have seen that the new node is joining (through <a href="cluster-concepts.html#gossip-convergence">gossip convergence</a>) the <a href="cluster-concepts.html#leader"><code>leader</code></a> will set the member state to <code>up</code>.</p>
+<p>If a node is leaving the cluster in a safe, expected manner, for example through <a href="../coordinated-shutdown.html">coordinated shutdown</a>, it invokes the <code>leave</code> action which switches it to the <code>leaving</code> state. Once the leader sees the convergence on the node in the <code>leaving</code> state, the leader will then move it to <code>exiting</code>. Once all nodes have seen the exiting state (convergence) the <code>leader</code> will remove the node from the cluster, marking it as <code>removed</code>.</p>
+<p>If a node is <code>unreachable</code> then gossip convergence is not possible and therefore most <code>leader</code> actions are impossible (for instance, allowing a node to become a part of the cluster). To be able to move forward, the node must become <code>reachable</code> again or the node must be explicitly &ldquo;downed&rdquo;. This is required because the state of an unreachable node is unknown and the cluster cannot know if the node has crashed or is only temporarily unreachable because of network issues or GC pauses. See the section about <a href="#user-actions">User Actions</a> below for ways a node can be downed.</p>
+<p>The actor system on a node that exited or was downed cannot join the cluster again. In particular, a node that was downed while being unreachable and then regains connectivity cannot rejoin the cluster. Instead, the process has to be restarted on the node, creating a new actor system that can go through the joining process again.</p>
+<p>A special case is a node that was restarted without going through the leaving or downing process e.g. because the machine hosting the node was unexpectedly restarted. When the new instance of the node tries to rejoin the cluster, the cluster might still track the old instance as unreachable. In this case, however, it is clear that the old node is gone because the new instance will have the same address (host and port) as its old instance. In this case, the previous instance will be automatically marked as <code>down</code> and the new instance can rejoin the cluster without manual intervention.</p>
+<h2><a href="#leader" name="leader" class="anchor"><span class="anchor-link"></span></a>Leader</h2>
+<p>The purpose of the <code>leader</code> is to confirm state changes when convergence is reached. The <code>leader</code> can be determined by each node unambiguously after gossip convergence. Any node might be required to take the role of the <code>leader</code> depending on the current cluster composition.</p>
+<p>Without convergence, different nodes might have different views about which node is the leader. Therefore, most leader actions are only allowed if there is convergence to ensure that all nodes agree about the current state of the cluster and state changes are originated from a single node. Most regular state changes like changing a node from <code>joining</code> to <code>up</code> are of that kind.</p>
+<p>Other situations require that an action is taken even if convergence cannot be reached currently. Notably, convergence cannot be reached if one or more nodes in the cluster are currently unreachable as determined by the <a href="cluster-concepts.html#failure-detector">failure detector</a>. In such a case, the cluster might be partitioned (a split brain scenario) and each partition might have its own view about which nodes are reachable and which are not. In this case, a node on each side of the partition might view itself as the leader of the reachable nodes. Any action that the leader performs in such a case must be designed in a way that all concurrent leaders would come to the same conclusion (which might be impossible in general and only feasible under additional constraints). The most important case of that kind is a split brain scenario where nodes need to be downed, either manually or automatically, to bring the cluster back to convergence.</p>
+<p>The <a href="../split-brain-resolver.html">Split Brain Resolver</a> is the built-in implementation of that.</p>
+<p>Another transition that is possible without convergence is marking members as <code>WeaklyUp</code> as described in the next section.</p>
+<a id="weakly-up"></a>
+<h2><a href="#weaklyup-members" name="weaklyup-members" class="anchor"><span class="anchor-link"></span></a>WeaklyUp Members</h2>
+<p>If a node is <code>unreachable</code> then gossip convergence is not possible and therefore most <code>leader</code> actions are impossible. By enabling <code>pekko.cluster.allow-weakly-up-members</code> (which is enabled by default), joining nodes can be promoted to <code>WeaklyUp</code> even while convergence is not yet reached. Once gossip convergence can be established again, the leader will move <code>WeaklyUp</code> members to <code>Up</code>.</p>
+<p>You can subscribe to the <code>WeaklyUp</code> membership event to make use of the members that are in this state, but you should be aware of that members on the other side of a network partition have no knowledge about the existence of the new members. You should for example not count <code>WeaklyUp</code> members in quorum decisions.</p>
+<h2><a href="#full-cluster-shutdown" name="full-cluster-shutdown" class="anchor"><span class="anchor-link"></span></a>Full cluster shutdown</h2>
+<p>In some rare cases it may be desirable to do a full cluster shutdown rather than a rolling deploy. For example, a protocol change where it is simpler to restart the cluster than to make the protocol change backward compatible.</p>
+<p>As of Akka <code>2.6.13</code> it can be signalled that a full cluster shutdown is about to happen and any expensive actions such as:</p>
+<ul>
+  <li>Cluster sharding rebalances</li>
+  <li>Moving of Cluster singletons</li>
+</ul>
+<p>Won&rsquo;t happen. That way the shutdown will be as quick as possible and a new version can be started up without delay.</p>
+<p>If a cluster isn&rsquo;t to be restarted right away then there is no need to prepare it for shutdown.</p>
+<p>To use this feature use <code>Cluster(system).prepareForFullClusterShutdown()</code> in classic or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/typed/PrepareForFullClusterShutdown.html" title="org.apache.pekko.cluster.typed.PrepareForFullClusterShutdown"><code>PrepareForFullClusterShutdown</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/typed/PrepareForFullClusterShutdown.html" title="org.apache.pekko.cluster.typed.PrepareForFullClusterShutdown"><code>PrepareForFullClusterShutdown</code></a></span> in typed.</p>
+<p>Wait for all <code>Up</code> members to become <code>ReadyForShutdown</code> and then all nodes can be shutdown and restarted. Members that aren&rsquo;t <code>Up</code> yet will remain in the <code>Joining</code> or <code>WeaklyUp</code> states. Any node that is already leaving the cluster i.e. in the <code>Leaving</code> or <code>Exiting</code> states will continue to leave the cluster via the normal path.</p>
+<h2><a href="#state-diagrams" name="state-diagrams" class="anchor"><span class="anchor-link"></span></a>State Diagrams</h2>
+<h3><a href="#state-diagram-for-the-member-states" name="state-diagram-for-the-member-states" class="anchor"><span class="anchor-link"></span></a>State Diagram for the Member States</h3>
+<p><img src="../images/member-state-diagram.png" alt="member-states.png" /></p>
+<h4><a href="#user-actions" name="user-actions" class="anchor"><span class="anchor-link"></span></a>User Actions</h4>
+<ul>
+  <li>
+  <p><strong>join</strong> - join a single node to a cluster - can be explicit or automatic on startup if a node to join have been specified in the configuration</p></li>
+  <li>
+  <p><strong>leave</strong> - tell a node to leave the cluster gracefully, normally triggered by ActorSystem or JVM shutdown through <a href="../coordinated-shutdown.html">coordinated shutdown</a></p></li>
+  <li>
+  <p><strong>down</strong> - mark a node as down. This action is required to remove crashed nodes (that did not &lsquo;leave&rsquo;) from the cluster. It can be triggered manually, through <a href="https://doc.akka.io/docs/akka-management/current/cluster-http-management.html#put-cluster-members-address-responses">Cluster HTTP Management</a>, or automatically by a <a href="cluster.html#downing">downing provider</a> like <a href="../split-brain-resolver.html">Split Brain Resolver</a></p></li>
+</ul>
+<h4><a href="#leader-actions" name="leader-actions" class="anchor"><span class="anchor-link"></span></a>Leader Actions</h4>
+<p>The <code>leader</code> has the duty of confirming user actions to shift members in and out of the cluster:</p>
+<ul>
+  <li>joining ⭢ up</li>
+  <li>joining ⭢ weakly up <em>(no convergence is needed for this leader action to be performed which works even if there are unreachable nodes)</em></li>
+  <li>weakly up ⭢ up <em>(after full convergence is reached again)</em></li>
+  <li>leaving ⭢ exiting</li>
+  <li>exiting ⭢ removed</li>
+  <li>down ⭢ removed</li>
+</ul>
+<h4><a href="#failure-detection-and-unreachability" name="failure-detection-and-unreachability" class="anchor"><span class="anchor-link"></span></a>Failure Detection and Unreachability</h4>
+<p>Being unreachable is not a separate member state but rather a flag in addition to the state. A failure detector on each node that monitors another node can mark the monitored node as unreachable independent of its state. Afterwards the failure detector continues monitoring the node until it detects it as reachable again and removes the flag. A node is considered reachable again only after all monitoring nodes see it as reachable again.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/cluster-membership.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/failure-detector.html">Phi Accrual Failure Detector</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/cluster-membership.html#cluster-membership-service" class="header">Cluster Membership Service</a>
+  <ul>
+    <li><a href="../typed/cluster-membership.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/cluster-membership.html#member-states" class="header">Member States</a></li>
+    <li><a href="../typed/cluster-membership.html#member-events" class="header">Member Events</a></li>
+    <li><a href="../typed/cluster-membership.html#membership-lifecycle" class="header">Membership Lifecycle</a></li>
+    <li><a href="../typed/cluster-membership.html#leader" class="header">Leader</a></li>
+    <li><a href="../typed/cluster-membership.html#weaklyup-members" class="header">WeaklyUp Members</a></li>
+    <li><a href="../typed/cluster-membership.html#full-cluster-shutdown" class="header">Full cluster shutdown</a></li>
+    <li><a href="../typed/cluster-membership.html#state-diagrams" class="header">State Diagrams</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

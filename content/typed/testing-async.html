@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Asynchronous testing · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/testing-async.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index.html">Actors</a></li>
+  <li><a href="../typed/testing.html">Testing</a></li>
+  <li>Asynchronous testing</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h2><a href="#asynchronous-testing" name="asynchronous-testing" class="anchor"><span class="anchor-link"></span></a>Asynchronous testing</h2>
+<p>You are viewing the documentation for the new actor APIs, to view the Akka Classic documentation, see <a href="../testing.html">Classic Testing</a>.</p>
+<p>Asynchronous testing uses a real <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> that allows you to test your Actors in a more realistic environment.</p>
+<p>The minimal setup consists of the test procedure, which provides the desired stimuli, the actor under test, and an actor receiving replies. Bigger systems replace the actor under test with a network of actors, apply stimuli at varying injection points and arrange results to be sent from different emission points, but the basic principle stays the same in that a single procedure drives the test.</p>
+<h3><a href="#basic-example" name="basic-example" class="anchor"><span class="anchor-link"></span></a>Basic example</h3>
+<p>Actor under test:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L41-L50" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Echo {
+  case class Ping(message: String, response: ActorRef[Pong])
+  case class Pong(message: String)
+
+  def apply(): Behavior[Ping] = Behaviors.receiveMessage {
+    case Ping(m, replyTo) =&gt;
+      replyTo ! Pong(m)
+      Behaviors.same
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L48-L90" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class Echo {
+  public static class Ping {
+    public final String message;
+    public final ActorRef&lt;Pong&gt; replyTo;
+
+    public Ping(String message, ActorRef&lt;Pong&gt; replyTo) {
+      this.message = message;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Pong {
+    public final String message;
+
+    public Pong(String message) {
+      this.message = message;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Pong)) return false;
+      Pong pong = (Pong) o;
+      return message.equals(pong.message);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(message);
+    }
+  }
+
+  public static Behavior&lt;Ping&gt; create() {
+    return Behaviors.receive(Ping.class)
+        .onMessage(
+            Ping.class,
+            ping -&gt; {
+              ping.replyTo.tell(new Pong(ping.message));
+              return Behaviors.same();
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>Tests create an instance of <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/ActorTestKit.html" title="org.apache.pekko.actor.testkit.typed.javadsl.ActorTestKit"><code>ActorTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/ActorTestKit.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.ActorTestKit"><code>ActorTestKit</code></a></span>. This provides access to:</p>
+<ul>
+  <li>An ActorSystem</li>
+  <li>Methods for spawning Actors. These are created under the special testkit user guardian</li>
+  <li>A method to shut down the ActorSystem from the test suite</li>
+</ul>
+<p>This first example is using the &ldquo;raw&rdquo; <code>ActorTestKit</code> but if you are using <span class="group-scala">ScalaTest</span><span class="group-java">JUnit</span> you can simplify the tests by using the <a href="testing-async.html#test-framework-integration">Test framework integration</a>. It&rsquo;s still good to read this section to understand how it works.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L20-L151" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.testkit.typed.scaladsl.ActorTestKit
+
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+class AsyncTestingExampleSpec
+    extends AnyWordSpec
+    with BeforeAndAfterAll
+    with Matchers {
+  val testKit = ActorTestKit()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L22-L207" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.testkit.typed.javadsl.ActorTestKit;
+
+public class AsyncTestingExampleTest
+{
+  static final ActorTestKit testKit = ActorTestKit.create();
+}</code></pre></dd>
+</dl>
+<p>Your test is responsible for shutting down the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> e.g. using <span class="group-scala"><code>BeforeAndAfterAll</code> when using ScalaTest</span><span class="group-java"><code>@AfterClass</code> when using JUnit</span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L148" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def afterAll(): Unit = testKit.shutdownTestKit()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L130-L133" target="_blank" title="Go to snippet source">source</a><code class="language-java">@AfterClass
+public static void cleanup() {
+  testKit.shutdownTestKit();
+}</code></pre></dd>
+</dl>
+<p>The following demonstrates:</p>
+<ul>
+  <li>Creating an actor from the <code>TestKit</code>&rsquo;s system using <code>spawn</code></li>
+  <li>Creating a <code>TestProbe</code></li>
+  <li>Verifying that the actor under test responds via the <code>TestProbe</code></li>
+</ul>
+<p>Note that it is possible to use a <code>TestProbe</code> directly as a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/RecipientRef.html" title="org.apache.pekko.actor.typed.RecipientRef"><code>RecipientRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/RecipientRef.html" title="org.apache.pekko.actor.typed.RecipientRef"><code>RecipientRef</code></a></span> (a common supertype of <code>ActorRef</code> and <a href="cluster-sharding.html">Cluster Sharding</a> <code>EntityRef</code>), in cases where a message protocol uses <code>RecipientRef</code> instead of specifying <code>ActorRef</code> or <code>EntityRef</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L87-L90" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pinger = testKit.spawn(Echo(), &quot;ping&quot;)
+val probe = testKit.createTestProbe[Echo.Pong]()
+pinger ! Echo.Ping(&quot;hello&quot;, probe.ref)
+probe.expectMessage(Echo.Pong(&quot;hello&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L139-L142" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef&lt;Echo.Ping&gt; pinger = testKit.spawn(Echo.create(), &quot;ping&quot;);
+TestProbe&lt;Echo.Pong&gt; probe = testKit.createTestProbe();
+pinger.tell(new Echo.Ping(&quot;hello&quot;, probe.ref()));
+probe.expectMessage(new Echo.Pong(&quot;hello&quot;));</code></pre></dd>
+</dl>
+<p>Actors can also be spawned anonymously:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L96" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pinger = testKit.spawn(Echo())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L149" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef&lt;Echo.Ping&gt; pinger = testKit.spawn(Echo.create());</code></pre></dd>
+</dl>
+<p>Note that you can add <code>import testKit._</code> to get access to the <code>spawn</code> and <code>createTestProbe</code> methods at the top level without prefixing them with <code>testKit</code>.</p>
+<h4><a href="#stopping-actors" name="stopping-actors" class="anchor"><span class="anchor-link"></span></a>Stopping actors</h4>
+<p>The method will wait until the actor stops or throw an assertion error in case of a timeout.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L107-L116" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pinger1 = testKit.spawn(Echo(), &quot;pinger&quot;)
+pinger1 ! Echo.Ping(&quot;hello&quot;, probe.ref)
+probe.expectMessage(Echo.Pong(&quot;hello&quot;))
+testKit.stop(pinger1) // Uses default timeout
+
+// Immediately creating an actor with the same name
+val pinger2 = testKit.spawn(Echo(), &quot;pinger&quot;)
+pinger2 ! Echo.Ping(&quot;hello&quot;, probe.ref)
+probe.expectMessage(Echo.Pong(&quot;hello&quot;))
+testKit.stop(pinger2, 10.seconds) // Custom timeout</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L160-L169" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef&lt;Echo.Ping&gt; pinger1 = testKit.spawn(Echo.create(), &quot;pinger&quot;);
+pinger1.tell(new Echo.Ping(&quot;hello&quot;, probe.ref()));
+probe.expectMessage(new Echo.Pong(&quot;hello&quot;));
+testKit.stop(pinger1);
+
+// Immediately creating an actor with the same name
+ActorRef&lt;Echo.Ping&gt; pinger2 = testKit.spawn(Echo.create(), &quot;pinger&quot;);
+pinger2.tell(new Echo.Ping(&quot;hello&quot;, probe.ref()));
+probe.expectMessage(new Echo.Pong(&quot;hello&quot;));
+testKit.stop(pinger2, Duration.ofSeconds(10));</code></pre></dd>
+</dl>
+<p>The <code>stop</code> method can only be used for actors that were spawned by the same <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/ActorTestKit.html" title="org.apache.pekko.actor.testkit.typed.javadsl.ActorTestKit"><code>ActorTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/ActorTestKit.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.ActorTestKit"><code>ActorTestKit</code></a></span>. Other actors will not be stopped by that method.</p>
+<h3><a href="#observing-mocked-behavior" name="observing-mocked-behavior" class="anchor"><span class="anchor-link"></span></a>Observing mocked behavior</h3>
+<p>When testing a component (which may be an actor or not) that interacts with other actors it can be useful to not have to run the other actors it depends on. Instead, you might want to create mock behaviors that accept and possibly respond to messages in the same way the other actor would do but without executing any actual logic. In addition to this it can also be useful to observe those interactions to assert that the component under test did send the expected messages. This allows the same kinds of tests as classic <code>TestActor</code>/<code>Autopilot</code>.</p>
+<p>As an example, let&rsquo;s assume we&rsquo;d like to test the following component:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L54-L66" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Message(i: Int, replyTo: ActorRef[Try[Int]])
+
+class Producer(publisher: ActorRef[Message])(implicit scheduler: Scheduler) {
+
+  def produce(messages: Int)(implicit timeout: Timeout): Unit = {
+    (0 until messages).foreach(publish)
+  }
+
+  private def publish(i: Int)(implicit timeout: Timeout): Future[Try[Int]] = {
+    publisher.ask(ref =&gt; Message(i, ref))
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L94-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>static class Message {
+  int i;
+  ActorRef&lt;Integer&gt; replyTo;
+
+  Message(int i, ActorRef&lt;Integer&gt; replyTo) {
+    this.i = i;
+    this.replyTo = replyTo;
+  }
+}
+
+public static class Producer {
+
+  private Scheduler scheduler;
+  private ActorRef&lt;Message&gt; publisher;
+
+  Producer(Scheduler scheduler, ActorRef&lt;Message&gt; publisher) {
+    this.scheduler = scheduler;
+    this.publisher = publisher;
+  }
+
+  public void produce(int messages) {
+    IntStream.range(0, messages).forEach(this::publish);
+  }
+
+  private CompletionStage&lt;Integer&gt; publish(int i) {
+    return AskPattern.ask(
+        publisher,
+        (ActorRef&lt;Integer&gt; ref) -&gt; new Message(i, ref),
+        Duration.ofSeconds(3),
+        scheduler);
+  }
+}</code></pre></dd>
+</dl>
+<p>In our test, we create a mocked <code>publisher</code> actor. Additionally we use <code>Behaviors.monitor</code> with a <code>TestProbe</code> in order to be able to verify the interaction of the <code>producer</code> with the <code>publisher</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/AsyncTestingExampleSpec.scala#L123-L142" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import testKit._
+
+// simulate the happy path
+val mockedBehavior = Behaviors.receiveMessage[Message] { msg =&gt;
+  msg.replyTo ! Success(msg.i)
+  Behaviors.same
+}
+val probe = testKit.createTestProbe[Message]()
+val mockedPublisher = testKit.spawn(Behaviors.monitor(probe.ref, mockedBehavior))
+
+// test our component
+val producer = new Producer(mockedPublisher)
+val messages = 3
+producer.produce(messages)
+
+// verify expected behavior
+for (i &lt;- 0 until messages) {
+  val msg = probe.expectMessageType[Message]
+  msg.i shouldBe i
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/AsyncTestingExampleTest.java#L176-L198" target="_blank" title="Go to snippet source">source</a><code class="language-java">// simulate the happy path
+Behavior&lt;Message&gt; mockedBehavior =
+    Behaviors.receiveMessage(
+        message -&gt; {
+          message.replyTo.tell(message.i);
+          return Behaviors.same();
+        });
+TestProbe&lt;Message&gt; probe = testKit.createTestProbe();
+ActorRef&lt;Message&gt; mockedPublisher =
+    testKit.spawn(Behaviors.monitor(Message.class, probe.ref(), mockedBehavior));
+
+// test our component
+Producer producer = new Producer(testKit.scheduler(), mockedPublisher);
+int messages = 3;
+producer.produce(messages);
+
+// verify expected behavior
+IntStream.range(0, messages)
+    .forEach(
+        i -&gt; {
+          Message msg = probe.expectMessageClass(Message.class);
+          assertEquals(i, msg.i);
+        });</code></pre></dd>
+</dl>
+<h3><a href="#test-framework-integration" name="test-framework-integration" class="anchor"><span class="anchor-link"></span></a>Test framework integration</h3><div class="group-java">
+<p>If you are using JUnit you can use <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/testkit/typed/javadsl/TestKitJunitResource.html" title="pekko.actor.testkit.typed.javadsl.TestKitJunitResource"><code>TestKitJunitResource</code></a> to have the async test kit automatically shutdown when the test is complete.</p>
+<p>Note that the dependency on JUnit is marked as optional from the test kit module, so your project must explicitly include a dependency on JUnit to use this.</p></div><div class="group-scala">
+<p>If you are using ScalaTest you can extend <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/testkit/typed/scaladsl/ScalaTestWithActorTestKit.html" title="pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit"><code>ScalaTestWithActorTestKit</code></a> to have the async test kit automatically shutdown when the test is complete. This is done in <code>afterAll</code> from the <code>BeforeAndAfterAll</code> trait. If you override that method you should call <code>super.afterAll</code> to shutdown the test kit.</p>
+<p>Note that the dependency on ScalaTest is marked as optional from the test kit module, so your project must explicitly include a dependency on ScalaTest to use this.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/ScalaTestIntegrationExampleSpec.scala#L23-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class ScalaTestIntegrationExampleSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+
+  &quot;Something&quot; must {
+    &quot;behave correctly&quot; in {
+      val pinger = testKit.spawn(Echo(), &quot;ping&quot;)
+      val probe = testKit.createTestProbe[Echo.Pong]()
+      pinger ! Echo.Ping(&quot;hello&quot;, probe.ref)
+      probe.expectMessage(Echo.Pong(&quot;hello&quot;))
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/JunitIntegrationExampleTest.java#L22-L44" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+import org.apache.pekko.actor.typed.ActorRef;
+import org.junit.ClassRule;
+import org.junit.Test;
+
+public class JunitIntegrationExampleTest {
+
+  @ClassRule public static final TestKitJunitResource testKit = new TestKitJunitResource();
+
+
+  @Test
+  public void testSomething() {
+    ActorRef&lt;Echo.Ping&gt; pinger = testKit.spawn(Echo.create(), &quot;ping&quot;);
+    TestProbe&lt;Echo.Pong&gt; probe = testKit.createTestProbe();
+    pinger.tell(new Echo.Ping(&quot;hello&quot;, probe.ref()));
+    probe.expectMessage(new Echo.Pong(&quot;hello&quot;));
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h3>
+<p>By default the <code>ActorTestKit</code> loads configuration from <code>application-test.conf</code> if that exists, otherwise it is using default configuration from the reference.conf resources that ship with the Akka libraries. The application.conf of your project is not used in this case. A specific configuration can be given as parameter when creating the TestKit.</p>
+<p>If you prefer to use <code>application.conf</code> you can pass that as the configuration parameter to the TestKit. It&rsquo;s loaded with:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/TestConfigExample.scala#L21-L23" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import com.typesafe.config.ConfigFactory
+
+ConfigFactory.load()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/TestConfigExample.java#L17-L26" target="_blank" title="Go to snippet source">source</a><code class="language-java">import com.typesafe.config.ConfigFactory;
+
+ConfigFactory.load()</code></pre></dd>
+</dl>
+<p>It&rsquo;s often convenient to define configuration for a specific test as a <code>String</code> in the test itself and use that as the configuration parameter to the TestKit. <code>ConfigFactory.parseString</code> can be used for that:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/TestConfigExample.scala#L27-L30" target="_blank" title="Go to snippet source">source</a><code class="language-scala">ConfigFactory.parseString(&quot;&quot;&quot;
+  pekko.loglevel = DEBUG
+  pekko.log-config-on-start = on
+  &quot;&quot;&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/TestConfigExample.java#L31" target="_blank" title="Go to snippet source">source</a><code class="language-java">ConfigFactory.parseString(&quot;pekko.loglevel = DEBUG \n&quot; + &quot;pekko.log-config-on-start = on \n&quot;)</code></pre></dd>
+</dl>
+<p>Combining those approaches using <code>withFallback</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/TestConfigExample.scala#L34-L37" target="_blank" title="Go to snippet source">source</a><code class="language-scala">ConfigFactory.parseString(&quot;&quot;&quot;
+  pekko.loglevel = DEBUG
+  pekko.log-config-on-start = on
+  &quot;&quot;&quot;).withFallback(ConfigFactory.load())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/TestConfigExample.java#L36-L37" target="_blank" title="Go to snippet source">source</a><code class="language-java">ConfigFactory.parseString(&quot;pekko.loglevel = DEBUG \n&quot; + &quot;pekko.log-config-on-start = on \n&quot;)
+    .withFallback(ConfigFactory.load())</code></pre></dd>
+</dl>
+<p>More information can be found in the <a href="https://github.com/lightbend/config#using-the-library">documentation of the configuration library</a>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Note that <code>reference.conf</code> files are intended for libraries to define default values and shouldn&rsquo;t be used in an application. It&rsquo;s not supported to override a config property owned by one library in a <code>reference.conf</code> of another library.</p></div>
+<h3><a href="#controlling-the-scheduler" name="controlling-the-scheduler" class="anchor"><span class="anchor-link"></span></a>Controlling the scheduler</h3>
+<p>It can be hard to reliably unit test specific scenario&rsquo;s when your actor relies on timing: especially when running many tests in parallel it can be hard to get the timing just right. Making such tests more reliable by using generous timeouts make the tests take a long time to run.</p>
+<p>For such situations, we provide a scheduler where you can manually, explicitly advance the clock.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/ManualTimerExampleSpec.scala#L17-L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration._
+import org.apache.pekko
+import pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import pekko.actor.testkit.typed.scaladsl.ManualTime
+import pekko.actor.testkit.typed.scaladsl.TestProbe
+import pekko.actor.testkit.typed.scaladsl.LogCapturing
+import pekko.actor.typed.scaladsl.Behaviors
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class ManualTimerExampleSpec
+    extends ScalaTestWithActorTestKit(ManualTime.config)
+    with AnyWordSpecLike
+    with LogCapturing {
+
+  val manualTime: ManualTime = ManualTime()
+
+  &quot;A timer&quot; must {
+    &quot;schedule non-repeated ticks&quot; in {
+      case object Tick
+      case object Tock
+
+      val probe = TestProbe[Tock.type]()
+      val behavior = Behaviors.withTimers[Tick.type] { timer =&gt;
+        timer.startSingleTimer(Tick, 10.millis)
+        Behaviors.receiveMessage { _ =&gt;
+          probe.ref ! Tock
+          Behaviors.same
+        }
+      }
+
+      spawn(behavior)
+
+      manualTime.expectNoMessageFor(9.millis, probe)
+
+      manualTime.timePasses(2.millis)
+      probe.expectMessage(Tock)
+
+      manualTime.expectNoMessageFor(10.seconds, probe)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/ManualTimerExampleTest.java#L17-L73" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.testkit.typed.javadsl.LogCapturing;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.testkit.typed.javadsl.ManualTime;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.scalatestplus.junit.JUnitSuite;
+import java.time.Duration;
+
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+
+import org.junit.Test;
+
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+
+public class ManualTimerExampleTest extends JUnitSuite {
+
+  @ClassRule
+  public static final TestKitJunitResource testKit = new TestKitJunitResource(ManualTime.config());
+
+  @Rule public final LogCapturing logCapturing = new LogCapturing();
+
+  private final ManualTime manualTime = ManualTime.get(testKit.system());
+
+  static final class Tick {
+    private Tick() {}
+
+    static final Tick INSTANCE = new Tick();
+  }
+
+  static final class Tock {}
+
+  @Test
+  public void testScheduleNonRepeatedTicks() {
+    TestProbe&lt;Tock&gt; probe = testKit.createTestProbe();
+    Behavior&lt;Tick&gt; behavior =
+        Behaviors.withTimers(
+            timer -&gt; {
+              timer.startSingleTimer(Tick.INSTANCE, Duration.ofMillis(10));
+              return Behaviors.receiveMessage(
+                  tick -&gt; {
+                    probe.ref().tell(new Tock());
+                    return Behaviors.same();
+                  });
+            });
+
+    testKit.spawn(behavior);
+
+    manualTime.expectNoMessageFor(Duration.ofMillis(9), probe);
+
+    manualTime.timePasses(Duration.ofMillis(2));
+    probe.expectMessageClass(Tock.class);
+
+    manualTime.expectNoMessageFor(Duration.ofSeconds(10), probe);
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#test-of-logging" name="test-of-logging" class="anchor"><span class="anchor-link"></span></a>Test of logging</h3>
+<p>To verify that certain <a href="logging.html">logging</a> events are emitted there is a utility called <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.javadsl.LoggingTestKit"><code>LoggingTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.LoggingTestKit"><code>LoggingTestKit</code></a></span> . You define a criteria of the expected logging events and it will assert that the given number of occurrences of matching logging events are emitted within a block of code.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.javadsl.LoggingTestKit"><code>LoggingTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.LoggingTestKit"><code>LoggingTestKit</code></a></span> implementation <a href="logging.html#logback">requires Logback dependency</a>.</p></div>
+<p>For example, a criteria that verifies that an <code>INFO</code> level event with a message containing &ldquo;Received message&rdquo; is logged:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L126-L133" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.testkit.typed.scaladsl.LoggingTestKit
+
+// implicit ActorSystem is needed, but that is given by ScalaTestWithActorTestKit
+// implicit val system: ActorSystem[_]
+
+LoggingTestKit.info(&quot;Received message&quot;).expect {
+  ref ! Message(&quot;hello&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L34-L176" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.testkit.typed.javadsl.LoggingTestKit;
+
+LoggingTestKit.info(&quot;Received message&quot;)
+    .expect(
+        system,
+        () -&gt; {
+          ref.tell(new Message(&quot;hello&quot;));
+          return null;
+        });</code></pre></dd>
+</dl>
+<p>More advanced criteria can be built by chaining conditions that all must be satisfied for a matching event.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L137-L150" target="_blank" title="Go to snippet source">source</a><code class="language-scala">LoggingTestKit
+  .error[IllegalArgumentException]
+  .withMessageRegex(&quot;.*was rejected.*expecting ascii input.*&quot;)
+  .withCustom { event =&gt;
+    event.marker match {
+      case Some(m) =&gt; m.getName == &quot;validation&quot;
+      case None    =&gt; false
+    }
+  }
+  .withOccurrences(2)
+  .expect {
+    ref ! Message(&quot;hellö&quot;)
+    ref ! Message(&quot;hejdå&quot;)
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L180-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">LoggingTestKit.error(IllegalArgumentException.class)
+    .withMessageRegex(&quot;.*was rejected.*expecting ascii input.*&quot;)
+    .withCustom(
+        event -&gt;
+            event.getMarker().isPresent()
+                &amp;&amp; event.getMarker().get().getName().equals(&quot;validation&quot;))
+    .withOccurrences(2)
+    .expect(
+        system,
+        () -&gt; {
+          ref.tell(new Message(&quot;hellö&quot;));
+          ref.tell(new Message(&quot;hejdå&quot;));
+          return null;
+        });</code></pre></dd>
+</dl>
+<p>See <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.javadsl.LoggingTestKit"><code>LoggingTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/LoggingTestKit.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.LoggingTestKit"><code>LoggingTestKit</code></a></span> for more details.</p>
+<h3><a href="#silence-logging-output-from-tests" name="silence-logging-output-from-tests" class="anchor"><span class="anchor-link"></span></a>Silence logging output from tests</h3>
+<p>When running tests, it&rsquo;s typically preferred to have the output to standard out, together with the output from the testing framework (<span class="group-scala">ScalaTest</span><span class="group-java">JUnit</span>). On one hand you want the output to be clean without logging noise, but on the other hand you want as much information as possible if there is a test failure (for example in CI builds).</p>
+<p>The Akka TestKit provides a <code>LogCapturing</code> utility to support this with ScalaTest or JUnit. It will buffer log events instead of emitting them to the <code>ConsoleAppender</code> immediately (or whatever Logback appender that is configured). When there is a test failure the buffered events are flushed to the target appenders, typically a <code>ConsoleAppender</code>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <code>LogCapturing</code> utility <a href="logging.html#logback">requires Logback dependency</a>.</p></div>
+<p><span class="group-scala">Mix <code>LogCapturing</code> trait into the ScalaTest</span><span class="group-java">Add a <code>LogCapturing</code> <code>@Rule</code> in the JUnit test</span> like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/scala/docs/org/apache/pekko/actor/testkit/typed/scaladsl/ScalaTestIntegrationExampleSpec.scala#L20-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.testkit.typed.scaladsl.LogCapturing
+import pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class LogCapturingExampleSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike with LogCapturing {
+
+  &quot;Something&quot; must {
+    &quot;behave correctly&quot; in {
+      val pinger = testKit.spawn(Echo(), &quot;ping&quot;)
+      val probe = testKit.createTestProbe[Echo.Pong]()
+      pinger ! Echo.Ping(&quot;hello&quot;, probe.ref)
+      probe.expectMessage(Echo.Pong(&quot;hello&quot;))
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-testkit-typed/src/test/java/jdocs/org/apache/pekko/actor/testkit/typed/javadsl/LogCapturingExampleTest.java#L19-L40" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.testkit.typed.javadsl.LogCapturing;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+import org.apache.pekko.actor.typed.ActorRef;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+public class LogCapturingExampleTest {
+
+  @ClassRule public static final TestKitJunitResource testKit = new TestKitJunitResource();
+
+  @Rule public final LogCapturing logCapturing = new LogCapturing();
+
+  @Test
+  public void testSomething() {
+    ActorRef&lt;Echo.Ping&gt; pinger = testKit.spawn(Echo.create(), &quot;ping&quot;);
+    TestProbe&lt;Echo.Pong&gt; probe = testKit.createTestProbe();
+    pinger.tell(new Echo.Ping(&quot;hello&quot;, probe.ref()));
+    probe.expectMessage(new Echo.Pong(&quot;hello&quot;));
+  }
+}</code></pre></dd>
+</dl>
+<p>Then you also need to configure the <code>CapturingAppender</code> and <code>CapturingAppenderDelegate</code> in <code>src/test/resources/logback-test.xml</code>:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/resources/logback-doc-test.xml" target="_blank" title="Go to snippet source">source</a><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;
+            &lt;level&gt;INFO&lt;/level&gt;
+        &lt;/filter&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;[%date{ISO8601}] [%level] [%logger] [%marker] [%thread] - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;!--
+    Logging from tests are silenced by this appender. When there is a test failure
+    the captured logging events are flushed to the appenders defined for the
+    org.apache.pekko.actor.testkit.typed.internal.CapturingAppenderDelegate logger.
+    --&gt;
+    &lt;appender name=&quot;CapturingAppender&quot; class=&quot;org.apache.pekko.actor.testkit.typed.internal.CapturingAppender&quot; /&gt;
+
+    &lt;!--
+    The appenders defined for this CapturingAppenderDelegate logger are used
+    when there is a test failure and all logging events from the test are
+    flushed to these appenders.
+    --&gt;
+    &lt;logger name=&quot;org.apache.pekko.actor.testkit.typed.internal.CapturingAppenderDelegate&quot; &gt;
+      &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+    &lt;/logger&gt;
+
+    &lt;root level=&quot;DEBUG&quot;&gt;
+        &lt;appender-ref ref=&quot;CapturingAppender&quot;/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/testing-async.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/testing-sync.html">Synchronous behavior testing</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/testing-async.html#asynchronous-testing" class="header">Asynchronous testing</a>
+  <ul>
+    <li><a href="../typed/testing-async.html#basic-example" class="header">Basic example</a></li>
+    <li><a href="../typed/testing-async.html#observing-mocked-behavior" class="header">Observing mocked behavior</a></li>
+    <li><a href="../typed/testing-async.html#test-framework-integration" class="header">Test framework integration</a></li>
+    <li><a href="../typed/testing-async.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/testing-async.html#controlling-the-scheduler" class="header">Controlling the scheduler</a></li>
+    <li><a href="../typed/testing-async.html#test-of-logging" class="header">Test of logging</a></li>
+    <li><a href="../typed/testing-async.html#silence-logging-output-from-tests" class="header">Silence logging output from tests</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

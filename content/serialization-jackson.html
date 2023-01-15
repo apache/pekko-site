@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Serialization with Jackson · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Serialization with Jackson for Akka.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentserialization-jackson.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="active page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="active page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Akka Documentation</a></li>
+  <li><a href="typed/index-cluster.html">Cluster</a></li>
+  <li>Serialization with Jackson</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#serialization-with-jackson" name="serialization-with-jackson" class="anchor"><span class="anchor-link"></span></a>Serialization with Jackson</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Jackson Serialization, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-serialization-jackson" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-serialization-jackson_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-serialization-jackson_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>You find general concepts for for Akka serialization in the <a href="serialization.html">Serialization</a> section. This section describes how to use the Jackson serializer for application specific messages and persistent events and snapshots.</p>
+<p><a href="https://github.com/FasterXML/jackson">Jackson</a> has support for both text based JSON and binary formats.</p>
+<p>In many cases ordinary classes can be serialized by Jackson without any additional hints, but sometimes annotations are needed to specify how to convert the objects to JSON/bytes.</p>
+<h2><a href="#usage" name="usage" class="anchor"><span class="anchor-link"></span></a>Usage</h2>
+<p>To enable Jackson serialization for a class you need to configure it or one of its super classes in serialization-bindings configuration. Typically you will create a marker <span class="group-scala">trait</span><span class="group-java">interface</span> for that purpose and let the messages <span class="group-scala">extend</span><span class="group-java">implement</span> that.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L36-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Marker interface for messages, events and snapshots that are serialized with Jackson.
+ */
+trait MySerializable
+
+final case class Message(name: String, nr: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/MySerializable.java#L17-L28" target="_blank" title="Go to snippet source">source</a><code class="language-java">/** Marker interface for messages, events and snapshots that are serialized with Jackson. */
+public interface MySerializable {}
+
+class MyMessage implements MySerializable {
+  public final String name;
+  public final int nr;
+
+  public MyMessage(String name, int nr) {
+    this.name = name;
+    this.nr = nr;
+  }
+}</code></pre></dd>
+</dl>
+<p>Then you configure the class name of the marker <span class="group-scala">trait</span><span class="group-java">interface</span> in <code>serialization-bindings</code> to one of the supported Jackson formats: <code>jackson-json</code> or <code>jackson-cbor</code></p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L47-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serialization-bindings {
+    &quot;com.myservice.MySerializable&quot; = jackson-json
+  }
+}</code></pre>
+<p>A good convention would be to name the marker interface <code>CborSerializable</code> or <code>JsonSerializable</code>. In this documentation we have used <code>MySerializable</code> to make it clear that the marker interface itself is not provided by Akka.</p>
+<p>That is all that is needed for basic classes where Jackson understands the structure. A few cases that requires annotations are described below.</p>
+<p>Note that it&rsquo;s only the top level class or its marker <span class="group-scala">trait</span><span class="group-java">interface</span> that must be defined in <code>serialization-bindings</code>, not nested classes that it references in member fields.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Add the <code>-parameters</code> Java compiler option for usage by the <a href="https://github.com/FasterXML/jackson-modules-java8/tree/master/parameter-names">ParameterNamesModule</a>. It reduces the need for some annotations.</p></div>
+<h2><a href="#security" name="security" class="anchor"><span class="anchor-link"></span></a>Security</h2>
+<p>For security reasons it is disallowed to bind the Jackson serializers to open ended types that might be a target for <a href="https://cowtowncoder.medium.com/on-jackson-cves-dont-panic-here-is-what-you-need-to-know-54cd0d6e8062">serialization gadgets</a>, such as:</p>
+<ul>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="java.lang.Object"><code>java.lang.Object</code></a></li>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html" title="java.io.Serializable"><code>java.io.Serializable</code></a></li>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Comparable.html" title="java.lang.Comparable"><code>java.lang.Comparable</code></a>.</li>
+</ul>
+<p>The deny list of possible serialization gadget classes defined by Jackson databind are checked and disallowed for deserialization.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Don&rsquo;t use <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonTypeInfo.html" title="com.fasterxml.jackson.annotation.JsonTypeInfo"><code>@JsonTypeInfo(use = Id.CLASS)</code></a> or <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/ObjectMapper.html#enableDefaultTyping--" title="com.fasterxml.jackson.databind.ObjectMapper"><code>ObjectMapper.enableDefaultTyping</code></a> since that is a security risk when using <a href="serialization-jackson.html#polymorphic-types">polymorphic types</a>.</p></div>
+<h3><a href="#formats" name="formats" class="anchor"><span class="anchor-link"></span></a>Formats</h3>
+<p>The following formats are supported, and you select which one to use in the <code>serialization-bindings</code> configuration as described above.</p>
+<ul>
+  <li><code>jackson-json</code> - ordinary text based JSON</li>
+  <li><code>jackson-cbor</code> - binary <a href="https://github.com/FasterXML/jackson-dataformats-binary/tree/master/cbor">CBOR data format</a></li>
+</ul>
+<p>The binary format is more compact, with slightly better performance than the JSON format.</p>
+<h2><a href="#annotations" name="annotations" class="anchor"><span class="anchor-link"></span></a>Annotations</h2><div class="group-java">
+<h3><a href="#constructor-with-single-parameter" name="constructor-with-single-parameter" class="anchor"><span class="anchor-link"></span></a>Constructor with single parameter</h3>
+<p>You might run into an exception like this:</p>
+<pre><code>MismatchedInputException: Cannot construct instance of `...` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)
+</code></pre>
+<p>That is probably because the class has a constructor with a single parameter, like:</p>
+<dl>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/SerializationDocTest.java#L26-L32" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class SimpleCommand implements MySerializable {
+  private final String name;
+
+  public SimpleCommand(String name) {
+    this.name = name;
+  }
+}</code></pre></dd>
+</dl>
+<p>That can be solved by adding <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonCreator.html" title="com.fasterxml.jackson.annotation.JsonCreator"><code>@JsonCreator</code></a> or <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonProperty.html" title="com.fasterxml.jackson.annotation.JsonProperty"><code>@JsonProperty</code></a> annotations:</p>
+<dl>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/SerializationDocTest.java#L38-L45" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class SimpleCommand implements MySerializable {
+  private final String name;
+
+  @JsonCreator
+  public SimpleCommand(String name) {
+    this.name = name;
+  }
+}</code></pre></dd>
+</dl>
+<p>or</p>
+<dl>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/SerializationDocTest.java#L51-L57" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class SimpleCommand implements MySerializable {
+  private final String name;
+
+  public SimpleCommand(@JsonProperty(&quot;name&quot;) String name) {
+    this.name = name;
+  }
+}</code></pre></dd>
+</dl>
+<p>The <code>ParameterNamesModule</code> is configured with <code>JsonCreator.Mode.PROPERTIES</code> as described in the <a href="https://github.com/FasterXML/jackson-modules-java8/tree/master/parameter-names#delegating-creator">Jackson documentation</a></p></div>
+<h3><a href="#polymorphic-types" name="polymorphic-types" class="anchor"><span class="anchor-link"></span></a>Polymorphic types</h3>
+<p>A polymorphic type is when a certain base type has multiple alternative implementations. When nested fields or collections are of polymorphic type the concrete implementations of the type must be listed with <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonTypeInfo.html" title="com.fasterxml.jackson.annotation.JsonTypeInfo"><code>@JsonTypeInfo</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonSubTypes.html" title="com.fasterxml.jackson.annotation.JsonSubTypes"><code>@JsonSubTypes</code></a> annotations.</p>
+<p>Example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L145-L156" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class Zoo(primaryAttraction: Animal) extends MySerializable
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = &quot;type&quot;)
+@JsonSubTypes(
+  Array(
+    new JsonSubTypes.Type(value = classOf[Lion], name = &quot;lion&quot;),
+    new JsonSubTypes.Type(value = classOf[Elephant], name = &quot;elephant&quot;)))
+sealed trait Animal
+
+final case class Lion(name: String) extends Animal
+
+final case class Elephant(name: String, age: Int) extends Animal</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/SerializationDocTest.java#L63-L96" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Zoo implements MySerializable {
+  public final Animal primaryAttraction;
+
+  @JsonCreator
+  public Zoo(Animal primaryAttraction) {
+    this.primaryAttraction = primaryAttraction;
+  }
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = &quot;type&quot;)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Lion.class, name = &quot;lion&quot;),
+  @JsonSubTypes.Type(value = Elephant.class, name = &quot;elephant&quot;)
+})
+interface Animal {}
+
+public final class Lion implements Animal {
+  public final String name;
+
+  @JsonCreator
+  public Lion(String name) {
+    this.name = name;
+  }
+}
+
+public final class Elephant implements Animal {
+  public final String name;
+  public final int age;
+
+  public Elephant(String name, int age) {
+    this.name = name;
+    this.age = age;
+  }
+}</code></pre></dd>
+</dl>
+<p>If you haven&rsquo;t defined the annotations you will see an exception like this:</p>
+<pre><code>InvalidDefinitionException: Cannot construct instance of `...` (no Creators, like default construct, exist): abstract types either need to be mapped to concrete types, have custom deserializer, or contain additional type information
+</code></pre>
+<p>Note that this is not needed for a top level class, but for fields inside it. In this example <code>Animal</code> is used inside of <code>Zoo</code>, which is sent as a message or persisted. If <code>Animal</code> was sent or persisted standalone the annotations are not needed because then it is the concrete subclasses <code>Lion</code> or <code>Elephant</code> that are serialized.</p>
+<p>When specifying allowed subclasses with those annotations the class names will not be included in the serialized representation and that is important for <a href="serialization-jackson.html#security">preventing loading of malicious serialization gadgets</a> when deserializing.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Don&rsquo;t use <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonTypeInfo.html" title="com.fasterxml.jackson.annotation.JsonTypeInfo"><code>@JsonTypeInfo(use = Id.CLASS)</code></a> or <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/ObjectMapper.html#enableDefaultTyping--" title="com.fasterxml.jackson.databind.ObjectMapper"><code>ObjectMapper.enableDefaultTyping</code></a> since that is a security risk when using polymorphic types.</p></div><div class="group-scala">
+<h3><a href="#adt-with-trait-and-case-object" name="adt-with-trait-and-case-object" class="anchor"><span class="anchor-link"></span></a>ADT with trait and case object</h3>
+<p>It&rsquo;s common in Scala to use a sealed trait and case objects to represent enums. If the values are case classes the <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonSubTypes.html" title="com.fasterxml.jackson.annotation.JsonSubTypes"><code>@JsonSubTypes</code></a> annotation as described above works, but if the values are case objects it will not. The annotation requires a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html" title="java.lang.Class"><code>Class</code></a> and there is no way to define that in an annotation for a <code>case object</code>.</p>
+<p>The easiest workaround is to define the case objects as case class without any field. </p>
+<p>Alternatively, you can define an intermediate trait for the case object and a custom deserializer for it. The example below builds on the previous <code>Animal</code> sample by adding a fictitious, single instance, new animal, an <code>Unicorn</code>. </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L163-L184" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class Zoo(primaryAttraction: Animal) extends MySerializable
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = &quot;type&quot;)
+@JsonSubTypes(
+  Array(
+    new JsonSubTypes.Type(value = classOf[Lion], name = &quot;lion&quot;),
+    new JsonSubTypes.Type(value = classOf[Elephant], name = &quot;elephant&quot;),
+    new JsonSubTypes.Type(value = classOf[Unicorn], name = &quot;unicorn&quot;)))
+sealed trait Animal
+
+final case class Lion(name: String) extends Animal
+final case class Elephant(name: String, age: Int) extends Animal
+
+@JsonDeserialize(`using` = classOf[UnicornDeserializer])
+sealed trait Unicorn extends Animal
+@JsonTypeName(&quot;unicorn&quot;)
+case object Unicorn extends Unicorn
+
+class UnicornDeserializer extends StdDeserializer[Unicorn](Unicorn.getClass) {
+  // whenever we need to deserialize an instance of Unicorn trait, we return the object Unicorn
+  override def deserialize(p: JsonParser, ctxt: DeserializationContext): Unicorn = Unicorn
+}</code></pre></dd>
+</dl>
+<p>The case object <code>Unicorn</code> can&rsquo;t be used in a <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonSubTypes.html" title="com.fasterxml.jackson.annotation.JsonSubTypes"><code>@JsonSubTypes</code></a> annotation, but its trait can. When serializing the case object we need to know which type tag to use, hence the <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com/fasterxml/jackson/annotation/JsonTypeName.html" title="com.fasterxml.jackson.annotation.JsonTypeName"><code>@JsonTypeName</code></a> annotation on the object. When deserializing, Jackson will only know about the trait variant therefore we need a custom deserializer that returns the case object. </p>
+<p>On the other hand, if the ADT only has case objects, you can solve it by implementing a custom serialization for the enums. Annotate the <code>trait</code> with <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/annotation/JsonSerialize.html" title="com.fasterxml.jackson.databind.annotation.JsonSerialize"><code>@JsonSerialize</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/annotation/JsonDeserialize.html" title="com.fasterxml.jackson.databind.annotation.JsonDeserialize"><code>@JsonDeserialize</code></a> and implement the serialization with <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/ser/std/StdSerializer.html" title="com.fasterxml.jackson.databind.ser.std.StdSerializer"><code>StdSerializer</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/deser/std/StdDeserializer.html" title="com.fasterxml.jackson.databind.deser.std.StdDeserializer"><code>StdDeserializer</code></a>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/CustomAdtSerializer.scala#L19-L66" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
+@JsonSerialize(`using` = classOf[DirectionJsonSerializer])
+@JsonDeserialize(`using` = classOf[DirectionJsonDeserializer])
+sealed trait Direction
+
+object Direction {
+  case object North extends Direction
+  case object East extends Direction
+  case object South extends Direction
+  case object West extends Direction
+}
+
+class DirectionJsonSerializer extends StdSerializer[Direction](classOf[Direction]) {
+  import Direction._
+
+  override def serialize(value: Direction, gen: JsonGenerator, provider: SerializerProvider): Unit = {
+    val strValue = value match {
+      case North =&gt; &quot;N&quot;
+      case East  =&gt; &quot;E&quot;
+      case South =&gt; &quot;S&quot;
+      case West  =&gt; &quot;W&quot;
+    }
+    gen.writeString(strValue)
+  }
+}
+
+class DirectionJsonDeserializer extends StdDeserializer[Direction](classOf[Direction]) {
+  import Direction._
+
+  override def deserialize(p: JsonParser, ctxt: DeserializationContext): Direction = {
+    p.getText match {
+      case &quot;N&quot; =&gt; North
+      case &quot;E&quot; =&gt; East
+      case &quot;S&quot; =&gt; South
+      case &quot;W&quot; =&gt; West
+    }
+  }
+}
+
+final case class Compass(currentDirection: Direction) extends MySerializable</code></pre></dd>
+</dl>
+<h3><a href="#enumerations" name="enumerations" class="anchor"><span class="anchor-link"></span></a>Enumerations</h3>
+<p>Jackson support for Scala Enumerations defaults to serializing a <code>Value</code> as a <code>JsonObject</code> that includes a field with the <code>&quot;value&quot;</code> and a field with the <code>&quot;type&quot;</code> whose value is the FQCN of the enumeration. Jackson includes the <a href="https://github.com/FasterXML/jackson-module-scala/wiki/Enumerations"><code>@JsonScalaEnumeration</code></a> to statically specify the type information to a field. When using the <code>@JsonScalaEnumeration</code> annotation the enumeration value is serialized as a JsonString.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/org/apache/pekko/serialization/jackson/JacksonSerializerSpec.scala#L118-L129" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Planet extends Enumeration {
+  type Planet = Value
+  val Mercury, Venus, Earth, Mars, Krypton = Value
+}
+
+// Uses default Jackson serialization format for Scala Enumerations
+final case class Alien(name: String, planet: Planet.Planet) extends TestMessage
+
+// Serializes planet values as a JsonString
+class PlanetType extends TypeReference[Planet.type] {}
+final case class Superhero(name: String, @JsonScalaEnumeration(classOf[PlanetType]) planet: Planet.Planet)
+    extends TestMessage</code></pre></dd>
+</dl></div>
+<h2><a href="#schema-evolution" name="schema-evolution" class="anchor"><span class="anchor-link"></span></a>Schema Evolution</h2>
+<p>When using Event Sourcing, but also for rolling updates, schema evolution becomes an important aspect of developing your application. The requirements as well as our own understanding of the business domain may (and will) change over time.</p>
+<p>The Jackson serializer provides a way to perform transformations of the JSON tree model during deserialization. This is working in the same way for the textual and binary formats.</p>
+<p>We will look at a few scenarios of how the classes may be evolved.</p>
+<h3><a href="#remove-field" name="remove-field" class="anchor"><span class="anchor-link"></span></a>Remove Field</h3>
+<p>Removing a field can be done without any migration code. The Jackson serializer will ignore properties that does not exist in the class.</p>
+<h3><a href="#add-optional-field" name="add-optional-field" class="anchor"><span class="anchor-link"></span></a>Add Optional Field</h3>
+<p>Adding an optional field can be done without any migration code. The default value will be <span class="group-scala">None</span><span class="group-java"><code>Optional.empty</code></span>.</p>
+<p>Old class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1/ItemAdded.scala#L20" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, productId: String, quantity: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1/ItemAdded.java#L20-L30" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+  public final String productId;
+  public final int quantity;
+
+  public ItemAdded(String shoppingCartId, String productId, int quantity) {
+    this.shoppingCartId = shoppingCartId;
+    this.productId = productId;
+    this.quantity = quantity;
+  }
+}</code></pre></dd>
+</dl>
+<p>New class with a new optional <code>discount</code> property and a new <code>note</code> field with default value:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/ItemAdded.scala#L20-L27" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, productId: String, quantity: Int, discount: Option[Double], note: String)
+    extends MySerializable {
+
+  // alternative constructor because `note` should have default value &quot;&quot; when not defined in json
+  @JsonCreator
+  def this(shoppingCartId: String, productId: String, quantity: Int, discount: Option[Double], note: Option[String]) =
+    this(shoppingCartId, productId, quantity, discount, note.getOrElse(&quot;&quot;))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/ItemAdded.java#L22-L50" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+  public final String productId;
+  public final int quantity;
+  public final Optional&lt;Double&gt; discount;
+  public final String note;
+
+  @JsonCreator
+  public ItemAdded(
+      String shoppingCartId,
+      String productId,
+      int quantity,
+      Optional&lt;Double&gt; discount,
+      String note) {
+    this.shoppingCartId = shoppingCartId;
+    this.productId = productId;
+    this.quantity = quantity;
+    this.discount = discount;
+
+    // default for note is &quot;&quot; if not included in json
+    if (note == null) this.note = &quot;&quot;;
+    else this.note = note;
+  }
+
+  public ItemAdded(
+      String shoppingCartId, String productId, int quantity, Optional&lt;Double&gt; discount) {
+    this(shoppingCartId, productId, quantity, discount, &quot;&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#add-mandatory-field" name="add-mandatory-field" class="anchor"><span class="anchor-link"></span></a>Add Mandatory Field</h3>
+<p>Let&rsquo;s say we want to have a mandatory <code>discount</code> property without default value instead:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2b/ItemAdded.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, productId: String, quantity: Int, discount: Double) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2b/ItemAdded.java#L19-L31" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+  public final String productId;
+  public final int quantity;
+  public final double discount;
+
+  public ItemAdded(String shoppingCartId, String productId, int quantity, double discount) {
+    this.shoppingCartId = shoppingCartId;
+    this.productId = productId;
+    this.quantity = quantity;
+    this.discount = discount;
+  }
+}</code></pre></dd>
+</dl>
+<p>To add a new mandatory field we have to use a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>JacksonMigration</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>JacksonMigration</code></a></span> class and set the default value in the migration code.</p>
+<p>This is how a migration class would look like for adding a <code>discount</code> field:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2b/ItemAddedMigration.scala#L17-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.DoubleNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.pekko.serialization.jackson.JacksonMigration
+
+class ItemAddedMigration extends JacksonMigration {
+
+  override def currentVersion: Int = 2
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = {
+    val root = json.asInstanceOf[ObjectNode]
+    if (fromVersion &lt;= 1) {
+      root.set(&quot;discount&quot;, DoubleNode.valueOf(0.0))
+    }
+    root
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2b/ItemAddedMigration.java#L17-L37" target="_blank" title="Go to snippet source">source</a><code class="language-java">import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.DoubleNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.pekko.serialization.jackson.JacksonMigration;
+
+public class ItemAddedMigration extends JacksonMigration {
+
+  @Override
+  public int currentVersion() {
+    return 2;
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    ObjectNode root = (ObjectNode) json;
+    if (fromVersion &lt;= 1) {
+      root.set(&quot;discount&quot;, DoubleNode.valueOf(0.0));
+    }
+    return root;
+  }
+}</code></pre></dd>
+</dl>
+<p>Override the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/serialization/jackson/JacksonMigration.html#currentVersion:Int" title="pekko.serialization.jackson.JacksonMigration"><code>currentVersion</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/serialization/jackson/JacksonMigration.html#currentVersion()" title="pekko.serialization.jackson.JacksonMigration"><code>currentVersion()</code></a></span> method to define the version number of the current (latest) version. The first version, when no migration was used, is always 1. Increase this version number whenever you perform a change that is not backwards compatible without migration code.</p>
+<p>Implement the transformation of the old JSON structure to the new JSON structure in the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html#transform(fromVersion:Int,json:com.fasterxml.jackson.databind.JsonNode):com.fasterxml.jackson.databind.JsonNode" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>transform(fromVersion, jsonNode)</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html#transform(int,com.fasterxml.jackson.databind.JsonNode)" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>transform(fromVersion, jsonNode)</code></a></span> method. The <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/JsonNode.html" title="com.fasterxml.jackson.databind.JsonNode"><code>JsonNode</code></a> is mutable so you can add and remove fields, or change values. Note that you have to cast to specific sub-classes such as <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/node/ObjectNode.html" title="com.fasterxml.jackson.databind.node.ObjectNode"><code>ObjectNode</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/node/ArrayNode.html" title="com.fasterxml.jackson.databind.node.ArrayNode"><code>ArrayNode</code></a> to get access to mutators.</p>
+<p>The migration class must be defined in configuration file:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L57-L59" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.serialization.jackson.migrations {
+  &quot;com.myservice.event.ItemAdded&quot; = &quot;com.myservice.event.ItemAddedMigration&quot;
+}</code></pre>
+<p>The same thing could have been done for the <code>note</code> field, adding a default value of <code>&quot;&quot;</code> in the <code>ItemAddedMigration</code>.</p>
+<h3><a href="#rename-field" name="rename-field" class="anchor"><span class="anchor-link"></span></a>Rename Field</h3>
+<p>Let&rsquo;s say that we want to rename the <code>productId</code> field to <code>itemId</code> in the previous example.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2c/ItemAdded.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, itemId: String, quantity: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2c/ItemAdded.java#L19-L31" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+
+  public final String itemId;
+
+  public final int quantity;
+
+  public ItemAdded(String shoppingCartId, String itemId, int quantity) {
+    this.shoppingCartId = shoppingCartId;
+    this.itemId = itemId;
+    this.quantity = quantity;
+  }
+}</code></pre></dd>
+</dl>
+<p>The migration code would look like:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2c/ItemAddedMigration.scala#L17-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.serialization.jackson.JacksonMigration
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+class ItemAddedMigration extends JacksonMigration {
+
+  override def currentVersion: Int = 2
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = {
+    val root = json.asInstanceOf[ObjectNode]
+    if (fromVersion &lt;= 1) {
+      root.set[JsonNode](&quot;itemId&quot;, root.get(&quot;productId&quot;))
+      root.remove(&quot;productId&quot;)
+    }
+    root
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2c/ItemAddedMigration.java#L17-L38" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.serialization.jackson.JacksonMigration;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class ItemAddedMigration extends JacksonMigration {
+
+  @Override
+  public int currentVersion() {
+    return 2;
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    ObjectNode root = (ObjectNode) json;
+    if (fromVersion &lt;= 1) {
+      root.set(&quot;itemId&quot;, root.get(&quot;productId&quot;));
+      root.remove(&quot;productId&quot;);
+    }
+    return root;
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#structural-changes" name="structural-changes" class="anchor"><span class="anchor-link"></span></a>Structural Changes</h3>
+<p>In a similar way we can do arbitrary structural changes.</p>
+<p>Old class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1/Customer.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Customer(name: String, street: String, city: String, zipCode: String, country: String) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1/Customer.java#L19-L33" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Customer implements MySerializable {
+  public final String name;
+  public final String street;
+  public final String city;
+  public final String zipCode;
+  public final String country;
+
+  public Customer(String name, String street, String city, String zipCode, String country) {
+    this.name = name;
+    this.street = street;
+    this.city = city;
+    this.zipCode = zipCode;
+    this.country = country;
+  }
+}</code></pre></dd>
+</dl>
+<p>New class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/Customer.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Customer(name: String, shippingAddress: Address, billingAddress: Option[Address]) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/Customer.java#L21-L31" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Customer implements MySerializable {
+  public final String name;
+  public final Address shippingAddress;
+  public final Optional&lt;Address&gt; billingAddress;
+
+  public Customer(String name, Address shippingAddress, Optional&lt;Address&gt; billingAddress) {
+    this.name = name;
+    this.shippingAddress = shippingAddress;
+    this.billingAddress = billingAddress;
+  }
+}</code></pre></dd>
+</dl>
+<p>with the <code>Address</code> class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/Address.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Address(street: String, city: String, zipCode: String, country: String) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/Address.java#L17-L29" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Address {
+  public final String street;
+  public final String city;
+  public final String zipCode;
+  public final String country;
+
+  public Address(String street, String city, String zipCode, String country) {
+    this.street = street;
+    this.city = city;
+    this.zipCode = zipCode;
+    this.country = country;
+  }
+}</code></pre></dd>
+</dl>
+<p>The migration code would look like:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/CustomerMigration.scala#L17-L40" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.serialization.jackson.JacksonMigration
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+class CustomerMigration extends JacksonMigration {
+
+  override def currentVersion: Int = 2
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = {
+    val root = json.asInstanceOf[ObjectNode]
+    if (fromVersion &lt;= 1) {
+      val shippingAddress = root.`with`(&quot;shippingAddress&quot;)
+      shippingAddress.set[JsonNode](&quot;street&quot;, root.get(&quot;street&quot;))
+      shippingAddress.set[JsonNode](&quot;city&quot;, root.get(&quot;city&quot;))
+      shippingAddress.set[JsonNode](&quot;zipCode&quot;, root.get(&quot;zipCode&quot;))
+      shippingAddress.set[JsonNode](&quot;country&quot;, root.get(&quot;country&quot;))
+      root.remove(&quot;street&quot;)
+      root.remove(&quot;city&quot;)
+      root.remove(&quot;zipCode&quot;)
+      root.remove(&quot;country&quot;)
+    }
+    root
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/CustomerMigration.java#L17-L44" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.serialization.jackson.JacksonMigration;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class CustomerMigration extends JacksonMigration {
+
+  @Override
+  public int currentVersion() {
+    return 2;
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    ObjectNode root = (ObjectNode) json;
+    if (fromVersion &lt;= 1) {
+      ObjectNode shippingAddress = root.with(&quot;shippingAddress&quot;);
+      shippingAddress.set(&quot;street&quot;, root.get(&quot;street&quot;));
+      shippingAddress.set(&quot;city&quot;, root.get(&quot;city&quot;));
+      shippingAddress.set(&quot;zipCode&quot;, root.get(&quot;zipCode&quot;));
+      shippingAddress.set(&quot;country&quot;, root.get(&quot;country&quot;));
+      root.remove(&quot;street&quot;);
+      root.remove(&quot;city&quot;);
+      root.remove(&quot;zipCode&quot;);
+      root.remove(&quot;country&quot;);
+    }
+    return root;
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#rename-class" name="rename-class" class="anchor"><span class="anchor-link"></span></a>Rename Class</h3>
+<p>It is also possible to rename the class. For example, let&rsquo;s rename <code>OrderAdded</code> to <code>OrderPlaced</code>.</p>
+<p>Old class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1/OrderAdded.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class OrderAdded(shoppingCartId: String) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1/OrderAdded.java#L20-L27" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class OrderAdded implements MySerializable {
+  public final String shoppingCartId;
+
+  @JsonCreator
+  public OrderAdded(String shoppingCartId) {
+    this.shoppingCartId = shoppingCartId;
+  }
+}</code></pre></dd>
+</dl>
+<p>New class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/OrderPlaced.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class OrderPlaced(shoppingCartId: String) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/OrderPlaced.java#L20-L27" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class OrderPlaced implements MySerializable {
+  public final String shoppingCartId;
+
+  @JsonCreator
+  public OrderPlaced(String shoppingCartId) {
+    this.shoppingCartId = shoppingCartId;
+  }
+}</code></pre></dd>
+</dl>
+<p>The migration code would look like:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2a/OrderPlacedMigration.scala#L20-L28" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class OrderPlacedMigration extends JacksonMigration {
+
+  override def currentVersion: Int = 2
+
+  override def transformClassName(fromVersion: Int, className: String): String =
+    classOf[OrderPlaced].getName
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = json
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2a/OrderPlacedMigration.java#L20-L36" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class OrderPlacedMigration extends JacksonMigration {
+
+  @Override
+  public int currentVersion() {
+    return 2;
+  }
+
+  @Override
+  public String transformClassName(int fromVersion, String className) {
+    return OrderPlaced.class.getName();
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    return json;
+  }
+}</code></pre></dd>
+</dl>
+<p>Note the override of the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html#transformClassName(fromVersion:Int,className:String):String" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>transformClassName(fromVersion, className)</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/JacksonMigration.html#transformClassName(int,java.lang.String)" title="org.apache.pekko.serialization.jackson.JacksonMigration"><code>transformClassName(fromVersion, className)</code></a></span> method to define the new class name.</p>
+<p>That type of migration must be configured with the old class name as key. The actual class can be removed.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L65-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.serialization.jackson.migrations {
+  &quot;com.myservice.event.OrderAdded&quot; = &quot;com.myservice.event.OrderPlacedMigration&quot;
+}</code></pre>
+<h3><a href="#remove-from-serialization-bindings" name="remove-from-serialization-bindings" class="anchor"><span class="anchor-link"></span></a>Remove from serialization-bindings</h3>
+<p>When a class is not used for serialization any more it can be removed from <code>serialization-bindings</code> but to still allow deserialization it must then be listed in the <code>allowed-class-prefix</code> configuration. This is useful for example during rolling update with serialization changes, or when reading old stored data. It can also be used when changing from Jackson serializer to another serializer (e.g. Protobuf) and thereby changing the serialization binding, but it should still be possible to deserialize old data with Jackson.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L199-L200" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.serialization.jackson.allowed-class-prefix =
+  [&quot;com.myservice.event.OrderAdded&quot;, &quot;com.myservice.command&quot;]</code></pre>
+<p>It&rsquo;s a list of class names or prefixes of class names.</p>
+<h2><a href="#rolling-updates" name="rolling-updates" class="anchor"><span class="anchor-link"></span></a>Rolling updates</h2>
+<p>When doing a rolling update, for a period of time there are two different binaries running in production. If the schema has evolved requiring a new schema version, the data serialized by the new binary will be unreadable from the old binary. This situation causes transient errors on the processes running the old binary. This service degradation is usually fine since the rolling update will eventually complete and all old processes will be replaced with the new binary. To avoid this service degradation you can also use forward-one support in your schema evolutions.</p>
+<p>To complete a no-degradation rolling update, you need to make two deployments. First, deploy a new binary which can read the new schema but still uses the old schema. Then, deploy a second binary which serializes data using the new schema and drops the downcasting code from the migration. </p>
+<p>Let&rsquo;s take, for example, the case above where we <a href="#rename-field">renamed a field</a>.</p>
+<p>The starting schema is:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1/ItemAdded.scala#L20" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, productId: String, quantity: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1/ItemAdded.java#L20-L30" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+  public final String productId;
+  public final int quantity;
+
+  public ItemAdded(String shoppingCartId, String productId, int quantity) {
+    this.shoppingCartId = shoppingCartId;
+    this.productId = productId;
+    this.quantity = quantity;
+  }
+}</code></pre></dd>
+</dl>
+<p>In a first deployment, we still don&rsquo;t make any change to the event class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1/ItemAdded.scala#L20" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, productId: String, quantity: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1/ItemAdded.java#L20-L30" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+  public final String productId;
+  public final int quantity;
+
+  public ItemAdded(String shoppingCartId, String productId, int quantity) {
+    this.shoppingCartId = shoppingCartId;
+    this.productId = productId;
+    this.quantity = quantity;
+  }
+}</code></pre></dd>
+</dl>
+<p>but we introduce a migration that can read the newer schema which is versioned <code>2</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v1withv2/ItemAddedMigration.scala#L17-L37" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.serialization.jackson.JacksonMigration
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+class ItemAddedMigration extends JacksonMigration {
+
+  // Data produced in this node is still produced using the version 1 of the schema
+  override def currentVersion: Int = 1
+
+  override def supportedForwardVersion: Int = 2
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = {
+    val root = json.asInstanceOf[ObjectNode]
+    if (fromVersion == 2) {
+      // When receiving an event of version 2 we down-cast it to the version 1 of the schema
+      root.set[JsonNode](&quot;productId&quot;, root.get(&quot;itemId&quot;))
+      root.remove(&quot;itemId&quot;)
+    }
+    root
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v1withv2/ItemAddedMigration.java#L17-L45" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.serialization.jackson.JacksonMigration;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class ItemAddedMigration extends JacksonMigration {
+
+  // Data produced in this node is still produced using the version 1 of the schema
+  @Override
+  public int currentVersion() {
+    return 1;
+  }
+
+  @Override
+  public int supportedForwardVersion() {
+    return 2;
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    ObjectNode root = (ObjectNode) json;
+    if (fromVersion == 2) {
+      // When receiving an event of version 2 we down-cast it to the version 1 of the schema
+      root.set(&quot;productId&quot;, root.get(&quot;itemId&quot;));
+      root.remove(&quot;itemId&quot;);
+    }
+    return root;
+  }
+}</code></pre></dd>
+</dl>
+<p>Once all running nodes have the new migration code which can read version <code>2</code> of <code>ItemAdded</code> we can proceed with the second step. So, we deploy the updated event:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2c/ItemAdded.scala#L19" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class ItemAdded(shoppingCartId: String, itemId: String, quantity: Int) extends MySerializable</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2c/ItemAdded.java#L19-L31" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ItemAdded implements MySerializable {
+  public final String shoppingCartId;
+
+  public final String itemId;
+
+  public final int quantity;
+
+  public ItemAdded(String shoppingCartId, String itemId, int quantity) {
+    this.shoppingCartId = shoppingCartId;
+    this.itemId = itemId;
+    this.quantity = quantity;
+  }
+}</code></pre></dd>
+</dl>
+<p>and the final migration code which no longer needs forward-compatibility code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/v2c/ItemAddedMigration.scala#L17-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.serialization.jackson.JacksonMigration
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+class ItemAddedMigration extends JacksonMigration {
+
+  override def currentVersion: Int = 2
+
+  override def transform(fromVersion: Int, json: JsonNode): JsonNode = {
+    val root = json.asInstanceOf[ObjectNode]
+    if (fromVersion &lt;= 1) {
+      root.set[JsonNode](&quot;itemId&quot;, root.get(&quot;productId&quot;))
+      root.remove(&quot;productId&quot;)
+    }
+    root
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/java/jdoc/org/apache/pekko/serialization/jackson/v2c/ItemAddedMigration.java#L17-L38" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.serialization.jackson.JacksonMigration;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class ItemAddedMigration extends JacksonMigration {
+
+  @Override
+  public int currentVersion() {
+    return 2;
+  }
+
+  @Override
+  public JsonNode transform(int fromVersion, JsonNode json) {
+    ObjectNode root = (ObjectNode) json;
+    if (fromVersion &lt;= 1) {
+      root.set(&quot;itemId&quot;, root.get(&quot;productId&quot;));
+      root.remove(&quot;productId&quot;);
+    }
+    return root;
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#jackson-modules" name="jackson-modules" class="anchor"><span class="anchor-link"></span></a>Jackson Modules</h2>
+<p>The following Jackson modules are enabled by default:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/main/resources/reference.conf#L9-L21" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.serialization.jackson {
+
+  # The Jackson JSON serializer will register these modules.
+  jackson-modules += &quot;org.apache.pekko.serialization.jackson.PekkoJacksonModule&quot;
+  # PekkoTypedJacksonModule optionally included if pekko-actor-typed is in classpath
+  jackson-modules += &quot;org.apache.pekko.serialization.jackson.PekkoTypedJacksonModule&quot;
+  # PekkoStreamsModule optionally included if pekko-streams is in classpath
+  jackson-modules += &quot;org.apache.pekko.serialization.jackson.PekkoStreamJacksonModule&quot;
+  jackson-modules += &quot;com.fasterxml.jackson.module.paramnames.ParameterNamesModule&quot;
+  jackson-modules += &quot;com.fasterxml.jackson.datatype.jdk8.Jdk8Module&quot;
+  jackson-modules += &quot;com.fasterxml.jackson.datatype.jsr310.JavaTimeModule&quot;
+  jackson-modules += &quot;com.fasterxml.jackson.module.scala.DefaultScalaModule&quot;
+}</code></pre>
+<p>You can amend the configuration <code>pekko.serialization.jackson.jackson-modules</code> to enable other modules.</p>
+<p>The <a href="https://github.com/FasterXML/jackson-modules-java8/tree/master/parameter-names">ParameterNamesModule</a> requires that the <code>-parameters</code> Java compiler option is enabled.</p>
+<h3><a href="#compression" name="compression" class="anchor"><span class="anchor-link"></span></a>Compression</h3>
+<p>JSON can be rather verbose and for large messages it can be beneficial to compress large payloads. For the <code>jackson-json</code> binding the default configuration is:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/main/resources/reference.conf#L204-L215" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Compression settings for the jackson-json binding
+pekko.serialization.jackson.jackson-json.compression {
+  # Compression algorithm.
+  # - off  : no compression
+  # - gzip : using common java gzip
+  # - lz4 : using lz4-java
+  algorithm = gzip
+
+  # If compression is enabled with the `algorithm` setting the payload is compressed
+  # when it&#39;s larger than this value.
+  compress-larger-than = 32 KiB
+}</code></pre>
+<p>Supported compression algorithms are: gzip, lz4. Use &lsquo;off&rsquo; to disable compression. Gzip is generally slower than lz4. Messages larger than the <code>compress-larger-than</code> property are compressed.</p>
+<p>Compression can be disabled by setting the <code>algorithm</code> property to <code>off</code>. It will still be able to decompress payloads that were compressed when serialized, e.g. if this configuration is changed.</p>
+<p>For the <code>jackson-cbor</code> and custom bindings other than <code>jackson-json</code> compression is by default disabled, but can be enabled in the same way as the configuration shown above but replacing <code>jackson-json</code> with the binding name (for example <code>jackson-cbor</code>).</p>
+<h2><a href="#using-akka-serialization-for-embedded-types" name="using-akka-serialization-for-embedded-types" class="anchor"><span class="anchor-link"></span></a>Using Akka Serialization for embedded types</h2>
+<p>For types that already have an Akka Serializer defined that are embedded in types serialized with Jackson the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/PekkoSerializationSerializer.html" title="org.apache.pekko.serialization.jackson.PekkoSerializationSerializer"><code>PekkoSerializationSerializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/PekkoSerializationSerializer.html" title="org.apache.pekko.serialization.jackson.PekkoSerializationSerializer"><code>PekkoSerializationSerializer</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/PekkoSerializationDeserializer.html" title="org.apache.pekko.serialization.jackson.PekkoSerializationDeserializer"><code>PekkoSerializationDeserializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/jackson/PekkoSerializationDeserializer.html" title="org.apache.pekko.serialization.jackson.PekkoSerializationDeserializer"><code>PekkoSerializationDeserializer</code></a></span> can be used to Akka Serialization for individual fields. </p>
+<p>The serializer/deserializer are not enabled automatically. The <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/annotation/JsonSerialize.html" title="com.fasterxml.jackson.databind.annotation.JsonSerialize"><code>@JsonSerialize</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/annotation/JsonDeserialize.html" title="com.fasterxml.jackson.databind.annotation.JsonDeserialize"><code>@JsonDeserialize</code></a> annotation needs to be added to the fields containing the types to be serialized with Akka Serialization.</p>
+<p>The type will be embedded as an object with the fields:</p>
+<ul>
+  <li>serId - the serializer id</li>
+  <li>serManifest - the manifest for the type</li>
+  <li>payload - base64 encoded bytes</li>
+</ul>
+<h2><a href="#additional-configuration" name="additional-configuration" class="anchor"><span class="anchor-link"></span></a>Additional configuration</h2>
+<h3><a href="#configuration-per-binding" name="configuration-per-binding" class="anchor"><span class="anchor-link"></span></a>Configuration per binding</h3>
+<p>By default the configuration for the Jackson serializers and their <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/ObjectMapper.html" title="com.fasterxml.jackson.databind.ObjectMapper"><code>ObjectMapper</code></a>s is defined in the <code>pekko.serialization.jackson</code> section. It is possible to override that configuration in a more specific <code>pekko.serialization.jackson.&lt;binding name&gt;</code> section.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L73-L82" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.serialization.jackson.jackson-json {
+  serialization-features {
+    WRITE_DATES_AS_TIMESTAMPS = off
+  }
+}
+pekko.serialization.jackson.jackson-cbor {
+  serialization-features {
+    WRITE_DATES_AS_TIMESTAMPS = on
+  }
+}</code></pre>
+<p>It&rsquo;s also possible to define several bindings and use different configuration for them. For example, different settings for remote messages and persisted events.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L88-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serializers {
+    jackson-json-message = &quot;org.apache.pekko.serialization.jackson.JacksonJsonSerializer&quot;
+    jackson-json-event   = &quot;org.apache.pekko.serialization.jackson.JacksonJsonSerializer&quot;
+  }
+  serialization-identifiers {
+    jackson-json-message = 9001
+    jackson-json-event = 9002
+  }
+  serialization-bindings {
+    &quot;com.myservice.MyMessage&quot; = jackson-json-message
+    &quot;com.myservice.MyEvent&quot; = jackson-json-event
+  }
+}
+pekko.serialization.jackson {
+  jackson-json-message {
+    serialization-features {
+      WRITE_DATES_AS_TIMESTAMPS = on
+    }
+  }
+  jackson-json-event {
+    serialization-features {
+      WRITE_DATES_AS_TIMESTAMPS = off
+    }
+  }
+}</code></pre>
+<h3><a href="#manifest-less-serialization" name="manifest-less-serialization" class="anchor"><span class="anchor-link"></span></a>Manifest-less serialization</h3>
+<p>When using the Jackson serializer for persistence, given that the fully qualified class name is stored in the manifest, this can result in a lot of wasted disk and IO used, especially when the events are small. To address this, a <code>type-in-manifest</code> flag can be turned off, which will result in the class name not appearing in the manifest.</p>
+<p>When deserializing, the Jackson serializer will use the type defined in <code>deserialization-type</code>, if present, otherwise it will look for exactly one serialization binding class, and use that. For this to be useful, generally that single type must be a <a href="serialization-jackson.html#polymorphic-types">Polymorphic type</a>, with all type information necessary to deserialize to the various sub types contained in the JSON message.</p>
+<p>When switching serializers, for example, if doing a rolling update as described <a href="additional/rolling-updates.html#from-java-serialization-to-jackson">here</a>, there will be periods of time when you may have no serialization bindings declared for the type. In such circumstances, you must use the <code>deserialization-type</code> configuration attribute to specify which type should be used to deserialize messages.</p>
+<p>Since this configuration can only be applied to a single root type, you will usually only want to apply it to a per binding configuration, not to the regular <code>jackson-json</code> or <code>jackson-cbor</code> configurations.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L119-L138" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serializers {
+    jackson-json-event = &quot;org.apache.pekko.serialization.jackson.JacksonJsonSerializer&quot;
+  }
+  serialization-identifiers {
+    jackson-json-event = 9001
+  }
+  serialization-bindings {
+    &quot;com.myservice.MyEvent&quot; = jackson-json-event
+  }
+}
+pekko.serialization.jackson {
+  jackson-json-event {
+    type-in-manifest = off
+    # Since there is exactly one serialization binding declared for this
+    # serializer above, this is optional, but if there were none or many,
+    # this would be mandatory.
+    deserialization-type = &quot;com.myservice.MyEvent&quot;
+  }
+}</code></pre>
+<p>Note that Akka remoting already implements manifest compression, and so this optimization will have no significant impact for messages sent over remoting. It&rsquo;s only useful for messages serialized for other purposes, such as persistence or distributed data.</p>
+<h2><a href="#additional-features" name="additional-features" class="anchor"><span class="anchor-link"></span></a>Additional features</h2>
+<p>Additional Jackson serialization features can be enabled/disabled in configuration. The default values from Jackson are used aside from the the following that are changed in Akka&rsquo;s default configuration.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/main/resources/reference.conf#L39-L200" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.serialization.jackson {
+  # Configuration of the ObjectMapper serialization features.
+  # See com.fasterxml.jackson.databind.SerializationFeature
+  # Enum values corresponding to the SerializationFeature and their boolean value.
+  serialization-features {
+    # Date/time in ISO-8601 (rfc3339) yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ format
+    # as defined by com.fasterxml.jackson.databind.util.StdDateFormat
+    # For interoperability it&#39;s better to use the ISO format, i.e. WRITE_DATES_AS_TIMESTAMPS=off,
+    # but WRITE_DATES_AS_TIMESTAMPS=on has better performance.
+    WRITE_DATES_AS_TIMESTAMPS = off
+    WRITE_DURATIONS_AS_TIMESTAMPS = off
+    FAIL_ON_EMPTY_BEANS = off
+  }
+
+  # Configuration of the ObjectMapper deserialization features.
+  # See com.fasterxml.jackson.databind.DeserializationFeature
+  # Enum values corresponding to the DeserializationFeature and their boolean value.
+  deserialization-features {
+    FAIL_ON_UNKNOWN_PROPERTIES = off
+  }
+
+  # Configuration of the ObjectMapper mapper features.
+  # See com.fasterxml.jackson.databind.MapperFeature
+  # Enum values corresponding to the MapperFeature and their
+  # boolean values, for example:
+  #
+  # mapper-features {
+  #   SORT_PROPERTIES_ALPHABETICALLY = on
+  # }
+  mapper-features {}
+
+  # Configuration of the ObjectMapper JsonParser features.
+  # See com.fasterxml.jackson.core.JsonParser.Feature
+  # Enum values corresponding to the JsonParser.Feature and their
+  # boolean value, for example:
+  #
+  # json-parser-features {
+  #   ALLOW_SINGLE_QUOTES = on
+  # }
+  json-parser-features {}
+
+  # Configuration of the ObjectMapper JsonParser features.
+  # See com.fasterxml.jackson.core.JsonGenerator.Feature
+  # Enum values corresponding to the JsonGenerator.Feature and
+  # their boolean value, for example:
+  #
+  # json-generator-features {
+  #   WRITE_NUMBERS_AS_STRINGS = on
+  # }
+  json-generator-features {}
+
+  # Configuration of the JsonFactory StreamReadFeature.
+  # See com.fasterxml.jackson.core.StreamReadFeature
+  # Enum values corresponding to the StreamReadFeatures and
+  # their boolean value, for example:
+  #
+  # stream-read-features {
+  #   STRICT_DUPLICATE_DETECTION = on
+  # }
+  stream-read-features {}
+
+  # Configuration of the JsonFactory StreamWriteFeature.
+  # See com.fasterxml.jackson.core.StreamWriteFeature
+  # Enum values corresponding to the StreamWriteFeatures and
+  # their boolean value, for example:
+  #
+  # stream-write-features {
+  #   WRITE_BIGDECIMAL_AS_PLAIN = on
+  # }
+  stream-write-features {}
+
+  # Configuration of the JsonFactory JsonReadFeature.
+  # See com.fasterxml.jackson.core.json.JsonReadFeature
+  # Enum values corresponding to the JsonReadFeatures and
+  # their boolean value, for example:
+  #
+  # json-read-features {
+  #   ALLOW_SINGLE_QUOTES = on
+  # }
+  json-read-features {}
+
+  # Configuration of the JsonFactory JsonWriteFeature.
+  # See com.fasterxml.jackson.core.json.JsonWriteFeature
+  # Enum values corresponding to the JsonWriteFeatures and
+  # their boolean value, for example:
+  #
+  # json-write-features {
+  #   WRITE_NUMBERS_AS_STRINGS = on
+  # }
+  json-write-features {}
+
+  # Configuration of the JsonFactory Visibility.
+  # See com.fasterxml.jackson.annotation.PropertyAccessor
+  # and com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
+  # Enum values. For example, to serialize only public fields
+  # overwrite the default values with:
+  #
+  # visibility {
+  #   FIELD = PUBLIC_ONLY
+  # }
+  # Default: all fields (including private and protected) are serialized.
+  visibility {
+    FIELD = ANY
+  }
+
+  # Deprecated, use `allowed-class-prefix` instead
+  whitelist-class-prefix = []
+
+  # Additional classes that are allowed even if they are not defined in `serialization-bindings`.
+  # This is useful when a class is not used for serialization any more and therefore removed
+  # from `serialization-bindings`, but should still be possible to deserialize.
+  allowed-class-prefix = ${pekko.serialization.jackson.whitelist-class-prefix}
+
+
+  # settings for compression of the payload
+  compression {
+    # Compression algorithm.
+    # - off  : no compression
+    # - gzip : using common java gzip
+    algorithm = off
+
+    # If compression is enabled with the `algorithm` setting the payload is compressed
+    # when it&#39;s larger than this value.
+    compress-larger-than = 0 KiB
+  }
+
+  # Whether the type should be written to the manifest.
+  # If this is off, then either deserialization-type must be defined, or there must be exactly
+  # one serialization binding declared for this serializer, and the type in that binding will be
+  # used as the deserialization type. This feature will only work if that type either is a
+  # concrete class, or if it is a supertype that uses Jackson polymorphism (ie, the
+  # @JsonTypeInfo annotation) to store type information in the JSON itself. The intention behind
+  # disabling this is to remove extraneous type information (ie, fully qualified class names) when
+  # serialized objects are persisted in Pekko persistence or replicated using Pekko distributed
+  # data. Note that Pekko remoting already has manifest compression optimizations that address this,
+  # so for types that just get sent over remoting, this offers no optimization.
+  type-in-manifest = on
+
+  # The type to use for deserialization.
+  # This is only used if type-in-manifest is disabled. If set, this type will be used to
+  # deserialize all messages. This is useful if the binding configuration you want to use when
+  # disabling type in manifest cannot be expressed as a single type. Examples of when you might
+  # use this include when changing serializers, so you don&#39;t want this serializer used for
+  # serialization and you haven&#39;t declared any bindings for it, but you still want to be able to
+  # deserialize messages that were serialized with this serializer, as well as situations where
+  # you only want some sub types of a given Jackson polymorphic type to be serialized using this
+  # serializer.
+  deserialization-type = &quot;&quot;
+
+  # Specific settings for jackson-json binding can be defined in this section to
+  # override the settings in &#39;pekko.serialization.jackson&#39;
+  jackson-json {}
+
+  # Specific settings for jackson-cbor binding can be defined in this section to
+  # override the settings in &#39;pekko.serialization.jackson&#39;
+  jackson-cbor {}
+
+  # Issue #28918 for compatibility with data serialized with JacksonCborSerializer in
+  # Pekko 2.6.4 or earlier, which was plain JSON format.
+  jackson-cbor-264 = ${pekko.serialization.jackson.jackson-cbor}
+
+}</code></pre>
+<h3><a href="#date-time-format" name="date-time-format" class="anchor"><span class="anchor-link"></span></a>Date/time format</h3>
+<p><a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/SerializationFeature.html#WRITE_DATES_AS_TIMESTAMPS" title="com.fasterxml.jackson.databind.SerializationFeature"><code>WRITE_DATES_AS_TIMESTAMPS</code></a> and <a href="https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/latest/com/fasterxml/jackson/databind/SerializationFeature.html#WRITE_DURATIONS_AS_TIMESTAMPS" title="com.fasterxml.jackson.databind.SerializationFeature"><code>WRITE_DURATIONS_AS_TIMESTAMPS</code></a> are by default disabled, which means that date/time fields are serialized in ISO-8601 (rfc3339) <code>yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ</code> format instead of numeric arrays. This is better for interoperability but it is slower. If you don&rsquo;t need the ISO format for interoperability with external systems you can change the following configuration for better performance of date/time fields.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/serialization-jackson/src/test/scala/doc/org/apache/pekko/serialization/jackson/SerializationDocSpec.scala#L190-L193" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.serialization.jackson.serialization-features {
+  WRITE_DATES_AS_TIMESTAMPS = on
+  WRITE_DURATIONS_AS_TIMESTAMPS = on
+}</code></pre>
+<p>Jackson is still be able to deserialize the other format independent of this setting.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/serialization-jackson.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="multi-jvm-testing.html">Multi JVM Testing</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="serialization-jackson.html#serialization-with-jackson" class="header">Serialization with Jackson</a>
+  <ul>
+    <li><a href="serialization-jackson.html#dependency" class="header">Dependency</a></li>
+    <li><a href="serialization-jackson.html#introduction" class="header">Introduction</a></li>
+    <li><a href="serialization-jackson.html#usage" class="header">Usage</a></li>
+    <li><a href="serialization-jackson.html#security" class="header">Security</a></li>
+    <li><a href="serialization-jackson.html#annotations" class="header">Annotations</a></li>
+    <li><a href="serialization-jackson.html#schema-evolution" class="header">Schema Evolution</a></li>
+    <li><a href="serialization-jackson.html#rolling-updates" class="header">Rolling updates</a></li>
+    <li><a href="serialization-jackson.html#jackson-modules" class="header">Jackson Modules</a></li>
+    <li><a href="serialization-jackson.html#using-akka-serialization-for-embedded-types" class="header">Using Akka Serialization for embedded types</a></li>
+    <li><a href="serialization-jackson.html#additional-configuration" class="header">Additional configuration</a></li>
+    <li><a href="serialization-jackson.html#additional-features" class="header">Additional features</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

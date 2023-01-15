@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Classic Persistence · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Akka Persistence Classic, Event Sourcing with Akka, At-Least-Once delivery, snapshots, recovery and replay with Akka actors.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentpersistence.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Akka Documentation</a></li>
+  <li><a href="index-classic.html">Akka Classic</a></li>
+  <li><a href="index-actors.html">Classic Actors</a></li>
+  <li>Classic Persistence</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#classic-persistence" name="classic-persistence" class="anchor"><span class="anchor-link"></span></a>Classic Persistence</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Akka Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Akka Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the full documentation of this feature and for new projects see <a href="typed/persistence.html">Event Sourcing</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Akka Persistence, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "org.apache.pekko" %% "pekko-persistence" % PekkoVersion,
+  "org.apache.pekko" %% "pekko-persistence-testkit" % PekkoVersion % Test
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence_${versions.ScalaBinary}"
+  testImplementation "org.apache.pekko:pekko-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>You also have to select journal plugin and optionally snapshot store plugin, see <a href="persistence-plugins.html">Persistence Plugins</a>.</p>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Persistence (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-persistence</div>
+  <div>0.0.0+26524-b0ed4882-SNAPSHOT</div>
+  <div><a href="project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.persistence</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://akka.io/">https://akka.io/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://doc.akka.io/api/akka/snapshot/akka/persistence/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://doc.akka.io/japi/akka/snapshot/akka/persistence/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://discuss.akka.io" target="_blank" rel="noopener noreferrer">Lightbend Discuss</a></div>
+  <div><a href="https://gitter.im/akka/akka" target="_blank" rel="noopener noreferrer">akka/akka Gitter channel</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/akka/akka/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>See introduction in <a href="typed/persistence.html#introduction">Persistence</a> </p>
+
+<p>Akka Persistence also provides point-to-point communication with at-least-once message delivery semantics.</p>
+
+<h3><a href="#architecture" name="architecture" class="anchor"><span class="anchor-link"></span></a>Architecture</h3>
+
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a></span>: Is a persistent, stateful actor. It is able to persist events to a journal and can react to them in a thread-safe manner. It can be used to implement both <em>command</em> as well as <em>event sourced</em> actors. When a persistent actor is started or restarted, journaled messages are replayed to that actor so that it can recover its state from these messages.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html" title="pekko.persistence.AtLeastOnceDelivery"><code>AtLeastOnceDelivery</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>AbstractPersistentActorWithAtLeastOnceDelivery</code></a></span>: To send messages with at-least-once delivery semantics to destinations, also in case of sender and receiver JVM crashes.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/journal/AsyncWriteJournal.html" title="pekko.persistence.journal.AsyncWriteJournal"><code>AsyncWriteJournal</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/journal/japi/AsyncWriteJournal.html" title="pekko.persistence.journal.japi.AsyncWriteJournal"><code>AsyncWriteJournal</code></a></span>: A journal stores the sequence of messages sent to a persistent actor. An application can control which messages are journaled and which are received by the persistent actor without being journaled. Journal maintains <code>highestSequenceNr</code> that is increased on each message. The storage backend of a journal is pluggable. Replicated journals are available as <a href="https://akka.io/community/">Community plugins</a>.</li>
+  <li><em>Snapshot store</em>: A snapshot store persists snapshots of a persistent actor&rsquo;s state. Snapshots are used for optimizing recovery times. The storage backend of a snapshot store is pluggable. The persistence extension comes with a &ldquo;local&rdquo; snapshot storage plugin, which writes to the local filesystem. Replicated snapshot stores are available as <a href="https://akka.io/community/">Community plugins</a></li>
+  <li><em>Event Sourcing</em>. Based on the building blocks described above, Akka persistence provides abstractions for the development of event sourced applications (see section <a href="typed/persistence.html#event-sourcing-concepts">Event Sourcing</a>).</li>
+</ul>
+<h2><a href="#example" name="example" class="anchor"><span class="anchor-link"></span></a>Example</h2>
+<p>Akka persistence supports Event Sourcing with the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a> trait</span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a> abstract class</span>. An actor that extends this <span class="group-scala">trait</span><span class="group-java">class</span> uses the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist</code></a></span> method to persist and handle events. The behavior of <span class="group-scala">a <code>PersistentActor</code></span><span class="group-java">an <code>AbstractPersistentActor</code></span> is defined by implementing <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#receiveRecover:Eventsourced.this.Receive" title="pekko.persistence.PersistentActor"><code>receiveRecover</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#createReceiveRecover()" title="pekko.persistence.AbstractPersistentActorLike"><code>createReceiveRecover</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#receiveCommand:Eventsourced.this.Receive" title="pekko.persistence.PersistentActor"><code>receiveCommand</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#createReceive()" title="pekko.persistence.AbstractPersistentActorLike"><code>createReceive</code></a></span>. This is demonstrated in the following example.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistentActorExample.scala#L17-L58" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor._
+import pekko.persistence._
+
+case class Cmd(data: String)
+case class Evt(data: String)
+
+case class ExampleState(events: List[String] = Nil) {
+  def updated(evt: Evt): ExampleState = copy(evt.data :: events)
+  def size: Int = events.length
+  override def toString: String = events.reverse.toString
+}
+
+class ExamplePersistentActor extends PersistentActor {
+  override def persistenceId = &quot;sample-id-1&quot;
+
+  var state = ExampleState()
+
+  def updateState(event: Evt): Unit =
+    state = state.updated(event)
+
+  def numEvents =
+    state.size
+
+  val receiveRecover: Receive = {
+    case evt: Evt                                 =&gt; updateState(evt)
+    case SnapshotOffer(_, snapshot: ExampleState) =&gt; state = snapshot
+  }
+
+  val snapShotInterval = 1000
+  val receiveCommand: Receive = {
+    case Cmd(data) =&gt;
+      persist(Evt(s&quot;${data}-${numEvents}&quot;)) { event =&gt;
+        updateState(event)
+        context.system.eventStream.publish(event)
+        if (lastSequenceNr % snapShotInterval == 0 &amp;&amp; lastSequenceNr != 0)
+          saveSnapshot(state)
+      }
+    case &quot;print&quot; =&gt; println(state)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistentActorExample.java#L17-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.actor.Props;
+import org.apache.pekko.persistence.AbstractPersistentActor;
+import org.apache.pekko.persistence.SnapshotOffer;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+class Cmd implements Serializable {
+  private static final long serialVersionUID = 1L;
+  private final String data;
+
+  public Cmd(String data) {
+    this.data = data;
+  }
+
+  public String getData() {
+    return data;
+  }
+}
+
+class Evt implements Serializable {
+  private static final long serialVersionUID = 1L;
+  private final String data;
+
+  public Evt(String data) {
+    this.data = data;
+  }
+
+  public String getData() {
+    return data;
+  }
+}
+
+class ExampleState implements Serializable {
+  private static final long serialVersionUID = 1L;
+  private final ArrayList&lt;String&gt; events;
+
+  public ExampleState() {
+    this(new ArrayList&lt;&gt;());
+  }
+
+  public ExampleState(ArrayList&lt;String&gt; events) {
+    this.events = events;
+  }
+
+  public ExampleState copy() {
+    return new ExampleState(new ArrayList&lt;&gt;(events));
+  }
+
+  public void update(Evt evt) {
+    events.add(evt.getData());
+  }
+
+  public int size() {
+    return events.size();
+  }
+
+  @Override
+  public String toString() {
+    return events.toString();
+  }
+}
+
+class ExamplePersistentActor extends AbstractPersistentActor {
+
+  private ExampleState state = new ExampleState();
+  private int snapShotInterval = 1000;
+
+  public int getNumEvents() {
+    return state.size();
+  }
+
+  @Override
+  public String persistenceId() {
+    return &quot;sample-id-1&quot;;
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder()
+        .match(Evt.class, state::update)
+        .match(SnapshotOffer.class, ss -&gt; state = (ExampleState) ss.snapshot())
+        .build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Cmd.class,
+            c -&gt; {
+              final String data = c.getData();
+              final Evt evt = new Evt(data + &quot;-&quot; + getNumEvents());
+              persist(
+                  evt,
+                  (Evt e) -&gt; {
+                    state.update(e);
+                    getContext().getSystem().getEventStream().publish(e);
+                    if (lastSequenceNr() % snapShotInterval == 0 &amp;&amp; lastSequenceNr() != 0)
+                      // IMPORTANT: create a copy of snapshot because ExampleState is mutable
+                      saveSnapshot(state.copy());
+                  });
+            })
+        .matchEquals(&quot;print&quot;, s -&gt; System.out.println(state))
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>The example defines two data types, <code>Cmd</code> and <code>Evt</code> to represent commands and events, respectively. The <code>state</code> of the <code>ExamplePersistentActor</code> is a list of persisted event data contained in <code>ExampleState</code>.</p>
+<p>The persistent actor&rsquo;s <span class="group-scala"><code>receiveRecover</code></span><span class="group-java"><code>createReceiveRecover</code></span> method defines how <code>state</code> is updated during recovery by handling <code>Evt</code> and <code>SnapshotOffer</code> messages. The persistent actor&rsquo;s <span class="group-scala"><code>receiveCommand</code></span><span class="group-java"><code>createReceive</code></span> method is a command handler. In this example, a command is handled by generating an event which is then persisted and handled. Events are persisted by calling <code>persist</code> with an event (or a sequence of events) as first argument and an event handler as second argument.</p>
+<p>The <code>persist</code> method persists events asynchronously and the event handler is executed for successfully persisted events. Successfully persisted events are internally sent back to the persistent actor as individual messages that trigger event handler executions. An event handler may close over persistent actor state and mutate it. The sender of a persisted event is the sender of the corresponding command. This allows event handlers to reply to the sender of a command (not shown).</p>
+<p>The main responsibility of an event handler is changing persistent actor state using event data and notifying others about successful state changes by publishing events.</p>
+<p>When persisting events with <code>persist</code> it is guaranteed that the persistent actor will not receive further commands between the <code>persist</code> call and the execution(s) of the associated event handler. This also holds for multiple <code>persist</code> calls in context of a single command. Incoming messages are <a href="persistence.html#internal-stash">stashed</a> until the <code>persist</code> is completed.</p>
+<p>If persistence of an event fails, <code>onPersistFailure</code> will be invoked (logging the error by default), and the actor will unconditionally be stopped. If persistence of an event is rejected before it is stored, e.g. due to serialization error, <code>onPersistRejected</code> will be invoked (logging a warning by default) and the actor continues with the next message.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It&rsquo;s also possible to switch between different command handlers during normal processing and recovery with <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/ActorContext.html#become(behavior:org.apache.pekko.actor.Actor.Receive):Unit" title="pekko.actor.ActorContext"><code>context.become()</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/ActorContext.html#become(scala.PartialFunction)" title="pekko.actor.ActorContext"><code>getContext().become()</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/ActorContext.html#unbecome():Unit" title="pekko.actor.ActorContext"><code>context.unbecome()</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/ActorContext.html#unbecome()" title="pekko.actor.ActorContext"><code>getContext().unbecome()</code></a></span>. To get the actor into the same state after recovery you need to take special care to perform the same state transitions with <code>become</code> and <code>unbecome</code> in the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#receiveRecover:Eventsourced.this.Receive" title="pekko.persistence.PersistentActor"><code>receiveRecover</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#createReceiveRecover()" title="pekko.persistence.AbstractPersistentActorLike"><code>createReceiveRecover</code></a></span> method as you would have done in the command handler. Note that when using <code>become</code> from <span class="group-scala"><code>receiveRecover</code></span><span class="group-java"><code>createReceiveRecover</code></span> it will still only use the <span class="group-scala"><code>receiveRecover</code></span><span class="group-java"><code>createReceiveRecover</code></span> behavior when replaying the events. When replay is completed it will use the new behavior.</p></div>
+<a id="persistence-id"></a>
+<h3><a href="#identifiers" name="identifiers" class="anchor"><span class="anchor-link"></span></a>Identifiers</h3>
+<p>A persistent actor must have an identifier that doesn&rsquo;t change across different actor incarnations. The identifier must be defined with the <code>persistenceId</code> method.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L90" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def persistenceId = &quot;my-stable-persistence-id&quot;</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L72-L76" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public String persistenceId() {
+  return &quot;my-stable-persistence-id&quot;;
+}
+</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p><code>persistenceId</code> must be unique to a given entity in the journal (database table/keyspace). When replaying messages persisted to the journal, you query messages with a <code>persistenceId</code>. So, if two different entities share the same <code>persistenceId</code>, message-replaying behavior is corrupted.</p></div>
+<h3><a href="#recovery" name="recovery" class="anchor"><span class="anchor-link"></span></a>Recovery</h3>
+<p>By default, a persistent actor is automatically recovered on start and on restart by replaying journaled messages. New messages sent to a persistent actor during recovery do not interfere with replayed messages. They are stashed and received by a persistent actor after recovery phase completes.</p>
+<p>The number of concurrent recoveries that can be in progress at the same time is limited to not overload the system and the backend data store. When exceeding the limit the actors will wait until other recoveries have been completed. This is configured by:</p>
+<pre><code>pekko.persistence.max-concurrent-recoveries = 50
+</code></pre><div class="callout note "><div class="callout-title">Note</div>
+<p>Accessing the <span class="group-scala"><code>sender()</code></span><span class="group-java">sender with <code>getSender()</code></span> for replayed messages will always result in a <code>deadLetters</code> reference, as the original sender is presumed to be long gone. If you indeed have to notify an actor during recovery in the future, store its <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorPath.html" title="org.apache.pekko.actor.ActorPath"><code>ActorPath</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorPath.html" title="org.apache.pekko.actor.ActorPath"><code>ActorPath</code></a></span> explicitly in your persisted events.</p></div>
+<a id="recovery-custom"></a>
+<h4><a href="#recovery-customization" name="recovery-customization" class="anchor"><span class="anchor-link"></span></a>Recovery customization</h4>
+<p>Applications may also customise how recovery is performed by returning a customised <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Recovery$.html" title="org.apache.pekko.persistence.Recovery"><code>Recovery</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Recovery$.html" title="org.apache.pekko.persistence.Recovery"><code>Recovery</code></a></span> object in the <code>recovery</code> method of a <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a></span>,</p>
+<p>To skip loading snapshots and replay all events you can use <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria$.html#None:org.apache.pekko.persistence.SnapshotSelectionCriteria" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.None</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria.html#none()" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.none()</code></a></span>. This can be useful if snapshot serialization format has changed in an incompatible way. It should typically not be used when events have been deleted.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L72-L73" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def recovery =
+  Recovery(fromSnapshot = SnapshotSelectionCriteria.None)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L139-L142" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Recovery recovery() {
+  return Recovery.create(SnapshotSelectionCriteria.none());
+}</code></pre></dd>
+</dl>
+<p>Another possible recovery customization, which can be useful for debugging, is setting an upper bound on the replay, causing the actor to be replayed only up to a certain point &ldquo;in the past&rdquo; (instead of being replayed to its most up to date state). Note that after that it is a bad idea to persist new events because a later recovery will probably be confused by the new events that follow the events that were previously skipped.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L48" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def recovery = Recovery(toSequenceNr = 457L)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L63-L66" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Recovery recovery() {
+  return Recovery.create(457L);
+}</code></pre></dd>
+</dl>
+<p>Recovery can be disabled by returning <code>Recovery.none()</code> in the <code>recovery</code> method of a <code>PersistentActor</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L42" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def recovery = Recovery.none</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L49-L52" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Recovery recovery() {
+  return Recovery.none();
+}</code></pre></dd>
+</dl>
+<h4><a href="#recovery-status" name="recovery-status" class="anchor"><span class="anchor-link"></span></a>Recovery status</h4>
+<p>A persistent actor can query its own recovery status via the methods</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L84-L85" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def recoveryRunning: Boolean
+def recoveryFinished: Boolean</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L39-L41" target="_blank" title="Go to snippet source">source</a><code class="language-java">public boolean recoveryRunning();
+
+public boolean recoveryFinished();</code></pre></dd>
+</dl>
+<p>Sometimes there is a need for performing additional initialization when the recovery has completed before processing any other message sent to the persistent actor. The persistent actor will receive a special <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RecoveryCompleted$.html" title="org.apache.pekko.persistence.RecoveryCompleted"><code>RecoveryCompleted</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RecoveryCompleted$.html" title="org.apache.pekko.persistence.RecoveryCompleted"><code>RecoveryCompleted</code></a></span> message right after recovery and before any other received messages.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L56-L66" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>override def receiveRecover: Receive = {
+  case RecoveryCompleted =&gt;
+  // perform init after recovery, before any other messages
+  // ...
+  case evt =&gt; // ...
+}
+
+override def receiveCommand: Receive = {
+  case msg =&gt; // ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L103-L134" target="_blank" title="Go to snippet source">source</a><code class="language-java">class MyPersistentActor5 extends AbstractPersistentActor {
+
+  @Override
+  public String persistenceId() {
+    return &quot;my-stable-persistence-id&quot;;
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder()
+        .match(
+            RecoveryCompleted.class,
+            r -&gt; {
+              // perform init after recovery, before any other messages
+              // ...
+            })
+        .match(String.class, this::handleEvent)
+        .build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(String.class, s -&gt; s.equals(&quot;cmd&quot;), s -&gt; persist(&quot;evt&quot;, this::handleEvent))
+        .build();
+  }
+
+  private void handleEvent(String event) {
+    // update state
+    // ...
+  }
+}</code></pre></dd>
+</dl>
+<p>The actor will always receive a <code>RecoveryCompleted</code> message, even if there are no events in the journal and the snapshot store is empty, or if it&rsquo;s a new persistent actor with a previously unused <code>persistenceId</code>.</p>
+<p>If there is a problem with recovering the state of the actor from the journal, <code>onRecoveryFailure</code> is called (logging the error by default) and the actor will be stopped.</p>
+<h3><a href="#internal-stash" name="internal-stash" class="anchor"><span class="anchor-link"></span></a>Internal stash</h3>
+<p>The persistent actor has a private <a href="actors.html#stash">stash</a> for internally caching incoming messages during <a href="#recovery">recovery</a> or the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist</code></a></span>\<span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAll[A](events:Seq[A])(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAll</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAll(java.lang.Iterable,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAll</code></a></span> method persisting events. You can still use/inherit from the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Stash.html" title="org.apache.pekko.actor.Stash"><code>Stash</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Stash.html" title="org.apache.pekko.actor.Stash"><code>Stash</code></a></span> interface. The internal stash cooperates with the normal stash by hooking into <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Stash.html#unstashAll():Unit" title="org.apache.pekko.actor.Stash"><code>unstashAll</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Stash.html#unstashAll()" title="org.apache.pekko.actor.Stash"><code>unstashAll</code></a></span> making sure messages are unstashed properly to the internal stash to maintain ordering guarantees.</p>
+<p>You should be careful to not send more messages to a persistent actor than it can keep up with, otherwise the number of stashed messages will grow without bounds. It can be wise to protect against <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/OutOfMemoryError.html" title="java.lang.OutOfMemoryError"><code>OutOfMemoryError</code></a> by defining a maximum stash capacity in the mailbox configuration:</p>
+<pre><code>pekko.actor.default-mailbox.stash-capacity=10000
+</code></pre>
+<p>Note that the stash capacity is per actor. If you have many persistent actors, e.g. when using cluster sharding, you may need to define a small stash capacity to ensure that the total number of stashed messages in the system doesn&rsquo;t consume too much memory. Additionally, the persistent actor defines three strategies to handle failure when the internal stash capacity is exceeded. The default overflow strategy is the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/ThrowOverflowExceptionStrategy$.html" title="org.apache.pekko.persistence.ThrowOverflowExceptionStrategy"><code>ThrowOverflowExceptionStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/ThrowOverflowExceptionStrategy$.html" title="org.apache.pekko.persistence.ThrowOverflowExceptionStrategy"><code>ThrowOverflowExceptionStrategy</code></a></span>, which discards the current received message and throws a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/StashOverflowException.html" title="org.apache.pekko.actor.StashOverflowException"><code>StashOverflowException</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/StashOverflowException.html" title="org.apache.pekko.actor.StashOverflowException"><code>StashOverflowException</code></a></span>, causing actor restart if the default supervision strategy is used. You can override the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceStash.html#internalStashOverflowStrategy:org.apache.pekko.persistence.StashOverflowStrategy" title="org.apache.pekko.persistence.PersistenceStash"><code>internalStashOverflowStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceStash.html#internalStashOverflowStrategy()" title="org.apache.pekko.persistence.PersistenceStash"><code>internalStashOverflowStrategy</code></a></span> method to return <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DiscardToDeadLetterStrategy$.html" title="org.apache.pekko.persistence.DiscardToDeadLetterStrategy"><code>DiscardToDeadLetterStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DiscardToDeadLetterStrategy$.html" title="org.apache.pekko.persistence.DiscardToDeadLetterStrategy"><code>DiscardToDeadLetterStrategy</code></a></span> or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/ReplyToStrategy.html" title="org.apache.pekko.persistence.ReplyToStrategy"><code>ReplyToStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/ReplyToStrategy.html" title="org.apache.pekko.persistence.ReplyToStrategy"><code>ReplyToStrategy</code></a></span> for any &ldquo;individual&rdquo; persistent actor, or define the &ldquo;default&rdquo; for all persistent actors by providing FQCN, which must be a subclass of <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/StashOverflowStrategyConfigurator.html" title="org.apache.pekko.persistence.StashOverflowStrategyConfigurator"><code>StashOverflowStrategyConfigurator</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/StashOverflowStrategyConfigurator.html" title="org.apache.pekko.persistence.StashOverflowStrategyConfigurator"><code>StashOverflowStrategyConfigurator</code></a></span>, in the persistence configuration:</p>
+<pre><code>pekko.persistence.internal-stash-overflow-strategy=
+  &quot;org.apache.pekko.persistence.ThrowExceptionConfigurator&quot;
+</code></pre>
+<p>The <code>DiscardToDeadLetterStrategy</code> strategy also has a pre-packaged companion configurator <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DiscardConfigurator.html" title="org.apache.pekko.persistence.DiscardConfigurator"><code>DiscardConfigurator</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DiscardConfigurator.html" title="org.apache.pekko.persistence.DiscardConfigurator"><code>DiscardConfigurator</code></a></span>.</p>
+<p>You can also query the default strategy via the Akka persistence extension singleton: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre><code>Persistence(context.system).defaultInternalStashOverflowStrategy
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre><code>Persistence.get(getContext().getSystem()).defaultInternalStashOverflowStrategy();
+</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>The bounded mailbox should be avoided in the persistent actor, by which the messages come from storage backends may be discarded. You can use bounded stash instead of it.</p></div>
+<a id="persist-async"></a>
+<h3><a href="#relaxed-local-consistency-requirements-and-high-throughput-use-cases" name="relaxed-local-consistency-requirements-and-high-throughput-use-cases" class="anchor"><span class="anchor-link"></span></a>Relaxed local consistency requirements and high throughput use-cases</h3>
+<p>If faced with relaxed local consistency requirements and high throughput demands sometimes <span class="group-scala"><code>PersistentActor</code></span><span class="group-java"><code>AbstractPersistentActor</code></span> and its <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist</code></a></span> may not be enough in terms of consuming incoming Commands at a high rate, because it has to wait until all Events related to a given Command are processed in order to start processing the next Command. While this abstraction is very useful for most cases, sometimes you may be faced with relaxed requirements about consistency – for example you may want to process commands as fast as you can, assuming that the Event will eventually be persisted and handled properly in the background, retroactively reacting to persistence failures if needed.</p>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAsync[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAsync(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAsync</code></a></span> method provides a tool for implementing high-throughput persistent actors. It will <em>not</em> stash incoming Commands while the Journal is still working on persisting and/or user code is executing event callbacks.</p>
+<p>In the below example, the event callbacks may be called &ldquo;at any time&rdquo;, even after the next Command has been processed. The ordering between events is still guaranteed (&ldquo;evt-b-1&rdquo; will be sent after &ldquo;evt-a-2&rdquo;, which will be sent after &ldquo;evt-a-1&rdquo; etc.).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L214-L246" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyPersistentActor extends PersistentActor {
+
+  override def persistenceId = &quot;my-stable-persistence-id&quot;
+
+  override def receiveRecover: Receive = {
+    case _ =&gt; // handle recovery here
+  }
+
+  override def receiveCommand: Receive = {
+    case c: String =&gt; {
+      sender() ! c
+      persistAsync(s&quot;evt-$c-1&quot;) { e =&gt;
+        sender() ! e
+      }
+      persistAsync(s&quot;evt-$c-2&quot;) { e =&gt;
+        sender() ! e
+      }
+    }
+  }
+}
+
+// usage
+persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+
+// possible order of received messages:
+// a
+// b
+// evt-a-1
+// evt-a-2
+// evt-b-1
+// evt-b-2
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L394-L425" target="_blank" title="Go to snippet source">source</a><code class="language-java">class MyPersistentActor extends AbstractPersistentActor {
+
+  @Override
+  public String persistenceId() {
+    return &quot;my-stable-persistence-id&quot;;
+  }
+
+  private void handleCommand(String c) {
+    getSender().tell(c, getSelf());
+
+    persistAsync(
+        String.format(&quot;evt-%s-1&quot;, c),
+        e -&gt; {
+          getSender().tell(e, getSelf());
+        });
+    persistAsync(
+        String.format(&quot;evt-%s-2&quot;, c),
+        e -&gt; {
+          getSender().tell(e, getSelf());
+        });
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>In order to implement the pattern known as &ldquo;<em>command sourcing</em>&rdquo; call <span class="group-scala"><code>persistAsync(cmd)(...)</code></span><span class="group-java"><code>persistAsync</code></span> right away on all incoming messages and handle them in the callback.</p></div><div class="callout warning "><div class="callout-title">Warning</div>
+<p>The callback will not be invoked if the actor is restarted (or stopped) in between the call to <code>persistAsync</code> and the journal has confirmed the write.</p></div>
+<a id="defer"></a>
+<h3><a href="#deferring-actions-until-preceding-persist-handlers-have-executed" name="deferring-actions-until-preceding-persist-handlers-have-executed" class="anchor"><span class="anchor-link"></span></a>Deferring actions until preceding persist handlers have executed</h3>
+<p>Sometimes when working with <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAsync[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAsync(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAsync</code></a></span> or <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist</code></a></span> you may find that it would be nice to define some actions in terms of &lsquo;&lsquo;happens-after the previous <code>persistAsync</code>/<code>persist</code> handlers have been invoked&rsquo;&rsquo;. <span class="group-scala"><code>PersistentActor</code></span><span class="group-java"><code>AbstractPersistentActor</code></span> provides utility methods called <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#defer[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>defer</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#defer(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>defer</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#deferAsync[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>deferAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#deferAsync(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>deferAsync</code></a></span>, which work similarly to <code>persist</code> and <code>persistAsync</code> respectively yet do not persist the passed in event. It is recommended to use them for <em>read</em> operations, and actions which do not have corresponding events in your domain model.</p>
+<p>Using those methods is very similar to the persist family of methods, yet they do <strong>not</strong> persist the passed in event. It will be kept in memory and used when invoking the handler.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L253-L275" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyPersistentActor extends PersistentActor {
+
+  override def persistenceId = &quot;my-stable-persistence-id&quot;
+
+  override def receiveRecover: Receive = {
+    case _ =&gt; // handle recovery here
+  }
+
+  override def receiveCommand: Receive = {
+    case c: String =&gt; {
+      sender() ! c
+      persistAsync(s&quot;evt-$c-1&quot;) { e =&gt;
+        sender() ! e
+      }
+      persistAsync(s&quot;evt-$c-2&quot;) { e =&gt;
+        sender() ! e
+      }
+      deferAsync(s&quot;evt-$c-3&quot;) { e =&gt;
+        sender() ! e
+      }
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L449-L484" target="_blank" title="Go to snippet source">source</a><code class="language-java">class MyPersistentActor extends AbstractPersistentActor {
+
+  @Override
+  public String persistenceId() {
+    return &quot;my-stable-persistence-id&quot;;
+  }
+
+  private void handleCommand(String c) {
+    persistAsync(
+        String.format(&quot;evt-%s-1&quot;, c),
+        e -&gt; {
+          getSender().tell(e, getSelf());
+        });
+    persistAsync(
+        String.format(&quot;evt-%s-2&quot;, c),
+        e -&gt; {
+          getSender().tell(e, getSelf());
+        });
+
+    deferAsync(
+        String.format(&quot;evt-%s-3&quot;, c),
+        e -&gt; {
+          getSender().tell(e, getSelf());
+        });
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+}</code></pre></dd>
+</dl>
+<p>Notice that the <code>sender()</code> is <strong>safe</strong> to access in the handler callback, and will be pointing to the original sender of the command for which this <code>defer</code> or <code>deferAsync</code> handler was called.</p>
+<p>The calling side will get the responses in this (guaranteed) order:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L279-L291" target="_blank" title="Go to snippet source">source</a><code class="language-scala">persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+
+// order of received messages:
+// a
+// b
+// evt-a-1
+// evt-a-2
+// evt-a-3
+// evt-b-1
+// evt-b-2
+// evt-b-3
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L491-L503" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorRef persistentActor = system.actorOf(Props.create(MyPersistentActor.class));
+persistentActor.tell(&quot;a&quot;, sender);
+persistentActor.tell(&quot;b&quot;, sender);
+
+// order of received messages:
+// a
+// b
+// evt-a-1
+// evt-a-2
+// evt-a-3
+// evt-b-1
+// evt-b-2
+// evt-b-3</code></pre></dd>
+</dl>
+<p>You can also call <code>defer</code> or <code>deferAsync</code> with <code>persist</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L297-L319" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyPersistentActor extends PersistentActor {
+
+  override def persistenceId = &quot;my-stable-persistence-id&quot;
+
+  override def receiveRecover: Receive = {
+    case _ =&gt; // handle recovery here
+  }
+
+  override def receiveCommand: Receive = {
+    case c: String =&gt; {
+      sender() ! c
+      persist(s&quot;evt-$c-1&quot;) { e =&gt;
+        sender() ! e
+      }
+      persist(s&quot;evt-$c-2&quot;) { e =&gt;
+        sender() ! e
+      }
+      defer(s&quot;evt-$c-3&quot;) { e =&gt;
+        sender() ! e
+      }
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L511-L546" target="_blank" title="Go to snippet source">source</a><code class="language-java">class MyPersistentActor extends AbstractPersistentActor {
+
+  @Override
+  public String persistenceId() {
+    return &quot;my-stable-persistence-id&quot;;
+  }
+
+  private void handleCommand(String c) {
+    persist(
+        String.format(&quot;evt-%s-1&quot;, c),
+        e -&gt; {
+          sender().tell(e, self());
+        });
+    persist(
+        String.format(&quot;evt-%s-2&quot;, c),
+        e -&gt; {
+          sender().tell(e, self());
+        });
+
+    defer(
+        String.format(&quot;evt-%s-3&quot;, c),
+        e -&gt; {
+          sender().tell(e, self());
+        });
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(String.class, this::handleCommand).build();
+  }
+}</code></pre></dd>
+</dl><div class="callout warning "><div class="callout-title">Warning</div>
+<p>The callback will not be invoked if the actor is restarted (or stopped) in between the call to <code>defer</code> or <code>deferAsync</code> and the journal has processed and confirmed all preceding writes.</p></div>
+<h3><a href="#nested-persist-calls" name="nested-persist-calls" class="anchor"><span class="anchor-link"></span></a>Nested persist calls</h3>
+<p>It is possible to call <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAsync[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAsync(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAsync</code></a></span> inside their respective callback blocks and they will properly retain both the thread safety (including the right value of <span class="group-scala"><code>sender()</code></span><span class="group-java"><code>getSender()</code></span>) as well as stashing guarantees.</p>
+<p>In general it is encouraged to create command handlers which do not need to resort to nested event persisting, however there are situations where it may be useful. It is important to understand the ordering of callback execution in those situations, as well as their implication on the stashing behavior (that <code>persist()</code> enforces). In the following example two persist calls are issued, and each of them issues another persist inside its callback:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L333-L350" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def receiveCommand: Receive = {
+  case c: String =&gt;
+    sender() ! c
+
+    persist(s&quot;$c-1-outer&quot;) { outer1 =&gt;
+      sender() ! outer1
+      persist(s&quot;$c-1-inner&quot;) { inner1 =&gt;
+        sender() ! inner1
+      }
+    }
+
+    persist(s&quot;$c-2-outer&quot;) { outer2 =&gt;
+      sender() ! outer2
+      persist(s&quot;$c-2-inner&quot;) { inner2 =&gt;
+        sender() ! inner2
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L566-L589" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Receive createReceiveRecover() {
+  final Procedure&lt;String&gt; replyToSender = event -&gt; getSender().tell(event, getSelf());
+
+  return receiveBuilder()
+      .match(
+          String.class,
+          msg -&gt; {
+            persist(
+                String.format(&quot;%s-outer-1&quot;, msg),
+                event -&gt; {
+                  getSender().tell(event, getSelf());
+                  persist(String.format(&quot;%s-inner-1&quot;, event), replyToSender);
+                });
+
+            persist(
+                String.format(&quot;%s-outer-2&quot;, msg),
+                event -&gt; {
+                  getSender().tell(event, getSelf());
+                  persist(String.format(&quot;%s-inner-2&quot;, event), replyToSender);
+                });
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>When sending two commands to this <span class="group-scala"><code>PersistentActor</code></span><span class="group-java"><code>AbstractPersistentActor</code></span>, the persist handlers will be executed in the following order:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L355-L370" target="_blank" title="Go to snippet source">source</a><code class="language-scala">persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+
+// order of received messages:
+// a
+// a-outer-1
+// a-outer-2
+// a-inner-1
+// a-inner-2
+// and only then process &quot;b&quot;
+// b
+// b-outer-1
+// b-outer-2
+// b-inner-1
+// b-inner-2
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L594-L609" target="_blank" title="Go to snippet source">source</a><code class="language-java">persistentActor.tell(&quot;a&quot;, ActorRef.noSender());
+persistentActor.tell(&quot;b&quot;, ActorRef.noSender());
+
+// order of received messages:
+// a
+// a-outer-1
+// a-outer-2
+// a-inner-1
+// a-inner-2
+// and only then process &quot;b&quot;
+// b
+// b-outer-1
+// b-outer-2
+// b-inner-1
+// b-inner-2
+</code></pre></dd>
+</dl>
+<p>First the &ldquo;outer layer&rdquo; of persist calls is issued and their callbacks are applied. After these have successfully completed, the inner callbacks will be invoked (once the events they are persisting have been confirmed to be persisted by the journal). Only after all these handlers have been successfully invoked will the next command be delivered to the persistent Actor. In other words, the stashing of incoming commands that is guaranteed by initially calling <code>persist()</code> on the outer layer is extended until all nested <code>persist</code> callbacks have been handled.</p>
+<p>It is also possible to nest <code>persistAsync</code> calls, using the same pattern:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L381-L396" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def receiveCommand: Receive = {
+  case c: String =&gt;
+    sender() ! c
+    persistAsync(c + &quot;-outer-1&quot;) { outer =&gt;
+      sender() ! outer
+      persistAsync(c + &quot;-inner-1&quot;) { inner =&gt;
+        sender() ! inner
+      }
+    }
+    persistAsync(c + &quot;-outer-2&quot;) { outer =&gt;
+      sender() ! outer
+      persistAsync(c + &quot;-inner-2&quot;) { inner =&gt;
+        sender() ! inner
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L626-L649" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Receive createReceive() {
+  final Procedure&lt;String&gt; replyToSender = event -&gt; getSender().tell(event, getSelf());
+
+  return receiveBuilder()
+      .match(
+          String.class,
+          msg -&gt; {
+            persistAsync(
+                String.format(&quot;%s-outer-1&quot;, msg),
+                event -&gt; {
+                  getSender().tell(event, getSelf());
+                  persistAsync(String.format(&quot;%s-inner-1&quot;, event), replyToSender);
+                });
+
+            persistAsync(
+                String.format(&quot;%s-outer-2&quot;, msg),
+                event -&gt; {
+                  getSender().tell(event, getSelf());
+                  persistAsync(String.format(&quot;%s-inner-1&quot;, event), replyToSender);
+                });
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>In this case no stashing is happening, yet events are still persisted and callbacks are executed in the expected order:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L401-L419" target="_blank" title="Go to snippet source">source</a><code class="language-scala">persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+
+// order of received messages:
+// a
+// b
+// a-outer-1
+// a-outer-2
+// b-outer-1
+// b-outer-2
+// a-inner-1
+// a-inner-2
+// b-inner-1
+// b-inner-2
+
+// which can be seen as the following causal relationship:
+// a -&gt; a-outer-1 -&gt; a-outer-2 -&gt; a-inner-1 -&gt; a-inner-2
+// b -&gt; b-outer-1 -&gt; b-outer-2 -&gt; b-inner-1 -&gt; b-inner-2
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L654-L672" target="_blank" title="Go to snippet source">source</a><code class="language-java">persistentActor.tell(&quot;a&quot;, getSelf());
+persistentActor.tell(&quot;b&quot;, getSelf());
+
+// order of received messages:
+// a
+// b
+// a-outer-1
+// a-outer-2
+// b-outer-1
+// b-outer-2
+// a-inner-1
+// a-inner-2
+// b-inner-1
+// b-inner-2
+
+// which can be seen as the following causal relationship:
+// a -&gt; a-outer-1 -&gt; a-outer-2 -&gt; a-inner-1 -&gt; a-inner-2
+// b -&gt; b-outer-1 -&gt; b-outer-2 -&gt; b-inner-1 -&gt; b-inner-2
+</code></pre></dd>
+</dl>
+<p>While it is possible to nest mixed <code>persist</code> and <code>persistAsync</code> with keeping their respective semantics it is not a recommended practice, as it may lead to overly complex nesting.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>While it is possible to nest <code>persist</code> calls within one another, it is <em>not</em> legal call <code>persist</code> from any other Thread than the Actors message processing Thread. For example, it is not legal to call <code>persist</code> from Futures! Doing so will break the guarantees that the persist methods aim to provide. Always call <code>persist</code> and <code>persistAsync</code> from within the Actor&rsquo;s receive block (or methods synchronously invoked from there).</p></div>
+<h3><a href="#failures" name="failures" class="anchor"><span class="anchor-link"></span></a>Failures</h3>
+<p>If persistence of an event fails, <code>onPersistFailure</code> will be invoked (logging the error by default), and the actor will unconditionally be stopped.</p>
+<p>The reason that it cannot resume when persist fails is that it is unknown if the event was actually persisted or not, and therefore it is in an inconsistent state. Restarting on persistent failures will most likely fail anyway since the journal is probably unavailable. It is better to stop the actor and after a back-off timeout start it again. The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/pattern/BackoffSupervisor$.html" title="org.apache.pekko.pattern.BackoffSupervisor"><code>BackoffSupervisor</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/pattern/BackoffSupervisor$.html" title="org.apache.pekko.pattern.BackoffSupervisor"><code>BackoffSupervisor</code></a></span> actor is provided to support such restarts.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L106-L109" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val childProps = Props[MyPersistentActor]()
+val props = BackoffSupervisor.props(BackoffOpts
+  .onStop(childProps, childName = &quot;myActor&quot;, minBackoff = 3.seconds, maxBackoff = 30.seconds, randomFactor = 0.2))
+context.actorOf(props, name = &quot;mySupervisor&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L148-L157" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public void preStart() throws Exception {
+  final Props childProps = Props.create(MyPersistentActor1.class);
+  final Props props =
+      BackoffSupervisor.props(
+          BackoffOpts.onStop(
+              childProps, &quot;myActor&quot;, Duration.ofSeconds(3), Duration.ofSeconds(30), 0.2));
+  getContext().actorOf(props, &quot;mySupervisor&quot;);
+  super.preStart();
+}</code></pre></dd>
+</dl>
+<p>See <a href="fault-tolerance.html#supervision-strategies">Backoff Supervision strategies</a> for more details about actor supervision.</p>
+<p>If persistence of an event is rejected before it is stored, e.g. due to serialization error, <code>onPersistRejected</code> will be invoked (logging a warning by default), and the actor continues with next message.</p>
+<p>If there is a problem with recovering the state of the actor from the journal when the actor is started, <code>onRecoveryFailure</code> is called (logging the error by default), and the actor will be stopped. Note that failure to load snapshot is also treated like this, but you can disable loading of snapshots if you for example know that serialization format has changed in an incompatible way, see <a href="persistence.html#recovery-custom">Recovery customization</a>.</p>
+<h3><a href="#atomic-writes" name="atomic-writes" class="anchor"><span class="anchor-link"></span></a>Atomic writes</h3>
+<p>Each event is stored atomically, but it is also possible to store several events atomically by using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAll[A](events:Seq[A])(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAll</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAll(java.lang.Iterable,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAll</code></a></span> or <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAllAsync[A](events:Seq[A])(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAllAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAllAsync(java.lang.Iterable,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAllAsync</code></a></span> method. That means that all events passed to that method are stored or none of them are stored if there is an error.</p>
+<p>The recovery of a persistent actor will therefore never be done partially with only a subset of events persisted by <em>persistAll</em>.</p>
+<p>Some journals may not support atomic writes of several events and they will then reject the <code>persistAll</code> command, i.e. <code>onPersistRejected</code> is called with an exception (typically <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="java.lang.UnsupportedOperationException"><code>UnsupportedOperationException</code></a>).</p>
+<h3><a href="#batch-writes" name="batch-writes" class="anchor"><span class="anchor-link"></span></a>Batch writes</h3>
+<p>In order to optimize throughput when using <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persistAsync[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persistAsync</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persistAsync(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persistAsync</code></a></span>, a persistent actor internally batches events to be stored under high load before writing them to the journal (as a single batch). The batch size is dynamically determined by how many events are emitted during the time of a journal round-trip: after sending a batch to the journal no further batch can be sent before confirmation has been received that the previous batch has been written. Batch writes are never timer-based which keeps latencies at a minimum.</p>
+<h3><a href="#message-deletion" name="message-deletion" class="anchor"><span class="anchor-link"></span></a>Message deletion</h3>
+<p>It is possible to delete all messages (journaled by a single persistent actor) up to a specified sequence number; Persistent actors may call the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#deleteMessages(toSequenceNr:Long):Unit" title="pekko.persistence.PersistentActor"><code>deleteMessages</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#deleteMessages(long)" title="pekko.persistence.AbstractPersistentActorLike"><code>deleteMessages</code></a></span> method to this end.</p>
+<p>Deleting messages in Event Sourcing based applications is typically either not used at all, or used in conjunction with <a href="#snapshots">snapshotting</a>, i.e. after a snapshot has been successfully stored, a <code>deleteMessages(toSequenceNr)</code> up until the sequence number of the data held by that snapshot can be issued to safely delete the previous events while still having access to the accumulated state during replays - by loading the snapshot.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>If you are using <a href="persistence-query.html">Persistence Query</a>, query results may be missing deleted messages in a journal, depending on how deletions are implemented in the journal plugin. Unless you use a plugin which still shows deleted messages in persistence query results, you have to design your application so that it is not affected by missing messages.</p></div>
+<p>The result of the <code>deleteMessages</code> request is signaled to the persistent actor with a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DeleteMessagesSuccess.html" title="org.apache.pekko.persistence.DeleteMessagesSuccess"><code>DeleteMessagesSuccess</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DeleteMessagesSuccess.html" title="org.apache.pekko.persistence.DeleteMessagesSuccess"><code>DeleteMessagesSuccess</code></a></span> message if the delete was successful or a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DeleteMessagesFailure.html" title="org.apache.pekko.persistence.DeleteMessagesFailure"><code>DeleteMessagesFailure</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/DeleteMessagesFailure.html" title="org.apache.pekko.persistence.DeleteMessagesFailure"><code>DeleteMessagesFailure</code></a></span> message if it failed.</p>
+<p>Message deletion doesn&rsquo;t affect the highest sequence number of the journal, even if all messages were deleted from it after <code>deleteMessages</code> invocation.</p>
+<h3><a href="#persistence-status-handling" name="persistence-status-handling" class="anchor"><span class="anchor-link"></span></a>Persistence status handling</h3>
+<p>Persisting, deleting, and replaying messages can either succeed or fail.</p>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Method</strong> </th>
+      <th><strong>Success</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>persist</code> / <code>persistAsync</code> </td>
+      <td>persist handler invoked</td>
+    </tr>
+    <tr>
+      <td><code>onPersistRejected</code> </td>
+      <td>No automatic actions. </td>
+    </tr>
+    <tr>
+      <td><code>recovery</code> </td>
+      <td><code>RecoveryCompleted</code> </td>
+    </tr>
+    <tr>
+      <td><code>deleteMessages</code> </td>
+      <td><code>DeleteMessagesSuccess</code></td>
+    </tr>
+  </tbody>
+</table>
+<p>The most important operations (<code>persist</code> and <code>recovery</code>) have failure handlers modelled as explicit callbacks which the user can override in the <code>PersistentActor</code>. The default implementations of these handlers emit a log message (<code>error</code> for persist/recovery failures, and <code>warning</code> for others), logging the failure cause and information about which message caused the failure.</p>
+<p>For critical failures, such as recovery or persisting events failing, the persistent actor will be stopped after the failure handler is invoked. This is because if the underlying journal implementation is signalling persistence failures it is most likely either failing completely or overloaded and restarting right-away and trying to persist the event again will most likely not help the journal recover – as it would likely cause a <a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">Thundering herd problem</a>, as many persistent actors would restart and try to persist their events again. Instead, using a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/pattern/BackoffSupervisor$.html" title="org.apache.pekko.pattern.BackoffSupervisor"><code>BackoffSupervisor</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/pattern/BackoffSupervisor$.html" title="org.apache.pekko.pattern.BackoffSupervisor"><code>BackoffSupervisor</code></a></span> (as described in <a href="persistence.html#failures">Failures</a>) which implements an exponential-backoff strategy which allows for more breathing room for the journal to recover between restarts of the persistent actor.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Journal implementations may choose to implement a retry mechanism, e.g. such that only after a write fails N number of times a persistence failure is signalled back to the user. In other words, once a journal returns a failure, it is considered <em>fatal</em> by Akka Persistence, and the persistent actor which caused the failure will be stopped.</p>
+<p>Check the documentation of the journal implementation you are using for details if/how it is using this technique.</p></div>
+<a id="safe-shutdown"></a>
+<h3><a href="#safely-shutting-down-persistent-actors" name="safely-shutting-down-persistent-actors" class="anchor"><span class="anchor-link"></span></a>Safely shutting down persistent actors</h3>
+<p>Special care should be given when shutting down persistent actors from the outside. With normal Actors it is often acceptable to use the special <a href="actors.html#poison-pill">PoisonPill</a> message to signal to an Actor that it should stop itself once it receives this message – in fact this message is handled automatically by Akka, leaving the target actor no way to refuse stopping itself when given a poison pill.</p>
+<p>This can be dangerous when used with <code>PersistentActor</code> due to the fact that incoming commands are <em>stashed</em> while the persistent actor is awaiting confirmation from the Journal that events have been written when <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist()</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist()</code></a></span> was used. Since the incoming commands will be drained from the Actor&rsquo;s mailbox and put into its internal stash while awaiting the confirmation (thus, before calling the persist handlers) the Actor <strong>may receive and (auto)handle the PoisonPill before it processes the other messages which have been put into its stash</strong>, causing a pre-mature shutdown of the Actor.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Consider using explicit shut-down messages instead of <code>PoisonPill</code> when working with persistent actors.</p></div>
+<p>The example below highlights how messages arrive in the Actor&rsquo;s mailbox and how they interact with its internal stashing mechanism when <code>persist()</code> is used. Notice the early stop behavior that occurs when <code>PoisonPill</code> is used:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L426-L443" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/** Explicit shutdown message */
+case object Shutdown
+
+class SafePersistentActor extends PersistentActor {
+  override def persistenceId = &quot;safe-actor&quot;
+
+  override def receiveCommand: Receive = {
+    case c: String =&gt;
+      println(c)
+      persist(s&quot;handle-$c&quot;) { println(_) }
+    case Shutdown =&gt;
+      context.stop(self)
+  }
+
+  override def receiveRecover: Receive = {
+    case _ =&gt; // handle recovery here
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L681-L710" target="_blank" title="Go to snippet source">source</a><code class="language-java">final class Shutdown {}
+
+class MyPersistentActor extends AbstractPersistentActor {
+  @Override
+  public String persistenceId() {
+    return &quot;some-persistence-id&quot;;
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Shutdown.class,
+            shutdown -&gt; {
+              getContext().stop(getSelf());
+            })
+        .match(
+            String.class,
+            msg -&gt; {
+              System.out.println(msg);
+              persist(&quot;handle-&quot; + msg, e -&gt; System.out.println(e));
+            })
+        .build();
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().matchAny(any -&gt; {}).build();
+  }
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L447-L456" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// UN-SAFE, due to PersistentActor&#39;s command stashing:
+persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+persistentActor ! PoisonPill
+// order of received messages:
+// a
+//   # b arrives at mailbox, stashing;        internal-stash = [b]
+// PoisonPill is an AutoReceivedMessage, is handled automatically
+// !! stop !!
+// Actor is stopped without handling `b` nor the `a` handler!</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L717-L727" target="_blank" title="Go to snippet source">source</a><code class="language-java">// UN-SAFE, due to PersistentActor&#39;s command stashing:
+persistentActor.tell(&quot;a&quot;, ActorRef.noSender());
+persistentActor.tell(&quot;b&quot;, ActorRef.noSender());
+persistentActor.tell(PoisonPill.getInstance(), ActorRef.noSender());
+// order of received messages:
+// a
+//   # b arrives at mailbox, stashing;        internal-stash = [b]
+//   # PoisonPill arrives at mailbox, stashing; internal-stash = [b, Shutdown]
+// PoisonPill is an AutoReceivedMessage, is handled automatically
+// !! stop !!
+// Actor is stopped without handling `b` nor the `a` handler!</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L460-L474" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// SAFE:
+persistentActor ! &quot;a&quot;
+persistentActor ! &quot;b&quot;
+persistentActor ! Shutdown
+// order of received messages:
+// a
+//   # b arrives at mailbox, stashing;        internal-stash = [b]
+//   # Shutdown arrives at mailbox, stashing; internal-stash = [b, Shutdown]
+// handle-a
+//   # unstashing;                            internal-stash = [Shutdown]
+// b
+// handle-b
+//   # unstashing;                            internal-stash = []
+// Shutdown
+// -- stop --</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L731-L745" target="_blank" title="Go to snippet source">source</a><code class="language-java">// SAFE:
+persistentActor.tell(&quot;a&quot;, ActorRef.noSender());
+persistentActor.tell(&quot;b&quot;, ActorRef.noSender());
+persistentActor.tell(new Shutdown(), ActorRef.noSender());
+// order of received messages:
+// a
+//   # b arrives at mailbox, stashing;        internal-stash = [b]
+//   # Shutdown arrives at mailbox, stashing; internal-stash = [b, Shutdown]
+// handle-a
+//   # unstashing;                            internal-stash = [Shutdown]
+// b
+// handle-b
+//   # unstashing;                            internal-stash = []
+// Shutdown
+// -- stop --</code></pre></dd>
+</dl>
+<h3><a href="#replay-filter" name="replay-filter" class="anchor"><span class="anchor-link"></span></a>Replay Filter</h3>
+<p>See <a href="typed/persistence.html#replay-filter">Replay filter</a> in the documentation of the new API.</p>
+<h2><a href="#snapshots" name="snapshots" class="anchor"><span class="anchor-link"></span></a>Snapshots</h2>
+<p>As you model your domain using actors, you may notice that some actors may be prone to accumulating extremely long event logs and experiencing long recovery times. Sometimes, the right approach may be to split out into a set of shorter lived actors. However, when this is not an option, you can use snapshots to reduce recovery times drastically.</p>
+<p>Persistent actors can save snapshots of internal state by calling the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#saveSnapshot(snapshot:Any):Unit" title="org.apache.pekko.persistence.Snapshotter"><code>saveSnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#saveSnapshot(java.lang.Object)" title="org.apache.pekko.persistence.Snapshotter"><code>saveSnapshot</code></a></span> method. If saving of a snapshot succeeds, the persistent actor receives a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotSuccess.html" title="org.apache.pekko.persistence.SaveSnapshotSuccess"><code>SaveSnapshotSuccess</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotSuccess.html" title="org.apache.pekko.persistence.SaveSnapshotSuccess"><code>SaveSnapshotSuccess</code></a></span> message, otherwise a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotFailure.html" title="org.apache.pekko.persistence.SaveSnapshotFailure"><code>SaveSnapshotFailure</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotFailure.html" title="org.apache.pekko.persistence.SaveSnapshotFailure"><code>SaveSnapshotFailure</code></a></span> message</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L167-L179" target="_blank" title="Go to snippet source">source</a><code class="language-scala">var state: Any = _
+
+val snapShotInterval = 1000
+override def receiveCommand: Receive = {
+  case SaveSnapshotSuccess(metadata)         =&gt; // ...
+  case SaveSnapshotFailure(metadata, reason) =&gt; // ...
+  case cmd: String =&gt;
+    persist(s&quot;evt-$cmd&quot;) { e =&gt;
+      updateState(e)
+      if (lastSequenceNr % snapShotInterval == 0 &amp;&amp; lastSequenceNr != 0)
+        saveSnapshot(state)
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L272-L302" target="_blank" title="Go to snippet source">source</a><code class="language-java">private Object state;
+private int snapShotInterval = 1000;
+
+@Override
+public Receive createReceive() {
+  return receiveBuilder()
+      .match(
+          SaveSnapshotSuccess.class,
+          ss -&gt; {
+            SnapshotMetadata metadata = ss.metadata();
+            // ...
+          })
+      .match(
+          SaveSnapshotFailure.class,
+          sf -&gt; {
+            SnapshotMetadata metadata = sf.metadata();
+            // ...
+          })
+      .match(
+          String.class,
+          cmd -&gt; {
+            persist(
+                &quot;evt-&quot; + cmd,
+                e -&gt; {
+                  updateState(e);
+                  if (lastSequenceNr() % snapShotInterval == 0 &amp;&amp; lastSequenceNr() != 0)
+                    saveSnapshot(state);
+                });
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>where <code>metadata</code> is of type <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotMetadata.html" title="org.apache.pekko.persistence.SnapshotMetadata"><code>SnapshotMetadata</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotMetadata.html" title="org.apache.pekko.persistence.SnapshotMetadata"><code>SnapshotMetadata</code></a></span> and contains:</p>
+<ul>
+  <li>persistenceId</li>
+  <li>sequenceNr</li>
+  <li>timestamp</li>
+</ul>
+<p>During recovery, the persistent actor is offered the latest saved snapshot via a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotOffer.html" title="org.apache.pekko.persistence.SnapshotOffer"><code>SnapshotOffer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotOffer.html" title="org.apache.pekko.persistence.SnapshotOffer"><code>SnapshotOffer</code></a></span> message from which it can initialize internal state.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L197-L203" target="_blank" title="Go to snippet source">source</a><code class="language-scala">var state: Any = _
+
+override def receiveRecover: Receive = {
+  case SnapshotOffer(metadata, offeredSnapshot) =&gt; state = offeredSnapshot
+  case RecoveryCompleted                        =&gt;
+  case event                                    =&gt; // ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L337-L354" target="_blank" title="Go to snippet source">source</a><code class="language-java">private Object state;
+
+@Override
+public Receive createReceiveRecover() {
+  return receiveBuilder()
+      .match(
+          SnapshotOffer.class,
+          s -&gt; {
+            state = s.snapshot();
+            // ...
+          })
+      .match(
+          String.class,
+          s -&gt; {
+            /* ...*/
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>The replayed messages that follow the <code>SnapshotOffer</code> message, if any, are younger than the offered snapshot. They finally recover the persistent actor to its current (i.e. latest) state.</p>
+<p>In general, a persistent actor is only offered a snapshot if that persistent actor has previously saved one or more snapshots and at least one of these snapshots matches the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotSelectionCriteria.html" title="org.apache.pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SnapshotSelectionCriteria.html" title="org.apache.pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria</code></a></span> that can be specified for recovery.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L191-L193" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def recovery =
+  Recovery(
+    fromSnapshot = SnapshotSelectionCriteria(maxSequenceNr = 457L, maxTimestamp = System.currentTimeMillis))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L329-L333" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Recovery recovery() {
+  return Recovery.create(
+      SnapshotSelectionCriteria.create(457L, System.currentTimeMillis()));
+}</code></pre></dd>
+</dl>
+<p>If not specified, they default to <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria$.html#Latest:org.apache.pekko.persistence.SnapshotSelectionCriteria" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.Latest</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria.html#latest()" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.latest()</code></a></span> which selects the latest (= youngest) snapshot. To disable snapshot-based recovery, applications should use <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria$.html#None:org.apache.pekko.persistence.SnapshotSelectionCriteria" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.None</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/SnapshotSelectionCriteria.html#none()" title="pekko.persistence.SnapshotSelectionCriteria"><code>SnapshotSelectionCriteria.none()</code></a></span>. A recovery where no saved snapshot matches the specified <code>SnapshotSelectionCriteria</code> will replay all journaled messages.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>In order to use snapshots, a default snapshot-store (<code>pekko.persistence.snapshot-store.plugin</code>) must be configured, or the <span class="group-scala"><code>PersistentActor</code></span><span class="group-java">persistent actor</span> can pick a snapshot store explicitly by overriding <span class="group-scala"><code>def snapshotPluginId: String</code></span><span class="group-java"><code>String snapshotPluginId()</code></span>.</p>
+<p>Because some use cases may not benefit from or need snapshots, it is perfectly valid not to not configure a snapshot store. However, Akka will log a warning message when this situation is detected and then continue to operate until an actor tries to store a snapshot, at which point the operation will fail (by replying with an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotFailure.html" title="org.apache.pekko.persistence.SaveSnapshotFailure"><code>SaveSnapshotFailure</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/SaveSnapshotFailure.html" title="org.apache.pekko.persistence.SaveSnapshotFailure"><code>SaveSnapshotFailure</code></a></span> for example).</p>
+<p>Note that the &ldquo;persistence mode&rdquo; of <a href="cluster-sharding.html">Cluster Sharding</a> makes use of snapshots. If you use that mode, you&rsquo;ll need to define a snapshot store plugin.</p></div>
+<h3><a href="#snapshot-deletion" name="snapshot-deletion" class="anchor"><span class="anchor-link"></span></a>Snapshot deletion</h3>
+<p>A persistent actor can delete individual snapshots by calling the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#deleteSnapshot(sequenceNr:Long):Unit" title="org.apache.pekko.persistence.Snapshotter"><code>deleteSnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#deleteSnapshot(long)" title="org.apache.pekko.persistence.Snapshotter"><code>deleteSnapshot</code></a></span> method with the sequence number of when the snapshot was taken.</p>
+<p>To bulk-delete a range of snapshots matching scala/org/apache/pekko/persistence.SnapshotSelectionCriteria], persistent actors should use the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#deleteSnapshots(criteria:org.apache.pekko.persistence.SnapshotSelectionCriteria):Unit" title="org.apache.pekko.persistence.Snapshotter"><code>deleteSnapshots</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/Snapshotter.html#deleteSnapshots(org.apache.pekko.persistence.SnapshotSelectionCriteria)" title="org.apache.pekko.persistence.Snapshotter"><code>deleteSnapshots</code></a></span> method. Depending on the journal used this might be inefficient. It is best practice to do specific deletes with <code>deleteSnapshot</code> or to include a <code>minSequenceNr</code> as well as a <code>maxSequenceNr</code> for the <code>SnapshotSelectionCriteria</code>.</p>
+<h3><a href="#snapshot-status-handling" name="snapshot-status-handling" class="anchor"><span class="anchor-link"></span></a>Snapshot status handling</h3>
+<p>Saving or deleting snapshots can either succeed or fail – this information is reported back to the persistent actor via status messages as illustrated in the following table.</p>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Method</strong> </th>
+      <th><strong>Success</strong> </th>
+      <th><strong>Failure message</strong> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>saveSnapshot(Any)</code> </td>
+      <td><code>SaveSnapshotSuccess</code> </td>
+      <td><code>SaveSnapshotFailure</code> </td>
+    </tr>
+    <tr>
+      <td><code>deleteSnapshot(Long)</code> </td>
+      <td><code>DeleteSnapshotSuccess</code> </td>
+      <td><code>DeleteSnapshotFailure</code> </td>
+    </tr>
+    <tr>
+      <td><code>deleteSnapshots(SnapshotSelectionCriteria)</code> </td>
+      <td><code>DeleteSnapshotsSuccess</code> </td>
+      <td><code>DeleteSnapshotsFailure</code></td>
+    </tr>
+  </tbody>
+</table>
+<p>If failure messages are left unhandled by the actor, a default warning log message will be logged for each incoming failure message. No default action is performed on the success messages, however you&rsquo;re free to handle them e.g. in order to delete an in memory representation of the snapshot, or in the case of failure to attempt save the snapshot again.</p>
+<h3><a href="#optional-snapshots" name="optional-snapshots" class="anchor"><span class="anchor-link"></span></a>Optional snapshots</h3>
+<p>By default, the persistent actor will unconditionally be stopped if the snapshot can&rsquo;t be loaded in the recovery. It is possible to make snapshot loading optional. This can be useful when it is alright to ignore snapshot in case of for example deserialization errors. When snapshot loading fails it will instead recover by replaying all events.</p>
+<p>Enable this feature by setting <code>snapshot-is-optional = true</code> in the snapshot store configuration. </p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Don&rsquo;t set <code>snapshot-is-optional = true</code> if events have been deleted because that would result in wrong recovered state if snapshot load fails.</p></div>
+<h2><a href="#scaling-out" name="scaling-out" class="anchor"><span class="anchor-link"></span></a>Scaling out</h2>
+<p>See <a href="typed/persistence.html#scaling-out">Scaling out</a> in the documentation of the new API.</p>
+<h2><a href="#at-least-once-delivery" name="at-least-once-delivery" class="anchor"><span class="anchor-link"></span></a>At-Least-Once Delivery</h2>
+<p>To send messages with at-least-once delivery semantics to destinations you can <span class="group-scala">mix-in <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html" title="pekko.persistence.AtLeastOnceDelivery"><code>AtLeastOnceDelivery</code></a> trait to your <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a></span><span class="group-java">extend the <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>AbstractPersistentActorWithAtLeastOnceDelivery</code></a> class instead of <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a></span> on the sending side. It takes care of re-sending messages when they have not been confirmed within a configurable timeout.</p>
+<p>The state of the sending actor, including which messages have been sent that have not been confirmed by the recipient must be persistent so that it can survive a crash of the sending actor or JVM. The <span class="group-scala"><code>AtLeastOnceDelivery</code> trait</span><span class="group-java"><code>AbstractPersistentActorWithAtLeastOnceDelivery</code> class</span> does not persist anything by itself. It is your responsibility to persist the intent that a message is sent and that a confirmation has been received.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>At-least-once delivery implies that original message sending order is not always preserved, and the destination may receive duplicate messages. Semantics do not match those of a normal <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> send operation:</p>
+<ul>
+  <li>it is not at-most-once delivery</li>
+  <li>message order for the same sender–receiver pair is not preserved due to possible resends</li>
+  <li>after a crash and restart of the destination messages are still delivered to the new actor incarnation</li>
+</ul>
+<p>These semantics are similar to what an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorPath.html" title="org.apache.pekko.actor.ActorPath"><code>ActorPath</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorPath.html" title="org.apache.pekko.actor.ActorPath"><code>ActorPath</code></a></span> represents (see <a href="actors.html#actor-lifecycle">Actor Lifecycle</a>), therefore you need to supply a path and not a reference when delivering messages. The messages are sent to the path with an actor selection.</p></div>
+<p>Use the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/persistence/AtLeastOnceDelivery.html#deliver(destination:org.apache.pekko.actor.ActorPath)(deliveryIdToMessage:Long=%3EAny):Unit" title="persistence.AtLeastOnceDelivery"><code>deliver</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html#deliver(org.apache.pekko.actor.ActorPath,org.apache.pekko.japi.Function)" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>deliver</code></a></span> method to send a message to a destination. Call the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/persistence/AtLeastOnceDelivery.html#confirmDelivery(deliveryId:Long):Boolean" title="persistence.AtLeastOnceDelivery"><code>confirmDelivery</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#confirmDelivery(long)" title="pekko.persistence.AtLeastOnceDeliveryLike"><code>confirmDelivery</code></a></span> method when the destination has replied with a confirmation message.</p>
+<h3><a href="#relationship-between-deliver-and-confirmdelivery" name="relationship-between-deliver-and-confirmdelivery" class="anchor"><span class="anchor-link"></span></a>Relationship between deliver and confirmDelivery</h3>
+<p>To send messages to the destination path, use the <code>deliver</code> method after you have persisted the intent to send the message.</p>
+<p>The destination actor must send back a confirmation message. When the sending actor receives this confirmation message you should persist the fact that the message was delivered successfully and then call the <code>confirmDelivery</code> method.</p>
+<p>If the persistent actor is not currently recovering, the <code>deliver</code> method will send the message to the destination actor. When recovering, messages will be buffered until they have been confirmed using <code>confirmDelivery</code>. Once recovery has completed, if there are outstanding messages that have not been confirmed (during the message replay), the persistent actor will resend these before sending any other messages.</p>
+<p>Deliver requires a <code>deliveryIdToMessage</code> function to pass the provided <code>deliveryId</code> into the message so that the correlation between <code>deliver</code> and <code>confirmDelivery</code> is possible. The <code>deliveryId</code> must do the round trip. Upon receipt of the message, the destination actor will send the same<code>deliveryId</code> wrapped in a confirmation message back to the sender. The sender will then use it to call <code>confirmDelivery</code> method to complete the delivery routine.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceDocSpec.scala#L117-L155" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.{ Actor, ActorSelection }
+import pekko.persistence.AtLeastOnceDelivery
+
+case class Msg(deliveryId: Long, s: String)
+case class Confirm(deliveryId: Long)
+
+sealed trait Evt
+case class MsgSent(s: String) extends Evt
+case class MsgConfirmed(deliveryId: Long) extends Evt
+
+class MyPersistentActor(destination: ActorSelection) extends PersistentActor with AtLeastOnceDelivery {
+
+  override def persistenceId: String = &quot;persistence-id&quot;
+
+  override def receiveCommand: Receive = {
+    case s: String           =&gt; persist(MsgSent(s))(updateState)
+    case Confirm(deliveryId) =&gt; persist(MsgConfirmed(deliveryId))(updateState)
+  }
+
+  override def receiveRecover: Receive = {
+    case evt: Evt =&gt; updateState(evt)
+  }
+
+  def updateState(evt: Evt): Unit = evt match {
+    case MsgSent(s) =&gt;
+      deliver(destination)(deliveryId =&gt; Msg(deliveryId, s))
+
+    case MsgConfirmed(deliveryId) =&gt; confirmDelivery(deliveryId)
+  }
+}
+
+class MyDestination extends Actor {
+  def receive = {
+    case Msg(deliveryId, s) =&gt;
+      // ...
+      sender() ! Confirm(deliveryId)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistenceDocTest.java#L165-L260" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>class Msg implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final long deliveryId;
+  public final String s;
+
+  public Msg(long deliveryId, String s) {
+    this.deliveryId = deliveryId;
+    this.s = s;
+  }
+}
+
+class Confirm implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final long deliveryId;
+
+  public Confirm(long deliveryId) {
+    this.deliveryId = deliveryId;
+  }
+}
+
+class MsgSent implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final String s;
+
+  public MsgSent(String s) {
+    this.s = s;
+  }
+}
+
+class MsgConfirmed implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final long deliveryId;
+
+  public MsgConfirmed(long deliveryId) {
+    this.deliveryId = deliveryId;
+  }
+}
+
+class MyPersistentActor extends AbstractPersistentActorWithAtLeastOnceDelivery {
+  private final ActorSelection destination;
+
+  public MyPersistentActor(ActorSelection destination) {
+    this.destination = destination;
+  }
+
+  @Override
+  public String persistenceId() {
+    return &quot;persistence-id&quot;;
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            String.class,
+            s -&gt; {
+              persist(new MsgSent(s), evt -&gt; updateState(evt));
+            })
+        .match(
+            Confirm.class,
+            confirm -&gt; {
+              persist(new MsgConfirmed(confirm.deliveryId), evt -&gt; updateState(evt));
+            })
+        .build();
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().match(Object.class, evt -&gt; updateState(evt)).build();
+  }
+
+  void updateState(Object event) {
+    if (event instanceof MsgSent) {
+      final MsgSent evt = (MsgSent) event;
+      deliver(destination, deliveryId -&gt; new Msg(deliveryId, evt.s));
+    } else if (event instanceof MsgConfirmed) {
+      final MsgConfirmed evt = (MsgConfirmed) event;
+      confirmDelivery(evt.deliveryId);
+    }
+  }
+}
+
+class MyDestination extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Msg.class,
+            msg -&gt; {
+              // ...
+              getSender().tell(new Confirm(msg.deliveryId), getSelf());
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>The <code>deliveryId</code> generated by the persistence module is a strictly monotonically increasing sequence number without gaps. The same sequence is used for all destinations of the actor, i.e. when sending to multiple destinations the destinations will see gaps in the sequence. It is not possible to use custom <code>deliveryId</code>. However, you can send a custom correlation identifier in the message to the destination. You must then retain a mapping between the internal <code>deliveryId</code> (passed into the <code>deliveryIdToMessage</code> function) and your custom correlation id (passed into the message). You can do this by storing such mapping in a <code>Map(correlationId -&gt; deliveryId)</code> from which you can retrieve the <code>deliveryId</code> to be passed into the <code>confirmDelivery</code> method once the receiver of your message has replied with your custom correlation id.</p>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html" title="pekko.persistence.AtLeastOnceDelivery"><code>AtLeastOnceDelivery</code></a> trait</span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>AbstractPersistentActorWithAtLeastOnceDelivery</code></a> class</span> has a state consisting of unconfirmed messages and a sequence number. It does not store this state itself. You must persist events corresponding to the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html#deliver(destination:org.apache.pekko.actor.ActorPath)(deliveryIdToMessage:Long=%3EAny):Unit" title="pekko.persistence.AtLeastOnceDelivery"><code>deliver</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html#deliver(org.apache.pekko.actor.ActorPath,org.apache.pekko.japi.Function)" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>deliver</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html#confirmDelivery(deliveryId:Long):Boolean" title="pekko.persistence.AtLeastOnceDelivery"><code>confirmDelivery</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#confirmDelivery(long)" title="pekko.persistence.AtLeastOnceDeliveryLike"><code>confirmDelivery</code></a></span> invocations from your <code>PersistentActor</code> so that the state can be restored by calling the same methods during the recovery phase of the <code>PersistentActor</code>. Sometimes these events can be derived from other business level events, and sometimes you must create separate events. During recovery, calls to <code>deliver</code> will not send out messages, those will be sent later if no matching <code>confirmDelivery</code> will have been performed.</p>
+<p>Support for snapshots is provided by <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#getDeliverySnapshot:org.apache.pekko.persistence.AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>getDeliverySnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#getDeliverySnapshot()" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>getDeliverySnapshot</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#setDeliverySnapshot(snapshot:org.apache.pekko.persistence.AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot):Unit" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>setDeliverySnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#setDeliverySnapshot(org.apache.pekko.persistence.AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot)" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>setDeliverySnapshot</code></a></span>. The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$AtLeastOnceDeliverySnapshot.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot"><code>AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$AtLeastOnceDeliverySnapshot.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot"><code>AtLeastOnceDelivery.AtLeastOnceDeliverySnapshot</code></a></span> contains the full delivery state, including unconfirmed messages. If you need a custom snapshot for other parts of the actor state you must also include the <code>AtLeastOnceDeliverySnapshot</code>. It is serialized using protobuf with the ordinary Akka serialization mechanism. It is easiest to include the bytes of the <code>AtLeastOnceDeliverySnapshot</code> as a blob in your custom snapshot.</p>
+<p>The interval between redelivery attempts is defined by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#redeliverInterval:scala.concurrent.duration.FiniteDuration" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>redeliverInterval</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#redeliverInterval()" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>redeliverInterval</code></a></span> method. The default value can be configured with the <code>pekko.persistence.at-least-once-delivery.redeliver-interval</code> configuration key. The method can be overridden by implementation classes to return non-default values.</p>
+<p>The maximum number of messages that will be sent at each redelivery burst is defined by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#redeliveryBurstLimit:Int" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>redeliverBurstLimit</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#redeliveryBurstLimit()" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>redeliverBurstLimit</code></a></span> method (burst frequency is half of the redelivery interval). If there&rsquo;s a lot of unconfirmed messages (e.g. if the destination is not available for a long time), this helps to prevent an overwhelming amount of messages to be sent at once. The default value can be configured with the <code>pekko.persistence.at-least-once-delivery.redelivery-burst-limit</code> configuration key. The method can be overridden by implementation classes to return non-default values.</p>
+<p>After a number of delivery attempts a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$UnconfirmedWarning.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.UnconfirmedWarning"><code>AtLeastOnceDelivery.UnconfirmedWarning</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$UnconfirmedWarning.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.UnconfirmedWarning"><code>AtLeastOnceDelivery.UnconfirmedWarning</code></a></span> message will be sent to <code>self</code>. The re-sending will still continue, but you can choose to call <code>confirmDelivery</code> to cancel the re-sending. The number of delivery attempts before emitting the warning is defined by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#warnAfterNumberOfUnconfirmedAttempts:Int" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>warnAfterNumberOfUnconfirmedAttempts</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#warnAfterNumberOfUnconfirmedAttempts()" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>warnAfterNumberOfUnconfirmedAttempts</code></a></span> method. The default value can be configured with the <code>pekko.persistence.at-least-once-delivery.warn-after-number-of-unconfirmed-attempts</code> configuration key. The method can be overridden by implementation classes to return non-default values.</p>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/AtLeastOnceDelivery.html" title="pekko.persistence.AtLeastOnceDelivery"><code>AtLeastOnceDelivery</code></a> trait</span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorWithAtLeastOnceDelivery.html" title="pekko.persistence.AbstractPersistentActorWithAtLeastOnceDelivery"><code>AbstractPersistentActorWithAtLeastOnceDelivery</code></a> class</span> holds messages in memory until their successful delivery has been confirmed. The maximum number of unconfirmed messages that the actor is allowed to hold in memory is defined by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#maxUnconfirmedMessages:Int" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>maxUnconfirmedMessages</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDeliveryLike.html#maxUnconfirmedMessages()" title="org.apache.pekko.persistence.AtLeastOnceDeliveryLike"><code>maxUnconfirmedMessages</code></a></span> method. If this limit is exceed the <code>deliver</code> method will not accept more messages and it will throw <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$MaxUnconfirmedMessagesExceededException.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.MaxUnconfirmedMessagesExceededException"><code>AtLeastOnceDelivery.MaxUnconfirmedMessagesExceededException</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtLeastOnceDelivery$$MaxUnconfirmedMessagesExceededException.html" title="org.apache.pekko.persistence.AtLeastOnceDelivery.MaxUnconfirmedMessagesExceededException"><code>AtLeastOnceDelivery.MaxUnconfirmedMessagesExceededException</code></a></span>. The default value can be configured with the <code>pekko.persistence.at-least-once-delivery.max-unconfirmed-messages</code> configuration key. The method can be overridden by implementation classes to return non-default values.</p>
+<h2><a href="#event-adapters" name="event-adapters" class="anchor"><span class="anchor-link"></span></a>Event Adapters</h2>
+<p>In long running projects using Event Sourcing sometimes the need arises to detach the data model from the domain model completely.</p>
+<p>Event Adapters help in situations where:</p>
+<ul>
+  <li><strong>Version Migrations</strong> – existing events stored in <em>Version 1</em> should be &ldquo;upcasted&rdquo; to a new <em>Version 2</em> representation, and the process of doing so involves actual code, not just changes on the serialization layer. For these scenarios the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/WriteEventAdapter.html#toJournal(event:Any):Any" title="org.apache.pekko.persistence.journal.WriteEventAdapter"><code>toJournal</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/WriteEventAdapter.html#toJournal(java.lang.Object)" title="org.apache.pekko.persistence.journal.WriteEventAdapter"><code>toJournal</code></a></span> function is usually an identity function, however the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/ReadEventAdapter.html#fromJournal(event:Any,manifest:String):org.apache.pekko.persistence.journal.EventSeq" title="org.apache.pekko.persistence.journal.ReadEventAdapter"><code>fromJournal</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/ReadEventAdapter.html#fromJournal(java.lang.Object,java.lang.String)" title="org.apache.pekko.persistence.journal.ReadEventAdapter"><code>fromJournal</code></a></span> is implemented as <code>v1.Event=&gt;v2.Event</code>, performing the necessary mapping inside the fromJournal method. This technique is sometimes referred to as &ldquo;upcasting&rdquo; in other CQRS libraries.</li>
+  <li><strong>Separating Domain and Data models</strong> – thanks to EventAdapters it is possible to completely separate the domain model from the model used to persist data in the Journals. For example one may want to use case classes in the domain model, however persist their protocol-buffer (or any other binary serialization format) counter-parts to the Journal. A simple <code>toJournal:MyModel=&gt;MyDataModel</code> and <code>fromJournal:MyDataModel=&gt;MyModel</code> adapter can be used to implement this feature.</li>
+  <li><strong>Journal Specialized Data Types</strong> – exposing data types understood by the underlying Journal, for example for data stores which understand JSON it is possible to write an EventAdapter <code>toJournal:Any=&gt;JSON</code> such that the Journal can <em>directly</em> store the json instead of serializing the object to its binary representation.</li>
+</ul>
+<p>Implementing an EventAdapter is rather straightforward:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceEventAdapterDocSpec.scala#L156-L165" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyEventAdapter(system: ExtendedActorSystem) extends EventAdapter {
+  override def manifest(event: Any): String =
+    &quot;&quot; // when no manifest needed, return &quot;&quot;
+
+  override def toJournal(event: Any): Any =
+    event // identity
+
+  override def fromJournal(event: Any, manifest: String): EventSeq =
+    EventSeq.single(event) // identity
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceEventAdapterDocTest.java#L24-L39" target="_blank" title="Go to snippet source">source</a><code class="language-java">class MyEventAdapter implements EventAdapter {
+  @Override
+  public String manifest(Object event) {
+    return &quot;&quot;; // if no manifest needed, return &quot;&quot;
+  }
+
+  @Override
+  public Object toJournal(Object event) {
+    return event; // identity
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    return EventSeq.single(event); // identity
+  }
+}</code></pre></dd>
+</dl>
+<p>Then in order for it to be used on events coming to and from the journal you must bind it using the below configuration syntax:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceEventAdapterDocSpec.scala#L31-L45" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.persistence.journal {
+  inmem {
+    event-adapters {
+      tagging        = &quot;docs.persistence.MyTaggingEventAdapter&quot;
+      user-upcasting = &quot;docs.persistence.UserUpcastingEventAdapter&quot;
+      item-upcasting = &quot;docs.persistence.ItemUpcastingEventAdapter&quot;
+    }
+
+    event-adapter-bindings {
+      &quot;docs.persistence.Item&quot;        = tagging
+      &quot;docs.persistence.TaggedEvent&quot; = tagging
+      &quot;docs.persistence.v1.Event&quot;    = [user-upcasting, item-upcasting]
+    }
+  }
+}</code></pre>
+<p>It is possible to bind multiple adapters to one class <em>for recovery</em>, in which case the <code>fromJournal</code> methods of all bound adapters will be applied to a given matching event (in order of definition in the configuration). Since each adapter may return from <code>0</code> to <code>n</code> adapted events (called as <code>EventSeq</code>), each adapter can investigate the event and if it should indeed adapt it return the adapted event(s) for it. Other adapters which do not have anything to contribute during this adaptation simply return <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventSeq$.html#empty:org.apache.pekko.persistence.journal.EventSeq" title="org.apache.pekko.persistence.journal.EventSeq"><code>EventSeq.empty</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventSeq$.html#empty()" title="org.apache.pekko.persistence.journal.EventSeq"><code>EventSeq.empty</code></a></span>. The adapted events are then delivered in-order to the <code>PersistentActor</code> during replay.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>For more advanced schema evolution techniques refer to the <a href="persistence-schema-evolution.html">Persistence - Schema Evolution</a> documentation.</p></div>
+<h2><a href="#custom-serialization" name="custom-serialization" class="anchor"><span class="anchor-link"></span></a>Custom serialization</h2>
+<p>Serialization of snapshots and payloads of <code>Persistent</code> messages is configurable with Akka&rsquo;s <a href="serialization.html">Serialization</a> infrastructure. For example, if an application wants to serialize</p>
+<ul>
+  <li>payloads of type <code>MyPayload</code> with a custom <code>MyPayloadSerializer</code> and</li>
+  <li>snapshots of type <code>MySnapshot</code> with a custom <code>MySnapshotSerializer</code></li>
+</ul>
+<p>it must add</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSerializerDocSpec.scala#L29-L38" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serializers {
+    my-payload = &quot;docs.persistence.MyPayloadSerializer&quot;
+    my-snapshot = &quot;docs.persistence.MySnapshotSerializer&quot;
+  }
+  serialization-bindings {
+    &quot;docs.persistence.MyPayload&quot; = my-payload
+    &quot;docs.persistence.MySnapshot&quot; = my-snapshot
+  }
+}</code></pre>
+<p>to the application configuration. If not specified, an exception will be throw when trying to persist events or snapshots.</p>
+<p>For more advanced schema evolution techniques refer to the <a href="persistence-schema-evolution.html">Persistence - Schema Evolution</a> documentation.</p>
+<h2><a href="#testing-with-leveldb-journal" name="testing-with-leveldb-journal" class="anchor"><span class="anchor-link"></span></a>Testing with LevelDB journal</h2>
+<p>The LevelDB journal is deprecated and will be removed from a future Akka version, it is not advised to build new applications with it. For testing the built in &ldquo;inmem&rdquo; journal or the actual journal that will be used in production of the application is recommended. See <a href="persistence-plugins.html">Persistence Plugins</a> for some journal implementation choices.</p>
+<p>When running tests with LevelDB default settings in <code>sbt</code>, make sure to set <code>fork := true</code> in your sbt project. Otherwise, you&rsquo;ll see an <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/UnsatisfiedLinkError.html" title="java.lang.UnsatisfiedLinkError"><code>UnsatisfiedLinkError</code></a>. Alternatively, you can switch to a LevelDB Java port by setting</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L57" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.persistence.journal.leveldb.native = off</code></pre>
+<p>or</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.persistence.journal.leveldb-shared.store.native = off</code></pre>
+<p>in your Akka configuration. Also note that for the LevelDB Java port, you will need the following dependencies:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "org.iq80.leveldb" % "leveldb" % "0.9"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.iq80.leveldb&lt;/groupId&gt;
+    &lt;artifactId&gt;leveldb&lt;/artifactId&gt;
+    &lt;version&gt;0.9&lt;/version&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
+  implementation "org.iq80.leveldb:leveldb:0.9"
+}</code></pre></dd></dl><div class="callout warning "><div class="callout-title">Warning</div>
+<p>It is not possible to test persistence provided classes (i.e. <code>PersistentActor</code> and <a href="persistence.html#at-least-once-delivery">AtLeastOnceDelivery</a>) using <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestActorRef.html" title="org.apache.pekko.testkit.TestActorRef"><code>TestActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestActorRef.html" title="org.apache.pekko.testkit.TestActorRef"><code>TestActorRef</code></a></span> due to its <em>synchronous</em> nature. These traits need to be able to perform asynchronous tasks in the background in order to handle internal persistence related events.</p>
+<p>When testing Persistence based projects always rely on <a href="testing.html#async-integration-testing">asynchronous messaging using the TestKit</a>.</p></div>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>There are several configuration properties for the persistence module, please refer to the <a href="general/configuration-reference.html#config-akka-persistence">reference configuration</a>.</p>
+<p>The <a href="persistence-plugins.html">journal and snapshot store plugins</a> have specific configuration, see reference documentation of the chosen plugin.</p>
+<h2><a href="#multiple-persistence-plugin-configurations" name="multiple-persistence-plugin-configurations" class="anchor"><span class="anchor-link"></span></a>Multiple persistence plugin configurations</h2>
+<p>By default, a persistent actor will use the &ldquo;default&rdquo; journal and snapshot store plugins configured in the following sections of the <code>reference.conf</code> configuration resource:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceMultiDocSpec.scala#L22-L25" target="_blank" title="Go to snippet source">source</a><code class="language-scala"># Absolute path to the default journal plugin configuration entry.
+pekko.persistence.journal.plugin = &quot;pekko.persistence.journal.inmem&quot;
+# Absolute path to the default snapshot store plugin configuration entry.
+pekko.persistence.snapshot-store.plugin = &quot;pekko.persistence.snapshot-store.local&quot;</code></pre>
+<p>Note that in this case the actor overrides only the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#persistenceId:String" title="org.apache.pekko.persistence.PersistenceIdentity"><code>persistenceId</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#persistenceId()" title="org.apache.pekko.persistence.PersistenceIdentity"><code>persistenceId</code></a></span> method:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceMultiDocSpec.scala#L30-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait ActorWithDefaultPlugins extends PersistentActor {
+  override def persistenceId = &quot;123&quot;
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceMultiDocTest.java#L24-L29" target="_blank" title="Go to snippet source">source</a><code class="language-java">abstract class AbstractPersistentActorWithDefaultPlugins extends AbstractPersistentActor {
+  @Override
+  public String persistenceId() {
+    return &quot;123&quot;;
+  }
+}</code></pre></dd>
+</dl>
+<p>When the persistent actor overrides the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#journalPluginId:String" title="org.apache.pekko.persistence.PersistenceIdentity"><code>journalPluginId</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#journalPluginId()" title="org.apache.pekko.persistence.PersistenceIdentity"><code>journalPluginId</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#snapshotPluginId:String" title="org.apache.pekko.persistence.PersistenceIdentity"><code>snapshotPluginId</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistenceIdentity.html#snapshotPluginId()" title="org.apache.pekko.persistence.PersistenceIdentity"><code>snapshotPluginId</code></a></span> methods, the actor will be serviced by these specific persistence plugins instead of the defaults:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceMultiDocSpec.scala#L57-L66" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait ActorWithOverridePlugins extends PersistentActor {
+  override def persistenceId = &quot;123&quot;
+
+  // Absolute path to the journal plugin configuration entry in the `reference.conf`.
+  override def journalPluginId = &quot;pekko.persistence.chronicle.journal&quot;
+
+  // Absolute path to the snapshot store plugin configuration entry in the `reference.conf`.
+  override def snapshotPluginId = &quot;pekko.persistence.chronicle.snapshot-store&quot;
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceMultiDocTest.java#L33-L50" target="_blank" title="Go to snippet source">source</a><code class="language-java">abstract class AbstractPersistentActorWithOverridePlugins extends AbstractPersistentActor {
+  @Override
+  public String persistenceId() {
+    return &quot;123&quot;;
+  }
+
+  // Absolute path to the journal plugin configuration entry in the `reference.conf`
+  @Override
+  public String journalPluginId() {
+    return &quot;pekko.persistence.chronicle.journal&quot;;
+  }
+
+  // Absolute path to the snapshot store plugin configuration entry in the `reference.conf`
+  @Override
+  public String snapshotPluginId() {
+    return &quot;pekko.persistence.chronicle.snapshot-store&quot;;
+  }
+}</code></pre></dd>
+</dl>
+<p>Note that <code>journalPluginId</code> and <code>snapshotPluginId</code> must refer to properly configured <code>reference.conf</code> plugin entries with a standard <code>class</code> property as well as settings which are specific for those plugins, i.e.:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceMultiDocSpec.scala#L39-L52" target="_blank" title="Go to snippet source">source</a><code class="language-scala"># Configuration entry for the custom journal plugin, see `journalPluginId`.
+pekko.persistence.chronicle.journal {
+  # Standard persistence extension property: provider FQCN.
+  class = &quot;org.apache.pekko.persistence.chronicle.ChronicleSyncJournal&quot;
+  # Custom setting specific for the journal `ChronicleSyncJournal`.
+  folder = $${user.dir}/store/journal
+}
+# Configuration entry for the custom snapshot store plugin, see `snapshotPluginId`.
+pekko.persistence.chronicle.snapshot-store {
+  # Standard persistence extension property: provider FQCN.
+  class = &quot;org.apache.pekko.persistence.chronicle.ChronicleSnapshotStore&quot;
+  # Custom setting specific for the snapshot store `ChronicleSnapshotStore`.
+  folder = $${user.dir}/store/snapshot
+}</code></pre>
+<h2><a href="#give-persistence-plugin-configurations-at-runtime" name="give-persistence-plugin-configurations-at-runtime" class="anchor"><span class="anchor-link"></span></a>Give persistence plugin configurations at runtime</h2>
+<p>By default, a persistent actor will use the configuration loaded at <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> creation time to create journal and snapshot store plugins.</p>
+<p>When the persistent actor overrides the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RuntimePluginConfig.html#journalPluginConfig:com.typesafe.config.Config" title="org.apache.pekko.persistence.RuntimePluginConfig"><code>journalPluginConfig</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RuntimePluginConfig.html#journalPluginConfig()" title="org.apache.pekko.persistence.RuntimePluginConfig"><code>journalPluginConfig</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RuntimePluginConfig.html#snapshotPluginConfig:com.typesafe.config.Config" title="org.apache.pekko.persistence.RuntimePluginConfig"><code>snapshotPluginConfig</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/RuntimePluginConfig.html#snapshotPluginConfig()" title="org.apache.pekko.persistence.RuntimePluginConfig"><code>snapshotPluginConfig</code></a></span> methods, the actor will use the declared <a href="https://javadoc.io/doc/com.typesafe/config/latest/com/typesafe/config/Config.html" title="com.typesafe.config.Config"><code>Config</code></a> objects with a fallback on the default configuration. It allows a dynamic configuration of the journal and the snapshot store at runtime:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceMultiDocSpec.scala#L70-L103" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait ActorWithRuntimePluginConfig extends PersistentActor with RuntimePluginConfig {
+  // Variable that is retrieved at runtime, from an external service for instance.
+  val runtimeDistinction = &quot;foo&quot;
+
+  override def persistenceId = &quot;123&quot;
+
+  // Absolute path to the journal plugin configuration entry, not defined in the `reference.conf`.
+  override def journalPluginId = s&quot;journal-plugin-$runtimeDistinction&quot;
+
+  // Absolute path to the snapshot store plugin configuration entry, not defined in the `reference.conf`.
+  override def snapshotPluginId = s&quot;snapshot-store-plugin-$runtimeDistinction&quot;
+
+  // Configuration which contains the journal plugin id defined above
+  override def journalPluginConfig =
+    ConfigFactory
+      .empty()
+      .withValue(
+        s&quot;journal-plugin-$runtimeDistinction&quot;,
+        context.system.settings.config
+          .getValue(&quot;journal-plugin&quot;) // or a very different configuration coming from an external service.
+      )
+
+  // Configuration which contains the snapshot store plugin id defined above
+  override def snapshotPluginConfig =
+    ConfigFactory
+      .empty()
+      .withValue(
+        s&quot;snapshot-plugin-$runtimeDistinction&quot;,
+        context.system.settings.config
+          .getValue(&quot;snapshot-store-plugin&quot;) // or a very different configuration coming from an external service.
+      )
+
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceMultiDocTest.java#L54-L107" target="_blank" title="Go to snippet source">source</a><code class="language-java">abstract class AbstractPersistentActorWithRuntimePluginConfig extends AbstractPersistentActor
+    implements RuntimePluginConfig {
+  // Variable that is retrieved at runtime, from an external service for instance.
+  String runtimeDistinction = &quot;foo&quot;;
+
+  @Override
+  public String persistenceId() {
+    return &quot;123&quot;;
+  }
+
+  // Absolute path to the journal plugin configuration entry in the `reference.conf`
+  @Override
+  public String journalPluginId() {
+    return &quot;journal-plugin-&quot; + runtimeDistinction;
+  }
+
+  // Absolute path to the snapshot store plugin configuration entry in the `reference.conf`
+  @Override
+  public String snapshotPluginId() {
+    return &quot;snapshot-store-plugin-&quot; + runtimeDistinction;
+  }
+
+  // Configuration which contains the journal plugin id defined above
+  @Override
+  public Config journalPluginConfig() {
+    return ConfigFactory.empty()
+        .withValue(
+            &quot;journal-plugin-&quot; + runtimeDistinction,
+            getContext()
+                .getSystem()
+                .settings()
+                .config()
+                .getValue(
+                    &quot;journal-plugin&quot;) // or a very different configuration coming from an external
+            // service.
+            );
+  }
+
+  // Configuration which contains the snapshot store plugin id defined above
+  @Override
+  public Config snapshotPluginConfig() {
+    return ConfigFactory.empty()
+        .withValue(
+            &quot;snapshot-plugin-&quot; + runtimeDistinction,
+            getContext()
+                .getSystem()
+                .settings()
+                .config()
+                .getValue(
+                    &quot;snapshot-store-plugin&quot;) // or a very different configuration coming from an
+            // external service.
+            );
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#see-also" name="see-also" class="anchor"><span class="anchor-link"></span></a>See also</h2>
+<ul>
+  <li><a href="persistence-fsm.html">Persistent FSM</a></li>
+  <li><a href="persistence-plugins.html">Persistence plugins</a></li>
+  <li><a href="persistence-journals.html">Building a new storage backend</a></li>
+</ul>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/persistence.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="persistence-fsm.html">Classic Persistent FSM</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="persistence.html#classic-persistence" class="header">Classic Persistence</a>
+  <ul>
+    <li><a href="persistence.html#module-info" class="header">Module info</a></li>
+    <li><a href="persistence.html#introduction" class="header">Introduction</a></li>
+    <li><a href="persistence.html#example" class="header">Example</a></li>
+    <li><a href="persistence.html#snapshots" class="header">Snapshots</a></li>
+    <li><a href="persistence.html#scaling-out" class="header">Scaling out</a></li>
+    <li><a href="persistence.html#at-least-once-delivery" class="header">At-Least-Once Delivery</a></li>
+    <li><a href="persistence.html#event-adapters" class="header">Event Adapters</a></li>
+    <li><a href="persistence.html#custom-serialization" class="header">Custom serialization</a></li>
+    <li><a href="persistence.html#testing-with-leveldb-journal" class="header">Testing with LevelDB journal</a></li>
+    <li><a href="persistence.html#configuration" class="header">Configuration</a></li>
+    <li><a href="persistence.html#multiple-persistence-plugin-configurations" class="header">Multiple persistence plugin configurations</a></li>
+    <li><a href="persistence.html#give-persistence-plugin-configurations-at-runtime" class="header">Give persistence plugin configurations at runtime</a></li>
+    <li><a href="persistence.html#see-also" class="header">See also</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

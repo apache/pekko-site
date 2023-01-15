@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Testing streams · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-testkit.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="active page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="active page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Testing streams</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#testing-streams" name="testing-streams" class="anchor"><span class="anchor-link"></span></a>Testing streams</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Stream TestKit, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream-testkit" % PekkoVersion % Test</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  testImplementation "org.apache.pekko:akka-stream-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Verifying behavior of Akka Stream sources, flows and sinks can be done using various code patterns and libraries. Here we will discuss testing these elements using:</p>
+<ul>
+  <li>simple sources, sinks and flows;</li>
+  <li>sources and sinks in combination with <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> from the <code>akka-testkit</code> module;</li>
+  <li>sources and sinks specifically crafted for writing tests from the <code>akka-stream-testkit</code> module.</li>
+</ul>
+<p>It is important to keep your data processing pipeline as separate sources, flows and sinks. This makes them testable by wiring them up to other sources or sinks, or some test harnesses that <code>akka-testkit</code> or <code>akka-stream-testkit</code> provide.</p>
+<h2><a href="#built-in-sources-sinks-and-operators" name="built-in-sources-sinks-and-operators" class="anchor"><span class="anchor-link"></span></a>Built-in sources, sinks and operators</h2>
+<p>Testing a custom sink can be as simple as attaching a source that emits elements from a predefined collection, running a constructed test flow and asserting on the results that sink produced. Here is an example of a test for a sink:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L31-L36" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest =
+  Flow[Int].map(_ * 2).toMat(Sink.fold(0)(_ + _))(Keep.right)
+
+val future = Source(1 to 4).runWith(sinkUnderTest)
+val result = Await.result(future, 3.seconds)
+assert(result == 20)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L59-L67" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sinkUnderTest =
+    Flow.of(Integer.class)
+        .map(i -&gt; i * 2)
+        .toMat(Sink.fold(0, (agg, next) -&gt; agg + next), Keep.right());
+
+final CompletionStage&lt;Integer&gt; future =
+    Source.from(Arrays.asList(1, 2, 3, 4)).runWith(sinkUnderTest, system);
+final Integer result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(20, result.intValue());</code></pre></dd>
+</dl>
+<p>The same strategy can be applied for sources as well. In the next example we have a source that produces an infinite stream of elements. Such source can be tested by asserting that first arbitrary number of elements hold some condition. Here the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#take(long)" title="org.apache.pekko.stream.javadsl.Source"><code>take</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#take(n:Long):FlowOps.this.Repr[Out]" title="org.apache.pekko.stream.scaladsl.Source"><code>take</code></a></span> operator and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink$.html#seq()" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink.seq</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink$.html#seq[T]:org.apache.pekko.stream.scaladsl.Sink[T,scala.concurrent.Future[Seq[T]]]" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink.seq</code></a></span> are very useful.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L42-L49" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import system.dispatcher
+import org.apache.pekko.pattern.pipe
+
+val sourceUnderTest = Source.repeat(1).map(_ * 2)
+
+val future = sourceUnderTest.take(10).runWith(Sink.seq)
+val result = Await.result(future, 3.seconds)
+assert(result == Seq.fill(10)(2))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L74-L79" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; sourceUnderTest = Source.repeat(1).map(i -&gt; i * 2);
+
+final CompletionStage&lt;List&lt;Integer&gt;&gt; future =
+    sourceUnderTest.take(10).runWith(Sink.seq(), system);
+final List&lt;Integer&gt; result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(Collections.nCopies(10, 2), result);</code></pre></dd>
+</dl>
+<p>When testing a flow we need to attach a source and a sink. As both stream ends are under our control, we can choose sources that tests various edge cases of the flow and sinks that ease assertions.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L55-L59" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val flowUnderTest = Flow[Int].takeWhile(_ &lt; 5)
+
+val future = Source(1 to 10).via(flowUnderTest).runWith(Sink.fold(Seq.empty[Int])(_ :+ _))
+val result = Await.result(future, 3.seconds)
+assert(result == (1 to 4))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L86-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Integer, Integer, NotUsed&gt; flowUnderTest =
+    Flow.of(Integer.class).takeWhile(i -&gt; i &lt; 5);
+
+final CompletionStage&lt;Integer&gt; future =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6))
+        .via(flowUnderTest)
+        .runWith(Sink.fold(0, (agg, next) -&gt; agg + next), system);
+final Integer result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(10, result.intValue());</code></pre></dd>
+</dl>
+<h2><a href="#testkit" name="testkit" class="anchor"><span class="anchor-link"></span></a>TestKit</h2>
+<p>Akka Stream offers integration with Actors out of the box. This support can be used for writing stream tests that use familiar <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> from the <code>akka-testkit</code> API.</p>
+<p>One of the more straightforward tests would be to materialize stream to a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> and then use <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/pattern/PipeToSupport.html#pipe[T](future:scala.concurrent.Future[T])(implicitexecutionContext:scala.concurrent.ExecutionContext):PipeToSupport.this.PipeableFuture[T]" title="pekko.pattern.PipeToSupport"><code>pipe</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/pattern/Patterns$.html#pipe[T](future:java.util.concurrent.CompletionStage[T],context:scala.concurrent.ExecutionContext):org.apache.pekko.pattern.PipeableCompletionStage[T]" title="org.apache.pekko.pattern.Patterns"><code>Patterns.pipe</code></a></span> pattern to pipe the result of that future to the probe.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L65-L72" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import system.dispatcher
+import org.apache.pekko.pattern.pipe
+
+val sourceUnderTest = Source(1 to 4).grouped(2)
+
+val probe = TestProbe()
+sourceUnderTest.runWith(Sink.seq).pipeTo(probe.ref)
+probe.expectMsg(3.seconds, Seq(Seq(1, 2), Seq(3, 4)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L101-L108" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;List&lt;Integer&gt;, NotUsed&gt; sourceUnderTest =
+    Source.from(Arrays.asList(1, 2, 3, 4)).grouped(2);
+
+final TestKit probe = new TestKit(system);
+final CompletionStage&lt;List&lt;List&lt;Integer&gt;&gt;&gt; future =
+    sourceUnderTest.grouped(2).runWith(Sink.head(), system);
+org.apache.pekko.pattern.Patterns.pipe(future, system.dispatcher()).to(probe.getRef());
+probe.expectMsg(Duration.ofSeconds(3), Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4)));</code></pre></dd>
+</dl>
+<p>Instead of materializing to a future, we can use a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink$.html#actorRef(org.apache.pekko.actor.ActorRef,java.lang.Object)" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink.actorRef</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink$.html#actorRef[T](ref:org.apache.pekko.actor.ActorRef,onCompleteMessage:Any,onFailureMessage:Throwable=%3EAny):org.apache.pekko.stream.scaladsl.Sink[T,org.apache.pekko.NotUsed]" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink.actorRef</code></a></span> that sends all incoming elements to the given <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span>. Now we can use assertion methods on <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> and expect elements one by one as they arrive. We can also assert stream completion by expecting for <code>onCompleteMessage</code> which was given to <code>Sink.actorRef</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L78-L90" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case object Tick
+val sourceUnderTest = Source.tick(0.seconds, 200.millis, Tick)
+
+val probe = TestProbe()
+val cancellable = sourceUnderTest
+  .to(Sink.actorRef(probe.ref, onCompleteMessage = &quot;completed&quot;, onFailureMessage = _ =&gt; &quot;failed&quot;))
+  .run()
+
+probe.expectMsg(1.second, Tick)
+probe.expectNoMessage(100.millis)
+probe.expectMsg(3.seconds, Tick)
+cancellable.cancel()
+probe.expectMsg(3.seconds, &quot;completed&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L120-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Tick, Cancellable&gt; sourceUnderTest =
+    Source.tick(Duration.ZERO, Duration.ofMillis(200), Tick.TOCK);
+
+final TestKit probe = new TestKit(system);
+final Cancellable cancellable =
+    sourceUnderTest.to(Sink.actorRef(probe.getRef(), Tick.COMPLETED)).run(system);
+probe.expectMsg(Duration.ofSeconds(3), Tick.TOCK);
+probe.expectNoMessage(Duration.ofMillis(100));
+probe.expectMsg(Duration.ofSeconds(3), Tick.TOCK);
+cancellable.cancel();
+probe.expectMsg(Duration.ofSeconds(3), Tick.COMPLETED);</code></pre></dd>
+</dl>
+<p>Similarly to <code>Sink.actorRef</code> that provides control over received elements, we can use <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source$.html#actorRef(int,org.apache.pekko.stream.OverflowStrategy)" title="org.apache.pekko.stream.javadsl.Source"><code>Source.actorRef</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source$.html#actorRef[T](completionMatcher:PartialFunction[Any,org.apache.pekko.stream.CompletionStrategy],failureMatcher:PartialFunction[Any,Throwable],bufferSize:Int,overflowStrategy:org.apache.pekko.stream.OverflowStrategy):org.apache.pekko.stream.scaladsl.Source[T,org.apache.pekko.actor.ActorRef]" title="org.apache.pekko.stream.scaladsl.Source"><code>Source.actorRef</code></a></span> and have full control over elements to be sent.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L96-L117" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Flow[Int].map(_.toString).toMat(Sink.fold(&quot;&quot;)(_ + _))(Keep.right)
+
+val (ref, future) = Source
+  .actorRef(
+    completionMatcher = {
+      case Done =&gt;
+        CompletionStrategy.draining
+    },
+    // Never fail the stream because of a message:
+    failureMatcher = PartialFunction.empty,
+    bufferSize = 8,
+    overflowStrategy = OverflowStrategy.fail)
+  .toMat(sinkUnderTest)(Keep.both)
+  .run()
+
+ref ! 1
+ref ! 2
+ref ! 3
+ref ! Done
+
+val result = Await.result(future, 3.seconds)
+assert(result == &quot;123&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L137-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;String&gt;&gt; sinkUnderTest =
+    Flow.of(Integer.class)
+        .map(i -&gt; i.toString())
+        .toMat(Sink.fold(&quot;&quot;, (agg, next) -&gt; agg + next), Keep.right());
+
+final Pair&lt;ActorRef, CompletionStage&lt;String&gt;&gt; refAndCompletionStage =
+    Source.&lt;Integer&gt;actorRef(
+            elem -&gt; {
+              // complete stream immediately if we send it Done
+              if (elem == Done.done()) return Optional.of(CompletionStrategy.immediately());
+              else return Optional.empty();
+            },
+            // never fail the stream because of a message
+            elem -&gt; Optional.empty(),
+            8,
+            OverflowStrategy.fail())
+        .toMat(sinkUnderTest, Keep.both())
+        .run(system);
+final ActorRef ref = refAndCompletionStage.first();
+final CompletionStage&lt;String&gt; future = refAndCompletionStage.second();
+
+ref.tell(1, ActorRef.noSender());
+ref.tell(2, ActorRef.noSender());
+ref.tell(3, ActorRef.noSender());
+ref.tell(Done.getInstance(), ActorRef.noSender());
+
+final String result = future.toCompletableFuture().get(1, TimeUnit.SECONDS);
+assertEquals(&quot;123&quot;, result);</code></pre></dd>
+</dl>
+<h2><a href="#streams-testkit" name="streams-testkit" class="anchor"><span class="anchor-link"></span></a>Streams TestKit</h2>
+<p>You may have noticed various code patterns that emerge when testing stream pipelines. Akka Stream has a separate <code>akka-stream-testkit</code> module that provides tools specifically for writing stream tests. This module comes with two main components that are <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSource$.html" title="org.apache.pekko.stream.testkit.javadsl.TestSource"><code>TestSource</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSource$.html" title="org.apache.pekko.stream.testkit.scaladsl.TestSource"><code>TestSource</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSink$.html" title="org.apache.pekko.stream.testkit.javadsl.TestSink"><code>TestSink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSink$.html" title="org.apache.pekko.stream.testkit.scaladsl.TestSink"><code>TestSink</code></a></span> which provide sources and sinks that materialize to probes that allow fluent API.</p>
+<h3><a href="#using-the-testkit" name="using-the-testkit" class="anchor"><span class="anchor-link"></span></a>Using the TestKit</h3>
+<p>A sink returned by <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSink$.html#probe(org.apache.pekko.actor.ActorSystem)" title="org.apache.pekko.stream.testkit.javadsl.TestSink"><code>TestSink.probe</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSink$.html#probe[T](implicitsystem:org.apache.pekko.actor.ActorSystem):org.apache.pekko.stream.scaladsl.Sink[T,org.apache.pekko.stream.testkit.TestSubscriber.Probe[T]]" title="org.apache.pekko.stream.testkit.scaladsl.TestSink"><code>TestSink.probe</code></a></span> allows manual control over demand and assertions over elements coming downstream.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L123-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sourceUnderTest = Source(1 to 4).filter(_ % 2 == 0).map(_ * 2)
+
+sourceUnderTest.runWith(TestSink[Int]()).request(2).expectNext(4, 8).expectComplete()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L171-L178" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; sourceUnderTest =
+    Source.from(Arrays.asList(1, 2, 3, 4)).filter(elem -&gt; elem % 2 == 0).map(elem -&gt; elem * 2);
+
+sourceUnderTest
+    .runWith(TestSink.probe(system), system)
+    .request(2)
+    .expectNext(4, 8)
+    .expectComplete();</code></pre></dd>
+</dl>
+<p>A source returned by <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSource$.html#probe(org.apache.pekko.actor.ActorSystem)" title="org.apache.pekko.stream.testkit.javadsl.TestSource"><code>TestSource.probe</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSource$.html#probe[T](implicitsystem:org.apache.pekko.actor.ActorSystem):org.apache.pekko.stream.scaladsl.Source[T,org.apache.pekko.stream.testkit.TestPublisher.Probe[T]]" title="org.apache.pekko.stream.testkit.scaladsl.TestSource"><code>TestSource.probe</code></a></span> can be used for asserting demand or controlling when stream is completed or ended with an error.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L131-L133" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Sink.cancelled
+
+TestSource.probe[Int].toMat(sinkUnderTest)(Keep.left).run().expectCancellation()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L185-L190" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, NotUsed&gt; sinkUnderTest = Sink.cancelled();
+
+TestSource.&lt;Integer&gt;probe(system)
+    .toMat(sinkUnderTest, Keep.left())
+    .run(system)
+    .expectCancellation();</code></pre></dd>
+</dl>
+<p>You can also inject exceptions and test sink behavior on error conditions.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L139-L144" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Sink.head[Int]
+
+val (probe, future) = TestSource.probe[Int].toMat(sinkUnderTest)(Keep.both).run()
+probe.sendError(new Exception(&quot;boom&quot;))
+
+assert(future.failed.futureValue.getMessage == &quot;boom&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L197-L208" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sinkUnderTest = Sink.head();
+
+final Pair&lt;TestPublisher.Probe&lt;Integer&gt;, CompletionStage&lt;Integer&gt;&gt; probeAndCompletionStage =
+    TestSource.&lt;Integer&gt;probe(system).toMat(sinkUnderTest, Keep.both()).run(system);
+final TestPublisher.Probe&lt;Integer&gt; probe = probeAndCompletionStage.first();
+final CompletionStage&lt;Integer&gt; future = probeAndCompletionStage.second();
+probe.sendError(new Exception(&quot;boom&quot;));
+
+ExecutionException exception =
+    Assert.assertThrows(
+        ExecutionException.class, () -&gt; future.toCompletableFuture().get(3, TimeUnit.SECONDS));
+assertEquals(&quot;boom&quot;, exception.getCause().getMessage());</code></pre></dd>
+</dl>
+<p>Test source and sink can be used together in combination when testing flows.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L151-L165" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val flowUnderTest = Flow[Int].mapAsyncUnordered(2) { sleep =&gt;
+  pattern.after(10.millis * sleep, using = system.scheduler)(Future.successful(sleep))
+}
+
+val (pub, sub) = TestSource.probe[Int].via(flowUnderTest).toMat(TestSink[Int]())(Keep.both).run()
+
+sub.request(n = 3)
+pub.sendNext(3)
+pub.sendNext(2)
+pub.sendNext(1)
+sub.expectNextUnordered(1, 2, 3)
+
+pub.sendError(new Exception(&quot;Power surge in the linear subroutine C-47!&quot;))
+val ex = sub.expectError()
+assert(ex.getMessage.contains(&quot;C-47&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L215-L242" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Integer, Integer, NotUsed&gt; flowUnderTest =
+    Flow.of(Integer.class)
+        .mapAsyncUnordered(
+            2,
+            sleep -&gt;
+                org.apache.pekko.pattern.Patterns.after(
+                    Duration.ofMillis(10),
+                    system.scheduler(),
+                    system.dispatcher(),
+                    () -&gt; CompletableFuture.completedFuture(sleep)));
+
+final Pair&lt;TestPublisher.Probe&lt;Integer&gt;, TestSubscriber.Probe&lt;Integer&gt;&gt; pubAndSub =
+    TestSource.&lt;Integer&gt;probe(system)
+        .via(flowUnderTest)
+        .toMat(TestSink.&lt;Integer&gt;probe(system), Keep.both())
+        .run(system);
+final TestPublisher.Probe&lt;Integer&gt; pub = pubAndSub.first();
+final TestSubscriber.Probe&lt;Integer&gt; sub = pubAndSub.second();
+
+sub.request(3);
+pub.sendNext(3);
+pub.sendNext(2);
+pub.sendNext(1);
+sub.expectNextUnordered(1, 2, 3);
+
+pub.sendError(new Exception(&quot;Power surge in the linear subroutine C-47!&quot;));
+final Throwable ex = sub.expectError();
+assertTrue(ex.getMessage().contains(&quot;C-47&quot;));</code></pre></dd>
+</dl>
+<h2><a href="#fuzzing-mode" name="fuzzing-mode" class="anchor"><span class="anchor-link"></span></a>Fuzzing Mode</h2>
+<p>For testing, it is possible to enable a special stream execution mode that exercises concurrent execution paths more aggressively (at the cost of reduced performance) and therefore helps exposing race conditions in tests. To enable this setting add the following line to your configuration:</p>
+<pre><code>pekko.stream.materializer.debug.fuzzing-mode = on
+</code></pre><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Never use this setting in production or benchmarks. This is a testing tool to provide more coverage of your code during tests, but it reduces the throughput of streams. A warning message will be logged if you have this setting enabled.</p></div>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-testkit.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-substream.html">Substreams</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-testkit.html#testing-streams" class="header">Testing streams</a>
+  <ul>
+    <li><a href="../stream/stream-testkit.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-testkit.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-testkit.html#built-in-sources-sinks-and-operators" class="header">Built-in sources, sinks and operators</a></li>
+    <li><a href="../stream/stream-testkit.html#testkit" class="header">TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#streams-testkit" class="header">Streams TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#fuzzing-mode" class="header">Fuzzing Mode</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

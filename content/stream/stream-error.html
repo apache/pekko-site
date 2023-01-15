@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Error Handling in Streams · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-error.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="active page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="active page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Error Handling in Streams</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#error-handling-in-streams" name="error-handling-in-streams" class="anchor"><span class="anchor-link"></span></a>Error Handling in Streams</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>When an operator in a stream fails this will normally lead to the entire stream being torn down. Each of the operators downstream gets informed about the failure and each upstream operator sees a cancellation.</p>
+<p>In many cases you may want to avoid complete stream failure, this can be done in a few different ways:</p>
+<ul>
+  <li><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#recover(java.lang.Class,java.util.function.Supplier)" title="org.apache.pekko.stream.javadsl.Source"><code>recover</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#recover[T&gt;:Out](pf:PartialFunction[Throwable,T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>recover</code></a></span> to emit a final element then complete the stream normally on upstream failure</li>
+  <li><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#recoverWithRetries(int,java.lang.Class,java.util.function.Supplier)" title="org.apache.pekko.stream.javadsl.Source"><code>recoverWithRetries</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#recoverWithRetries[T&gt;:Out](attempts:Int,pf:PartialFunction[Throwable,org.apache.pekko.stream.Graph[org.apache.pekko.stream.SourceShape[T],org.apache.pekko.NotUsed]]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>recoverWithRetries</code></a></span> to create a new upstream and start consuming from that on failure</li>
+  <li>Restarting sections of the stream after a backoff</li>
+  <li>Using a supervision strategy for operators that support it</li>
+</ul>
+<p>In addition to these built in tools for error handling, a common pattern is to wrap the stream inside an actor, and have the actor restart the entire stream on failure.</p>
+<h2><a href="#logging-errors" name="logging-errors" class="anchor"><span class="anchor-link"></span></a>Logging errors</h2>
+<p><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#log(java.lang.String,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>log()</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#log(name:String,extract:Out=%3EAny)(implicitlog:org.apache.pekko.event.LoggingAdapter):FlowOps.this.Repr[Out]" title="org.apache.pekko.stream.scaladsl.Source"><code>log()</code></a></span> enables logging of a stream, which is typically useful for error logging. The below stream fails with <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArithmeticException.html" title="java.lang.ArithmeticException"><code>ArithmeticException</code></a> when the element <code>0</code> goes through the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#map(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>map</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#map[T](f:Out=%3ET):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>map</code></a></span> operator, </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/cookbook/RecipeLoggingElements.scala#L70-L73" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Source(-5 to 5)
+  .map(1 / _) // throwing ArithmeticException: / by zero
+  .log(&quot;error logging&quot;)
+  .runWith(Sink.ignore)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/javadsl/cookbook/RecipeLoggingElements.java#L116-L119" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source.from(Arrays.asList(-1, 0, 1))
+    .map(x -&gt; 1 / x) // throwing ArithmeticException: / by zero
+    .log(&quot;error logging&quot;)
+    .runWith(Sink.ignore(), system);</code></pre></dd>
+</dl>
+<p>and error messages like below will be logged. </p>
+<pre><code>[error logging] Upstream failed.
+java.lang.ArithmeticException: / by zero
+</code></pre>
+<p>If you want to control logging levels on each element, completion, and failure, you can find more details in <a href="stream-cookbook.html#logging-in-streams">Logging in streams</a>.</p>
+<h2><a href="#recover" name="recover" class="anchor"><span class="anchor-link"></span></a>Recover</h2>
+<p><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#recover(java.lang.Class,java.util.function.Supplier)" title="org.apache.pekko.stream.javadsl.Source"><code>recover</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#recover[T&gt;:Out](pf:PartialFunction[Throwable,T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>recover</code></a></span> allows you to emit a final element and then complete the stream on an upstream failure. Deciding which exceptions should be recovered is done through a <a href="http://www.scala-lang.org/api/2.13.8/scala/PartialFunction.html" title="scala.PartialFunction"><code>PartialFunction</code></a>. If an exception does not have a <span class="group-scala">matching case</span> <span class="group-java">match defined</span> the stream is failed. </p>
+<p>Recovering can be useful if you want to gracefully complete a stream on failure while letting downstream know that there was a failure.</p>
+<p>Throwing an exception inside <code>recover</code> <em>will</em> be logged on ERROR level automatically.</p>
+<p>More details in <a href="operators/Source-or-Flow/recover.html#recover">recover</a></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L102-L110" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Source(0 to 6)
+  .map(n =&gt;
+    // assuming `4` and `5` are unexpected values that could throw exception
+    if (List(4, 5).contains(n)) throw new RuntimeException(s&quot;Boom! Bad value found: $n&quot;)
+    else n.toString)
+  .recover {
+    case e: RuntimeException =&gt; e.getMessage
+  }
+  .runForeach(println)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L150-L162" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source.from(Arrays.asList(0, 1, 2, 3, 4, 5, 6))
+    .map(
+        n -&gt; {
+          // assuming `4` and `5` are unexpected values that could throw exception
+          if (Arrays.asList(4, 5).contains(n))
+            throw new RuntimeException(String.format(&quot;Boom! Bad value found: %s&quot;, n));
+          else return n.toString();
+        })
+    .recover(
+        new PFBuilder&lt;Throwable, String&gt;()
+            .match(RuntimeException.class, Throwable::getMessage)
+            .build())
+    .runForeach(System.out::println, system);</code></pre></dd>
+</dl>
+<p>This will output:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L116-L120" target="_blank" title="Go to snippet source">source</a><code class="language-scala">0
+1
+2
+3                         // last element before failure
+Boom! Bad value found: 4  // first element on failure</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L168-L172" target="_blank" title="Go to snippet source">source</a><code class="language-java">0
+1
+2
+3                         // last element before failure
+Boom! Bad value found: 4  // first element on failure</code></pre></dd>
+</dl>
+<h2><a href="#recover-with-retries" name="recover-with-retries" class="anchor"><span class="anchor-link"></span></a>Recover with retries</h2>
+<p><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#recoverWithRetries(int,java.lang.Class,java.util.function.Supplier)" title="org.apache.pekko.stream.javadsl.Source"><code>recoverWithRetries</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#recoverWithRetries[T&gt;:Out](attempts:Int,pf:PartialFunction[Throwable,org.apache.pekko.stream.Graph[org.apache.pekko.stream.SourceShape[T],org.apache.pekko.NotUsed]]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>recoverWithRetries</code></a></span> allows you to put a new upstream in place of the failed one, recovering stream failures up to a specified maximum number of times. </p>
+<p>Deciding which exceptions should be recovered is done through a <a href="http://www.scala-lang.org/api/2.13.8/scala/PartialFunction.html" title="scala.PartialFunction"><code>PartialFunction</code></a>. If an exception does not have a <span class="group-scala">matching case</span> <span class="group-java">match defined</span> the stream is failed.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L127-L137" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val planB = Source(List(&quot;five&quot;, &quot;six&quot;, &quot;seven&quot;, &quot;eight&quot;))
+
+Source(0 to 10)
+  .map(n =&gt;
+    if (n &lt; 5) n.toString
+    else throw new RuntimeException(&quot;Boom!&quot;))
+  .recoverWithRetries(attempts = 1,
+    {
+      case _: RuntimeException =&gt; planB
+    })
+  .runForeach(println)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L180-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;String, NotUsed&gt; planB = Source.from(Arrays.asList(&quot;five&quot;, &quot;six&quot;, &quot;seven&quot;, &quot;eight&quot;));
+
+Source.from(Arrays.asList(0, 1, 2, 3, 4, 5, 6))
+    .map(
+        n -&gt; {
+          if (n &lt; 5) return n.toString();
+          else throw new RuntimeException(&quot;Boom!&quot;);
+        })
+    .recoverWithRetries(
+        1, // max attempts
+        new PFBuilder&lt;Throwable, Source&lt;String, NotUsed&gt;&gt;()
+            .match(RuntimeException.class, ex -&gt; planB)
+            .build())
+    .runForeach(System.out::println, system);</code></pre></dd>
+</dl>
+<p>This will output:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L143-L151" target="_blank" title="Go to snippet source">source</a><code class="language-scala">0
+1
+2
+3
+4
+five
+six
+seven
+eight</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L199-L207" target="_blank" title="Go to snippet source">source</a><code class="language-java">0
+1
+2
+3
+4
+five
+six
+seven
+eight</code></pre></dd>
+</dl>
+<a id="restart-with-backoff"></a>
+<h2><a href="#delayed-restarts-with-a-backoff-operator" name="delayed-restarts-with-a-backoff-operator" class="anchor"><span class="anchor-link"></span></a>Delayed restarts with a backoff operator</h2>
+<p>Akka streams provides a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSource$.html" title="org.apache.pekko.stream.javadsl.RestartSource"><code>RestartSource</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSource$.html" title="org.apache.pekko.stream.scaladsl.RestartSource"><code>RestartSource</code></a></span>, <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSink$.html" title="org.apache.pekko.stream.javadsl.RestartSink"><code>RestartSink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSink$.html" title="org.apache.pekko.stream.scaladsl.RestartSink"><code>RestartSink</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartFlow$.html" title="org.apache.pekko.stream.javadsl.RestartFlow"><code>RestartFlow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartFlow$.html" title="org.apache.pekko.stream.scaladsl.RestartFlow"><code>RestartFlow</code></a></span> for implementing the so-called <em>exponential backoff supervision strategy</em>, starting an operator again when it fails or completes, each time with a growing time delay between restarts.</p>
+<p>This pattern is useful when the operator fails or completes because some external resource is not available and we need to give it some time to start-up again. One of the prime examples when this is useful is when a WebSocket connection fails due to the HTTP server it&rsquo;s running on going down, perhaps because it is overloaded. By using an exponential backoff, we avoid going into a tight reconnect loop, which both gives the HTTP server some time to recover, and it avoids using needless resources on the client side.</p>
+<p>The various restart shapes mentioned all expect an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/RestartSettings.html" title="org.apache.pekko.stream.RestartSettings"><code>RestartSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/RestartSettings.html" title="org.apache.pekko.stream.RestartSettings"><code>RestartSettings</code></a></span> which configures the restart behaviour. Configurable parameters are:</p>
+<ul>
+  <li><code>minBackoff</code> is the initial duration until the underlying stream is restarted</li>
+  <li><code>maxBackoff</code> caps the exponential backoff</li>
+  <li><code>randomFactor</code> allows addition of a random delay following backoff calculation</li>
+  <li><code>maxRestarts</code> caps the total number of restarts</li>
+  <li><code>maxRestartsWithin</code> sets a timeframe during which restarts are counted towards the same total for <code>maxRestarts</code></li>
+</ul>
+<p>The following snippet shows how to create a backoff supervisor using <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSource$.html" title="org.apache.pekko.stream.javadsl.RestartSource"><code>RestartSource</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSource$.html" title="org.apache.pekko.stream.scaladsl.RestartSource"><code>RestartSource</code></a></span> which will supervise the given <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>. The <code>Source</code> in this case is a stream of Server Sent Events, produced by akka-http. If the stream fails or completes at any point, the request will be made again, in increasing intervals of 3, 6, 12, 24 and finally 30 seconds (at which point it will remain capped due to the <code>maxBackoff</code> parameter):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/RestartDocSpec.scala#L46-L61" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val settings = RestartSettings(
+  minBackoff = 3.seconds,
+  maxBackoff = 30.seconds,
+  randomFactor = 0.2 // adds 20% &quot;noise&quot; to vary the intervals slightly
+).withMaxRestarts(20, 5.minutes) // limits the amount of restarts to 20 within 5 minutes
+
+val restartSource = RestartSource.withBackoff(settings) { () =&gt;
+  // Create a source from a future of a source
+  Source.futureSource {
+    // Make a single request with akka-http
+    Http()
+      .singleRequest(HttpRequest(uri = &quot;http://example.com/eventstream&quot;))
+      // Unmarshall it as a source of server sent events
+      .flatMap(Unmarshal(_).to[Source[ServerSentEvent, NotUsed]])
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/RestartDocTest.java#L74-L96" target="_blank" title="Go to snippet source">source</a><code class="language-java">RestartSettings settings =
+    RestartSettings.create(
+            Duration.ofSeconds(3), // min backoff
+            Duration.ofSeconds(30), // max backoff
+            0.2 // adds 20% &quot;noise&quot; to vary the intervals slightly
+            )
+        .withMaxRestarts(
+            20, Duration.ofMinutes(5)); // limits the amount of restarts to 20 within 5 minutes
+
+Source&lt;ServerSentEvent, NotUsed&gt; eventStream =
+    RestartSource.withBackoff(
+        settings,
+        () -&gt;
+            // Create a source from a future of a source
+            Source.completionStageSource(
+                // Issue a GET request on the event stream
+                Http.get(system)
+                    .singleRequest(HttpRequest.create(&quot;http://example.com/eventstream&quot;))
+                    .thenCompose(
+                        response -&gt;
+                            // Unmarshall it to a stream of ServerSentEvents
+                            EventStreamUnmarshalling.fromEventStream()
+                                .unmarshall(response, materializer))));</code></pre></dd>
+</dl>
+<p>Using a <code>randomFactor</code> to add a little bit of additional variance to the backoff intervals is highly recommended, in order to avoid multiple streams re-start at the exact same point in time, for example because they were stopped due to a shared resource such as the same server going down and re-starting after the same configured interval. By adding additional randomness to the re-start intervals the streams will start in slightly different points in time, thus avoiding large spikes of traffic hitting the recovering server or other resource that they all need to contact.</p>
+<p>The above <code>RestartSource</code> will never terminate unless the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> it&rsquo;s fed into cancels. It will often be handy to use it in combination with a <a href="stream-dynamic.html#kill-switch"><code>KillSwitch</code></a>, so that you can terminate it when needed:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/RestartDocSpec.scala#L65-L72" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val killSwitch = restartSource
+  .viaMat(KillSwitches.single)(Keep.right)
+  .toMat(Sink.foreach(event =&gt; println(s&quot;Got event: $event&quot;)))(Keep.left)
+  .run()
+
+doSomethingElse()
+
+killSwitch.shutdown()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/RestartDocTest.java#L100-L108" target="_blank" title="Go to snippet source">source</a><code class="language-java">KillSwitch killSwitch =
+    eventStream
+        .viaMat(KillSwitches.single(), Keep.right())
+        .toMat(Sink.foreach(event -&gt; System.out.println(&quot;Got event: &quot; + event)), Keep.left())
+        .run(materializer);
+
+doSomethingElse();
+
+killSwitch.shutdown();</code></pre></dd>
+</dl>
+<p>Sinks and flows can also be supervised, using <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSink$.html" title="org.apache.pekko.stream.javadsl.RestartSink"><code>RestartSink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSink$.html" title="org.apache.pekko.stream.scaladsl.RestartSink"><code>RestartSink</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartFlow$.html" title="org.apache.pekko.stream.javadsl.RestartFlow"><code>RestartFlow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartFlow$.html" title="org.apache.pekko.stream.scaladsl.RestartFlow"><code>RestartFlow</code></a></span>. The <code>RestartSink</code> is restarted when it cancels, while the <code>RestartFlow</code> is restarted when either the in port cancels, the out port completes, or the out  port sends an error.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Care should be taken when using <a href="stream-customize.html"><code>GraphStage</code>s</a> that conditionally propagate termination signals inside a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSource$.html" title="org.apache.pekko.stream.javadsl.RestartSource"><code>RestartSource</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSource$.html" title="org.apache.pekko.stream.scaladsl.RestartSource"><code>RestartSource</code></a></span>, <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartSink$.html" title="org.apache.pekko.stream.javadsl.RestartSink"><code>RestartSink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartSink$.html" title="org.apache.pekko.stream.scaladsl.RestartSink"><code>RestartSink</code></a></span> or <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RestartFlow$.html" title="org.apache.pekko.stream.javadsl.RestartFlow"><code>RestartFlow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RestartFlow$.html" title="org.apache.pekko.stream.scaladsl.RestartFlow"><code>RestartFlow</code></a></span>. </p>
+<p>An example is a <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Broadcast.html" title="pekko.stream.scaladsl.Broadcast"><code>Broadcast</code></a> operator with the default <code>eagerCancel = false</code> where some of the outlets are for side-effecting branches (that do not re-join e.g. via a <code>Merge</code>). A failure on a side branch will not terminate the supervised stream which will not be restarted. Conversely, a failure on the main branch can trigger a restart but leave behind old running instances of side branches.</p>
+<p>In this example <code>eagerCancel</code> should probably be set to <code>true</code>, or, when only a single side branch is used, <a href="operators/Source-or-Flow/alsoTo.html"><code>alsoTo</code></a> or <a href="operators/Source-or-Flow/divertTo.html"><code>divertTo</code></a> should be considered as alternatives.</p></div>
+<h2><a href="#supervision-strategies" name="supervision-strategies" class="anchor"><span class="anchor-link"></span></a>Supervision Strategies</h2><div class="callout note "><div class="callout-title">Note</div>
+<p>The operators that support supervision strategies are explicitly documented to do so, if there is nothing in the documentation of an operator saying that it adheres to the supervision strategy it means it fails rather than applies supervision.</p></div>
+<p>The error handling strategies are inspired by actor supervision strategies, but the semantics have been adapted to the domain of stream processing. The most important difference is that supervision is not automatically applied to stream operators but instead something that each operator has to implement explicitly. </p>
+<p>For many operators it may not even make sense to implement support for supervision strategies, this is especially true for operators connecting to external technologies where for example a failed connection will likely still fail if a new connection is tried immediately (see <a href="stream-error.html#restart-with-backoff">Restart with back off</a> for such scenarios). </p>
+<p>For operators that do implement supervision, the strategies for how to handle exceptions from processing stream elements can be selected when materializing the stream through use of an attribute. </p>
+<p>There are three ways to handle exceptions from application code:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Stop$.html" title="pekko.stream.Supervision$$Stop"><code>Stop</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#stop()" title="pekko.stream.Supervision"><code>Supervision.stop()</code></a></span> - The stream is completed with failure.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Resume$.html" title="pekko.stream.Supervision$$Resume"><code>Resume</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#resume()" title="pekko.stream.Supervision"><code>Supervision.resume()</code></a></span> - The element is dropped and the stream continues.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Restart$.html" title="pekko.stream.Supervision$$Restart"><code>Restart</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#restart()" title="pekko.stream.Supervision"><code>Supervision.restart()</code></a></span> - The element is dropped and the stream continues after restarting the operator. Restarting an operator means that any accumulated state is cleared. This is typically performed by creating a new instance of the operator.</li>
+</ul>
+<p>By default the stopping strategy is used for all exceptions, i.e. the stream will be completed with failure when an exception is thrown.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L27-L30" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val source = Source(0 to 5).map(100 / _)
+val result = source.runWith(Sink.fold(0)(_ + _))
+// division by zero will fail the stream and the
+// result here will be a Future completed with Failure(ArithmeticException)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L55-L61" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(0, 1, 2, 3, 4, 5)).map(elem -&gt; 100 / elem);
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; fold =
+    Sink.&lt;Integer, Integer&gt;fold(0, (acc, elem) -&gt; acc + elem);
+final CompletionStage&lt;Integer&gt; result = source.runWith(fold, system);
+// division by zero will fail the stream and the
+// result here will be a CompletionStage failed with ArithmeticException</code></pre></dd>
+</dl>
+<p>The default supervision strategy for a stream can be defined on the complete <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RunnableGraph.html" title="org.apache.pekko.stream.javadsl.RunnableGraph"><code>RunnableGraph</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RunnableGraph.html" title="org.apache.pekko.stream.scaladsl.RunnableGraph"><code>RunnableGraph</code></a></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L40-L52" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val decider: Supervision.Decider = {
+  case _: ArithmeticException =&gt; Supervision.Resume
+  case _                      =&gt; Supervision.Stop
+}
+val source = Source(0 to 5).map(100 / _)
+val runnableGraph =
+  source.toMat(Sink.fold(0)(_ + _))(Keep.right)
+
+val withCustomSupervision = runnableGraph.withAttributes(ActorAttributes.supervisionStrategy(decider))
+
+val result = withCustomSupervision.run()
+// the element causing division by zero will be dropped
+// result here will be a Future completed with Success(228)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L70-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Function&lt;Throwable, Supervision.Directive&gt; decider =
+    exc -&gt; {
+      if (exc instanceof ArithmeticException) return Supervision.resume();
+      else return Supervision.stop();
+    };
+final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(0, 1, 2, 3, 4, 5))
+        .map(elem -&gt; 100 / elem)
+        .withAttributes(ActorAttributes.withSupervisionStrategy(decider));
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; fold = Sink.fold(0, (acc, elem) -&gt; acc + elem);
+
+final RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; runnableGraph = source.toMat(fold, Keep.right());
+
+final RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; withCustomSupervision =
+    runnableGraph.withAttributes(ActorAttributes.withSupervisionStrategy(decider));
+
+final CompletionStage&lt;Integer&gt; result = withCustomSupervision.run(system);
+// the element causing division by zero will be dropped
+// result here will be a CompletionStage completed with 228</code></pre></dd>
+</dl>
+<p>Here you can see that all <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ArithmeticException.html" title="java.lang.ArithmeticException"><code>ArithmeticException</code></a> will resume the processing, i.e. the elements that cause the division by zero are effectively dropped.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Be aware that dropping elements may result in deadlocks in graphs with cycles, as explained in <a href="stream-graphs.html#graph-cycles">Graph cycles, liveness and deadlocks</a>.</p></div>
+<p>The supervision strategy can also be defined for all operators of a flow.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L60-L72" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val decider: Supervision.Decider = {
+  case _: ArithmeticException =&gt; Supervision.Resume
+  case _                      =&gt; Supervision.Stop
+}
+val flow = Flow[Int]
+  .filter(100 / _ &lt; 50)
+  .map(elem =&gt; 100 / (5 - elem))
+  .withAttributes(ActorAttributes.supervisionStrategy(decider))
+val source = Source(0 to 5).via(flow)
+
+val result = source.runWith(Sink.fold(0)(_ + _))
+// the elements causing division by zero will be dropped
+// result here will be a Future completed with Success(150)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L97-L112" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Function&lt;Throwable, Supervision.Directive&gt; decider =
+    exc -&gt; {
+      if (exc instanceof ArithmeticException) return Supervision.resume();
+      else return Supervision.stop();
+    };
+final Flow&lt;Integer, Integer, NotUsed&gt; flow =
+    Flow.of(Integer.class)
+        .filter(elem -&gt; 100 / elem &lt; 50)
+        .map(elem -&gt; 100 / (5 - elem))
+        .withAttributes(ActorAttributes.withSupervisionStrategy(decider));
+final Source&lt;Integer, NotUsed&gt; source = Source.from(Arrays.asList(0, 1, 2, 3, 4, 5)).via(flow);
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; fold =
+    Sink.&lt;Integer, Integer&gt;fold(0, (acc, elem) -&gt; acc + elem);
+final CompletionStage&lt;Integer&gt; result = source.runWith(fold, system);
+// the elements causing division by zero will be dropped
+// result here will be a Future completed with 150</code></pre></dd>
+</dl>
+<p><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Restart$.html" title="pekko.stream.Supervision$$Restart"><code>Restart</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#restart()" title="pekko.stream.Supervision"><code>Supervision.restart()</code></a></span> works in a similar way as <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Resume$.html" title="pekko.stream.Supervision$$Resume"><code>Resume</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#resume()" title="pekko.stream.Supervision"><code>Supervision.resume()</code></a></span> with the addition that accumulated state, if any, of the failing processing operator will be reset.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowErrorDocSpec.scala#L80-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val decider: Supervision.Decider = {
+  case _: IllegalArgumentException =&gt; Supervision.Restart
+  case _                           =&gt; Supervision.Stop
+}
+val flow = Flow[Int]
+  .scan(0) { (acc, elem) =&gt;
+    if (elem &lt; 0) throw new IllegalArgumentException(&quot;negative not allowed&quot;)
+    else acc + elem
+  }
+  .withAttributes(ActorAttributes.supervisionStrategy(decider))
+val source = Source(List(1, 3, -1, 5, 7)).via(flow)
+val result = source.limit(1000).runWith(Sink.seq)
+// the negative element cause the scan stage to be restarted,
+// i.e. start from 0 again
+// result here will be a Future completed with Success(Vector(0, 1, 4, 0, 5, 12))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowErrorDocTest.java#L121-L140" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Function&lt;Throwable, Supervision.Directive&gt; decider =
+    exc -&gt; {
+      if (exc instanceof IllegalArgumentException) return Supervision.restart();
+      else return Supervision.stop();
+    };
+final Flow&lt;Integer, Integer, NotUsed&gt; flow =
+    Flow.of(Integer.class)
+        .scan(
+            0,
+            (acc, elem) -&gt; {
+              if (elem &lt; 0) throw new IllegalArgumentException(&quot;negative not allowed&quot;);
+              else return acc + elem;
+            })
+        .withAttributes(ActorAttributes.withSupervisionStrategy(decider));
+final Source&lt;Integer, NotUsed&gt; source = Source.from(Arrays.asList(1, 3, -1, 5, 7)).via(flow);
+final CompletionStage&lt;List&lt;Integer&gt;&gt; result =
+    source.grouped(1000).runWith(Sink.&lt;List&lt;Integer&gt;&gt;head(), system);
+// the negative element cause the scan stage to be restarted,
+// i.e. start from 0 again
+// result here will be a Future completed with List(0, 1, 4, 0, 5, 12)</code></pre></dd>
+</dl>
+<h3><a href="#errors-from-mapasync" name="errors-from-mapasync" class="anchor"><span class="anchor-link"></span></a>Errors from mapAsync</h3>
+<p>Stream supervision can also be applied to the futures of <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#mapAsync(int,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>mapAsync</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#mapAsync[T](parallelism:Int)(f:Out=%3Escala.concurrent.Future[T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>mapAsync</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#mapAsyncUnordered(int,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>mapAsyncUnordered</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#mapAsyncUnordered[T](parallelism:Int)(f:Out=%3Escala.concurrent.Future[T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>mapAsyncUnordered</code></a></span> even if such failures happen in the future rather than inside the operator itself.</p>
+<p>Let&rsquo;s say that we use an external service to lookup email addresses and we would like to discard those that cannot be found.</p>
+<p>We start with the tweet stream of authors:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/IntegrationDocSpec.scala#L170-L171" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val authors: Source[Author, NotUsed] =
+  tweets.filter(_.hashtags.contains(akkaTag)).map(_.author)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/IntegrationDocTest.java#L446-L448" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Author, NotUsed&gt; authors =
+    tweets.filter(t -&gt; t.hashtags().contains(AKKA)).map(t -&gt; t.author);
+</code></pre></dd>
+</dl>
+<p>Assume that we can lookup their email address using:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/IntegrationDocSpec.scala#L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def lookupEmail(handle: String): Future[String] =</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/IntegrationDocTest.java#L101" target="_blank" title="Go to snippet source">source</a><code class="language-java">public CompletionStage&lt;String&gt; lookupEmail(String handle)</code></pre></dd>
+</dl>
+<p>The <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span> <span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> is completed <span class="group-scala">with <code>Failure</code></span> <span class="group-java">normally</span> if the email is not found.</p>
+<p>Transforming the stream of authors to a stream of email addresses by using the <code>lookupEmail</code> service can be done with <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#mapAsync(int,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>mapAsync</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#mapAsync[T](parallelism:Int)(f:Out=%3Escala.concurrent.Future[T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>mapAsync</code></a></span> and we use <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$.html#resumingDecider:org.apache.pekko.stream.Supervision.Deciderwithorg.apache.pekko.japi.function.Function[Throwable,org.apache.pekko.stream.Supervision.Directive]" title="pekko.stream.Supervision"><code>Supervision.resumingDecider</code></a></span> <span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#getResumingDecider()" title="pekko.stream.Supervision"><code>Supervision.getResumingDecider()</code></a></span> to drop unknown email addresses:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/IntegrationDocSpec.scala#L270-L277" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import ActorAttributes.supervisionStrategy
+import Supervision.resumingDecider
+
+val emailAddresses: Source[String, NotUsed] =
+  authors.via(
+    Flow[Author]
+      .mapAsync(4)(author =&gt; addressSystem.lookupEmail(author.handle))
+      .withAttributes(supervisionStrategy(resumingDecider)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/IntegrationDocTest.java#L492-L499" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Attributes resumeAttrib =
+    ActorAttributes.withSupervisionStrategy(Supervision.getResumingDecider());
+final Flow&lt;Author, String, NotUsed&gt; lookupEmail =
+    Flow.of(Author.class)
+        .mapAsync(4, author -&gt; addressSystem.lookupEmail(author.handle))
+        .withAttributes(resumeAttrib);
+final Source&lt;String, NotUsed&gt; emailAddresses = authors.via(lookupEmail);
+</code></pre></dd>
+</dl>
+<p>If we would not use <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/Supervision$$Resume$.html" title="pekko.stream.Supervision$$Resume"><code>Resume</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/Supervision.html#resume()" title="pekko.stream.Supervision"><code>Supervision.resume()</code></a></span> the default stopping strategy would complete the stream with failure on the first <span class="group-scala"><code>Future</code></span> <span class="group-java"><code>CompletionStage</code></span> that was completed <span class="group-scala">with <code>Failure</code></span><span class="group-java">exceptionally</span>.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-error.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-io.html">Working with streaming IO</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-error.html#error-handling-in-streams" class="header">Error Handling in Streams</a>
+  <ul>
+    <li><a href="../stream/stream-error.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-error.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-error.html#logging-errors" class="header">Logging errors</a></li>
+    <li><a href="../stream/stream-error.html#recover" class="header">Recover</a></li>
+    <li><a href="../stream/stream-error.html#recover-with-retries" class="header">Recover with retries</a></li>
+    <li><a href="../stream/stream-error.html#delayed-restarts-with-a-backoff-operator" class="header">Delayed restarts with a backoff operator</a></li>
+    <li><a href="../stream/stream-error.html#supervision-strategies" class="header">Supervision Strategies</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

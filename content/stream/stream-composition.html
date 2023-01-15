@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Modularity, Composition and Hierarchy · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-composition.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="active page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="active page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Modularity, Composition and Hierarchy</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#modularity-composition-and-hierarchy" name="modularity-composition-and-hierarchy" class="anchor"><span class="anchor-link"></span></a>Modularity, Composition and Hierarchy</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Akka Streams provide a uniform model of stream processing graphs, which allows flexible composition of reusable components. In this chapter we show how these look like from the conceptual and API perspective, demonstrating the modularity aspects of the library.</p>
+<h2><a href="#basics-of-composition-and-modularity" name="basics-of-composition-and-modularity" class="anchor"><span class="anchor-link"></span></a>Basics of composition and modularity</h2>
+<p>Every operator used in Akka Streams can be imagined as a &ldquo;box&rdquo; with input and output ports where elements to be processed arrive and leave the operator. In this view, a <code>Source</code> is nothing else than a &ldquo;box&rdquo; with a single output port, or, a <code>BidiFlow</code> is a &ldquo;box&rdquo; with exactly two input and two output ports. In the figure below we illustrate the most commonly used operators viewed as &ldquo;boxes&rdquo;.</p>
+<p><img src="../images/compose_shapes.png" alt="compose_shapes.png" /></p>
+<p>The <em>linear</em> operators are <code>Source</code>, <code>Sink</code> and <code>Flow</code>, as these can be used to compose strict chains of operators. Fan-in and Fan-out operators have usually multiple input or multiple output ports, therefore they allow to build more complex graph layouts, not only chains. <code>BidiFlow</code> operators are usually useful in IO related tasks, where there are input and output channels to be handled. Due to the specific shape of <code>BidiFlow</code> it is easy to stack them on top of each other to build a layered protocol for example. The <code>TLS</code> support in Akka is for example implemented as a <code>BidiFlow</code>.</p>
+<p>These reusable components already allow the creation of complex processing networks. What we have seen so far does not implement modularity though. It is desirable for example to package up a larger graph entity into a reusable component which hides its internals only exposing the ports that are meant to the users of the module to interact with. One good example is the <code>Http</code> server component, which is encoded internally as a <code>BidiFlow</code> which interfaces with the client TCP connection using an input-output port pair accepting and sending <code>ByteString</code> s, while its upper ports emit and receive <code>HttpRequest</code> and <code>HttpResponse</code> instances.</p>
+<p>The following figure demonstrates various composite operators, that contain various other type of operators internally, but hiding them behind a <em>shape</em> that looks like a <code>Source</code>, <code>Flow</code>, etc.</p>
+<p><img src="../images/compose_composites.png" alt="compose_composites.png" /></p>
+<p>One interesting example above is a <code>Flow</code> which is composed of a disconnected <code>Sink</code> and <code>Source</code>. This can be achieved by using the <code>fromSinkAndSource()</code> constructor method on <code>Flow</code> which takes the two parts as parameters.</p>
+<p>Please note that when combining a <code>Flow</code> using that method, the termination signals are not carried &ldquo;through&rdquo; as the <code>Sink</code> and <code>Source</code> are assumed to be fully independent. If however you want to construct a <code>Flow</code> like this but need the termination events to trigger &ldquo;the other side&rdquo; of the composite flow, you can use <code>Flow.fromSinkAndSourceCoupled</code> or <code>Flow.fromSinkAndSourceCoupledMat</code> which does just that. For example the cancellation of the composite flows source-side will then lead to completion of its sink-side. Read <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span>&rsquo;s API documentation for a detailed explanation how this works.</p>
+<p>The example <code>BidiFlow</code> demonstrates that internally a module can be of arbitrary complexity, and the exposed ports can be wired in flexible ways. The only constraint is that all the ports of enclosed modules must be either connected to each other, or exposed as interface ports, and the number of such ports needs to match the requirement of the shape, for example a <code>Source</code> allows only one exposed output port, the rest of the internal ports must be properly connected.</p>
+<p>These mechanics allow arbitrary nesting of modules. For example the following figure demonstrates a <code>RunnableGraph</code> that is built from a composite <code>Source</code> and a composite <code>Sink</code> (which in turn contains a composite <code>Flow</code>).</p>
+<p><img src="../images/compose_nested_flow.png" alt="compose_nested_flow.png" /></p>
+<p>The above diagram contains one more shape that we have not seen yet, which is called <code>RunnableGraph</code>. It turns out, that if we wire all exposed ports together, so that no more open ports remain, we get a module that is <em>closed</em>. This is what the <code>RunnableGraph</code> class represents. This is the shape that a <code>Materializer</code> can take and turn into a network of running entities that perform the task described. In fact, a <code>RunnableGraph</code> is a module itself, and (maybe somewhat surprisingly) it can be used as part of larger graphs. It is rarely useful to embed a closed graph shape in a larger graph (since it becomes an isolated island as there are no open port for communication with the rest of the graph), but this demonstrates the uniform underlying model.</p>
+<p>If we try to build a code snippet that corresponds to the above diagram, our first try might look like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L32-L34" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Source.single(0).map(_ + 1).filter(_ != 0).map(_ - 2).to(Sink.fold(0)(_ + _))
+
+// ... where is the nesting?</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L54-L60" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source.single(0)
+    .map(i -&gt; i + 1)
+    .filter(i -&gt; i != 0)
+    .map(i -&gt; i - 2)
+    .to(Sink.fold(0, (acc, i) -&gt; acc + i));
+
+// ... where is the nesting?</code></pre></dd>
+</dl>
+<p>It is clear however that there is no nesting present in our first attempt. Since the library cannot figure out where we intended to put composite module boundaries, it is our responsibility to do that. If we are using the DSL provided by the <code>Flow</code>, <code>Source</code>, <code>Sink</code> classes then nesting can be achieved by calling one of the methods <code>withAttributes()</code> or <code>named()</code> (where the latter is a shorthand for adding a name attribute).</p>
+<p>The following code demonstrates how to achieve the desired nesting:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L40-L58" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val nestedSource =
+  Source
+    .single(0) // An atomic source
+    .map(_ + 1) // an atomic processing stage
+    .named(&quot;nestedSource&quot;) // wraps up the current Source and gives it a name
+
+val nestedFlow =
+  Flow[Int]
+    .filter(_ != 0) // an atomic processing stage
+    .map(_ - 2) // another atomic processing stage
+    .named(&quot;nestedFlow&quot;) // wraps up the Flow, and gives it a name
+
+val nestedSink =
+  nestedFlow
+    .to(Sink.fold(0)(_ + _)) // wire an atomic sink to the nestedFlow
+    .named(&quot;nestedSink&quot;) // wrap it up
+
+// Create a RunnableGraph
+val runnableGraph = nestedSource.to(nestedSink)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L67-L84" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; nestedSource =
+    Source.single(0) // An atomic source
+        .map(i -&gt; i + 1) // an atomic processing stage
+        .named(&quot;nestedSource&quot;); // wraps up the current Source and gives it a name
+
+final Flow&lt;Integer, Integer, NotUsed&gt; nestedFlow =
+    Flow.of(Integer.class)
+        .filter(i -&gt; i != 0) // an atomic processing stage
+        .map(i -&gt; i - 2) // another atomic processing stage
+        .named(&quot;nestedFlow&quot;); // wraps up the Flow, and gives it a name
+
+final Sink&lt;Integer, NotUsed&gt; nestedSink =
+    nestedFlow
+        .to(Sink.fold(0, (acc, i) -&gt; acc + i)) // wire an atomic sink to the nestedFlow
+        .named(&quot;nestedSink&quot;); // wrap it up
+
+// Create a RunnableGraph
+final RunnableGraph&lt;NotUsed&gt; runnableGraph = nestedSource.to(nestedSink);</code></pre></dd>
+</dl>
+<p>Once we have hidden the internals of our components, they act like any other built-in component of similar shape. If we hide some of the internals of our composites, the result looks just like if any other predefine component has been used:</p>
+<p><img src="../images/compose_nested_flow_opaque.png" alt="compose_nested_flow_opaque.png" /></p>
+<p>If we look at usage of built-in components, and our custom components, there is no difference in usage as the code snippet below demonstrates.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L81-L85" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Create a RunnableGraph from our components
+val runnableGraph = nestedSource.to(nestedSink)
+
+// Usage is uniform, no matter if modules are composite or atomic
+val runnableGraph2 = Source.single(0).to(Sink.fold(0)(_ + _))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L107-L112" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Create a RunnableGraph from our components
+final RunnableGraph&lt;NotUsed&gt; runnableGraph = nestedSource.to(nestedSink);
+
+// Usage is uniform, no matter if modules are composite or atomic
+final RunnableGraph&lt;NotUsed&gt; runnableGraph2 =
+    Source.single(0).to(Sink.fold(0, (acc, i) -&gt; acc + i));</code></pre></dd>
+</dl>
+<h2><a href="#composing-complex-systems" name="composing-complex-systems" class="anchor"><span class="anchor-link"></span></a>Composing complex systems</h2>
+<p>In the previous section we explored the possibility of composition, and hierarchy, but we stayed away from non-linear, generalized operators. There is nothing in Akka Streams though that enforces that stream processing layouts can only be linear. The DSL for <code>Source</code> and friends is optimized for creating such linear chains, as they are the most common in practice. There is a more advanced DSL for building complex graphs, that can be used if more flexibility is needed. We will see that the difference between the two DSLs is only on the surface: the concepts they operate on are uniform across all DSLs and fit together nicely.</p>
+<p>As a first example, let&rsquo;s look at a more complex layout:</p>
+<p><img src="../images/compose_graph.png" alt="compose_graph.png" /></p>
+<p>The diagram shows a <code>RunnableGraph</code> (remember, if there are no unwired ports, the graph is closed, and therefore can be materialized) that encapsulates a non-trivial stream processing network. It contains fan-in, fan-out operators, directed and non-directed cycles. The <code>runnable()</code> method of the <code>GraphDSL</code> object allows the creation of a general, closed, and runnable graph. For example the network on the diagram can be realized like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L92-L108" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import GraphDSL.Implicits._
+RunnableGraph.fromGraph(GraphDSL.create() { implicit builder =&gt;
+  val A: Outlet[Int]                  = builder.add(Source.single(0)).out
+  val B: UniformFanOutShape[Int, Int] = builder.add(Broadcast[Int](2))
+  val C: UniformFanInShape[Int, Int]  = builder.add(Merge[Int](2))
+  val D: FlowShape[Int, Int]          = builder.add(Flow[Int].map(_ + 1))
+  val E: UniformFanOutShape[Int, Int] = builder.add(Balance[Int](2))
+  val F: UniformFanInShape[Int, Int]  = builder.add(Merge[Int](2))
+  val G: Inlet[Any]                   = builder.add(Sink.foreach(println)).in
+
+                C     &lt;~      F
+  A  ~&gt;  B  ~&gt;  C     ~&gt;      F
+         B  ~&gt;  D  ~&gt;  E  ~&gt;  F
+                       E  ~&gt;  G
+
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L119-L136" target="_blank" title="Go to snippet source">source</a><code class="language-java">RunnableGraph.fromGraph(
+    GraphDSL.create(
+        builder -&gt; {
+          final Outlet&lt;Integer&gt; A = builder.add(Source.single(0)).out();
+          final UniformFanOutShape&lt;Integer, Integer&gt; B = builder.add(Broadcast.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; C = builder.add(Merge.create(2));
+          final FlowShape&lt;Integer, Integer&gt; D =
+              builder.add(Flow.of(Integer.class).map(i -&gt; i + 1));
+          final UniformFanOutShape&lt;Integer, Integer&gt; E = builder.add(Balance.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; F = builder.add(Merge.create(2));
+          final Inlet&lt;Integer&gt; G = builder.add(Sink.&lt;Integer&gt;foreach(System.out::println)).in();
+
+          builder.from(F).toFanIn(C);
+          builder.from(A).viaFanOut(B).viaFanIn(C).toFanIn(F);
+          builder.from(B).via(D).viaFanOut(E).toFanIn(F);
+          builder.from(E).toInlet(G);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>In the code above we used the implicit port numbering feature (to make the graph more readable and similar to the diagram) and we imported <code>Source</code> s, <code>Sink</code> s and <code>Flow</code> s explicitly. It is possible to refer to the ports explicitly, and it is not necessary to import our linear operators via <code>add()</code>, so another version might look like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L112-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import GraphDSL.Implicits._
+RunnableGraph.fromGraph(GraphDSL.create() { implicit builder =&gt;
+  val B = builder.add(Broadcast[Int](2))
+  val C = builder.add(Merge[Int](2))
+  val E = builder.add(Balance[Int](2))
+  val F = builder.add(Merge[Int](2))
+
+  Source.single(0) ~&gt; B.in; B.out(0) ~&gt; C.in(1); C.out ~&gt; F.in(0)
+  C.in(0) &lt;~ F.out
+
+  B.out(1).map(_ + 1) ~&gt; E.in; E.out(0) ~&gt; F.in(1)
+  E.out(1) ~&gt; Sink.foreach(println)
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L140-L160" target="_blank" title="Go to snippet source">source</a><code class="language-java">RunnableGraph.fromGraph(
+    GraphDSL.create(
+        builder -&gt; {
+          final SourceShape&lt;Integer&gt; A = builder.add(Source.single(0));
+          final UniformFanOutShape&lt;Integer, Integer&gt; B = builder.add(Broadcast.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; C = builder.add(Merge.create(2));
+          final FlowShape&lt;Integer, Integer&gt; D =
+              builder.add(Flow.of(Integer.class).map(i -&gt; i + 1));
+          final UniformFanOutShape&lt;Integer, Integer&gt; E = builder.add(Balance.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; F = builder.add(Merge.create(2));
+          final SinkShape&lt;Integer&gt; G = builder.add(Sink.foreach(System.out::println));
+
+          builder.from(F.out()).toInlet(C.in(0));
+          builder.from(A).toInlet(B.in());
+          builder.from(B.out(0)).toInlet(C.in(1));
+          builder.from(C.out()).toInlet(F.in(0));
+          builder.from(B.out(1)).via(D).toInlet(E.in());
+          builder.from(E.out(0)).toInlet(F.in(1));
+          builder.from(E.out(1)).to(G);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>Similar to the case in the first section, so far we have not considered modularity. We created a complex graph, but the layout is flat, not modularized. We will modify our example, and create a reusable component with the graph DSL. The way to do it is to use the <code>create()</code> factory method on <code>GraphDSL</code>. If we remove the sources and sinks from the previous example, what remains is a partial graph:</p>
+<p><img src="../images/compose_graph_partial.png" alt="compose_graph_partial.png" /></p>
+<p>We can recreate a similar graph in code, using the DSL in a similar way than before:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L133-L144" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import GraphDSL.Implicits._
+val partial = GraphDSL.create() { implicit builder =&gt;
+  val B = builder.add(Broadcast[Int](2))
+  val C = builder.add(Merge[Int](2))
+  val E = builder.add(Balance[Int](2))
+  val F = builder.add(Merge[Int](2))
+
+                                   C  &lt;~  F
+  B  ~&gt;                            C  ~&gt;  F
+  B  ~&gt;  Flow[Int].map(_ + 1)  ~&gt;  E  ~&gt;  F
+  FlowShape(B.in, E.out(1))
+}.named(&quot;partial&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L167-L185" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Graph&lt;FlowShape&lt;Integer, Integer&gt;, NotUsed&gt; partial =
+    GraphDSL.create(
+        builder -&gt; {
+          final UniformFanOutShape&lt;Integer, Integer&gt; B = builder.add(Broadcast.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; C = builder.add(Merge.create(2));
+          final UniformFanOutShape&lt;Integer, Integer&gt; E = builder.add(Balance.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; F = builder.add(Merge.create(2));
+
+          builder.from(F.out()).toInlet(C.in(0));
+          builder.from(B).viaFanIn(C).toFanIn(F);
+          builder
+              .from(B)
+              .via(builder.add(Flow.of(Integer.class).map(i -&gt; i + 1)))
+              .viaFanOut(E)
+              .toFanIn(F);
+
+          return new FlowShape&lt;Integer, Integer&gt;(B.in(), E.out(1));
+        });
+</code></pre></dd>
+</dl>
+<p>The only new addition is the return value of the builder block, which is a <code>Shape</code>. All operators (including <code>Source</code>, <code>BidiFlow</code>, etc.) have a shape, which encodes the <em>typed</em> ports of the module. In our example there is exactly one input and output port left, so we can declare it to have a <code>FlowShape</code> by returning an instance of it. While it is possible to create new <code>Shape</code> types, it is usually recommended to use one of the matching built-in ones.</p>
+<p>The resulting graph is already a properly wrapped module, so there is no need to call <em>named()</em> to encapsulate the graph, but it is a good practice to give names to modules to help debugging.</p>
+<p><img src="../images/compose_graph_shape.png" alt="compose_graph_shape.png" /></p>
+<p>Since our partial graph has the right shape, it can be already used in the simpler, linear DSL:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L149" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Source.single(0).via(partial).to(Sink.ignore)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L189" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source.single(0).via(partial).to(Sink.ignore());</code></pre></dd>
+</dl>
+<p>It is not possible to use it as a <code>Flow</code> yet, though (i.e. we cannot call <code>.filter()</code> on it), but <code>Flow</code> has a <code>fromGraph()</code> method that adds the DSL to a <code>FlowShape</code>. There are similar methods on <code>Source</code>, <code>Sink</code> and <code>BidiShape</code>, so it is easy to get back to the simpler DSL if an operator has the right shape. For convenience, it is also possible to skip the partial graph creation, and use one of the convenience creator methods. To demonstrate this, we will create the following graph:</p>
+<p><img src="../images/compose_graph_flow.png" alt="compose_graph_flow.png" /></p>
+<p>The code version of the above closed graph might look like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L154-L175" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Convert the partial graph of FlowShape to a Flow to get
+// access to the fluid DSL (for example to be able to call .filter())
+val flow = Flow.fromGraph(partial)
+
+// Simple way to create a graph backed Source
+val source = Source.fromGraph( GraphDSL.create() { implicit builder =&gt;
+  val merge = builder.add(Merge[Int](2))
+  Source.single(0)      ~&gt; merge
+  Source(List(2, 3, 4)) ~&gt; merge
+
+  // Exposing exactly one output port
+  SourceShape(merge.out)
+})
+
+// Building a Sink with a nested Flow, using the fluid DSL
+val sink = {
+  val nestedFlow = Flow[Int].map(_ * 2).drop(10).named(&quot;nestedFlow&quot;)
+  nestedFlow.to(Sink.head)
+}
+
+// Putting all together
+val closed = source.via(flow.filter(_ &gt; 1)).to(sink)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L193-L214" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Convert the partial graph of FlowShape to a Flow to get
+// access to the fluid DSL (for example to be able to call .filter())
+final Flow&lt;Integer, Integer, NotUsed&gt; flow = Flow.fromGraph(partial);
+
+// Simple way to create a graph backed Source
+final Source&lt;Integer, NotUsed&gt; source =
+    Source.fromGraph(
+        GraphDSL.create(
+            builder -&gt; {
+              final UniformFanInShape&lt;Integer, Integer&gt; merge = builder.add(Merge.create(2));
+              builder.from(builder.add(Source.single(0))).toFanIn(merge);
+              builder.from(builder.add(Source.from(Arrays.asList(2, 3, 4)))).toFanIn(merge);
+              // Exposing exactly one output port
+              return new SourceShape&lt;Integer&gt;(merge.out());
+            }));
+
+// Building a Sink with a nested Flow, using the fluid DSL
+final Sink&lt;Integer, NotUsed&gt; sink =
+    Flow.of(Integer.class).map(i -&gt; i * 2).drop(10).named(&quot;nestedFlow&quot;).to(Sink.head());
+
+// Putting all together
+final RunnableGraph&lt;NotUsed&gt; closed = source.via(flow.filter(i -&gt; i &gt; 1)).to(sink);</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>All graph builder sections check if the resulting graph has all ports connected except the exposed ones and will throw an exception if this is violated.</p></div>
+<p>We are still in debt of demonstrating that <code>RunnableGraph</code> is a component like any other, which can be embedded in graphs. In the following snippet we embed one closed graph in another:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L182-L187" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val closed1 = Source.single(0).to(Sink.foreach(println))
+val closed2 = RunnableGraph.fromGraph(GraphDSL.create() { implicit builder =&gt;
+  val embeddedClosed: ClosedShape = builder.add(closed1)
+  // …
+  embeddedClosed
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L221-L228" target="_blank" title="Go to snippet source">source</a><code class="language-java">final RunnableGraph&lt;NotUsed&gt; closed1 = Source.single(0).to(Sink.foreach(System.out::println));
+final RunnableGraph&lt;NotUsed&gt; closed2 =
+    RunnableGraph.fromGraph(
+        GraphDSL.create(
+            builder -&gt; {
+              final ClosedShape embeddedClosed = builder.add(closed1);
+              return embeddedClosed; // Could return ClosedShape.getInstance()
+            }));</code></pre></dd>
+</dl>
+<p>The type of the imported module indicates that the imported module has a <code>ClosedShape</code>, and so we are not able to wire it to anything else inside the enclosing closed graph. Nevertheless, this &ldquo;island&rdquo; is embedded properly, and will be materialized just like any other module that is part of the graph.</p>
+<p>As we have demonstrated, the two DSLs are fully interoperable, as they encode a similar nested structure of &ldquo;boxes with ports&rdquo;, it is only the DSLs that differ to be as much powerful as possible on the given abstraction level. It is possible to embed complex graphs in the fluid DSL, and it is just as easy to import and embed a <code>Flow</code>, etc, in a larger, complex structure.</p>
+<p>We have also seen, that every module has a <code>Shape</code> (for example a <code>Sink</code> has a <code>SinkShape</code>) independently which DSL was used to create it. This uniform representation enables the rich composability of various stream processing entities in a convenient way.</p>
+<h2><a href="#materialized-values" name="materialized-values" class="anchor"><span class="anchor-link"></span></a>Materialized values</h2>
+<p>After realizing that <code>RunnableGraph</code> is nothing more than a module with no unused ports (it is an island), it becomes clear that after materialization the only way to communicate with the running stream processing logic is via some side-channel. This side channel is represented as a <em>materialized value</em>. The situation is similar to <code>Actor</code> s, where the <code>Props</code> instance describes the actor logic, but it is the call to <code>actorOf()</code> that creates an actually running actor, and returns an <code>ActorRef</code> that can be used to communicate with the running actor itself. Since the <code>Props</code> can be reused, each call will return a different reference.</p>
+<p>When it comes to streams, each materialization creates a new running network corresponding to the blueprint that was encoded in the provided <code>RunnableGraph</code>. To be able to interact with the running network, each materialization needs to return a different object that provides the necessary interaction capabilities. In other words, the <code>RunnableGraph</code> can be seen as a factory, which creates:</p>
+<ul>
+  <li>a network of running processing entities, inaccessible from the outside</li>
+  <li>a materialized value, optionally providing a controlled interaction capability with the network</li>
+</ul>
+<p>Unlike actors though, each of the operators might provide a materialized value, so when we compose multiple operators or modules, we need to combine the materialized value as well (there are default rules which make this easier, for example <em>to()</em> and <em>via()</em> takes care of the most common case of taking the materialized value to the left. See <a href="stream-flows-and-basics.html#flow-combine-mat">Combining materialized values</a> for details). We demonstrate how this works by a code example and a diagram which graphically demonstrates what is happening.</p>
+<p>The propagation of the individual materialized values from the enclosed modules towards the top will look like this:</p>
+<p><img src="../images/compose_mat.png" alt="compose_mat.png" /></p>
+<p>To implement the above, first, we create a composite <code>Source</code>, where the enclosed <code>Source</code> have a materialized type of <span class="group-scala"><code>Promise[[Option[Int]]</code></span> <span class="group-java"><code>CompletableFuture&lt;Optional&lt;Integer&gt;&gt;&gt;</code></span>. By using the combiner function <code>Keep.left</code>, the resulting materialized type is of the nested module (indicated by the color <em>red</em> on the diagram):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L193-L201" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Materializes to Promise[Option[Int]]                                   (red)
+val source: Source[Int, Promise[Option[Int]]] = Source.maybe[Int]
+
+// Materializes to NotUsed                                               (black)
+val flow1: Flow[Int, Int, NotUsed] = Flow[Int].take(100)
+
+// Materializes to Promise[Int]                                          (red)
+val nestedSource: Source[Int, Promise[Option[Int]]] =
+  source.viaMat(flow1)(Keep.left).named(&quot;nestedSource&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L259-L267" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Materializes to CompletableFuture&lt;Optional&lt;Integer&gt;&gt;                   (red)
+final Source&lt;Integer, CompletableFuture&lt;Optional&lt;Integer&gt;&gt;&gt; source = Source.&lt;Integer&gt;maybe();
+
+// Materializes to NotUsed                                                (black)
+final Flow&lt;Integer, Integer, NotUsed&gt; flow1 = Flow.of(Integer.class).take(100);
+
+// Materializes to CompletableFuture&lt;Optional&lt;Integer&gt;&gt;                  (red)
+final Source&lt;Integer, CompletableFuture&lt;Optional&lt;Integer&gt;&gt;&gt; nestedSource =
+    source.viaMat(flow1, Keep.left()).named(&quot;nestedSource&quot;);</code></pre></dd>
+</dl>
+<p>Next, we create a composite <code>Flow</code> from two smaller components. Here, the second enclosed <code>Flow</code> has a materialized type of <span class="group-scala"><code>Future[OutgoingConnection]</code></span> <span class="group-java"><code>CompletionStage&lt;OutgoingConnection&gt;</code></span>, and we propagate this to the parent by using <code>Keep.right</code> as the combiner function (indicated by the color <em>yellow</em> on the diagram):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L205-L216" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Materializes to NotUsed                                                (orange)
+val flow2: Flow[Int, ByteString, NotUsed] = Flow[Int].map { i =&gt;
+  ByteString(i.toString)
+}
+
+// Materializes to Future[OutgoingConnection]                             (yellow)
+val flow3: Flow[ByteString, ByteString, Future[OutgoingConnection]] =
+  Tcp(system).outgoingConnection(&quot;localhost&quot;, 8080)
+
+// Materializes to Future[OutgoingConnection]                             (yellow)
+val nestedFlow: Flow[Int, ByteString, Future[OutgoingConnection]] =
+  flow2.viaMat(flow3)(Keep.right).named(&quot;nestedFlow&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L271-L281" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Materializes to NotUsed                                                (orange)
+final Flow&lt;Integer, ByteString, NotUsed&gt; flow2 =
+    Flow.of(Integer.class).map(i -&gt; ByteString.fromString(i.toString()));
+
+// Materializes to Future&lt;OutgoingConnection&gt;                             (yellow)
+final Flow&lt;ByteString, ByteString, CompletionStage&lt;OutgoingConnection&gt;&gt; flow3 =
+    Tcp.get(system).outgoingConnection(&quot;localhost&quot;, 8080);
+
+// Materializes to Future&lt;OutgoingConnection&gt;                             (yellow)
+final Flow&lt;Integer, ByteString, CompletionStage&lt;OutgoingConnection&gt;&gt; nestedFlow =
+    flow2.viaMat(flow3, Keep.right()).named(&quot;nestedFlow&quot;);</code></pre></dd>
+</dl>
+<p>As a third step, we create a composite <code>Sink</code>, using our <code>nestedFlow</code> as a building block. In this snippet, both the enclosed <code>Flow</code> and the folding <code>Sink</code> has a materialized value that is interesting for us, so we use <code>Keep.both</code> to get a <code>Pair</code> of them as the materialized type of <code>nestedSink</code> (indicated by the color <em>blue</em> on the diagram)</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L220-L225" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Materializes to Future[String]                                         (green)
+val sink: Sink[ByteString, Future[String]] = Sink.fold(&quot;&quot;)(_ + _.utf8String)
+
+// Materializes to (Future[OutgoingConnection], Future[String])           (blue)
+val nestedSink: Sink[Int, (Future[OutgoingConnection], Future[String])] =
+  nestedFlow.toMat(sink)(Keep.both)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L285-L291" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Materializes to Future&lt;String&gt;                                         (green)
+final Sink&lt;ByteString, CompletionStage&lt;String&gt;&gt; sink =
+    Sink.&lt;String, ByteString&gt;fold(&quot;&quot;, (acc, i) -&gt; acc + i.utf8String());
+
+// Materializes to Pair&lt;Future&lt;OutgoingConnection&gt;, Future&lt;String&gt;&gt;       (blue)
+final Sink&lt;Integer, Pair&lt;CompletionStage&lt;OutgoingConnection&gt;, CompletionStage&lt;String&gt;&gt;&gt;
+    nestedSink = nestedFlow.toMat(sink, Keep.both());</code></pre></dd>
+</dl>
+<p>As the last example, we wire together <code>nestedSource</code> and <code>nestedSink</code> and we use a custom combiner function to create a yet another materialized type of the resulting <code>RunnableGraph</code>. This combiner function ignores the <span class="group-scala"><code>Future[String]</code></span> <span class="group-java"><code>CompletionStage&lt;String&gt;</code></span> part, and wraps the other two values in a custom case class <code>MyClass</code> (indicated by color <em>purple</em> on the diagram):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L229-L241" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class MyClass(private val p: Promise[Option[Int]], conn: OutgoingConnection) {
+  def close() = p.trySuccess(None)
+}
+
+def f(p: Promise[Option[Int]], rest: (Future[OutgoingConnection], Future[String])): Future[MyClass] = {
+
+  val connFuture = rest._1
+  connFuture.map(MyClass(p, _))
+}
+
+// Materializes to Future[MyClass]                                        (purple)
+val runnableGraph: RunnableGraph[Future[MyClass]] =
+  nestedSource.toMat(nestedSink)(f)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+    <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L233-L253" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class MyClass {
+  private CompletableFuture&lt;Optional&lt;Integer&gt;&gt; p;
+  private OutgoingConnection conn;
+
+  public MyClass(CompletableFuture&lt;Optional&lt;Integer&gt;&gt; p, OutgoingConnection conn) {
+    this.p = p;
+    this.conn = conn;
+  }
+
+  public void close() {
+    p.complete(Optional.empty());
+  }
+}
+
+static class Combiner {
+  static CompletionStage&lt;MyClass&gt; f(
+      CompletableFuture&lt;Optional&lt;Integer&gt;&gt; p,
+      Pair&lt;CompletionStage&lt;OutgoingConnection&gt;, CompletionStage&lt;String&gt;&gt; rest) {
+    return rest.first().thenApply(c -&gt; new MyClass(p, c));
+  }
+}</code></pre>
+    <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L295-L297" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Materializes to Future&lt;MyClass&gt;                                        (purple)
+final RunnableGraph&lt;CompletionStage&lt;MyClass&gt;&gt; runnableGraph =
+    nestedSource.toMat(nestedSink, Combiner::f);</code></pre>
+  </dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>The nested structure in the above example is not necessary for combining the materialized values, it demonstrates how the two features work together. See <a href="stream-flows-and-basics.html#flow-combine-mat">Combining materialized values</a> for further examples of combining materialized values without nesting and hierarchy involved.</p></div>
+<h2><a href="#attributes" name="attributes" class="anchor"><span class="anchor-link"></span></a>Attributes</h2>
+<p>We have seen that we can use <code>named()</code> to introduce a nesting level in the fluid DSL and also explicit nesting by using <code>create()</code> from <code>GraphDSL</code>. Apart from having the effect of adding a nesting level, <code>named()</code> is actually a shorthand for calling <code>addAttributes(Attributes.name(&quot;someName&quot;))</code>, adding the <code>name</code> attribute to the graph. </p>
+<p>Attributes provide a way to fine-tune certain aspects of the materialized running entity. Attributes are inherited by nested modules, unless they override them with a custom value. This means the attribute specified closest to the operator in the graph will be the one that is in effect for that operator. </p>
+<p>Another example of an attribute is the <code>inputBuffer</code> attribute which has the main purpose to provide control over buffer sizes for asynchronous boundaries (see <a href="stream-rate.html#async-stream-buffers">Buffers for asynchronous operators</a>). </p>
+<p>The code below, a modification of an earlier example sets the <code>inputBuffer</code> attribute on certain modules, but not on others. <em>Note</em> that this is only to show how attributes inheritance works, the actual <code>inputBuffer</code> attribute does not have any specific effect when running these streams:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/CompositionDocSpec.scala#L247-L260" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import Attributes._
+val nestedSource =
+  Source.single(0).map(_ + 1).named(&quot;nestedSource&quot;) // Wrap, no inputBuffer set
+
+val nestedFlow =
+  Flow[Int]
+    .filter(_ != 0)
+    .via(Flow[Int].map(_ - 2).withAttributes(inputBuffer(4, 4))) // override
+    .named(&quot;nestedFlow&quot;) // Wrap, no inputBuffer set
+
+val nestedSink =
+  nestedFlow
+    .to(Sink.fold(0)(_ + _)) // wire an atomic sink to the nestedFlow
+    .withAttributes(name(&quot;nestedSink&quot;) and inputBuffer(3, 3)) // override</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/CompositionDocTest.java#L304-L320" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; nestedSource =
+    Source.single(0).map(i -&gt; i + 1).named(&quot;nestedSource&quot;); // Wrap, no inputBuffer set
+
+final Flow&lt;Integer, Integer, NotUsed&gt; nestedFlow =
+    Flow.of(Integer.class)
+        .filter(i -&gt; i != 0)
+        .via(
+            Flow.of(Integer.class)
+                .map(i -&gt; i - 2)
+                .withAttributes(Attributes.inputBuffer(4, 4))) // override
+        .named(&quot;nestedFlow&quot;); // Wrap, no inputBuffer set
+
+final Sink&lt;Integer, NotUsed&gt; nestedSink =
+    nestedFlow
+        .to(Sink.fold(0, (acc, i) -&gt; acc + i)) // wire an atomic sink to the nestedFlow
+        .withAttributes(
+            Attributes.name(&quot;nestedSink&quot;).and(Attributes.inputBuffer(3, 3))); // override</code></pre></dd>
+</dl>
+<p>The effect is, that each module inherits the <code>inputBuffer</code> attribute from its enclosing parent, unless it has the same attribute explicitly set. <code>nestedSource</code> gets the default attributes from the materializer itself. <code>nestedSink</code> on the other hand has this attribute set, so it will be used by all nested modules. <code>nestedFlow</code> will inherit from <code>nestedSink</code> except the <code>map</code> operator which has again an explicitly provided attribute overriding the inherited one.</p>
+<p><img src="../images/compose_attributes.png" alt="compose_attributes.png" /></p>
+<p>This diagram illustrates the inheritance process for the example code (representing the materializer default attributes as the color <em>red</em>, the attributes set on <code>nestedSink</code> as <em>blue</em> and the attributes set on <code>nestedFlow</code> as <em>green</em>).</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-composition.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-rate.html">Buffers and working with rate</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-composition.html#modularity-composition-and-hierarchy" class="header">Modularity, Composition and Hierarchy</a>
+  <ul>
+    <li><a href="../stream/stream-composition.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-composition.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-composition.html#basics-of-composition-and-modularity" class="header">Basics of composition and modularity</a></li>
+    <li><a href="../stream/stream-composition.html#composing-complex-systems" class="header">Composing complex systems</a></li>
+    <li><a href="../stream/stream-composition.html#materialized-values" class="header">Materialized values</a></li>
+    <li><a href="../stream/stream-composition.html#attributes" class="header">Attributes</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

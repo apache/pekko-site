@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Classic Cluster Client · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentcluster-client.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Akka Documentation</a></li>
+  <li><a href="index-classic.html">Akka Classic</a></li>
+  <li><a href="index-cluster.html">Classic Clustering</a></li>
+  <li>Classic Cluster Client</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#classic-cluster-client" name="classic-cluster-client" class="anchor"><span class="anchor-link"></span></a>Classic Cluster Client</h1><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Cluster Client is deprecated in favor of using <a href="https://doc.akka.io/docs/akka-grpc/current/index.html">Akka gRPC</a>. It is not advised to build new applications with Cluster Client, and existing users <a href="cluster-client.html#migration-to-akka-grpc">should migrate</a>.</p></div><div class="callout note "><div class="callout-title">Note</div>
+<p>Akka Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Akka Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Cluster Client, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-tools" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-tools_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-tools_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster Tools (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-tools</div>
+  <div>0.0.0+26524-b0ed4882-SNAPSHOT</div>
+  <div><a href="project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.tools</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://akka.io/">https://akka.io/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://doc.akka.io/api/akka/snapshot/akka/cluster/tools/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://doc.akka.io/japi/akka/snapshot/akka/cluster/tools/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://discuss.akka.io" target="_blank" rel="noopener noreferrer">Lightbend Discuss</a></div>
+  <div><a href="https://gitter.im/akka/akka" target="_blank" rel="noopener noreferrer">akka/akka Gitter channel</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/akka/akka/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>An actor system that is not part of the cluster can communicate with actors somewhere in the cluster via the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span>, the client can run in an <code>ActorSystem</code> that is part of another cluster. It only needs to know the location of one (or more) nodes to use as initial contact points. It will establish a connection to a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span> somewhere in the cluster. It will monitor the connection to the receptionist and establish a new connection if the link goes down. When looking for a new receptionist it uses fresh contact points retrieved from the previous establishment, or periodically refreshed contacts, i.e. not necessarily the initial contact points.</p>
+
+<p>Using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> for communicating with a cluster from the outside requires that the system with the client can both connect and be connected with Akka Remoting from all the nodes in the cluster with a receptionist. This creates a tight coupling in that the client and cluster systems may need to have the same version of both Akka, libraries, message classes, serializers and potentially even the JVM. In many cases it is a better solution to use a more explicit and decoupling protocol such as <a href="https://doc.akka.io/docs/akka-http/current/index.html">HTTP</a> or <a href="https://doc.akka.io/docs/akka-grpc/current/">gRPC</a>.</p>
+
+<p>Additionally, since Akka Remoting is primarily designed as a protocol for Akka Cluster there is no explicit resource management, when a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> has been used it will cause connections with the cluster until the ActorSystem is stopped (unlike other kinds of network clients).</p>
+
+<p><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> should not be used when sending messages to actors that run within the same cluster. Similar functionality as the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> is provided more efficiently by <a href="distributed-pub-sub.html">Distributed Publish Subscribe in Cluster</a> for actors that belong to the same cluster.</p>
+
+<p>The connecting system must have its <code>org.apache.pekko.actor.provider</code> set to <code>remote</code> or <code>cluster</code> when using the cluster client.</p>
+
+<p>The receptionist is supposed to be started on all nodes, or all nodes with a specified role, in the cluster. The receptionist can be started with the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span> extension or as an ordinary actor.</p>
+
+<p>You can send messages via the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> to any actor in the cluster that is registered in the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator"><code>DistributedPubSubMediator</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator"><code>DistributedPubSubMediator</code></a></span> used by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionist.html" title="org.apache.pekko.cluster.client.ClusterReceptionist"><code>ClusterReceptionist</code></a></span>. The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> provides methods for registration of actors that should be reachable from the client. Messages are wrapped in <code>ClusterClient.Send</code>, <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/cluster/client/ClusterClient$.html" title="pekko.cluster.client.ClusterClient"><code>`ClusterClient.SendToAll`</code></a></span><span class="group-java"><code>ClusterClient.SendToAll</code></span> or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient$.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>`ClusterClient.Publish`</code></a></span><span class="group-java"><code>ClusterClient.Publish</code></span>.</p>
+
+<p>Both the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> and the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> emit events that can be subscribed to. The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> sends out notifications about the list of contact points received from the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span>. One use of this list might be for the client to record its contact points. A client that is restarted could then use this information to supersede any previously configured contact points.</p>
+
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> sends out notifications in relation to having received a contact from a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span>. This notification enables the server containing the receptionist to become aware of what clients are connected to.</p>
+
+<ol>
+  <li><strong>ClusterClient.Send</strong></li>
+</ol>
+<p>The message will be delivered to one recipient with a matching path if any such exists. If several entries match the path the message will be delivered  to one random destination. The sender of the message can specify that local  affinity is preferred, i.e. the message is sent to an actor in the same local actor  system as the used receptionist actor, if any such exists, otherwise random to any other  matching entry.</p>
+<ol>
+  <li><strong>ClusterClient.SendToAll</strong></li>
+</ol>
+<p>The message will be delivered to all recipients with a matching path.</p>
+<ol>
+  <li><strong>ClusterClient.Publish</strong></li>
+</ol>
+<p>The message will be delivered to all recipients Actors that have been registered as subscribers  to the named topic.</p>
+<p>Response messages from the destination actor are tunneled via the receptionist to avoid inbound connections from other cluster nodes to the client:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/Actor.html" title="pekko.actor.Actor"><code>`sender()`</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/Actor.html" title="pekko.actor.Actor"><code>`getSender()`</code></a></span>, as seen by the destination actor, is not the client itself,  but the receptionist</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/Actor.html" title="pekko.actor.Actor"><code>`sender()`</code></a></span> <span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/Actor.html" title="pekko.actor.Actor"><code>`getSender()`</code></a></span> of the response messages, sent back from the destination and seen by the client,  is <code>deadLetters</code></li>
+</ul>
+<p>since the client should normally send subsequent messages via the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span>. It is possible to pass the original sender inside the reply messages if the client is supposed to communicate directly to the actor in the cluster.</p>
+<p>While establishing a connection to a receptionist the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> will buffer messages and send them when the connection is established. If the buffer is full the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> will drop old messages when new messages are sent via the client. The size of the buffer is configurable and it can be disabled by using a buffer size of 0.</p>
+<p>It&rsquo;s worth noting that messages can always be lost because of the distributed nature of these actors. As always, additional logic should be implemented in the destination (acknowledgement) and in the client (retry) actors to ensure at-least-once message delivery.</p>
+<h2><a href="#an-example" name="an-example" class="anchor"><span class="anchor-link"></span></a>An Example</h2>
+<p>On the cluster nodes, first start the receptionist. Note, it is recommended to load the extension when the actor system is started by defining it in the <code>pekko.extensions</code> configuration property:</p>
+<pre><code>pekko.extensions = [&quot;org.apache.pekko.cluster.client.ClusterClientReceptionist&quot;]
+</code></pre>
+<p>Next, register the actors that should be available for the client.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/client/ClusterClientSpec.scala#L275-L283" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(host1) {
+  val serviceA = system.actorOf(Props[Service](), &quot;serviceA&quot;)
+  ClusterClientReceptionist(system).registerService(serviceA)
+}
+
+runOn(host2, host3) {
+  val serviceB = system.actorOf(Props[Service](), &quot;serviceB&quot;)
+  ClusterClientReceptionist(system).registerService(serviceB)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/client/ClusterClientTest.java#L53-L57" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef serviceA = system.actorOf(Props.create(Service.class), &quot;serviceA&quot;);
+ClusterClientReceptionist.get(system).registerService(serviceA);
+
+ActorRef serviceB = system.actorOf(Props.create(Service.class), &quot;serviceB&quot;);
+ClusterClientReceptionist.get(system).registerService(serviceB);</code></pre></dd>
+</dl>
+<p>On the client, you create the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> actor and use it as a gateway for sending messages to the actors identified by their path (without address information) somewhere in the cluster.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/client/ClusterClientSpec.scala#L292-L298" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(client) {
+  val c = system.actorOf(
+    ClusterClient.props(ClusterClientSettings(system).withInitialContacts(initialContacts)),
+    &quot;client&quot;)
+  c ! ClusterClient.Send(&quot;/user/serviceA&quot;, &quot;hello&quot;, localAffinity = true)
+  c ! ClusterClient.SendToAll(&quot;/user/serviceB&quot;, &quot;hi&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/client/ClusterClientTest.java#L61-L67" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorRef c =
+    system.actorOf(
+        ClusterClient.props(
+            ClusterClientSettings.create(system).withInitialContacts(initialContacts())),
+        &quot;client&quot;);
+c.tell(new ClusterClient.Send(&quot;/user/serviceA&quot;, &quot;hello&quot;, true), ActorRef.noSender());
+c.tell(new ClusterClient.SendToAll(&quot;/user/serviceB&quot;, &quot;hi&quot;), ActorRef.noSender());</code></pre></dd>
+</dl>
+<p>The <code>initialContacts</code> parameter is a <span class="group-scala"><code>Set[ActorPath]</code></span><span class="group-java"><code>Set&lt;ActorPath&gt;</code></span>, which can be created like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/client/ClusterClientSpec.scala#L207-L210" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val initialContacts = Set(
+  ActorPath.fromString(&quot;akka://OtherSys@host1:2552/system/receptionist&quot;),
+  ActorPath.fromString(&quot;akka://OtherSys@host2:2552/system/receptionist&quot;))
+val settings = ClusterClientSettings(system).withInitialContacts(initialContacts)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/client/ClusterClientTest.java#L41-L46" target="_blank" title="Go to snippet source">source</a><code class="language-java">Set&lt;ActorPath&gt; initialContacts() {
+  return new HashSet&lt;ActorPath&gt;(
+      Arrays.asList(
+          ActorPaths.fromString(&quot;akka://OtherSys@host1:2552/system/receptionist&quot;),
+          ActorPaths.fromString(&quot;akka://OtherSys@host2:2552/system/receptionist&quot;)));
+}</code></pre></dd>
+</dl>
+<p>You will probably define the address information of the initial contact points in configuration or system property. See also <a href="cluster-client.html#cluster-client-config">Configuration</a>.</p>
+<p>A more comprehensive sample is available in the tutorial named <span class="group-scala"><a href="https://github.com/typesafehub/activator-akka-distributed-workers">Distributed workers with Akka and Scala</a>.</span> <span class="group-java"><a href="https://github.com/typesafehub/activator-akka-distributed-workers-java">Distributed workers with Akka and Java</a>.</span></p>
+<h2><a href="#clusterclientreceptionist-extension" name="clusterclientreceptionist-extension" class="anchor"><span class="anchor-link"></span></a>ClusterClientReceptionist Extension</h2>
+<p>In the example above the receptionist is started and accessed with the <code>org.apache.pekko.cluster.client.ClusterClientReceptionist</code> extension. That is convenient and perfectly fine in most cases, but it can be good to know that it is possible to start the <code>org.apache.pekko.cluster.client.ClusterReceptionist</code> actor as an ordinary actor and you can have several different receptionists at the same time, serving different types of clients.</p>
+<p>Note that the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> uses the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>DistributedPubSub</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>DistributedPubSub</code></a></span> extension, which is described in <a href="distributed-pub-sub.html">Distributed Publish Subscribe in Cluster</a>.</p>
+<p>It is recommended to load the extension when the actor system is started by defining it in the <code>pekko.extensions</code> configuration property:</p>
+<pre><code>pekko.extensions = [&quot;pekko.cluster.client.ClusterClientReceptionist&quot;]
+</code></pre>
+<h2><a href="#events" name="events" class="anchor"><span class="anchor-link"></span></a>Events</h2>
+<p>As mentioned earlier, both the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> and <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> emit events that can be subscribed to. The following code snippet declares an actor that will receive notifications on contact points (addresses to the available receptionists), as they become available. The code illustrates subscribing to the events and receiving the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClient.html" title="org.apache.pekko.cluster.client.ClusterClient"><code>ClusterClient</code></a></span> initial state.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/client/ClusterClientSpec.scala#L88-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class ClientListener(targetClient: ActorRef) extends Actor {
+  override def preStart(): Unit =
+    targetClient ! SubscribeContactPoints
+
+  def receive: Receive =
+    receiveWithContactPoints(Set.empty)
+
+  def receiveWithContactPoints(contactPoints: Set[ActorPath]): Receive = {
+    case ContactPoints(cps) =&gt;
+      context.become(receiveWithContactPoints(cps))
+    // Now do something with the up-to-date &quot;cps&quot;
+    case ContactPointAdded(cp) =&gt;
+      context.become(receiveWithContactPoints(contactPoints + cp))
+    // Now do something with an up-to-date &quot;contactPoints + cp&quot;
+    case ContactPointRemoved(cp) =&gt;
+      context.become(receiveWithContactPoints(contactPoints - cp))
+    // Now do something with an up-to-date &quot;contactPoints - cp&quot;
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/client/ClusterClientTest.java#L81-L117" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class ClientListener extends AbstractActor {
+  private final ActorRef targetClient;
+  private final Set&lt;ActorPath&gt; contactPoints = new HashSet&lt;&gt;();
+
+  public ClientListener(ActorRef targetClient) {
+    this.targetClient = targetClient;
+  }
+
+  @Override
+  public void preStart() {
+    targetClient.tell(SubscribeContactPoints.getInstance(), sender());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            ContactPoints.class,
+            msg -&gt; {
+              contactPoints.addAll(msg.getContactPoints());
+              // Now do something with an up-to-date &quot;contactPoints&quot;
+            })
+        .match(
+            ContactPointAdded.class,
+            msg -&gt; {
+              contactPoints.add(msg.contactPoint());
+              // Now do something with an up-to-date &quot;contactPoints&quot;
+            })
+        .match(
+            ContactPointRemoved.class,
+            msg -&gt; {
+              contactPoints.remove(msg.contactPoint());
+              // Now do something with an up-to-date &quot;contactPoints&quot;
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>Similarly we can have an actor that behaves in a similar fashion for learning what cluster clients are connected to a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/client/ClusterClientSpec.scala#L127-L145" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class ReceptionistListener(targetReceptionist: ActorRef) extends Actor {
+  override def preStart(): Unit =
+    targetReceptionist ! SubscribeClusterClients
+
+  def receive: Receive =
+    receiveWithClusterClients(Set.empty)
+
+  def receiveWithClusterClients(clusterClients: Set[ActorRef]): Receive = {
+    case ClusterClients(cs) =&gt;
+      context.become(receiveWithClusterClients(cs))
+    // Now do something with the up-to-date &quot;c&quot;
+    case ClusterClientUp(c) =&gt;
+      context.become(receiveWithClusterClients(clusterClients + c))
+    // Now do something with an up-to-date &quot;clusterClients + c&quot;
+    case ClusterClientUnreachable(c) =&gt;
+      context.become(receiveWithClusterClients(clusterClients - c))
+    // Now do something with an up-to-date &quot;clusterClients - c&quot;
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/client/ClusterClientTest.java#L121-L157" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class ReceptionistListener extends AbstractActor {
+  private final ActorRef targetReceptionist;
+  private final Set&lt;ActorRef&gt; clusterClients = new HashSet&lt;&gt;();
+
+  public ReceptionistListener(ActorRef targetReceptionist) {
+    this.targetReceptionist = targetReceptionist;
+  }
+
+  @Override
+  public void preStart() {
+    targetReceptionist.tell(SubscribeClusterClients.getInstance(), sender());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            ClusterClients.class,
+            msg -&gt; {
+              clusterClients.addAll(msg.getClusterClients());
+              // Now do something with an up-to-date &quot;clusterClients&quot;
+            })
+        .match(
+            ClusterClientUp.class,
+            msg -&gt; {
+              clusterClients.add(msg.clusterClient());
+              // Now do something with an up-to-date &quot;clusterClients&quot;
+            })
+        .match(
+            ClusterClientUnreachable.class,
+            msg -&gt; {
+              clusterClients.remove(msg.clusterClient());
+              // Now do something with an up-to-date &quot;clusterClients&quot;
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<a id="cluster-client-config"></a>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientReceptionist.html" title="org.apache.pekko.cluster.client.ClusterClientReceptionist"><code>ClusterClientReceptionist</code></a></span> extension (or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionistSettings.html" title="org.apache.pekko.cluster.client.ClusterReceptionistSettings"><code>ClusterReceptionistSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterReceptionistSettings.html" title="org.apache.pekko.cluster.client.ClusterReceptionistSettings"><code>ClusterReceptionistSettings</code></a></span>) can be configured with the following properties:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/main/resources/reference.conf#L57-L91" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Settings for the ClusterClientReceptionist extension
+pekko.cluster.client.receptionist {
+  # Actor name of the ClusterReceptionist actor, /system/receptionist
+  name = receptionist
+
+  # Start the receptionist on members tagged with this role.
+  # All members are used if undefined or empty.
+  role = &quot;&quot;
+
+  # The receptionist will send this number of contact points to the client
+  number-of-contacts = 3
+
+  # The actor that tunnel response messages to the client will be stopped
+  # after this time of inactivity.
+  response-tunnel-receive-timeout = 30s
+  
+  # The id of the dispatcher to use for ClusterReceptionist actors.
+  # If specified you need to define the settings of the actual dispatcher.
+  use-dispatcher = &quot;pekko.actor.internal-dispatcher&quot;
+
+  # How often failure detection heartbeat messages should be received for
+  # each ClusterClient
+  heartbeat-interval = 2s
+
+  # Number of potentially lost/delayed heartbeats that will be
+  # accepted before considering it to be an anomaly.
+  # The ClusterReceptionist is using the org.apache.pekko.remote.DeadlineFailureDetector, which
+  # will trigger if there are no heartbeats within the duration
+  # heartbeat-interval + acceptable-heartbeat-pause, i.e. 15 seconds with
+  # the default settings.
+  acceptable-heartbeat-pause = 13s
+
+  # Failure detection checking interval for checking all ClusterClients
+  failure-detection-interval = 2s
+}</code></pre>
+<p>The following configuration properties are read by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span> when created with a <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/ActorSystem.html" title="pekko.actor.ActorSystem"><code>`ActorSystem`</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/ActorSystem.html" title="pekko.actor.ActorSystem"><code>`ActorSystem`</code></a></span> parameter. It is also possible to amend the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span> or create it from another config section with the same layout as below. <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/client/ClusterClientSettings.html" title="org.apache.pekko.cluster.client.ClusterClientSettings"><code>ClusterClientSettings</code></a></span> is a parameter to the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/cluster/client/ClusterClient$.html" title="pekko.cluster.client.ClusterClient"><code>`ClusterClient.props`</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/cluster/client/ClusterClient$.html" title="pekko.cluster.client.ClusterClient"><code>`ClusterClient.props`</code></a></span> factory method, i.e. each client can be configured with different settings if needed.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-tools/src/main/resources/reference.conf#L95-L139" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Settings for the ClusterClient
+pekko.cluster.client {
+  # Actor paths of the ClusterReceptionist actors on the servers (cluster nodes)
+  # that the client will try to contact initially. It is mandatory to specify
+  # at least one initial contact. 
+  # Comma separated full actor paths defined by a string on the form of
+  # &quot;akka://system@hostname:port/system/receptionist&quot;
+  initial-contacts = []
+  
+  # Interval at which the client retries to establish contact with one of 
+  # ClusterReceptionist on the servers (cluster nodes)
+  establishing-get-contacts-interval = 3s
+  
+  # Interval at which the client will ask the ClusterReceptionist for
+  # new contact points to be used for next reconnect.
+  refresh-contacts-interval = 60s
+  
+  # How often failure detection heartbeat messages should be sent
+  heartbeat-interval = 2s
+  
+  # Number of potentially lost/delayed heartbeats that will be
+  # accepted before considering it to be an anomaly.
+  # The ClusterClient is using the org.apache.pekko.remote.DeadlineFailureDetector, which
+  # will trigger if there are no heartbeats within the duration 
+  # heartbeat-interval + acceptable-heartbeat-pause, i.e. 15 seconds with
+  # the default settings.
+  acceptable-heartbeat-pause = 13s
+  
+  # If connection to the receptionist is not established the client will buffer
+  # this number of messages and deliver them the connection is established.
+  # When the buffer is full old messages will be dropped when new messages are sent
+  # via the client. Use 0 to disable buffering, i.e. messages will be dropped
+  # immediately if the location of the singleton is unknown.
+  # Maximum allowed buffer size is 10000.
+  buffer-size = 1000
+
+  # If connection to the receiptionist is lost and the client has not been
+  # able to acquire a new connection for this long the client will stop itself.
+  # This duration makes it possible to watch the cluster client and react on a more permanent
+  # loss of connection with the cluster, for example by accessing some kind of
+  # service registry for an updated set of initial contacts to start a new cluster client with.
+  # If this is not wanted it can be set to &quot;off&quot; to disable the timeout and retry
+  # forever.
+  reconnect-timeout = off
+}</code></pre>
+<h2><a href="#failure-handling" name="failure-handling" class="anchor"><span class="anchor-link"></span></a>Failure handling</h2>
+<p>When the cluster client is started it must be provided with a list of initial contacts which are cluster nodes where receptionists are running. It will then repeatedly (with an interval configurable by <code>establishing-get-contacts-interval</code>) try to contact those until it gets in contact with one of them. While running, the list of contacts is continuously updated with data from the receptionists (again, with an interval configurable with <code>refresh-contacts-interval</code>), so that if there are more receptionists in the cluster than the initial contacts provided to the client will learn about them.</p>
+<p>While the client is running it will detect failures in its connection to the receptionist by heartbeats if more than a configurable amount of heartbeats are missed the client will try to reconnect to its known set of contacts to find a receptionist it can access.</p>
+<h2><a href="#when-the-cluster-cannot-be-reached-at-all" name="when-the-cluster-cannot-be-reached-at-all" class="anchor"><span class="anchor-link"></span></a>When the cluster cannot be reached at all</h2>
+<p>It is possible to make the cluster client stop entirely if it cannot find a receptionist it can talk to within a configurable interval. This is configured with the <code>reconnect-timeout</code>, which defaults to <code>off</code>. This can be useful when initial contacts are provided from some kind of service registry, cluster node addresses are entirely dynamic and the entire cluster might shut down or crash, be restarted on new addresses. Since the client will be stopped in that case a monitoring actor can watch it and upon <code>Terminate</code> a new set of initial contacts can be fetched and a new cluster client started.</p>
+<h2><a href="#migration-to-akka-grpc" name="migration-to-akka-grpc" class="anchor"><span class="anchor-link"></span></a>Migration to Akka gRPC</h2>
+<p>Cluster Client is deprecated and it is not advised to build new applications with it. As a replacement, we recommend using <a href="https://doc.akka.io/docs/akka-grpc/current/">Akka gRPC</a> with an application-specific protocol. The benefits of this approach are:</p>
+<ul>
+  <li>Improved security by using TLS for gRPC (HTTP/2) versus exposing Akka Remoting outside the Akka Cluster</li>
+  <li>Easier to update clients and servers independent of each other</li>
+  <li>Improved protocol definition between client and server</li>
+  <li>Usage of <a href="https://doc.akka.io/docs/akka-grpc/current/client/configuration.html#using-akka-discovery-for-endpoint-discovery">Akka gRPC Service Discovery</a></li>
+  <li>Clients do not need to use Akka</li>
+  <li>See also <a href="https://doc.akka.io/docs/akka-grpc/current/whygrpc.html#grpc-vs-akka-remoting">gRPC versus Akka Remoting</a></li>
+</ul>
+<h3><a href="#migrating-directly" name="migrating-directly" class="anchor"><span class="anchor-link"></span></a>Migrating directly</h3>
+<p>Existing users of Cluster Client may migrate directly to Akka gRPC and use it as documented in <a href="https://doc.akka.io/docs/akka-grpc/current/">its documentation</a>.</p>
+<h3><a href="#migrating-gradually" name="migrating-gradually" class="anchor"><span class="anchor-link"></span></a>Migrating gradually</h3>
+<p>If your application extensively uses Cluster Client, a more gradual migration might be desired that requires less re-write of the application. That migration step is described in this section. We recommend migration directly if feasible, though.</p>
+<p>An example is provided to illustrate an approach to migrate from the deprecated Cluster Client to Akka gRPC, with minimal changes to your existing code. The example is intended to be copied and adjusted to your needs. It will not be provided as a published artifact.</p>
+<ul>
+  <li><a href="https://github.com/akka/akka-samples/tree/2.6/akka-sample-cluster-client-grpc-scala">akka-samples/akka-sample-cluster-cluster-client-grpc-scala</a> implemented in Scala</li>
+  <li><a href="https://github.com/akka/akka-samples/tree/2.6/akka-sample-cluster-client-grpc-java">akka-samples/akka-sample-cluster-cluster-client-grpc-java</a> implemented in Java</li>
+</ul>
+<p>The example is still using an actor on the client-side to have an API that is very close to the original Cluster Client. The messages this actor can handle correspond to the <a href="distributed-pub-sub.html">Distributed Pub Sub</a> messages on the server-side, such as <code>ClusterClient.Send</code> and <code>ClusterClient.Publish</code>.</p>
+<p>The <code>ClusterClient</code> actor delegates those messages to the gRPC client, and on the server-side those are translated and delegated to the destination actors that are registered via the <code>ClusterClientReceptionist</code> in the same way as in the original.</p>
+<p>Akka gRPC is used as the transport for the messages between client and server, instead of Akka Remoting.</p>
+<p>The application specific messages are wrapped and serialized with Akka Serialization, which means that care must be taken to keep wire compatibility when changing any messages used between the client and server. The Akka configuration of Akka serializers must be the same (or being compatible) on the client and the server.</p>
+<h4><a href="#next-steps" name="next-steps" class="anchor"><span class="anchor-link"></span></a>Next steps</h4>
+<p>After this first migration step from Cluster Client to Akka gRPC, you can start replacing calls to <code>ClusterClientReceptionistService</code> with new, application-specific gRPC endpoints.</p>
+<h4><a href="#differences" name="differences" class="anchor"><span class="anchor-link"></span></a>Differences</h4>
+<p>Aside from the underlying implementation using gRPC instead of Actor messages and Akka Remoting it&rsquo;s worth pointing out the following differences between the Cluster Client and the example emulating Cluster Client with Akka gRPC as transport.</p>
+<h5><a href="#single-request-reply" name="single-request-reply" class="anchor"><span class="anchor-link"></span></a>Single request-reply</h5>
+<p>For request-reply interactions when there is only one reply message for each request it is more efficient to use the <code>ClusterClient.AskSend</code> message instead of <code>ClusterClient.Send</code> as illustrated in the example. Then it doesn&rsquo;t have to setup a full bidirectional gRPC stream for each request but can use the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> based API.</p>
+<h5><a href="#initial-contact-points" name="initial-contact-points" class="anchor"><span class="anchor-link"></span></a>Initial contact points</h5>
+<p>Instead of configured initial contact points the <a href="https://doc.akka.io/docs/akka-grpc/current/client/configuration.html#using-akka-discovery-for-endpoint-discovery">Akka gRPC Service Discovery</a> can be used.</p>
+<h5><a href="#failure-detection" name="failure-detection" class="anchor"><span class="anchor-link"></span></a>Failure detection</h5>
+<p>Heartbeat messages and failure detection of the connections have been removed since that should be handled by the gRPC connections.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/cluster-client.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="cluster-sharding.html">Classic Cluster Sharding</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="cluster-client.html#classic-cluster-client" class="header">Classic Cluster Client</a>
+  <ul>
+    <li><a href="cluster-client.html#module-info" class="header">Module info</a></li>
+    <li><a href="cluster-client.html#introduction" class="header">Introduction</a></li>
+    <li><a href="cluster-client.html#an-example" class="header">An Example</a></li>
+    <li><a href="cluster-client.html#clusterclientreceptionist-extension" class="header">ClusterClientReceptionist Extension</a></li>
+    <li><a href="cluster-client.html#events" class="header">Events</a></li>
+    <li><a href="cluster-client.html#configuration" class="header">Configuration</a></li>
+    <li><a href="cluster-client.html#failure-handling" class="header">Failure handling</a></li>
+    <li><a href="cluster-client.html#when-the-cluster-cannot-be-reached-at-all" class="header">When the cluster cannot be reached at all</a></li>
+    <li><a href="cluster-client.html#migration-to-akka-grpc" class="header">Migration to Akka gRPC</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

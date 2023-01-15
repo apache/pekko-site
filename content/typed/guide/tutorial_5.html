@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Part 5: Querying Device Groups · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/guide/tutorial_5.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/page.js"></script>
+<script type="text/javascript" src="../../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../../js/groups.js"></script>
+<script type="text/javascript" src="../../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="active page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="active page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../../index.html">Akka Documentation</a></li>
+  <li><a href="../../typed/guide/index.html">Getting Started Guide</a></li>
+  <li>Part 5: Querying Device Groups</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#part-5-querying-device-groups" name="part-5-querying-device-groups" class="anchor"><span class="anchor-link"></span></a>Part 5: Querying Device Groups</h1>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>The conversational patterns that we have seen so far are simple in the sense that they require the actor to keep little or no state. Specifically:</p>
+<ul>
+  <li>Device actors return a reading, which requires no state change</li>
+  <li>Record a temperature, which updates a single field</li>
+  <li>Device Group actors maintain group membership by adding or removing entries from a map</li>
+</ul>
+<p>In this part, we will use a more complex example. Since homeowners will be interested in the temperatures throughout their home, our goal is to be able to query all of the device actors in a group. Let us start by investigating how such a query API should behave.</p>
+<h2><a href="#dealing-with-possible-scenarios" name="dealing-with-possible-scenarios" class="anchor"><span class="anchor-link"></span></a>Dealing with possible scenarios</h2>
+<p>The very first issue we face is that the membership of a group is dynamic. Each sensor device is represented by an actor that can stop at any time. At the beginning of the query, we can ask all of the existing device actors for the current temperature. However, during the lifecycle of the query:</p>
+<ul>
+  <li>A device actor might stop and not be able to respond back with a temperature reading.</li>
+  <li>A new device actor might start up and not be included in the query because we weren&rsquo;t aware of it.</li>
+</ul>
+<p>These issues can be addressed in many different ways, but the important point is to settle on the desired behavior. The following works well for our use case:</p>
+<ul>
+  <li>When a query arrives, the group actor takes a <em>snapshot</em> of the existing device actors and will only ask those actors for the temperature.</li>
+  <li>Actors that start up <em>after</em> the query arrives are ignored.</li>
+  <li>If an actor in the snapshot stops during the query without answering, we will report the fact that it stopped to the sender of the query message.</li>
+</ul>
+<p>Apart from device actors coming and going dynamically, some actors might take a long time to answer. For example, they could be stuck in an accidental infinite loop, or fail due to a bug and drop our request. We don&rsquo;t want the query to continue indefinitely, so we will consider it complete in either of the following cases:</p>
+<ul>
+  <li>All actors in the snapshot have either responded or have confirmed being stopped.</li>
+  <li>We reach a pre-defined deadline.</li>
+</ul>
+<p>Given these decisions, along with the fact that a device in the snapshot might have just started and not yet received a temperature to record, we can define four states for each device actor, with respect to a temperature query:</p>
+<ul>
+  <li>It has a temperature available: <code>Temperature</code>.</li>
+  <li>It has responded, but has no temperature available yet: <code>TemperatureNotAvailable</code>.</li>
+  <li>It has stopped before answering: <code>DeviceNotAvailable</code>.</li>
+  <li>It did not respond before the deadline: <code>DeviceTimedOut</code>.</li>
+</ul>
+<p>Summarizing these in message types we can add the following to the message protocol:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceManager.scala#L50-L62" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>final case class RequestAllTemperatures(requestId: Long, groupId: String, replyTo: ActorRef[RespondAllTemperatures])
+    extends DeviceGroupQuery.Command
+    with DeviceGroup.Command
+    with DeviceManager.Command
+
+final case class RespondAllTemperatures(requestId: Long, temperatures: Map[String, TemperatureReading])
+
+sealed trait TemperatureReading
+final case class Temperature(value: Double) extends TemperatureReading
+case object TemperatureNotAvailable extends TemperatureReading
+case object DeviceNotAvailable extends TemperatureReading
+case object DeviceTimedOut extends TemperatureReading</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceManager.java#L78-L145" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>public static final class RequestAllTemperatures
+    implements DeviceGroupQuery.Command, DeviceGroup.Command, Command {
+
+  final long requestId;
+  final String groupId;
+  final ActorRef&lt;RespondAllTemperatures&gt; replyTo;
+
+  public RequestAllTemperatures(
+      long requestId, String groupId, ActorRef&lt;RespondAllTemperatures&gt; replyTo) {
+    this.requestId = requestId;
+    this.groupId = groupId;
+    this.replyTo = replyTo;
+  }
+}
+
+public static final class RespondAllTemperatures {
+  final long requestId;
+  final Map&lt;String, TemperatureReading&gt; temperatures;
+
+  public RespondAllTemperatures(long requestId, Map&lt;String, TemperatureReading&gt; temperatures) {
+    this.requestId = requestId;
+    this.temperatures = temperatures;
+  }
+}
+
+public interface TemperatureReading {}
+
+public static final class Temperature implements TemperatureReading {
+  public final double value;
+
+  public Temperature(double value) {
+    this.value = value;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Temperature that = (Temperature) o;
+
+    return Double.compare(that.value, value) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    long temp = Double.doubleToLongBits(value);
+    return (int) (temp ^ (temp &gt;&gt;&gt; 32));
+  }
+
+  @Override
+  public String toString() {
+    return &quot;Temperature{&quot; + &quot;value=&quot; + value + &#39;}&#39;;
+  }
+}
+
+public enum TemperatureNotAvailable implements TemperatureReading {
+  INSTANCE
+}
+
+public enum DeviceNotAvailable implements TemperatureReading {
+  INSTANCE
+}
+
+public enum DeviceTimedOut implements TemperatureReading {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<h2><a href="#implementing-the-query" name="implementing-the-query" class="anchor"><span class="anchor-link"></span></a>Implementing the query</h2>
+<p>One approach for implementing the query involves adding code to the device group actor. However, in practice this can be very cumbersome and error-prone. Remember that when we start a query, we need to take a snapshot of the devices present and start a timer so that we can enforce the deadline. In the meantime, <em>another query</em> can arrive. For the second query we need to keep track of the exact same information but in isolation from the previous query. This would require us to maintain separate mappings between queries and device actors.</p>
+<p>Instead, we will implement a simpler, and superior approach. We will create an actor that represents a <em>single query</em> and that performs the tasks needed to complete the query on behalf of the group actor. So far we have created actors that belonged to classical domain objects, but now, we will create an actor that represents a process or a task rather than an entity. We benefit by keeping our group device actor simple and being able to better test query capability in isolation.</p>
+<h3><a href="#defining-the-query-actor" name="defining-the-query-actor" class="anchor"><span class="anchor-link"></span></a>Defining the query actor</h3>
+<p>First, we need to design the lifecycle of our query actor. This consists of identifying its initial state, the first action it will take, and the cleanup &#8212; if necessary. The query actor will need the following information:</p>
+<ul>
+  <li>The snapshot and IDs of active device actors to query.</li>
+  <li>The ID of the request that started the query (so that we can include it in the reply).</li>
+  <li>The reference of the actor who sent the query. We will send the reply to this actor directly.</li>
+  <li>A deadline that indicates how long the query should wait for replies. Making this a parameter will simplify testing.</li>
+</ul>
+<h4><a href="#scheduling-the-query-timeout" name="scheduling-the-query-timeout" class="anchor"><span class="anchor-link"></span></a>Scheduling the query timeout</h4>
+<p>Since we need a way to indicate how long we are willing to wait for responses, it is time to introduce a new Akka feature that we have not used yet, the built-in scheduler facility. Using <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#withTimers(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.withTimers</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#withTimers[T](factory:org.apache.pekko.actor.typed.scaladsl.TimerScheduler[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.withTimers</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/TimerScheduler.html#startSingleTimer(java.lang.Object,T,java.time.Duration)" title="org.apache.pekko.actor.typed.javadsl.TimerScheduler"><code>startSingleTimer</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/TimerScheduler.html#startSingleTimer(key:Any,msg:T,delay:scala.concurrent.duration.FiniteDuration):Unit" title="org.apache.pekko.actor.typed.scaladsl.TimerScheduler"><code>startSingleTimer</code></a></span> to schedule a message that will be sent after a given delay.</p>
+<p>We need to create a message that represents the query timeout. We create a simple message <code>CollectionTimeout</code> without any parameters for this purpose.</p>
+<p>At the start of the query, we need to ask each of the device actors for the current temperature. To be able to quickly detect devices that stopped before they got the <code>ReadTemperature</code> message we will also watch each of the actors. This way, we get <code>DeviceTerminated</code> messages for those that stop during the lifetime of the query, so we don&rsquo;t need to wait until the timeout to mark these as not available.</p>
+<p>Putting this together, the outline of our <code>DeviceGroupQuery</code> actor looks like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuery.scala#L28-L134" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object DeviceGroupQuery {
+
+  def apply(
+      deviceIdToActor: Map[String, ActorRef[Device.Command]],
+      requestId: Long,
+      requester: ActorRef[DeviceManager.RespondAllTemperatures],
+      timeout: FiniteDuration): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      Behaviors.withTimers { timers =&gt;
+        new DeviceGroupQuery(deviceIdToActor, requestId, requester, timeout, context, timers)
+      }
+    }
+  }
+
+  trait Command
+
+  private case object CollectionTimeout extends Command
+
+  final case class WrappedRespondTemperature(response: Device.RespondTemperature) extends Command
+
+  private final case class DeviceTerminated(deviceId: String) extends Command
+}
+
+class DeviceGroupQuery(
+    deviceIdToActor: Map[String, ActorRef[Device.Command]],
+    requestId: Long,
+    requester: ActorRef[DeviceManager.RespondAllTemperatures],
+    timeout: FiniteDuration,
+    context: ActorContext[DeviceGroupQuery.Command],
+    timers: TimerScheduler[DeviceGroupQuery.Command])
+    extends AbstractBehavior[DeviceGroupQuery.Command](context) {
+
+  import DeviceGroupQuery._
+  import DeviceManager.DeviceNotAvailable
+  import DeviceManager.DeviceTimedOut
+  import DeviceManager.RespondAllTemperatures
+  import DeviceManager.Temperature
+  import DeviceManager.TemperatureNotAvailable
+  import DeviceManager.TemperatureReading
+
+  timers.startSingleTimer(CollectionTimeout, CollectionTimeout, timeout)
+
+  private val respondTemperatureAdapter = context.messageAdapter(WrappedRespondTemperature.apply)
+
+
+  deviceIdToActor.foreach {
+    case (deviceId, device) =&gt;
+      context.watchWith(device, DeviceTerminated(deviceId))
+      device ! Device.ReadTemperature(0, respondTemperatureAdapter)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQuery.java#L32-L156" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroupQuery extends AbstractBehavior&lt;DeviceGroupQuery.Command&gt; {
+
+  public interface Command {}
+
+  private static enum CollectionTimeout implements Command {
+    INSTANCE
+  }
+
+  static class WrappedRespondTemperature implements Command {
+    final Device.RespondTemperature response;
+
+    WrappedRespondTemperature(Device.RespondTemperature response) {
+      this.response = response;
+    }
+  }
+
+  private static class DeviceTerminated implements Command {
+    final String deviceId;
+
+    private DeviceTerminated(String deviceId) {
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(
+      Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor,
+      long requestId,
+      ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester,
+      Duration timeout) {
+    return Behaviors.setup(
+        context -&gt;
+            Behaviors.withTimers(
+                timers -&gt;
+                    new DeviceGroupQuery(
+                        deviceIdToActor, requestId, requester, timeout, context, timers)));
+  }
+
+  private final long requestId;
+  private final ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester;
+
+  private DeviceGroupQuery(
+      Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor,
+      long requestId,
+      ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester,
+      Duration timeout,
+      ActorContext&lt;Command&gt; context,
+      TimerScheduler&lt;Command&gt; timers) {
+    super(context);
+    this.requestId = requestId;
+    this.requester = requester;
+
+    timers.startSingleTimer(CollectionTimeout.INSTANCE, timeout);
+
+    ActorRef&lt;Device.RespondTemperature&gt; respondTemperatureAdapter =
+        context.messageAdapter(Device.RespondTemperature.class, WrappedRespondTemperature::new);
+
+    for (Map.Entry&lt;String, ActorRef&lt;Device.Command&gt;&gt; entry : deviceIdToActor.entrySet()) {
+      context.watchWith(entry.getValue(), new DeviceTerminated(entry.getKey()));
+      entry.getValue().tell(new Device.ReadTemperature(0L, respondTemperatureAdapter));
+    }
+    stillWaiting = new HashSet&lt;&gt;(deviceIdToActor.keySet());
+  }
+
+
+}</code></pre></dd>
+</dl>
+<p>Note that we have to convert the <code>RespondTemperature</code> replies from the device actor to the message protocol that the <code>DeviceGroupQuery</code> actor understands, i.e. <code>DeviceGroupQuery.Command</code>. For this we use a <code>messageAdapter</code> that wraps the <code>RespondTemperature</code> in a <code>WrappedRespondTemperature</code>, which <span class="group-scala">extends</span><span class="group-java">implements</span> <code>DeviceGroupQuery.Command</code>.</p>
+<h4><a href="#tracking-actor-state" name="tracking-actor-state" class="anchor"><span class="anchor-link"></span></a>Tracking actor state</h4>
+<p>The query actor, apart from the pending timer, has one stateful aspect, tracking the set of actors that: have replied, have stopped, or have not replied. We track this state <span class="group-scala">in a <code>var</code> field of an immutable <code>Map</code></span><span class="group-java">in a mutable <code>HashMap</code></span> in the actor.</p>
+<p>For our use case:</p>
+<ol>
+  <li>We keep track of the state with:
+    <ul>
+      <li>a <code>Map</code> of already received replies</li>
+      <li>a <code>Set</code> of actors that we still wait on</li>
+    </ul>
+  </li>
+  <li>We have three events to act on:
+    <ul>
+      <li>We can receive a <code>RespondTemperature</code> message from one of the devices.</li>
+      <li>We can receive a <code>DeviceTerminated</code> message for a device actor that has been stopped in the meantime.</li>
+      <li>We can reach the deadline and receive a <code>CollectionTimeout</code>.</li>
+    </ul>
+  </li>
+</ol>
+<p>To accomplish this, add the following to your <code>DeviceGroupQuery</code> source file:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuery.scala#L74-L120" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private var repliesSoFar = Map.empty[String, TemperatureReading]
+private var stillWaiting = deviceIdToActor.keySet
+
+override def onMessage(msg: Command): Behavior[Command] =
+  msg match {
+    case WrappedRespondTemperature(response) =&gt; onRespondTemperature(response)
+    case DeviceTerminated(deviceId)          =&gt; onDeviceTerminated(deviceId)
+    case CollectionTimeout                   =&gt; onCollectionTimout()
+  }
+
+private def onRespondTemperature(response: Device.RespondTemperature): Behavior[Command] = {
+  val reading = response.value match {
+    case Some(value) =&gt; Temperature(value)
+    case None        =&gt; TemperatureNotAvailable
+  }
+
+  val deviceId = response.deviceId
+  repliesSoFar += (deviceId -&gt; reading)
+  stillWaiting -= deviceId
+
+  respondWhenAllCollected()
+}
+
+private def onDeviceTerminated(deviceId: String): Behavior[Command] = {
+  if (stillWaiting(deviceId)) {
+    repliesSoFar += (deviceId -&gt; DeviceNotAvailable)
+    stillWaiting -= deviceId
+  }
+  respondWhenAllCollected()
+}
+
+private def onCollectionTimout(): Behavior[Command] = {
+  repliesSoFar ++= stillWaiting.map(deviceId =&gt; deviceId -&gt; DeviceTimedOut)
+  stillWaiting = Set.empty
+  respondWhenAllCollected()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQuery.java#L73-L141" target="_blank" title="Go to snippet source">source</a><code class="language-java">private Map&lt;String, DeviceManager.TemperatureReading&gt; repliesSoFar = new HashMap&lt;&gt;();
+private final Set&lt;String&gt; stillWaiting;
+
+@Override
+public Receive&lt;Command&gt; createReceive() {
+  return newReceiveBuilder()
+      .onMessage(WrappedRespondTemperature.class, this::onRespondTemperature)
+      .onMessage(DeviceTerminated.class, this::onDeviceTerminated)
+      .onMessage(CollectionTimeout.class, this::onCollectionTimeout)
+      .build();
+}
+
+private Behavior&lt;Command&gt; onRespondTemperature(WrappedRespondTemperature r) {
+  DeviceManager.TemperatureReading reading =
+      r.response
+          .value
+          .map(v -&gt; (DeviceManager.TemperatureReading) new DeviceManager.Temperature(v))
+          .orElse(DeviceManager.TemperatureNotAvailable.INSTANCE);
+
+  String deviceId = r.response.deviceId;
+  repliesSoFar.put(deviceId, reading);
+  stillWaiting.remove(deviceId);
+
+  return respondWhenAllCollected();
+}
+
+private Behavior&lt;Command&gt; onDeviceTerminated(DeviceTerminated terminated) {
+  if (stillWaiting.contains(terminated.deviceId)) {
+    repliesSoFar.put(terminated.deviceId, DeviceManager.DeviceNotAvailable.INSTANCE);
+    stillWaiting.remove(terminated.deviceId);
+  }
+  return respondWhenAllCollected();
+}
+
+private Behavior&lt;Command&gt; onCollectionTimeout(CollectionTimeout timeout) {
+  for (String deviceId : stillWaiting) {
+    repliesSoFar.put(deviceId, DeviceManager.DeviceTimedOut.INSTANCE);
+  }
+  stillWaiting.clear();
+  return respondWhenAllCollected();
+}</code></pre></dd>
+</dl>
+<p>For <code>RespondTemperature</code> and <code>DeviceTerminated</code> we keep track of the replies by updating <code>repliesSoFar</code> and remove the actor from <code>stillWaiting</code>. For this, we can use the actor&rsquo;s identifier already present in the <code>DeviceTerminated</code> message. For our <code>RespondTemperature</code> message we will need to add this information as follows:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/Device.scala#L35" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class RespondTemperature(requestId: Long, deviceId: String, value: Option[Double])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/Device.java#L61-L71" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class RespondTemperature {
+  final long requestId;
+  final String deviceId;
+  final Optional&lt;Double&gt; value;
+
+  public RespondTemperature(long requestId, String deviceId, Optional&lt;Double&gt; value) {
+    this.requestId = requestId;
+    this.deviceId = deviceId;
+    this.value = value;
+  }
+}</code></pre></dd>
+</dl>
+<p>And:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/Device.scala#L60-L62" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case ReadTemperature(id, replyTo) =&gt;
+  replyTo ! RespondTemperature(id, deviceId, lastTemperatureReading)
+  this</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/Device.java#L113-L116" target="_blank" title="Go to snippet source">source</a><code class="language-java">private Behavior&lt;Command&gt; onReadTemperature(ReadTemperature r) {
+  r.replyTo.tell(new RespondTemperature(r.requestId, deviceId, lastTemperatureReading));
+  return this;
+}</code></pre></dd>
+</dl>
+<p>After processing each message we delegate to a method <code>respondWhenAllCollected</code>, which we will discuss soon.</p>
+<p>In the case of timeout, we need to take all the actors that have not yet replied (the members of the set <code>stillWaiting</code>) and put a <code>DeviceTimedOut</code> as the status in the final reply.</p>
+<p>We now have to figure out what to do in <code>respondWhenAllCollected</code>. First, we need to record the new result in the map <code>repliesSoFar</code> and remove the actor from <code>stillWaiting</code>. The next step is to check if there are any remaining actors we are waiting for. If there is none, we send the result of the query to the original requester and stop the query actor. Otherwise, we need to update the <code>repliesSoFar</code> and <code>stillWaiting</code> structures and wait for more messages.</p>
+<p>With all this knowledge, we can create the <code>respondWhenAllCollected</code> method:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuery.scala#L124-L131" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private def respondWhenAllCollected(): Behavior[Command] = {
+  if (stillWaiting.isEmpty) {
+    requester ! RespondAllTemperatures(requestId, repliesSoFar)
+    Behaviors.stopped
+  } else {
+    this
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQuery.java#L145-L152" target="_blank" title="Go to snippet source">source</a><code class="language-java">private Behavior&lt;Command&gt; respondWhenAllCollected() {
+  if (stillWaiting.isEmpty()) {
+    requester.tell(new DeviceManager.RespondAllTemperatures(requestId, repliesSoFar));
+    return Behaviors.stopped();
+  } else {
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>Our query actor is now done:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuery.scala#L28-L134" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object DeviceGroupQuery {
+
+  def apply(
+      deviceIdToActor: Map[String, ActorRef[Device.Command]],
+      requestId: Long,
+      requester: ActorRef[DeviceManager.RespondAllTemperatures],
+      timeout: FiniteDuration): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      Behaviors.withTimers { timers =&gt;
+        new DeviceGroupQuery(deviceIdToActor, requestId, requester, timeout, context, timers)
+      }
+    }
+  }
+
+  trait Command
+
+  private case object CollectionTimeout extends Command
+
+  final case class WrappedRespondTemperature(response: Device.RespondTemperature) extends Command
+
+  private final case class DeviceTerminated(deviceId: String) extends Command
+}
+
+class DeviceGroupQuery(
+    deviceIdToActor: Map[String, ActorRef[Device.Command]],
+    requestId: Long,
+    requester: ActorRef[DeviceManager.RespondAllTemperatures],
+    timeout: FiniteDuration,
+    context: ActorContext[DeviceGroupQuery.Command],
+    timers: TimerScheduler[DeviceGroupQuery.Command])
+    extends AbstractBehavior[DeviceGroupQuery.Command](context) {
+
+  import DeviceGroupQuery._
+  import DeviceManager.DeviceNotAvailable
+  import DeviceManager.DeviceTimedOut
+  import DeviceManager.RespondAllTemperatures
+  import DeviceManager.Temperature
+  import DeviceManager.TemperatureNotAvailable
+  import DeviceManager.TemperatureReading
+
+  timers.startSingleTimer(CollectionTimeout, CollectionTimeout, timeout)
+
+  private val respondTemperatureAdapter = context.messageAdapter(WrappedRespondTemperature.apply)
+
+  private var repliesSoFar = Map.empty[String, TemperatureReading]
+  private var stillWaiting = deviceIdToActor.keySet
+
+
+  deviceIdToActor.foreach {
+    case (deviceId, device) =&gt;
+      context.watchWith(device, DeviceTerminated(deviceId))
+      device ! Device.ReadTemperature(0, respondTemperatureAdapter)
+  }
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case WrappedRespondTemperature(response) =&gt; onRespondTemperature(response)
+      case DeviceTerminated(deviceId)          =&gt; onDeviceTerminated(deviceId)
+      case CollectionTimeout                   =&gt; onCollectionTimout()
+    }
+
+  private def onRespondTemperature(response: Device.RespondTemperature): Behavior[Command] = {
+    val reading = response.value match {
+      case Some(value) =&gt; Temperature(value)
+      case None        =&gt; TemperatureNotAvailable
+    }
+
+    val deviceId = response.deviceId
+    repliesSoFar += (deviceId -&gt; reading)
+    stillWaiting -= deviceId
+
+    respondWhenAllCollected()
+  }
+
+  private def onDeviceTerminated(deviceId: String): Behavior[Command] = {
+    if (stillWaiting(deviceId)) {
+      repliesSoFar += (deviceId -&gt; DeviceNotAvailable)
+      stillWaiting -= deviceId
+    }
+    respondWhenAllCollected()
+  }
+
+  private def onCollectionTimout(): Behavior[Command] = {
+    repliesSoFar ++= stillWaiting.map(deviceId =&gt; deviceId -&gt; DeviceTimedOut)
+    stillWaiting = Set.empty
+    respondWhenAllCollected()
+  }
+
+  private def respondWhenAllCollected(): Behavior[Command] = {
+    if (stillWaiting.isEmpty) {
+      requester ! RespondAllTemperatures(requestId, repliesSoFar)
+      Behaviors.stopped
+    } else {
+      this
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQuery.java#L32-L156" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroupQuery extends AbstractBehavior&lt;DeviceGroupQuery.Command&gt; {
+
+  public interface Command {}
+
+  private static enum CollectionTimeout implements Command {
+    INSTANCE
+  }
+
+  static class WrappedRespondTemperature implements Command {
+    final Device.RespondTemperature response;
+
+    WrappedRespondTemperature(Device.RespondTemperature response) {
+      this.response = response;
+    }
+  }
+
+  private static class DeviceTerminated implements Command {
+    final String deviceId;
+
+    private DeviceTerminated(String deviceId) {
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(
+      Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor,
+      long requestId,
+      ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester,
+      Duration timeout) {
+    return Behaviors.setup(
+        context -&gt;
+            Behaviors.withTimers(
+                timers -&gt;
+                    new DeviceGroupQuery(
+                        deviceIdToActor, requestId, requester, timeout, context, timers)));
+  }
+
+  private final long requestId;
+  private final ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester;
+  private Map&lt;String, DeviceManager.TemperatureReading&gt; repliesSoFar = new HashMap&lt;&gt;();
+  private final Set&lt;String&gt; stillWaiting;
+
+
+  private DeviceGroupQuery(
+      Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor,
+      long requestId,
+      ActorRef&lt;DeviceManager.RespondAllTemperatures&gt; requester,
+      Duration timeout,
+      ActorContext&lt;Command&gt; context,
+      TimerScheduler&lt;Command&gt; timers) {
+    super(context);
+    this.requestId = requestId;
+    this.requester = requester;
+
+    timers.startSingleTimer(CollectionTimeout.INSTANCE, timeout);
+
+    ActorRef&lt;Device.RespondTemperature&gt; respondTemperatureAdapter =
+        context.messageAdapter(Device.RespondTemperature.class, WrappedRespondTemperature::new);
+
+    for (Map.Entry&lt;String, ActorRef&lt;Device.Command&gt;&gt; entry : deviceIdToActor.entrySet()) {
+      context.watchWith(entry.getValue(), new DeviceTerminated(entry.getKey()));
+      entry.getValue().tell(new Device.ReadTemperature(0L, respondTemperatureAdapter));
+    }
+    stillWaiting = new HashSet&lt;&gt;(deviceIdToActor.keySet());
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(WrappedRespondTemperature.class, this::onRespondTemperature)
+        .onMessage(DeviceTerminated.class, this::onDeviceTerminated)
+        .onMessage(CollectionTimeout.class, this::onCollectionTimeout)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onRespondTemperature(WrappedRespondTemperature r) {
+    DeviceManager.TemperatureReading reading =
+        r.response
+            .value
+            .map(v -&gt; (DeviceManager.TemperatureReading) new DeviceManager.Temperature(v))
+            .orElse(DeviceManager.TemperatureNotAvailable.INSTANCE);
+
+    String deviceId = r.response.deviceId;
+    repliesSoFar.put(deviceId, reading);
+    stillWaiting.remove(deviceId);
+
+    return respondWhenAllCollected();
+  }
+
+  private Behavior&lt;Command&gt; onDeviceTerminated(DeviceTerminated terminated) {
+    if (stillWaiting.contains(terminated.deviceId)) {
+      repliesSoFar.put(terminated.deviceId, DeviceManager.DeviceNotAvailable.INSTANCE);
+      stillWaiting.remove(terminated.deviceId);
+    }
+    return respondWhenAllCollected();
+  }
+
+  private Behavior&lt;Command&gt; onCollectionTimeout(CollectionTimeout timeout) {
+    for (String deviceId : stillWaiting) {
+      repliesSoFar.put(deviceId, DeviceManager.DeviceTimedOut.INSTANCE);
+    }
+    stillWaiting.clear();
+    return respondWhenAllCollected();
+  }
+
+  private Behavior&lt;Command&gt; respondWhenAllCollected() {
+    if (stillWaiting.isEmpty()) {
+      requester.tell(new DeviceManager.RespondAllTemperatures(requestId, repliesSoFar));
+      return Behaviors.stopped();
+    } else {
+      return this;
+    }
+  }
+
+}</code></pre></dd>
+</dl>
+<h3><a href="#testing-the-query-actor" name="testing-the-query-actor" class="anchor"><span class="anchor-link"></span></a>Testing the query actor</h3>
+<p>Now let&rsquo;s verify the correctness of the query actor implementation. There are various scenarios we need to test individually to make sure everything works as expected. To be able to do this, we need to simulate the device actors somehow to exercise various normal or failure scenarios. Thankfully we took the list of collaborators (actually a <code>Map</code>) as a parameter to the query actor, so we can pass in <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/TestProbe.html" title="org.apache.pekko.actor.testkit.typed.javadsl.TestProbe"><code>TestProbe</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/TestProbe.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.TestProbe"><code>TestProbe</code></a></span> references. In our first test, we try out the case when there are two devices and both report a temperature:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuerySpec.scala#L32-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return temperature value for working devices&quot; in {
+  val requester = createTestProbe[RespondAllTemperatures]()
+
+  val device1 = createTestProbe[Command]()
+  val device2 = createTestProbe[Command]()
+
+  val deviceIdToActor = Map(&quot;device1&quot; -&gt; device1.ref, &quot;device2&quot; -&gt; device2.ref)
+
+  val queryActor =
+    spawn(DeviceGroupQuery(deviceIdToActor, requestId = 1, requester = requester.ref, timeout = 3.seconds))
+
+  device1.expectMessageType[Device.ReadTemperature]
+  device2.expectMessageType[Device.ReadTemperature]
+
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device1&quot;, Some(1.0)))
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device2&quot;, Some(2.0)))
+
+  requester.expectMessage(
+    RespondAllTemperatures(
+      requestId = 1,
+      temperatures = Map(&quot;device1&quot; -&gt; Temperature(1.0), &quot;device2&quot; -&gt; Temperature(2.0))))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQueryTest.java#L42-L77" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnTemperatureValueForWorkingDevices() {
+  TestProbe&lt;RespondAllTemperatures&gt; requester =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  TestProbe&lt;Device.Command&gt; device1 = testKit.createTestProbe(Device.Command.class);
+  TestProbe&lt;Device.Command&gt; device2 = testKit.createTestProbe(Device.Command.class);
+
+  Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+  deviceIdToActor.put(&quot;device1&quot;, device1.getRef());
+  deviceIdToActor.put(&quot;device2&quot;, device2.getRef());
+
+  ActorRef&lt;DeviceGroupQuery.Command&gt; queryActor =
+      testKit.spawn(
+          DeviceGroupQuery.create(
+              deviceIdToActor, 1L, requester.getRef(), Duration.ofSeconds(3)));
+
+  device1.expectMessageClass(Device.ReadTemperature.class);
+  device2.expectMessageClass(Device.ReadTemperature.class);
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device1&quot;, Optional.of(1.0))));
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device2&quot;, Optional.of(2.0))));
+
+  RespondAllTemperatures response = requester.receiveMessage();
+  assertEquals(1L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, new Temperature(1.0));
+  expectedTemperatures.put(&quot;device2&quot;, new Temperature(2.0));
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<p>That was the happy case, but we know that sometimes devices cannot provide a temperature measurement. This scenario is just slightly different from the previous:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuerySpec.scala#L57-L78" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return TemperatureNotAvailable for devices with no readings&quot; in {
+  val requester = createTestProbe[RespondAllTemperatures]()
+
+  val device1 = createTestProbe[Command]()
+  val device2 = createTestProbe[Command]()
+
+  val deviceIdToActor = Map(&quot;device1&quot; -&gt; device1.ref, &quot;device2&quot; -&gt; device2.ref)
+
+  val queryActor =
+    spawn(DeviceGroupQuery(deviceIdToActor, requestId = 1, requester = requester.ref, timeout = 3.seconds))
+
+  device1.expectMessageType[Device.ReadTemperature]
+  device2.expectMessageType[Device.ReadTemperature]
+
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device1&quot;, None))
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device2&quot;, Some(2.0)))
+
+  requester.expectMessage(
+    RespondAllTemperatures(
+      requestId = 1,
+      temperatures = Map(&quot;device1&quot; -&gt; TemperatureNotAvailable, &quot;device2&quot; -&gt; Temperature(2.0))))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQueryTest.java#L81-L116" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnTemperatureNotAvailableForDevicesWithNoReadings() {
+  TestProbe&lt;RespondAllTemperatures&gt; requester =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  TestProbe&lt;Device.Command&gt; device1 = testKit.createTestProbe(Device.Command.class);
+  TestProbe&lt;Device.Command&gt; device2 = testKit.createTestProbe(Device.Command.class);
+
+  Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+  deviceIdToActor.put(&quot;device1&quot;, device1.getRef());
+  deviceIdToActor.put(&quot;device2&quot;, device2.getRef());
+
+  ActorRef&lt;DeviceGroupQuery.Command&gt; queryActor =
+      testKit.spawn(
+          DeviceGroupQuery.create(
+              deviceIdToActor, 1L, requester.getRef(), Duration.ofSeconds(3)));
+
+  assertEquals(0L, device1.expectMessageClass(Device.ReadTemperature.class).requestId);
+  assertEquals(0L, device2.expectMessageClass(Device.ReadTemperature.class).requestId);
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device1&quot;, Optional.empty())));
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device2&quot;, Optional.of(2.0))));
+
+  RespondAllTemperatures response = requester.receiveMessage();
+  assertEquals(1L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, TemperatureNotAvailable.INSTANCE);
+  expectedTemperatures.put(&quot;device2&quot;, new Temperature(2.0));
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<p>We also know, that sometimes device actors stop before answering:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuerySpec.scala#L82-L104" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return DeviceNotAvailable if device stops before answering&quot; in {
+  val requester = createTestProbe[RespondAllTemperatures]()
+
+  val device1 = createTestProbe[Command]()
+  val device2 = createTestProbe[Command]()
+
+  val deviceIdToActor = Map(&quot;device1&quot; -&gt; device1.ref, &quot;device2&quot; -&gt; device2.ref)
+
+  val queryActor =
+    spawn(DeviceGroupQuery(deviceIdToActor, requestId = 1, requester = requester.ref, timeout = 3.seconds))
+
+  device1.expectMessageType[Device.ReadTemperature]
+  device2.expectMessageType[Device.ReadTemperature]
+
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device1&quot;, Some(2.0)))
+
+  device2.stop()
+
+  requester.expectMessage(
+    RespondAllTemperatures(
+      requestId = 1,
+      temperatures = Map(&quot;device1&quot; -&gt; Temperature(2.0), &quot;device2&quot; -&gt; DeviceNotAvailable)))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQueryTest.java#L120-L153" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnDeviceNotAvailableIfDeviceStopsBeforeAnswering() {
+  TestProbe&lt;RespondAllTemperatures&gt; requester =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  TestProbe&lt;Device.Command&gt; device1 = testKit.createTestProbe(Device.Command.class);
+  TestProbe&lt;Device.Command&gt; device2 = testKit.createTestProbe(Device.Command.class);
+
+  Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+  deviceIdToActor.put(&quot;device1&quot;, device1.getRef());
+  deviceIdToActor.put(&quot;device2&quot;, device2.getRef());
+
+  ActorRef&lt;DeviceGroupQuery.Command&gt; queryActor =
+      testKit.spawn(
+          DeviceGroupQuery.create(
+              deviceIdToActor, 1L, requester.getRef(), Duration.ofSeconds(3)));
+
+  assertEquals(0L, device1.expectMessageClass(Device.ReadTemperature.class).requestId);
+  assertEquals(0L, device2.expectMessageClass(Device.ReadTemperature.class).requestId);
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device1&quot;, Optional.of(1.0))));
+
+  device2.stop();
+
+  RespondAllTemperatures response = requester.receiveMessage();
+  assertEquals(1L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, new Temperature(1.0));
+  expectedTemperatures.put(&quot;device2&quot;, DeviceNotAvailable.INSTANCE);
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<p>If you remember, there is another case related to device actors stopping. It is possible that we get a normal reply from a device actor, but then receive a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span> for the same actor later. In this case, we would like to keep the first reply and not mark the device as <code>DeviceNotAvailable</code>. We should test this, too:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuerySpec.scala#L108-L131" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return temperature reading even if device stops after answering&quot; in {
+  val requester = createTestProbe[RespondAllTemperatures]()
+
+  val device1 = createTestProbe[Command]()
+  val device2 = createTestProbe[Command]()
+
+  val deviceIdToActor = Map(&quot;device1&quot; -&gt; device1.ref, &quot;device2&quot; -&gt; device2.ref)
+
+  val queryActor =
+    spawn(DeviceGroupQuery(deviceIdToActor, requestId = 1, requester = requester.ref, timeout = 3.seconds))
+
+  device1.expectMessageType[Device.ReadTemperature]
+  device2.expectMessageType[Device.ReadTemperature]
+
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device1&quot;, Some(1.0)))
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device2&quot;, Some(2.0)))
+
+  device2.stop()
+
+  requester.expectMessage(
+    RespondAllTemperatures(
+      requestId = 1,
+      temperatures = Map(&quot;device1&quot; -&gt; Temperature(1.0), &quot;device2&quot; -&gt; Temperature(2.0))))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQueryTest.java#L157-L194" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnTemperatureReadingEvenIfDeviceStopsAfterAnswering() {
+  TestProbe&lt;RespondAllTemperatures&gt; requester =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  TestProbe&lt;Device.Command&gt; device1 = testKit.createTestProbe(Device.Command.class);
+  TestProbe&lt;Device.Command&gt; device2 = testKit.createTestProbe(Device.Command.class);
+
+  Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+  deviceIdToActor.put(&quot;device1&quot;, device1.getRef());
+  deviceIdToActor.put(&quot;device2&quot;, device2.getRef());
+
+  ActorRef&lt;DeviceGroupQuery.Command&gt; queryActor =
+      testKit.spawn(
+          DeviceGroupQuery.create(
+              deviceIdToActor, 1L, requester.getRef(), Duration.ofSeconds(3)));
+
+  assertEquals(0L, device1.expectMessageClass(Device.ReadTemperature.class).requestId);
+  assertEquals(0L, device2.expectMessageClass(Device.ReadTemperature.class).requestId);
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device1&quot;, Optional.of(1.0))));
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device2&quot;, Optional.of(2.0))));
+
+  device2.stop();
+
+  RespondAllTemperatures response = requester.receiveMessage();
+  assertEquals(1L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, new Temperature(1.0));
+  expectedTemperatures.put(&quot;device2&quot;, new Temperature(2.0));
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<p>The final case is when not all devices respond in time. To keep our test relatively fast, we will construct the <code>DeviceGroupQuery</code> actor with a smaller timeout:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupQuerySpec.scala#L135-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return DeviceTimedOut if device does not answer in time&quot; in {
+  val requester = createTestProbe[RespondAllTemperatures]()
+
+  val device1 = createTestProbe[Command]()
+  val device2 = createTestProbe[Command]()
+
+  val deviceIdToActor = Map(&quot;device1&quot; -&gt; device1.ref, &quot;device2&quot; -&gt; device2.ref)
+
+  val queryActor =
+    spawn(DeviceGroupQuery(deviceIdToActor, requestId = 1, requester = requester.ref, timeout = 200.millis))
+
+  device1.expectMessageType[Device.ReadTemperature]
+  device2.expectMessageType[Device.ReadTemperature]
+
+  queryActor ! WrappedRespondTemperature(Device.RespondTemperature(requestId = 0, &quot;device1&quot;, Some(1.0)))
+
+  // no reply from device2
+
+  requester.expectMessage(
+    RespondAllTemperatures(
+      requestId = 1,
+      temperatures = Map(&quot;device1&quot; -&gt; Temperature(1.0), &quot;device2&quot; -&gt; DeviceTimedOut)))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupQueryTest.java#L198-L231" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnDeviceTimedOutIfDeviceDoesNotAnswerInTime() {
+  TestProbe&lt;RespondAllTemperatures&gt; requester =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  TestProbe&lt;Device.Command&gt; device1 = testKit.createTestProbe(Device.Command.class);
+  TestProbe&lt;Device.Command&gt; device2 = testKit.createTestProbe(Device.Command.class);
+
+  Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+  deviceIdToActor.put(&quot;device1&quot;, device1.getRef());
+  deviceIdToActor.put(&quot;device2&quot;, device2.getRef());
+
+  ActorRef&lt;DeviceGroupQuery.Command&gt; queryActor =
+      testKit.spawn(
+          DeviceGroupQuery.create(
+              deviceIdToActor, 1L, requester.getRef(), Duration.ofMillis(200)));
+
+  assertEquals(0L, device1.expectMessageClass(Device.ReadTemperature.class).requestId);
+  assertEquals(0L, device2.expectMessageClass(Device.ReadTemperature.class).requestId);
+
+  queryActor.tell(
+      new DeviceGroupQuery.WrappedRespondTemperature(
+          new Device.RespondTemperature(0L, &quot;device1&quot;, Optional.of(1.0))));
+
+  // no reply from device2
+
+  RespondAllTemperatures response = requester.receiveMessage();
+  assertEquals(1L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, new Temperature(1.0));
+  expectedTemperatures.put(&quot;device2&quot;, DeviceTimedOut.INSTANCE);
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<p>Our query works as expected now, it is time to include this new functionality in the <code>DeviceGroup</code> actor now.</p>
+<h2><a href="#adding-query-capability-to-the-group" name="adding-query-capability-to-the-group" class="anchor"><span class="anchor-link"></span></a>Adding query capability to the group</h2>
+<p>Including the query feature in the group actor is fairly simple now. We did all the heavy lifting in the query actor itself, the group actor only needs to create it with the right initial parameters and nothing else.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroup.scala#L39-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
+    extends AbstractBehavior[DeviceGroup.Command](context) {
+  import DeviceGroup._
+  import DeviceManager.{
+    DeviceRegistered,
+    ReplyDeviceList,
+    RequestAllTemperatures,
+    RequestDeviceList,
+    RequestTrackDevice
+  }
+
+  private var deviceIdToActor = Map.empty[String, ActorRef[Device.Command]]
+
+  context.log.info(&quot;DeviceGroup {} started&quot;, groupId)
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      // ... other cases omitted
+
+      case RequestAllTemperatures(requestId, gId, replyTo) =&gt;
+        if (gId == groupId) {
+          context.spawnAnonymous(
+            DeviceGroupQuery(deviceIdToActor, requestId = requestId, requester = replyTo, 3.seconds))
+          this
+        } else
+          Behaviors.unhandled
+    }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info(&quot;DeviceGroup {} stopped&quot;, groupId)
+      this
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroup.java#L29-L140" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroup extends AbstractBehavior&lt;DeviceGroup.Command&gt; {
+
+  public interface Command {}
+
+  private class DeviceTerminated implements Command {
+    public final ActorRef&lt;Device.Command&gt; device;
+    public final String groupId;
+    public final String deviceId;
+
+    DeviceTerminated(ActorRef&lt;Device.Command&gt; device, String groupId, String deviceId) {
+      this.device = device;
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId) {
+    return Behaviors.setup(context -&gt; new DeviceGroup(context, groupId));
+  }
+
+  private final String groupId;
+  private final Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+
+  private DeviceGroup(ActorContext&lt;Command&gt; context, String groupId) {
+    super(context);
+    this.groupId = groupId;
+    context.getLog().info(&quot;DeviceGroup {} started&quot;, groupId);
+  }
+
+
+  private DeviceGroup onAllTemperatures(DeviceManager.RequestAllTemperatures r) {
+    // since Java collections are mutable, we want to avoid sharing them between actors (since
+    // multiple Actors (threads)
+    // modifying the same mutable data-structure is not safe), and perform a defensive copy of the
+    // mutable map:
+    //
+    // Feel free to use your favourite immutable data-structures library with Akka in Java
+    // applications!
+    Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActorCopy = new HashMap&lt;&gt;(this.deviceIdToActor);
+
+    getContext()
+        .spawnAnonymous(
+            DeviceGroupQuery.create(
+                deviceIdToActorCopy, r.requestId, r.replyTo, Duration.ofSeconds(3)));
+
+    return this;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        // ... other cases omitted
+        .onMessage(
+            DeviceManager.RequestAllTemperatures.class,
+            r -&gt; r.groupId.equals(groupId),
+            this::onAllTemperatures)
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>It is probably worth restating what we said at the beginning of the chapter. By keeping the temporary state that is only relevant to the query itself in a separate actor we keep the group actor implementation very simple. It delegates everything to child actors and therefore does not have to keep state that is not relevant to its core business. Also, multiple queries can now run parallel to each other, in fact, as many as needed. In our case querying an individual device actor is a fast operation, but if this were not the case, for example, because the remote sensors need to be contacted over the network, this design would significantly improve throughput.</p>
+<p>We close this chapter by testing that everything works together. This test is a variant of the previous ones, now exercising the group query feature:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/typed/tutorial_5/DeviceGroupSpec.scala#L118-L146" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;be able to collect temperatures from all active devices&quot; in {
+  val registeredProbe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.ref)
+  val deviceActor1 = registeredProbe.receiveMessage().device
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.ref)
+  val deviceActor2 = registeredProbe.receiveMessage().device
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device3&quot;, registeredProbe.ref)
+  registeredProbe.receiveMessage()
+
+  // Check that the device actors are working
+  val recordProbe = createTestProbe[TemperatureRecorded]()
+  deviceActor1 ! RecordTemperature(requestId = 0, 1.0, recordProbe.ref)
+  recordProbe.expectMessage(TemperatureRecorded(requestId = 0))
+  deviceActor2 ! RecordTemperature(requestId = 1, 2.0, recordProbe.ref)
+  recordProbe.expectMessage(TemperatureRecorded(requestId = 1))
+  // No temperature for device3
+
+  val allTempProbe = createTestProbe[RespondAllTemperatures]()
+  groupActor ! RequestAllTemperatures(requestId = 0, groupId = &quot;group&quot;, allTempProbe.ref)
+  allTempProbe.expectMessage(
+    RespondAllTemperatures(
+      requestId = 0,
+      temperatures =
+        Map(&quot;device1&quot; -&gt; Temperature(1.0), &quot;device2&quot; -&gt; Temperature(2.0), &quot;device3&quot; -&gt; TemperatureNotAvailable)))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/typed/tutorial_5/DeviceGroupTest.java#L144-L179" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testCollectTemperaturesFromAllActiveDevices() {
+  TestProbe&lt;DeviceRegistered&gt; registeredProbe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.getRef()));
+  ActorRef&lt;Device.Command&gt; deviceActor1 = registeredProbe.receiveMessage().device;
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.getRef()));
+  ActorRef&lt;Device.Command&gt; deviceActor2 = registeredProbe.receiveMessage().device;
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device3&quot;, registeredProbe.getRef()));
+  ActorRef&lt;Device.Command&gt; deviceActor3 = registeredProbe.receiveMessage().device;
+
+  // Check that the device actors are working
+  TestProbe&lt;Device.TemperatureRecorded&gt; recordProbe =
+      testKit.createTestProbe(Device.TemperatureRecorded.class);
+  deviceActor1.tell(new Device.RecordTemperature(0L, 1.0, recordProbe.getRef()));
+  assertEquals(0L, recordProbe.receiveMessage().requestId);
+  deviceActor2.tell(new Device.RecordTemperature(1L, 2.0, recordProbe.getRef()));
+  assertEquals(1L, recordProbe.receiveMessage().requestId);
+  // No temperature for device 3
+
+  TestProbe&lt;RespondAllTemperatures&gt; allTempProbe =
+      testKit.createTestProbe(RespondAllTemperatures.class);
+  groupActor.tell(new RequestAllTemperatures(0L, &quot;group&quot;, allTempProbe.getRef()));
+  RespondAllTemperatures response = allTempProbe.receiveMessage();
+  assertEquals(0L, response.requestId);
+
+  Map&lt;String, TemperatureReading&gt; expectedTemperatures = new HashMap&lt;&gt;();
+  expectedTemperatures.put(&quot;device1&quot;, new Temperature(1.0));
+  expectedTemperatures.put(&quot;device2&quot;, new Temperature(2.0));
+  expectedTemperatures.put(&quot;device3&quot;, TemperatureNotAvailable.INSTANCE);
+
+  assertEquals(expectedTemperatures, response.temperatures);
+}</code></pre></dd>
+</dl>
+<h2><a href="#summary" name="summary" class="anchor"><span class="anchor-link"></span></a>Summary</h2>
+<p>In the context of the IoT system, this guide introduced the following concepts, among others. You can follow the links to review them if necessary:</p>
+<ul>
+  <li><a href="tutorial_1.html">The hierarchy of actors and their lifecycle</a></li>
+  <li><a href="tutorial_3.html">The importance of designing messages for flexibility</a></li>
+  <li><a href="tutorial_4.html#keeping-track-of-the-device-actors-in-the-group">How to watch and stop actors, if necessary</a></li>
+</ul>
+<h2><a href="#whats-next-" name="whats-next-" class="anchor"><span class="anchor-link"></span></a>What&rsquo;s Next?</h2>
+<p>To continue your journey with Akka, we recommend:</p>
+<ul>
+  <li>Start building your own applications with Akka, make sure you <a href="https://akka.io/get-involved/">get involved in our amazing community</a> for help if you get stuck.</li>
+  <li>If you’d like some additional background, and detail, read the rest of the <a href="../actors.html">reference documentation</a> and check out some of the <a href="../../additional/books.html">books and videos</a> on Akka.</li>
+  <li>If you are interested in functional programming, read how actors can be defined in a <a href="../actors.html#functional-style">functional style</a>. In this guide the object-oriented style was used, but you can mix both as you like.</li>
+</ul>
+<p>To get from this guide to a complete application you would likely need to provide either an UI or an API. For this we recommend that you look at the following technologies and see what fits you:</p>
+<ul>
+  <li><a href="https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/">Microservices with Akka tutorial</a> illustrates how to implement an Event Sourced CQRS application with Akka Persistence and Akka Projections</li>
+  <li><a href="https://doc.akka.io/docs/akka-http/current/introduction.html">Akka HTTP</a> is a HTTP server and client library, making it possible to publish and consume HTTP endpoints</li>
+  <li><a href="https://www.playframework.com">Play Framework</a> is a full fledged web framework that is built on top of Akka HTTP, it integrates well with Akka and can be used to create a complete modern web UI</li>
+  <li><a href="https://www.lagomframework.com">Lagom</a> is an opinionated microservice framework built on top of Akka, encoding many best practices around Akka and Play</li>
+</ul>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/guide/tutorial_5.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../../general/index.html">General Concepts</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../typed/guide/tutorial_5.html#part-5-querying-device-groups" class="header">Part 5: Querying Device Groups</a>
+  <ul>
+    <li><a href="../../typed/guide/tutorial_5.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html#dealing-with-possible-scenarios" class="header">Dealing with possible scenarios</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html#implementing-the-query" class="header">Implementing the query</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html#adding-query-capability-to-the-group" class="header">Adding query capability to the group</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html#summary" class="header">Summary</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html#whats-next-" class="header">What&rsquo;s Next?</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../../js/magellan.js"></script>
+
+<style type="text/css">@import "../../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

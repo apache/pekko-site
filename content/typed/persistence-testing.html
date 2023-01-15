@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Testing · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/persistence-testing.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="active page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="active page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index-persistence.html">Persistence (Event Sourcing)</a></li>
+  <li>Testing</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#testing" name="testing" class="anchor"><span class="anchor-link"></span></a>Testing</h1>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Akka Persistence TestKit, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "org.apache.pekko" %% "pekko-persistence-typed" % PekkoVersion,
+  "org.apache.pekko" %% "pekko-persistence-testkit" % PekkoVersion % Test
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence-typed_${versions.ScalaBinary}"
+  testImplementation "org.apache.pekko:pekko-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Persistence Testkit</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-persistence-testkit</div>
+  <div>0.0.0+26524-b0ed4882-SNAPSHOT</div>
+  <div><a href="project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.persistence.testkit</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://akka.io/">https://akka.io/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://doc.akka.io/api/akka/snapshot/akka/persistence/testkit/scaladsl/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://doc.akka.io/japi/akka/snapshot/akka/persistence/testkit/javadsl/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://discuss.akka.io" target="_blank" rel="noopener noreferrer">Lightbend Discuss</a></div>
+  <div><a href="https://gitter.im/akka/akka" target="_blank" rel="noopener noreferrer">akka/akka Gitter channel</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/akka/akka/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#unit-testing" name="unit-testing" class="anchor"><span class="anchor-link"></span></a>Unit testing</h2>
+
+<p><strong>Note!</strong> The <code>EventSourcedBehaviorTestKit</code> is a new feature, api may have changes breaking source compatibility in future versions.</p>
+
+<p>Unit testing of <code>EventSourcedBehavior</code> can be done with the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/EventSourcedBehaviorTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.EventSourcedBehaviorTestKit"><code>EventSourcedBehaviorTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/EventSourcedBehaviorTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.EventSourcedBehaviorTestKit"><code>EventSourcedBehaviorTestKit</code></a></span>. It supports running one command at a time and you can assert that the synchronously returned result is as expected. The result contains the events emitted by the command and the new state after applying the events. It also has support for verifying the reply to a command.</p>
+
+<p>You need to configure the <code>ActorSystem</code> with the <code>EventSourcedBehaviorTestKit.config</code>. The configuration enables the in-memory journal and snapshot storage.</p>
+
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleDocSpec.scala#L33-L34" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class AccountExampleDocSpec
+    extends ScalaTestWithActorTestKit(EventSourcedBehaviorTestKit.config)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleDocTest.java#L47-L55" target="_blank" title="Go to snippet source">source</a><code class="language-java">@ClassRule
+public static final TestKitJunitResource testKit =
+    new TestKitJunitResource(EventSourcedBehaviorTestKit.config());
+
+private EventSourcedBehaviorTestKit&lt;
+        AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt;
+    eventSourcedTestKit =
+        EventSourcedBehaviorTestKit.create(
+            testKit.system(), AccountEntity.create(&quot;1&quot;, PersistenceId.of(&quot;Account&quot;, &quot;1&quot;)));</code></pre></dd>
+</dl>
+<p>A full test for the <code>AccountEntity</code>, which is shown in the <a href="persistence-style.html">Persistence Style Guide</a>, may look like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleDocSpec.scala#L17-L91" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.Done
+import pekko.persistence.testkit.scaladsl.EventSourcedBehaviorTestKit
+import pekko.persistence.typed.PersistenceId
+import pekko.actor.testkit.typed.scaladsl.LogCapturing
+import pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import pekko.pattern.StatusReply
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class AccountExampleDocSpec
+    extends ScalaTestWithActorTestKit(EventSourcedBehaviorTestKit.config)
+    with AnyWordSpecLike
+    with BeforeAndAfterEach
+    with LogCapturing {
+
+  private val eventSourcedTestKit =
+    EventSourcedBehaviorTestKit[AccountEntity.Command, AccountEntity.Event, AccountEntity.Account](
+      system,
+      AccountEntity(&quot;1&quot;, PersistenceId(&quot;Account&quot;, &quot;1&quot;)))
+
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    eventSourcedTestKit.clear()
+  }
+
+  &quot;Account&quot; must {
+
+    &quot;be created with zero balance&quot; in {
+      val result = eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.CreateAccount(_))
+      result.reply shouldBe StatusReply.Ack
+      result.event shouldBe AccountEntity.AccountCreated
+      result.stateOfType[AccountEntity.OpenedAccount].balance shouldBe 0
+    }
+
+    &quot;handle Withdraw&quot; in {
+      eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.CreateAccount(_))
+
+      val result1 = eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.Deposit(100, _))
+      result1.reply shouldBe StatusReply.Ack
+      result1.event shouldBe AccountEntity.Deposited(100)
+      result1.stateOfType[AccountEntity.OpenedAccount].balance shouldBe 100
+
+      val result2 = eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.Withdraw(10, _))
+      result2.reply shouldBe StatusReply.Ack
+      result2.event shouldBe AccountEntity.Withdrawn(10)
+      result2.stateOfType[AccountEntity.OpenedAccount].balance shouldBe 90
+    }
+
+    &quot;reject Withdraw overdraft&quot; in {
+      eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.CreateAccount(_))
+      eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.Deposit(100, _))
+
+      val result = eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.Withdraw(110, _))
+      result.reply.isError shouldBe true
+      result.hasNoEvents shouldBe true
+    }
+
+    &quot;handle GetBalance&quot; in {
+      eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.CreateAccount(_))
+      eventSourcedTestKit.runCommand[StatusReply[Done]](AccountEntity.Deposit(100, _))
+
+      val result = eventSourcedTestKit.runCommand[AccountEntity.CurrentBalance](AccountEntity.GetBalance(_))
+      result.reply.balance shouldBe 100
+      result.hasNoEvents shouldBe true
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleDocTest.java#L24-L140" target="_blank" title="Go to snippet source">source</a><code class="language-java">import java.math.BigDecimal;
+import org.apache.pekko.actor.testkit.typed.javadsl.LogCapturing;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.persistence.testkit.javadsl.EventSourcedBehaviorTestKit;
+import org.apache.pekko.persistence.testkit.javadsl.EventSourcedBehaviorTestKit.CommandResultWithReply;
+import org.apache.pekko.persistence.typed.PersistenceId;
+
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+public class AccountExampleDocTest
+{
+
+  @ClassRule
+  public static final TestKitJunitResource testKit =
+      new TestKitJunitResource(EventSourcedBehaviorTestKit.config());
+
+  private EventSourcedBehaviorTestKit&lt;
+          AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt;
+      eventSourcedTestKit =
+          EventSourcedBehaviorTestKit.create(
+              testKit.system(), AccountEntity.create(&quot;1&quot;, PersistenceId.of(&quot;Account&quot;, &quot;1&quot;)));
+
+  @Rule public final LogCapturing logCapturing = new LogCapturing();
+
+  @Before
+  public void beforeEach() {
+    eventSourcedTestKit.clear();
+  }
+
+  @Test
+  public void createWithEmptyBalance() {
+    CommandResultWithReply&lt;
+            AccountEntity.Command, AccountEntity.Event, AccountEntity.Account, StatusReply&lt;Done&gt;&gt;
+        result = eventSourcedTestKit.runCommand(AccountEntity.CreateAccount::new);
+    assertEquals(StatusReply.ack(), result.reply());
+    assertEquals(AccountEntity.AccountCreated.INSTANCE, result.event());
+    assertEquals(BigDecimal.ZERO, result.stateOfType(AccountEntity.OpenedAccount.class).balance);
+  }
+
+  @Test
+  public void createWithUnHandle() {
+    CommandResultWithReply&lt;
+            AccountEntity.Command, AccountEntity.Event, AccountEntity.Account, StatusReply&lt;Done&gt;&gt;
+        result = eventSourcedTestKit.runCommand(AccountEntity.CreateAccount::new);
+    assertFalse(result.hasNoReply());
+  }
+
+  @Test
+  public void handleWithdraw() {
+    eventSourcedTestKit.runCommand(AccountEntity.CreateAccount::new);
+
+    CommandResultWithReply&lt;
+            AccountEntity.Command, AccountEntity.Event, AccountEntity.Account, StatusReply&lt;Done&gt;&gt;
+        result1 =
+            eventSourcedTestKit.runCommand(
+                replyTo -&gt; new AccountEntity.Deposit(BigDecimal.valueOf(100), replyTo));
+    assertEquals(StatusReply.ack(), result1.reply());
+    assertEquals(
+        BigDecimal.valueOf(100), result1.eventOfType(AccountEntity.Deposited.class).amount);
+    assertEquals(
+        BigDecimal.valueOf(100), result1.stateOfType(AccountEntity.OpenedAccount.class).balance);
+
+    CommandResultWithReply&lt;
+            AccountEntity.Command, AccountEntity.Event, AccountEntity.Account, StatusReply&lt;Done&gt;&gt;
+        result2 =
+            eventSourcedTestKit.runCommand(
+                replyTo -&gt; new AccountEntity.Withdraw(BigDecimal.valueOf(10), replyTo));
+    assertEquals(StatusReply.ack(), result2.reply());
+    assertEquals(BigDecimal.valueOf(10), result2.eventOfType(AccountEntity.Withdrawn.class).amount);
+    assertEquals(
+        BigDecimal.valueOf(90), result2.stateOfType(AccountEntity.OpenedAccount.class).balance);
+  }
+
+  @Test
+  public void rejectWithdrawOverdraft() {
+    eventSourcedTestKit.runCommand(AccountEntity.CreateAccount::new);
+    eventSourcedTestKit.runCommand(
+        (ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) -&gt;
+            new AccountEntity.Deposit(BigDecimal.valueOf(100), replyTo));
+
+    CommandResultWithReply&lt;
+            AccountEntity.Command, AccountEntity.Event, AccountEntity.Account, StatusReply&lt;Done&gt;&gt;
+        result =
+            eventSourcedTestKit.runCommand(
+                replyTo -&gt; new AccountEntity.Withdraw(BigDecimal.valueOf(110), replyTo));
+    assertTrue(result.reply().isError());
+    assertTrue(result.hasNoEvents());
+  }
+
+  @Test
+  public void handleGetBalance() {
+    eventSourcedTestKit.runCommand(AccountEntity.CreateAccount::new);
+    eventSourcedTestKit.runCommand(
+        (ActorRef&lt;StatusReply&lt;Done&gt;&gt; replyTo) -&gt;
+            new AccountEntity.Deposit(BigDecimal.valueOf(100), replyTo));
+
+    CommandResultWithReply&lt;
+            AccountEntity.Command,
+            AccountEntity.Event,
+            AccountEntity.Account,
+            AccountEntity.CurrentBalance&gt;
+        result = eventSourcedTestKit.runCommand(AccountEntity.GetBalance::new);
+    assertEquals(BigDecimal.valueOf(100), result.reply().balance);
+  }
+}</code></pre></dd>
+</dl>
+<p>Serialization of commands, events and state are verified automatically. The serialization checks can be customized with the <code>SerializationSettings</code> when creating the <code>EventSourcedBehaviorTestKit</code>. By default, the serialization roundtrip is checked but the equality of the result of the serialization is not checked. <code>equals</code> must be implemented <span class="group-scala">(or using <code>case class</code>)</span> in the commands, events and state if <code>verifyEquality</code> is enabled.</p>
+<p>To test recovery the <code>restart</code> method of the <code>EventSourcedBehaviorTestKit</code> can be used. It will restart the behavior, which will then recover from stored snapshot and events from previous commands. It&rsquo;s also possible to populate the storage with events or simulate failures by using the underlying <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span>.</p>
+<h2><a href="#persistence-testkit" name="persistence-testkit" class="anchor"><span class="anchor-link"></span></a>Persistence TestKit</h2>
+<p><strong>Note!</strong> The <code>PersistenceTestKit</code> is a new feature, api may have changes breaking source compatibility in future versions.</p>
+<p>Persistence testkit allows to check events saved in a storage, emulate storage operations and exceptions. To use the testkit you need to add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-persistence-testkit" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>There are two testkit classes which have similar api:</p>
+<ul>
+  <li><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span> class is for events</li>
+  <li><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/SnapshotTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.SnapshotTestKit"><code>SnapshotTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/SnapshotTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.SnapshotTestKit"><code>SnapshotTestKit</code></a></span> class is for snapshots</li>
+</ul>
+<p>The testkit classes have two corresponding plugins which emulate the behavior of the storages: </p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/PersistenceTestKitPlugin.html" title="org.apache.pekko.persistence.testkit.PersistenceTestKitPlugin"><code>PersistenceTestKitPlugin</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/PersistenceTestKitPlugin.html" title="org.apache.pekko.persistence.testkit.PersistenceTestKitPlugin"><code>PersistenceTestKitPlugin</code></a></span> class emulates a events storage</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/PersistenceTestKitSnapshotPlugin.html" title="org.apache.pekko.persistence.testkit.PersistenceTestKitSnapshotPlugin"><code>PersistenceTestKitSnapshotPlugin</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/PersistenceTestKitSnapshotPlugin.html" title="org.apache.pekko.persistence.testkit.PersistenceTestKitSnapshotPlugin"><code>PersistenceTestKitSnapshotPlugin</code></a></span> class emulates a snapshots storage</li>
+</ul>
+<p><strong>Note!</strong> The corresponding plugins <strong>must</strong> be configured in the actor system which is used to initialize the particular testkit class:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/Configuration.scala#L24-L31" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>val yourConfiguration = ConfigFactory.defaultApplication()
+
+val system =
+  ActorSystem(??? /*some behavior*/, &quot;test-system&quot;, PersistenceTestKitPlugin.config.withFallback(yourConfiguration))
+
+val testKit = PersistenceTestKit(system)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/Configuration.java#L28-L38" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class PersistenceTestKitConfig {
+
+  Config conf =
+      PersistenceTestKitPlugin.getInstance()
+          .config()
+          .withFallback(ConfigFactory.defaultApplication());
+
+  ActorSystem&lt;Command&gt; system = ActorSystem.create(new SomeBehavior(), &quot;example&quot;, conf);
+
+  PersistenceTestKit testKit = PersistenceTestKit.create(system);
+}</code></pre></dd>
+</dl>
+<p>and</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/Configuration.scala#L39-L48" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>val yourConfiguration = ConfigFactory.defaultApplication()
+
+val system = ActorSystem(
+  ??? /*some behavior*/,
+  &quot;test-system&quot;,
+  PersistenceTestKitSnapshotPlugin.config.withFallback(yourConfiguration))
+
+val testKit = SnapshotTestKit(system)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/Configuration.java#L42-L52" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class SnapshotTestKitConfig {
+
+  Config conf =
+      PersistenceTestKitSnapshotPlugin.getInstance()
+          .config()
+          .withFallback(ConfigFactory.defaultApplication());
+
+  ActorSystem&lt;Command&gt; system = ActorSystem.create(new SomeBehavior(), &quot;example&quot;, conf);
+
+  SnapshotTestKit testKit = SnapshotTestKit.create(system);
+}</code></pre></dd>
+</dl>
+<p>A typical scenario is to create a persistent actor, send commands to it and check that it persists events as it is expected:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/TestKitExamples.scala#L37-L73" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import pekko.persistence.testkit.PersistenceTestKitPlugin
+import pekko.persistence.testkit.scaladsl.PersistenceTestKit
+
+class PersistenceTestKitSampleSpec
+    extends ScalaTestWithActorTestKit(PersistenceTestKitPlugin.config.withFallback(ConfigFactory.defaultApplication()))
+    with AnyWordSpecLike
+    with BeforeAndAfterEach {
+
+  val persistenceTestKit = PersistenceTestKit(system)
+
+  override def beforeEach(): Unit = {
+    persistenceTestKit.clearAll()
+  }
+
+  &quot;Persistent actor&quot; should {
+
+    &quot;persist all events&quot; in {
+
+      val persistenceId = PersistenceId.ofUniqueId(&quot;your-persistence-id&quot;)
+      val persistentActor = spawn(
+        EventSourcedBehavior[Cmd, Evt, State](
+          persistenceId,
+          emptyState = State.empty,
+          commandHandler = (_, cmd) =&gt; Effect.persist(Evt(cmd.data)),
+          eventHandler = (state, evt) =&gt; state.updated(evt)))
+      val cmd = Cmd(&quot;data&quot;)
+
+      persistentActor ! cmd
+
+      val expectedPersistedEvent = Evt(cmd.data)
+      persistenceTestKit.expectNextPersisted(persistenceId.id, expectedPersistedEvent)
+    }
+
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/PersistenceTestKitSampleTest.java#L35-L133" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class PersistenceTestKitSampleTest extends AbstractJavaTest {
+
+  @ClassRule
+  public static final TestKitJunitResource testKit =
+      new TestKitJunitResource(
+          PersistenceTestKitPlugin.getInstance()
+              .config()
+              .withFallback(ConfigFactory.defaultApplication()));
+
+  PersistenceTestKit persistenceTestKit = PersistenceTestKit.create(testKit.system());
+
+  @Before
+  public void beforeEach() {
+    persistenceTestKit.clearAll();
+  }
+
+  @Test
+  public void test() {
+    PersistenceId persistenceId = PersistenceId.ofUniqueId(&quot;some-id&quot;);
+    ActorRef&lt;YourPersistentBehavior.Cmd&gt; ref =
+        testKit.spawn(YourPersistentBehavior.create(persistenceId));
+
+    YourPersistentBehavior.Cmd cmd = new YourPersistentBehavior.Cmd(&quot;data&quot;);
+    ref.tell(cmd);
+    YourPersistentBehavior.Evt expectedEventPersisted = new YourPersistentBehavior.Evt(cmd.data);
+
+    persistenceTestKit.expectNextPersisted(persistenceId.id(), expectedEventPersisted);
+  }
+}
+
+class YourPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        YourPersistentBehavior.Cmd, YourPersistentBehavior.Evt, YourPersistentBehavior.State&gt; {
+
+  static final class Cmd implements CborSerializable {
+
+    public final String data;
+
+    @JsonCreator
+    public Cmd(String data) {
+      this.data = data;
+    }
+  }
+
+  static final class Evt implements CborSerializable {
+
+    public final String data;
+
+    @JsonCreator
+    public Evt(String data) {
+      this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      Evt evt = (Evt) o;
+
+      return data.equals(evt.data);
+    }
+
+    @Override
+    public int hashCode() {
+      return data.hashCode();
+    }
+  }
+
+  static final class State implements CborSerializable {}
+
+  static Behavior&lt;Cmd&gt; create(PersistenceId persistenceId) {
+    return Behaviors.setup(context -&gt; new YourPersistentBehavior(persistenceId));
+  }
+
+  private YourPersistentBehavior(PersistenceId persistenceId) {
+    super(persistenceId);
+  }
+
+  @Override
+  public State emptyState() {
+    // some state
+    return new State();
+  }
+
+  @Override
+  public CommandHandler&lt;Cmd, Evt, State&gt; commandHandler() {
+    return newCommandHandlerBuilder()
+        .forAnyState()
+        .onCommand(Cmd.class, command -&gt; Effect().persist(new Evt(command.data)))
+        .build();
+  }
+
+  @Override
+  public EventHandler&lt;State, Evt&gt; eventHandler() {
+    // TODO handle events
+    return newEventHandlerBuilder().forAnyState().onEvent(Evt.class, (state, evt) -&gt; state).build();
+  }
+}</code></pre></dd>
+</dl>
+<p>You can safely use persistence testkit in combination with main akka testkit.</p>
+<p>The main methods of the api allow to (see <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/PersistenceTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.PersistenceTestKit"><code>PersistenceTestKit</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/javadsl/SnapshotTestKit.html" title="org.apache.pekko.persistence.testkit.javadsl.SnapshotTestKit"><code>SnapshotTestKit</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/scaladsl/SnapshotTestKit.html" title="org.apache.pekko.persistence.testkit.scaladsl.SnapshotTestKit"><code>SnapshotTestKit</code></a></span> for more details):</p>
+<ul>
+  <li>check if the given event/snapshot object is the next persisted in the storage.</li>
+  <li>read a sequence of persisted events/snapshots.</li>
+  <li>check that no events/snapshots have been persisted in the storage.</li>
+  <li>throw the default exception from the storage on attempt to persist, read or delete the following event/snapshot.</li>
+  <li>clear the events/snapshots persisted in the storage.</li>
+  <li>reject the events, but not snapshots (rejections are not supported for snapshots in the original api).</li>
+  <li>set your own <a href="#setting-your-own-policy-for-the-storage">policy</a> which emulates the work of the storage. Policy determines what to do when persistence needs to execute some operation on the storage (i.e. read, delete, etc.).</li>
+  <li>get all the events/snapshots persisted in the storage</li>
+  <li>put the events/snapshots in the storage to test recovery</li>
+</ul>
+<h4><a href="#setting-your-own-policy-for-the-storage" name="setting-your-own-policy-for-the-storage" class="anchor"><span class="anchor-link"></span></a>Setting your own policy for the storage</h4>
+<p>You can implement and set your own policy for the storage to control its actions on particular operations, for example you can fail or reject events on your own conditions. Implement the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy[EventStorage.JournalOperation]</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy&lt;EventStorage.JournalOperation&gt;</code></a></span> <span class="group-scala">trait</span><span class="group-java">interface</span> for event storage or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy[SnapshotStorage.SnapshotOperation]</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy&lt;SnapshotStorage.SnapshotOperation&gt;</code></a></span> <span class="group-scala">trait</span><span class="group-java">interface</span> for snapshot storage, and set it with <code>withPolicy()</code> method.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/TestKitExamples.scala#L132-L172" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class PersistenceTestKitSampleSpecWithPolicy
+    extends ScalaTestWithActorTestKit(PersistenceTestKitPlugin.config.withFallback(ConfigFactory.defaultApplication()))
+    with AnyWordSpecLike
+    with BeforeAndAfterEach {
+
+  val persistenceTestKit = PersistenceTestKit(system)
+
+  override def beforeEach(): Unit = {
+    persistenceTestKit.clearAll()
+    persistenceTestKit.resetPolicy()
+  }
+
+  &quot;Testkit policy&quot; should {
+
+    &quot;fail all operations with custom exception&quot; in {
+      val policy = new EventStorage.JournalPolicies.PolicyType {
+
+        class CustomFailure extends RuntimeException
+
+        override def tryProcess(persistenceId: String, processingUnit: JournalOperation): ProcessingResult =
+          processingUnit match {
+            case WriteEvents(_) =&gt; StorageFailure(new CustomFailure)
+            case _              =&gt; ProcessingSuccess
+          }
+      }
+      persistenceTestKit.withPolicy(policy)
+
+      val persistenceId = PersistenceId.ofUniqueId(&quot;your-persistence-id&quot;)
+      val persistentActor = spawn(
+        EventSourcedBehavior[Cmd, Evt, State](
+          persistenceId,
+          emptyState = State.empty,
+          commandHandler = (_, cmd) =&gt; Effect.persist(Evt(cmd.data)),
+          eventHandler = (state, evt) =&gt; state.updated(evt)))
+
+      persistentActor ! Cmd(&quot;data&quot;)
+      persistenceTestKit.expectNothingPersisted(persistenceId.id)
+
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/PersistenceTestKitPolicySampleTest.java#L34-L76" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class PersistenceTestKitPolicySampleTest extends AbstractJavaTest {
+
+  @ClassRule
+  public static final TestKitJunitResource testKit =
+      new TestKitJunitResource(
+          PersistenceTestKitPlugin.getInstance()
+              .config()
+              .withFallback(ConfigFactory.defaultApplication()));
+
+  PersistenceTestKit persistenceTestKit = PersistenceTestKit.create(testKit.system());
+
+  @Before
+  public void beforeEach() {
+    persistenceTestKit.clearAll();
+    persistenceTestKit.resetPolicy();
+  }
+
+  @Test
+  public void test() {
+    SampleEventStoragePolicy policy = new SampleEventStoragePolicy();
+    persistenceTestKit.withPolicy(policy);
+
+    PersistenceId persistenceId = PersistenceId.ofUniqueId(&quot;some-id&quot;);
+    ActorRef&lt;YourPersistentBehavior.Cmd&gt; ref =
+        testKit.spawn(YourPersistentBehavior.create(persistenceId));
+
+    YourPersistentBehavior.Cmd cmd = new YourPersistentBehavior.Cmd(&quot;data&quot;);
+    ref.tell(cmd);
+
+    persistenceTestKit.expectNothingPersisted(persistenceId.id());
+  }
+
+  static class SampleEventStoragePolicy implements ProcessingPolicy&lt;JournalOperation&gt; {
+    @Override
+    public ProcessingResult tryProcess(String processId, JournalOperation processingUnit) {
+      if (processingUnit instanceof WriteEvents) {
+        return StorageFailure.create();
+      } else {
+        return ProcessingSuccess.getInstance();
+      }
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p><code>tryProcess()</code> method of the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingPolicy.html" title="org.apache.pekko.persistence.testkit.ProcessingPolicy"><code>ProcessingPolicy</code></a></span> has two arguments: persistence id and the storage operation. </p>
+<p>Event storage has the following operations:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadEvents.html" title="org.apache.pekko.persistence.testkit.ReadEvents"><code>ReadEvents</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadEvents.html" title="org.apache.pekko.persistence.testkit.ReadEvents"><code>ReadEvents</code></a></span> Read the events from the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/WriteEvents.html" title="org.apache.pekko.persistence.testkit.WriteEvents"><code>WriteEvents</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/WriteEvents.html" title="org.apache.pekko.persistence.testkit.WriteEvents"><code>WriteEvents</code></a></span> Write the events to the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteEvents.html" title="org.apache.pekko.persistence.testkit.DeleteEvents"><code>DeleteEvents</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteEvents.html" title="org.apache.pekko.persistence.testkit.DeleteEvents"><code>DeleteEvents</code></a></span> Delete the events from the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadSeqNum$.html" title="org.apache.pekko.persistence.testkit.ReadSeqNum"><code>ReadSeqNum</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadSeqNum$.html" title="org.apache.pekko.persistence.testkit.ReadSeqNum"><code>ReadSeqNum</code></a></span> Read the highest sequence number for particular persistence id.</li>
+</ul>
+<p>Snapshot storage has the following operations:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadSnapshot.html" title="org.apache.pekko.persistence.testkit.ReadSnapshot"><code>ReadSnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ReadSnapshot.html" title="org.apache.pekko.persistence.testkit.ReadSnapshot"><code>ReadSnapshot</code></a></span> Read the snapshot from the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/WriteSnapshot.html" title="org.apache.pekko.persistence.testkit.WriteSnapshot"><code>WriteSnapshot</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/WriteSnapshot.html" title="org.apache.pekko.persistence.testkit.WriteSnapshot"><code>WriteSnapshot</code></a></span> Writhe the snapshot to the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteSnapshotsByCriteria.html" title="org.apache.pekko.persistence.testkit.DeleteSnapshotsByCriteria"><code>DeleteSnapshotsByCriteria</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteSnapshotsByCriteria.html" title="org.apache.pekko.persistence.testkit.DeleteSnapshotsByCriteria"><code>DeleteSnapshotsByCriteria</code></a></span> Delete snapshots in the storage by criteria.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteSnapshotByMeta.html" title="org.apache.pekko.persistence.testkit.DeleteSnapshotByMeta"><code>DeleteSnapshotByMeta</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/DeleteSnapshotByMeta.html" title="org.apache.pekko.persistence.testkit.DeleteSnapshotByMeta"><code>DeleteSnapshotByMeta</code></a></span> Delete particular snapshot from the storage by its metadata.</li>
+</ul>
+<p>The <code>tryProcess()</code> method must return one of the processing results:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingSuccess.html" title="org.apache.pekko.persistence.testkit.ProcessingSuccess"><code>ProcessingSuccess</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/ProcessingSuccess.html" title="org.apache.pekko.persistence.testkit.ProcessingSuccess"><code>ProcessingSuccess</code></a></span> Successful completion of the operation. All the events will be saved/read/deleted.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/StorageFailure.html" title="org.apache.pekko.persistence.testkit.StorageFailure"><code>StorageFailure</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/StorageFailure.html" title="org.apache.pekko.persistence.testkit.StorageFailure"><code>StorageFailure</code></a></span> Emulates exception from the storage.</li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/Reject.html" title="org.apache.pekko.persistence.testkit.Reject"><code>Reject</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/testkit/Reject.html" title="org.apache.pekko.persistence.testkit.Reject"><code>Reject</code></a></span> Emulates rejection from the storage.</li>
+</ul>
+<p><strong>Note</strong> that snapshot storage does not have rejections. If you return <code>Reject</code> in the <code>tryProcess()</code> of the snapshot storage policy, it will have the same effect as the <code>StorageFailure</code>.</p>
+<p>Here is an example of the policy for an event storage:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/TestKitExamples.scala#L77-L101" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.persistence.testkit._
+
+class SampleEventStoragePolicy extends EventStorage.JournalPolicies.PolicyType {
+
+  // you can use internal state, it does not need to be thread safe
+  var count = 1
+
+  override def tryProcess(persistenceId: String, processingUnit: JournalOperation): ProcessingResult =
+    if (count &lt; 10) {
+      count += 1
+      // check the type of operation and react with success or with reject or with failure.
+      // if you return ProcessingSuccess the operation will be performed, otherwise not.
+      processingUnit match {
+        case ReadEvents(batch) if batch.nonEmpty =&gt; ProcessingSuccess
+        case WriteEvents(batch) if batch.size &gt; 1 =&gt;
+          ProcessingSuccess
+        case ReadSeqNum      =&gt; StorageFailure()
+        case DeleteEvents(_) =&gt; Reject()
+        case _               =&gt; StorageFailure()
+      }
+    } else {
+      ProcessingSuccess
+    }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/TestKitExamples.java#L35-L66" target="_blank" title="Go to snippet source">source</a><code class="language-java">class SampleEventStoragePolicy implements ProcessingPolicy&lt;JournalOperation&gt; {
+
+  // you can use internal state, it does not need to be thread safe
+  int count = 1;
+
+  @Override
+  public ProcessingResult tryProcess(String processId, JournalOperation processingUnit) {
+    // check the type of operation and react with success or with reject or with failure.
+    // if you return ProcessingSuccess the operation will be performed, otherwise not.
+    if (count &lt; 10) {
+      count += 1;
+      if (processingUnit instanceof ReadEvents) {
+        ReadEvents read = (ReadEvents) processingUnit;
+        if (read.batch().nonEmpty()) {
+          ProcessingSuccess.getInstance();
+        } else {
+          return StorageFailure.create();
+        }
+      } else if (processingUnit instanceof WriteEvents) {
+        return ProcessingSuccess.getInstance();
+      } else if (processingUnit instanceof DeleteEvents) {
+        return ProcessingSuccess.getInstance();
+      } else if (processingUnit.equals(ReadSeqNum.getInstance())) {
+        return Reject.create();
+      }
+      // you can set your own exception
+      return StorageFailure.create(new RuntimeException(&quot;your exception&quot;));
+    } else {
+      return ProcessingSuccess.getInstance();
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>Here is an example of the policy for a snapshot storage:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/TestKitExamples.scala#L105-L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class SampleSnapshotStoragePolicy extends SnapshotStorage.SnapshotPolicies.PolicyType {
+
+  // you can use internal state, it does not need to be thread safe
+  var count = 1
+
+  override def tryProcess(persistenceId: String, processingUnit: SnapshotOperation): ProcessingResult =
+    if (count &lt; 10) {
+      count += 1
+      // check the type of operation and react with success or with reject or with failure.
+      // if you return ProcessingSuccess the operation will be performed, otherwise not.
+      processingUnit match {
+        case ReadSnapshot(_, payload) if payload.nonEmpty =&gt;
+          ProcessingSuccess
+        case WriteSnapshot(meta, payload) if meta.sequenceNr &gt; 10 =&gt;
+          ProcessingSuccess
+        case DeleteSnapshotsByCriteria(_) =&gt; StorageFailure()
+        case DeleteSnapshotByMeta(meta) if meta.sequenceNr &lt; 10 =&gt;
+          ProcessingSuccess
+        case _ =&gt; StorageFailure()
+      }
+    } else {
+      ProcessingSuccess
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/TestKitExamples.java#L70-L101" target="_blank" title="Go to snippet source">source</a><code class="language-java">class SnapshotStoragePolicy implements ProcessingPolicy&lt;SnapshotOperation&gt; {
+
+  // you can use internal state, it doesn&#39;t need to be thread safe
+  int count = 1;
+
+  @Override
+  public ProcessingResult tryProcess(String processId, SnapshotOperation processingUnit) {
+    // check the type of operation and react with success or with failure.
+    // if you return ProcessingSuccess the operation will be performed, otherwise not.
+    if (count &lt; 10) {
+      count += 1;
+      if (processingUnit instanceof ReadSnapshot) {
+        ReadSnapshot read = (ReadSnapshot) processingUnit;
+        if (read.getSnapshot().isPresent()) {
+          ProcessingSuccess.getInstance();
+        } else {
+          return StorageFailure.create();
+        }
+      } else if (processingUnit instanceof WriteSnapshot) {
+        return ProcessingSuccess.getInstance();
+      } else if (processingUnit instanceof DeleteSnapshotsByCriteria) {
+        return ProcessingSuccess.getInstance();
+      } else if (processingUnit instanceof DeleteSnapshotByMeta) {
+        return ProcessingSuccess.getInstance();
+      }
+      // you can set your own exception
+      return StorageFailure.create(new RuntimeException(&quot;your exception&quot;));
+    } else {
+      return ProcessingSuccess.getInstance();
+    }
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#configuration-of-persistence-testkit" name="configuration-of-persistence-testkit" class="anchor"><span class="anchor-link"></span></a>Configuration of Persistence TestKit</h3>
+<p>There are several configuration properties for persistence testkit, please refer to the <a href="../general/configuration-reference.html#config-akka-persistence-testkit">reference configuration</a></p>
+<h2><a href="#integration-testing" name="integration-testing" class="anchor"><span class="anchor-link"></span></a>Integration testing</h2>
+<p><code>EventSourcedBehavior</code> actors can be tested with the <a href="testing-async.html">ActorTestKit</a> together with other actors. The in-memory journal and snapshot storage from the <a href="persistence-testing.html#persistence-testkit">Persistence TestKit</a> can be used also for integration style testing of a single <code>ActorSystem</code>, for example when using Cluster Sharding with a single Cluster node.</p>
+<p>For tests that involve more than one Cluster node you have to use another journal and snapshot store. While it&rsquo;s possible to use the <a href="../persistence-plugins.html#persistence-plugin-proxy">Persistence Plugin Proxy</a> it&rsquo;s often better and more realistic to use a real database.</p>
+<p>The <a href="../project/examples.html#cqrs">CQRS example</a> includes tests that are using Akka Persistence Cassandra.</p>
+<h3><a href="#plugin-initialization" name="plugin-initialization" class="anchor"><span class="anchor-link"></span></a>Plugin initialization</h3>
+<p>Some Persistence plugins create tables automatically, but has the limitation that it can&rsquo;t be done concurrently from several ActorSystems. That can be a problem if the test creates a Cluster and all nodes tries to initialize the plugins at the same time. To coordinate initialization you can use the <code>PersistenceInit</code> utility.</p>
+<p><code>PersistenceInit</code> is part of <code>akka-persistence-testkit</code> and you need to add the dependency to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-persistence-testkit" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/testkit/PersistenceInitSpec.scala#L23-L28" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.persistence.testkit.scaladsl.PersistenceInit
+
+import scala.concurrent.Await
+import scala.concurrent.Future
+import scala.concurrent.duration._
+
+val timeout = 5.seconds
+val done: Future[Done] = PersistenceInit.initializeDefaultPlugins(system, timeout)
+Await.result(done, timeout)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/testkit/PersistenceInitTest.java#L26-L32" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.persistence.testkit.javadsl.PersistenceInit;
+import org.apache.pekko.Done;
+
+import java.time.Duration;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
+
+Duration timeout = Duration.ofSeconds(5);
+CompletionStage&lt;Done&gt; done =
+    PersistenceInit.initializeDefaultPlugins(testKit.system(), timeout);
+done.toCompletableFuture().get(timeout.getSeconds(), TimeUnit.SECONDS);</code></pre></dd>
+</dl>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/persistence-testing.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/persistence-fsm.html">EventSourced behaviors as finite state machines</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/persistence-testing.html#testing" class="header">Testing</a>
+  <ul>
+    <li><a href="../typed/persistence-testing.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/persistence-testing.html#unit-testing" class="header">Unit testing</a></li>
+    <li><a href="../typed/persistence-testing.html#persistence-testkit" class="header">Persistence TestKit</a></li>
+    <li><a href="../typed/persistence-testing.html#integration-testing" class="header">Integration testing</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

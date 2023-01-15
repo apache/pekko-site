@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Auction example · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/replicated-eventsourcing-auction.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index-persistence.html">Persistence (Event Sourcing)</a></li>
+  <li><a href="../typed/replicated-eventsourcing-examples.html">Replicated Event Sourcing Examples</a></li>
+  <li>Auction example</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#auction-example" name="auction-example" class="anchor"><span class="anchor-link"></span></a>Auction example</h1>
+<p>In this example we want to show that real-world applications can be implemented by designing events in a way that they don&rsquo;t conflict. In the end, you will end up with a solution based on a custom CRDT.</p>
+<p>We are building a small auction service. It has the following operations:</p>
+<ul>
+  <li>Place a bid</li>
+  <li>Get the highest bid</li>
+  <li>Finish the auction</li>
+</ul>
+<p>We model those operations as commands to be sent to the auction actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L51-L60" target="_blank" title="Go to snippet source">source</a><code class="language-scala">type MoneyAmount = Int
+
+case class Bid(bidder: String, offer: MoneyAmount, timestamp: Instant, originReplica: ReplicaId)
+
+sealed trait Command extends CborSerializable
+case object Finish extends Command // A timer needs to schedule this event at each replica
+final case class OfferBid(bidder: String, offer: MoneyAmount) extends Command
+final case class GetHighestBid(replyTo: ActorRef[Bid]) extends Command
+final case class IsClosed(replyTo: ActorRef[Boolean]) extends Command
+private case object Close extends Command // Internal, should not be sent from the outside</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L121-L169" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class Bid {
+  public final String bidder;
+  public final int offer;
+  public final Instant timestamp;
+  public final ReplicaId originReplica;
+
+  public Bid(String bidder, int offer, Instant timestamp, ReplicaId originReplica) {
+    this.bidder = bidder;
+    this.offer = offer;
+    this.timestamp = timestamp;
+    this.originReplica = originReplica;
+  }
+}
+
+interface Command extends CborSerializable {}
+
+public enum Finish implements Command {
+  INSTANCE
+}
+
+public static final class OfferBid implements Command {
+  public final String bidder;
+  public final int offer;
+
+  public OfferBid(String bidder, int offer) {
+    this.bidder = bidder;
+    this.offer = offer;
+  }
+}
+
+public static final class GetHighestBid implements Command {
+  public final ActorRef&lt;Bid&gt; replyTo;
+
+  public GetHighestBid(ActorRef&lt;Bid&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+public static final class IsClosed implements Command {
+  public final ActorRef&lt;Boolean&gt; replyTo;
+
+  public IsClosed(ActorRef&lt;Boolean&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+private enum Close implements Command {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<p>The events:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L64-L68" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Event extends CborSerializable
+final case class BidRegistered(bid: Bid) extends Event
+final case class AuctionFinished(atReplica: ReplicaId) extends Event
+final case class WinnerDecided(atReplica: ReplicaId, winningBid: Bid, highestCounterOffer: MoneyAmount)
+    extends Event</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L173-L203" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface Event extends CborSerializable {}
+
+public static final class BidRegistered implements Event {
+  public final Bid bid;
+
+  @JsonCreator
+  public BidRegistered(Bid bid) {
+    this.bid = bid;
+  }
+}
+
+public static final class AuctionFinished implements Event {
+  public final ReplicaId atReplica;
+
+  @JsonCreator
+  public AuctionFinished(ReplicaId atReplica) {
+    this.atReplica = atReplica;
+  }
+}
+
+public static final class WinnerDecided implements Event {
+  public final ReplicaId atReplica;
+  public final Bid winningBid;
+  public final int amount;
+
+  public WinnerDecided(ReplicaId atReplica, Bid winningBid, int amount) {
+    this.atReplica = atReplica;
+    this.winningBid = winningBid;
+    this.amount = amount;
+  }
+}</code></pre></dd>
+</dl>
+<p>The winner does not have to pay the highest bid but only enough to beat the second highest, so the <code>highestCounterOffer</code> is in the <code>AuctionFinished</code> event. </p>
+<p>Let&rsquo;s have a look at the auction entity that will handle incoming commands:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L195-L241" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def commandHandler(state: AuctionState, command: Command): Effect[Event, AuctionState] = {
+  state.phase match {
+    case Closing(_) | Closed =&gt;
+      command match {
+        case GetHighestBid(replyTo) =&gt;
+          replyTo ! state.highestBid.copy(offer = state.highestCounterOffer) // TODO this is not as described
+          Effect.none
+        case IsClosed(replyTo) =&gt;
+          replyTo ! (state.phase == Closed)
+          Effect.none
+        case Finish =&gt;
+          context.log.info(&quot;Finish&quot;)
+          Effect.persist(AuctionFinished(replicationContext.replicaId))
+        case Close =&gt;
+          context.log.info(&quot;Close&quot;)
+          require(shouldClose(state))
+          // TODO send email (before or after persisting)
+          Effect.persist(WinnerDecided(replicationContext.replicaId, state.highestBid, state.highestCounterOffer))
+        case _: OfferBid =&gt;
+          // auction finished, no more bids accepted
+          Effect.unhandled
+      }
+    case Running =&gt;
+      command match {
+        case OfferBid(bidder, offer) =&gt;
+          Effect.persist(
+            BidRegistered(
+              Bid(
+                bidder,
+                offer,
+                Instant.ofEpochMilli(replicationContext.currentTimeMillis()),
+                replicationContext.replicaId)))
+        case GetHighestBid(replyTo) =&gt;
+          replyTo ! state.highestBid
+          Effect.none
+        case Finish =&gt;
+          Effect.persist(AuctionFinished(replicationContext.replicaId))
+        case Close =&gt;
+          context.log.warn(&quot;Premature close&quot;)
+          // Close should only be triggered when we have already finished
+          Effect.unhandled
+        case IsClosed(replyTo) =&gt;
+          replyTo ! false
+          Effect.none
+      }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L331-L400" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public CommandHandler&lt;Command, Event, AuctionState&gt; commandHandler() {
+
+  CommandHandlerBuilder&lt;Command, Event, AuctionState&gt; builder = newCommandHandlerBuilder();
+
+  // running
+  builder
+      .forState(state -&gt; state.stillRunning)
+      .onCommand(
+          OfferBid.class,
+          (state, bid) -&gt;
+              Effect()
+                  .persist(
+                      new BidRegistered(
+                          new Bid(
+                              bid.bidder,
+                              bid.offer,
+                              Instant.ofEpochMilli(
+                                  this.getReplicationContext().currentTimeMillis()),
+                              this.getReplicationContext().replicaId()))))
+      .onCommand(
+          GetHighestBid.class,
+          (state, get) -&gt; {
+            get.replyTo.tell(state.highestBid);
+            return Effect().none();
+          })
+      .onCommand(
+          Finish.class,
+          (state, finish) -&gt;
+              Effect().persist(new AuctionFinished(getReplicationContext().replicaId())))
+      .onCommand(Close.class, (state, close) -&gt; Effect().unhandled())
+      .onCommand(
+          IsClosed.class,
+          (state, get) -&gt; {
+            get.replyTo.tell(false);
+            return Effect().none();
+          });
+
+  // finished
+  builder
+      .forAnyState()
+      .onCommand(OfferBid.class, (state, bid) -&gt; Effect().unhandled())
+      .onCommand(
+          GetHighestBid.class,
+          (state, get) -&gt; {
+            get.replyTo.tell(state.highestBid);
+            return Effect().none();
+          })
+      .onCommand(
+          Finish.class,
+          (state, finish) -&gt;
+              Effect().persist(new AuctionFinished(getReplicationContext().replicaId())))
+      .onCommand(
+          Close.class,
+          (state, close) -&gt;
+              Effect()
+                  .persist(
+                      new WinnerDecided(
+                          getReplicationContext().replicaId(),
+                          state.highestBid,
+                          state.highestCounterOffer)))
+      .onCommand(
+          IsClosed.class,
+          (state, get) -&gt; {
+            get.replyTo.tell(state.isClosed());
+            return Effect().none();
+          });
+
+  return builder.build();
+}</code></pre></dd>
+</dl>
+<p>There is nothing specific to Replicated Event Sourcing about the command handler. It is the same as a command handler for a standard <code>EventSourcedBehavior</code>. For <code>OfferBid</code> and <code>AuctionFinished</code> we do nothing more than to emit events corresponding to the command. For <code>GetHighestBid</code> we respond with details from the state. Note, that we overwrite the actual offer of the highest bid here with the amount of the <code>highestCounterOffer</code>. This is done to follow the popular auction style where the actual highest bid is never publicly revealed.</p>
+<p>The auction entity is started with the initial parameters for the auction. The minimum bid is modelled as an <code>initialBid</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L46-L299" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object AuctionEntity {
+
+  def apply(
+      replica: ReplicaId,
+      name: String,
+      initialBid: AuctionEntity.Bid, // the initial bid is basically the minimum price bidden at start time by the owner
+      closingAt: Instant,
+      responsibleForClosing: Boolean,
+      allReplicas: Set[ReplicaId]): Behavior[Command] = Behaviors.setup[Command] { ctx =&gt;
+    Behaviors.withTimers { timers =&gt;
+      ReplicatedEventSourcing.commonJournalConfig(
+        ReplicationId(&quot;auction&quot;, name, replica),
+        allReplicas,
+        PersistenceTestKitReadJournal.Identifier) { replicationCtx =&gt;
+        new AuctionEntity(ctx, replicationCtx, timers, closingAt, responsibleForClosing, allReplicas)
+          .behavior(initialBid)
+      }
+    }
+  }
+
+}
+
+class AuctionEntity(
+    context: ActorContext[AuctionEntity.Command],
+    replicationContext: ReplicationContext,
+    timers: TimerScheduler[AuctionEntity.Command],
+    closingAt: Instant,
+    responsibleForClosing: Boolean,
+    allReplicas: Set[ReplicaId]) {
+  import AuctionEntity._
+
+  private def behavior(initialBid: AuctionEntity.Bid): EventSourcedBehavior[Command, Event, AuctionState] =
+    EventSourcedBehavior(
+      replicationContext.persistenceId,
+      AuctionState(phase = Running, highestBid = initialBid, highestCounterOffer = initialBid.offer),
+      commandHandler,
+      eventHandler).receiveSignal {
+      case (state, RecoveryCompleted) =&gt; recoveryCompleted(state)
+    }
+
+  private def recoveryCompleted(state: AuctionState): Unit = {
+    if (shouldClose(state))
+      context.self ! Close
+
+    val millisUntilClosing = closingAt.toEpochMilli - replicationContext.currentTimeMillis()
+    timers.startSingleTimer(Finish, millisUntilClosing.millis)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L103-L454" target="_blank" title="Go to snippet source">source</a><code class="language-java">class AuctionEntity
+    extends ReplicatedEventSourcedBehavior&lt;
+        AuctionEntity.Command, AuctionEntity.Event, AuctionEntity.AuctionState&gt; {
+
+  public static ReplicaId R1 = new ReplicaId(&quot;R1&quot;);
+  public static ReplicaId R2 = new ReplicaId(&quot;R2&quot;);
+
+  public static Set&lt;ReplicaId&gt; ALL_REPLICAS = new HashSet&lt;&gt;(Arrays.asList(R1, R2));
+
+  private final ActorContext&lt;Command&gt; context;
+  private final TimerScheduler&lt;Command&gt; timers;
+  private final Bid initialBid;
+  private final Instant closingAt;
+  private final boolean responsibleForClosing;
+
+  public static Behavior&lt;Command&gt; create(
+      ReplicaId replica,
+      String name,
+      Bid initialBid,
+      Instant closingAt,
+      boolean responsibleForClosing) {
+    return Behaviors.setup(
+        ctx -&gt;
+            Behaviors.withTimers(
+                timers -&gt;
+                    ReplicatedEventSourcing.commonJournalConfig(
+                        new ReplicationId(&quot;Auction&quot;, name, replica),
+                        ALL_REPLICAS,
+                        PersistenceTestKitReadJournal.Identifier(),
+                        replicationCtx -&gt;
+                            new AuctionEntity(
+                                ctx,
+                                replicationCtx,
+                                timers,
+                                initialBid,
+                                closingAt,
+                                responsibleForClosing))));
+  }
+
+  private AuctionEntity(
+      ActorContext&lt;Command&gt; context,
+      ReplicationContext replicationContext,
+      TimerScheduler&lt;Command&gt; timers,
+      Bid initialBid,
+      Instant closingAt,
+      boolean responsibleForClosing) {
+    super(replicationContext);
+    this.context = context;
+    this.timers = timers;
+    this.initialBid = initialBid;
+    this.closingAt = closingAt;
+    this.responsibleForClosing = responsibleForClosing;
+  }
+
+  @Override
+  public AuctionState emptyState() {
+    return new AuctionState(true, initialBid, initialBid.offer, Collections.emptySet());
+  }
+
+  @Override
+  public SignalHandler&lt;AuctionState&gt; signalHandler() {
+    return newSignalHandlerBuilder()
+        .onSignal(RecoveryCompleted.instance(), this::onRecoveryCompleted)
+        .build();
+  }
+
+  private void onRecoveryCompleted(AuctionState state) {
+    if (shouldClose(state)) {
+      context.getSelf().tell(Close.INSTANCE);
+    }
+
+    long millisUntilClosing =
+        closingAt.toEpochMilli() - getReplicationContext().currentTimeMillis();
+    timers.startSingleTimer(Finish.INSTANCE, Duration.ofMillis(millisUntilClosing));
+  }
+
+}</code></pre></dd>
+</dl><div class="group-scala">
+<p>The auction moves through the following phases:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L72-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * The auction passes through several workflow phases.
+ * First, in `Running` `OfferBid` commands are accepted.
+ *
+ * `AuctionEntity` instances in all DCs schedule a `Finish` command
+ * at a given time. That persists the `AuctionFinished` event and the
+ * phase is in `Closing` until the auction is finished in all DCs.
+ *
+ * When the auction has been finished no more `OfferBid` commands are accepted.
+ *
+ * The auction is also finished immediately if `AuctionFinished` event from another
+ * DC is seen before the scheduled `Finish` command. In that way the auction is finished
+ * as quickly as possible in all DCs even though there might be some clock skew.
+ *
+ * One DC is responsible for finally deciding the winner and publishing the result.
+ * All events must be collected from all DC before that can happen.
+ * When the responsible DC has seen all `AuctionFinished` events from other DCs
+ * all other events have also been propagated and it can persist `WinnerDecided` and
+ * the auction is finally `Closed`.
+ */
+sealed trait AuctionPhase
+case object Running extends AuctionPhase
+final case class Closing(finishedAtReplica: Set[ReplicaId]) extends AuctionPhase
+case object Closed extends AuctionPhase</code></pre></dd>
+</dl></div>
+<p>The closing and closed states are to model waiting for all replicas to see the result of the auction before actually closing the action.</p>
+<p>Let&rsquo;s have a look at our state class, <code>AuctionState</code> which also represents the CRDT in our example.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L99-L143" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class AuctionState(phase: AuctionPhase, highestBid: Bid, highestCounterOffer: MoneyAmount)
+    extends CborSerializable {
+
+  def applyEvent(event: Event): AuctionState =
+    event match {
+      case BidRegistered(b) =&gt;
+        if (isHigherBid(b, highestBid))
+          withNewHighestBid(b)
+        else
+          withTooLowBid(b)
+      case AuctionFinished(atDc) =&gt;
+        phase match {
+          case Running =&gt;
+            copy(phase = Closing(Set(atDc)))
+          case Closing(alreadyFinishedDcs) =&gt;
+            copy(phase = Closing(alreadyFinishedDcs + atDc))
+          case _ =&gt;
+            this
+        }
+      case _: WinnerDecided =&gt;
+        copy(phase = Closed)
+    }
+
+  def withNewHighestBid(bid: Bid): AuctionState = {
+    require(phase != Closed)
+    require(isHigherBid(bid, highestBid))
+    copy(highestBid = bid, highestCounterOffer = highestBid.offer // keep last highest bid around
+    )
+  }
+
+  def withTooLowBid(bid: Bid): AuctionState = {
+    require(phase != Closed)
+    require(isHigherBid(highestBid, bid))
+    copy(highestCounterOffer = highestCounterOffer.max(bid.offer)) // update highest counter offer
+  }
+
+  def isHigherBid(first: Bid, second: Bid): Boolean =
+    first.offer &gt; second.offer ||
+    (first.offer == second.offer &amp;&amp; first.timestamp.isBefore(second.timestamp)) || // if equal, first one wins
+    // If timestamps are equal, choose by dc where the offer was submitted
+    // In real auctions, this last comparison should be deterministic but unpredictable, so that submitting to a
+    // particular DC would not be an advantage.
+    (first.offer == second.offer &amp;&amp; first.timestamp.equals(second.timestamp) &amp;&amp; first.originReplica.id
+      .compareTo(second.originReplica.id) &lt; 0)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L207-L263" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class AuctionState implements CborSerializable {
+
+  final boolean stillRunning;
+  final Bid highestBid;
+  final int highestCounterOffer;
+  final Set&lt;String&gt; finishedAtDc;
+
+  AuctionState(
+      boolean stillRunning, Bid highestBid, int highestCounterOffer, Set&lt;String&gt; finishedAtDc) {
+    this.stillRunning = stillRunning;
+    this.highestBid = highestBid;
+    this.highestCounterOffer = highestCounterOffer;
+    this.finishedAtDc = finishedAtDc;
+  }
+
+  AuctionState withNewHighestBid(Bid bid) {
+    assertTrue(stillRunning);
+    assertTrue(isHigherBid(bid, highestBid));
+    return new AuctionState(
+        stillRunning, bid, highestBid.offer, finishedAtDc); // keep last highest bid around
+  }
+
+  AuctionState withTooLowBid(Bid bid) {
+    assertTrue(stillRunning);
+    assertTrue(isHigherBid(highestBid, bid));
+    return new AuctionState(
+        stillRunning, highestBid, Math.max(highestCounterOffer, bid.offer), finishedAtDc);
+  }
+
+  static Boolean isHigherBid(Bid first, Bid second) {
+    return first.offer &gt; second.offer
+        || (first.offer == second.offer &amp;&amp; first.timestamp.isBefore(second.timestamp))
+        || // if equal, first one wins
+        // If timestamps are equal, choose by dc where the offer was submitted
+        // In real auctions, this last comparison should be deterministic but unpredictable, so
+        // that submitting to a
+        // particular DC would not be an advantage.
+        (first.offer == second.offer
+            &amp;&amp; first.timestamp.equals(second.timestamp)
+            &amp;&amp; first.originReplica.id().compareTo(second.originReplica.id()) &lt; 0);
+  }
+
+  AuctionState addFinishedAtReplica(String replica) {
+    Set&lt;String&gt; s = new HashSet&lt;&gt;(finishedAtDc);
+    s.add(replica);
+    return new AuctionState(
+        false, highestBid, highestCounterOffer, Collections.unmodifiableSet(s));
+  }
+
+  public AuctionState close() {
+    return new AuctionState(false, highestBid, highestCounterOffer, Collections.emptySet());
+  }
+
+  public boolean isClosed() {
+    return !stillRunning &amp;&amp; finishedAtDc.isEmpty();
+  }
+}</code></pre></dd>
+</dl>
+<p>The state consists of a flag that keeps track of whether the auction is still active, the currently highest bid, and the highest counter offer so far.</p>
+<p>In the <code>eventHandler</code>, we handle persisted events to drive the state change. When a new bid is registered,</p>
+<ul>
+  <li>it needs to be decided whether the new bid is the winning bid or not</li>
+  <li>the state needs to be updated accordingly</li>
+</ul>
+<p>The point of CRDTs is that the state must be end up being the same regardless of the order the events have been processed. We can see how this works in the auction example: we are only interested in the highest bid, so, if we can define an ordering on all bids, it should suffice to compare the new bid with currently highest to eventually end up with the globally highest regardless of the order in which the events come in.</p>
+<p>The ordering between bids is crucial, therefore. We need to ensure that it is deterministic and does not depend on local state outside of our state class so that all replicas come to the same result. We define the ordering as this:</p>
+<ul>
+  <li>A higher bid wins.</li>
+  <li>If there&rsquo;s a tie between the two highest bids, the bid that was registered earlier wins. For that we keep track of the  (local) timestamp the bid was registered.</li>
+  <li>We need to make sure that no timestamp is used twice in the same replica (missing in this example).</li>
+  <li>If there&rsquo;s a tie between the timestamp, we define an arbitrary but deterministic ordering on the replicas, in our case  we just compare the name strings of the replicas. That&rsquo;s why we need to keep the identifier of the replica where a bid was registered  for every <code>Bid</code>.</li>
+</ul>
+<p>If the new bid was higher, we keep this one as the new highest and keep the amount of the former highest as the <code>highestCounterOffer</code>. If the new bid was lower, we just update the <code>highestCounterOffer</code> if necessary.</p>
+<p>Using those rules, the order of incoming does not matter. Replicas will eventually converge to the same result.</p>
+<h2><a href="#triggering-closing" name="triggering-closing" class="anchor"><span class="anchor-link"></span></a>Triggering closing</h2>
+<p>In the auction we want to ensure that all bids are seen before declaring a winner. That means that an auction can only be closed once all replicas have seen all bids.</p>
+<p>In the event handler above, when recovery is not running, it calls <code>eventTriggers</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/scala/docs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleSpec.scala#L259-L295" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private def eventTriggers(event: Event, newState: AuctionState): Unit = {
+  event match {
+    case finished: AuctionFinished =&gt;
+      newState.phase match {
+        case Closing(alreadyFinishedAtDc) =&gt;
+          context.log.infoN(
+            &quot;AuctionFinished at {}, already finished at [{}]&quot;,
+            finished.atReplica,
+            alreadyFinishedAtDc.mkString(&quot;, &quot;))
+          if (alreadyFinishedAtDc(replicationContext.replicaId)) {
+            if (shouldClose(newState)) context.self ! Close
+          } else {
+            context.log.info(&quot;Sending finish to self&quot;)
+            context.self ! Finish
+          }
+
+        case _ =&gt; // no trigger for this state
+      }
+    case _ =&gt; // no trigger for this event
+  }
+}
+
+private def shouldClose(state: AuctionState): Boolean = {
+  responsibleForClosing &amp;&amp; (state.phase match {
+    case Closing(alreadyFinishedAtDc) =&gt;
+      val allDone = allReplicas.diff(alreadyFinishedAtDc).isEmpty
+      if (!allDone) {
+        context.log.info2(
+          s&quot;Not closing auction as not all DCs have reported finished. All DCs: {}. Reported finished {}&quot;,
+          allReplicas,
+          alreadyFinishedAtDc)
+      }
+      allDone
+    case _ =&gt;
+      false
+  })
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence-typed-tests/src/test/java/jdocs/org/apache/pekko/persistence/typed/ReplicatedAuctionExampleTest.java#L433-L450" target="_blank" title="Go to snippet source">source</a><code class="language-java">private void eventTriggers(AuctionFinished event, AuctionState newState) {
+  if (newState.finishedAtDc.contains(getReplicationContext().replicaId().id())) {
+    if (shouldClose(newState)) {
+      context.getSelf().tell(Close.INSTANCE);
+    }
+  } else {
+    context.getSelf().tell(Finish.INSTANCE);
+  }
+}
+
+private boolean shouldClose(AuctionState state) {
+  return responsibleForClosing
+      &amp;&amp; !state.isClosed()
+      &amp;&amp; getReplicationContext().getAllReplicas().stream()
+          .map(ReplicaId::id)
+          .collect(Collectors.toSet())
+          .equals(state.finishedAtDc);
+}</code></pre></dd>
+</dl>
+<p>The event trigger uses the <code>ReplicationContext</code> to decide when to trigger the Finish of the action. When a replica saves the <code>AuctionFinished</code> event it checks whether it should close the auction. For the close to happen the replica must be the one designated to close and all replicas must have reported that they have finished. </p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/replicated-eventsourcing-auction.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/replicated-eventsourcing-cart.html">Shopping cart example</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/replicated-eventsourcing-auction.html#auction-example" class="header">Auction example</a>
+  <ul>
+    <li><a href="../typed/replicated-eventsourcing-auction.html#triggering-closing" class="header">Triggering closing</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

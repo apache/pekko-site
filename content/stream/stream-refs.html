@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>StreamRefs - Reactive Streams over the network · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-refs.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="active page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="active page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>StreamRefs - Reactive Streams over the network</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#streamrefs-reactive-streams-over-the-network" name="streamrefs-reactive-streams-over-the-network" class="anchor"><span class="anchor-link"></span></a>StreamRefs - Reactive Streams over the network</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2><div class="callout warning "><div class="callout-title">Warning</div>
+<p>This module is currently marked as <a href="../common/may-change.html">may change</a> in the sense  of being the subject of final development. This means that the API or semantics can  change without warning or deprecation period, and it is not recommended to use  this module in production just yet.</p></div>
+<p>Stream references, or &ldquo;stream refs&rdquo; for short, allow running Akka Streams across multiple nodes within an Akka Cluster. </p>
+<p>Unlike heavier &ldquo;streaming data processing&rdquo; frameworks, Akka Streams are neither &ldquo;deployed&rdquo; nor automatically distributed. Akka stream refs are, as the name implies, references to existing parts of a stream, and can be used to create a distributed processing framework or to introduce such capabilities in specific parts of your application.</p>
+<p>Stream refs are trivial to use in existing clustered Akka applications and require no additional configuration or setup. They automatically maintain flow-control / back-pressure over the network and employ Akka&rsquo;s failure detection mechanisms to fail-fast (&ldquo;let it crash!&rdquo;) in the case of failures of remote nodes. They can be seen as an implementation of the <a href="https://www.michaelpollmeier.com/akka-work-pulling-pattern">Work Pulling Pattern</a>, which one would otherwise implement manually.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>A useful way to think about stream refs is:  &ldquo;like an <code>ActorRef</code>, but for Akka Streams&rsquo;s <code>Source</code> and <code>Sink</code>&rdquo;.</p>
+<p>Stream refs refer to an already existing, possibly remote, <code>Sink</code> or <code>Source</code>.  This is not to be mistaken with deploying streams remotely, which this feature is not intended for.</p></div><div class="callout warning "><div class="callout-title">IMPORTANT</div>
+<p>Use stream refs with Akka Cluster. The <a href="../typed/cluster-concepts.html#quarantined">failure detector can cause quarantining</a> if plain Akka remoting is used.</p></div>
+<h2><a href="#stream-references" name="stream-references" class="anchor"><span class="anchor-link"></span></a>Stream References</h2>
+<p>The prime use case for stream refs is to replace raw actor or HTTP messaging in systems that expect long-running streams of data between two entities. Often they can be used to effectively achieve point-to-point streaming without the need to set up additional message brokers or similar secondary clusters.</p>
+<p>Stream refs are well-suited for any system in which you need to send messages between nodes in a flow-controlled fashion. Typical examples include sending work requests to worker nodes as fast as possible, but not faster than the worker nodes can process them, or sending data elements that the downstream may be slow at processing. It is recommended to mix and introduce stream refs in actor-messaging-based systems, where the actor messaging is used to orchestrate and prepare such message flows, and later the stream refs are used to do the flow-controlled message transfer. </p>
+<p>Stream refs are not persistent. However, it is simple to build a resumable stream by introducing such a protocol in the actor messaging layer. Stream refs are absolutely expected to be sent over Akka remoting to other nodes within a cluster using Akka Cluster, and therefore complement, instead of compete, with plain Actor messaging. Actors would usually be used to establish the stream via some initial message saying, &ldquo;I want to offer you many log elements (the stream ref),&rdquo; or conversely, &ldquo;if you need to send me much data, here is the stream ref you can use to do so&rdquo;.</p>
+<p>Since the two sides (&ldquo;local&rdquo; and &ldquo;remote&rdquo;) of each reference may be confusing to refer to as &ldquo;remote&rdquo; and &ldquo;local&rdquo; &ndash; since either side can be seen as &ldquo;local&rdquo; or &ldquo;remote&rdquo; depending how we look at it &ndash; we propose using the terminology &ldquo;origin&rdquo; and &ldquo;target&rdquo;, which is defined by where the stream ref was created. For <code>SourceRef</code>s, the &ldquo;origin&rdquo; is the side which has the data that it is going to stream out. For <code>SinkRef</code>s, the &ldquo;origin&rdquo; side is the actor system that is ready to receive the data and has allocated the ref. Those two may be seen as duals of each other. However, to explain patterns about sharing references, we found this wording to be rather useful.</p>
+<h3><a href="#source-refs-offering-streaming-data-to-a-remote-system" name="source-refs-offering-streaming-data-to-a-remote-system" class="anchor"><span class="anchor-link"></span></a>Source Refs - offering streaming data to a remote system</h3>
+<p>A <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/SourceRef.html" title="pekko.stream.SourceRef"><code>`SourceRef`</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/SourceRef.html" title="pekko.stream.SourceRef"><code>`SourceRef`</code></a></span> can be offered to a remote actor system in order for it to consume some source of data that we have prepared locally. </p>
+<p>In order to share a <code>Source</code> with a remote endpoint you need to materialize it by running it into the <code>Sink.sourceRef</code>. That <code>Sink</code> materializes the <code>SourceRef</code> that you can then send to other nodes.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L26-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream.SourceRef
+import pekko.pattern.pipe
+
+case class RequestLogs(streamId: Int)
+case class LogsOffer(streamId: Int, sourceRef: SourceRef[String])
+
+class DataSource extends Actor {
+
+  def receive = {
+    case RequestLogs(streamId) =&gt;
+      // obtain the source you want to offer:
+      val source: Source[String, NotUsed] = streamLogs(streamId)
+
+      // materialize the SourceRef:
+      val ref: SourceRef[String] = source.runWith(StreamRefs.sourceRef())
+
+      // wrap the SourceRef in some domain message, such that the sender knows what source it is
+      val reply = LogsOffer(streamId, ref)
+
+      // reply to sender
+      sender() ! reply
+  }
+
+  def streamLogs(streamId: Long): Source[String, NotUsed] = ???
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L41-L73" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class RequestLogs {
+  public final long streamId;
+
+  public RequestLogs(long streamId) {
+    this.streamId = streamId;
+  }
+}
+
+static class LogsOffer {
+  final SourceRef&lt;String&gt; sourceRef;
+
+  public LogsOffer(SourceRef&lt;String&gt; sourceRef) {
+    this.sourceRef = sourceRef;
+  }
+}
+
+static class DataSource extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(RequestLogs.class, this::handleRequestLogs).build();
+  }
+
+  private void handleRequestLogs(RequestLogs requestLogs) {
+    Source&lt;String, NotUsed&gt; logs = streamLogs(requestLogs.streamId);
+    SourceRef&lt;String&gt; logsRef = logs.runWith(StreamRefs.sourceRef(), mat);
+
+    getSender().tell(new LogsOffer(logsRef), getSelf());
+  }
+
+  private Source&lt;String, NotUsed&gt; streamLogs(long streamId) {
+    return Source.repeat(&quot;[INFO] some interesting logs here (for id: &quot; + streamId + &quot;)&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<p>The origin actor which creates and owns the <code>Source</code> could also perform some validation or additional setup when preparing the <code>Source</code>. Once it has handed out the <code>SourceRef</code>, the remote side can run it like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L55-L64" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sourceActor = system.actorOf(Props[DataSource](), &quot;dataSource&quot;)
+
+sourceActor ! RequestLogs(1337)
+val offer = expectMsgType[LogsOffer]
+
+// implicitly converted to a Source:
+offer.sourceRef.runWith(Sink.foreach(println))
+// alternatively explicitly obtain Source from SourceRef:
+// offer.sourceRef.source.runWith(Sink.foreach(println))
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L81-L87" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef sourceActor = system.actorOf(Props.create(DataSource.class), &quot;dataSource&quot;);
+
+sourceActor.tell(new RequestLogs(1337), getTestActor());
+LogsOffer offer = expectMsgClass(LogsOffer.class);
+
+offer.sourceRef.getSource().runWith(Sink.foreach(log -&gt; System.out.println(log)), mat);
+</code></pre></dd>
+</dl>
+<p>The process of preparing and running a <code>SourceRef</code>-powered distributed stream is shown by the animation below:</p>
+<p><img src="../images/source-ref-animation.gif" alt="SourceRef usage animation" /></p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>A <code>SourceRef</code> is <em>by design</em> &ldquo;single-shot&rdquo;; i.e., it may only be materialized once.  This is in order to not complicate the mental model of what materialization means.</p>
+<p>Multicast can be mimicked by starting a <code>BroadcastHub</code> operator once, then attaching multiple new streams to it, each  emitting a new stream ref. This way, materialization of the <code>BroadcastHub</code>s Source creates a unique single-shot  stream ref, however they can all be powered using a single <code>Source</code> &ndash; located before the <code>BroadcastHub</code> operator.</p></div>
+<h3><a href="#sink-refs-offering-to-receive-streaming-data-from-a-remote-system" name="sink-refs-offering-to-receive-streaming-data-from-a-remote-system" class="anchor"><span class="anchor-link"></span></a>Sink Refs - offering to receive streaming data from a remote system</h3>
+<p>The dual of <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/SinkRef.html" title="pekko.stream.SinkRef"><code>`SourceRef`</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/SinkRef.html" title="pekko.stream.SinkRef"><code>`SourceRef`</code></a></span>s.</p>
+<p>They can be used to offer the other side the capability to send to the <em>origin</em> side data in a streaming, flow-controlled fashion. The origin here allocates a <code>Sink</code>, which could be as simple as a <code>Sink.foreach</code> or as advanced as a complex <code>Sink</code> which streams the incoming data into various other systems (e.g., any of the Alpakka-provided <code>Sink</code>s).</p><div class="callout note "><div class="callout-title">Note</div>
+<p>To form a good mental model of <code>SinkRef</code>s, you can think of them as being similar to &ldquo;passive mode&rdquo; in FTP.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L70-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.SinkRef
+
+case class PrepareUpload(id: String)
+case class MeasurementsSinkReady(id: String, sinkRef: SinkRef[String])
+
+class DataReceiver extends Actor {
+
+  def receive = {
+    case PrepareUpload(nodeId) =&gt;
+      // obtain the source you want to offer:
+      val sink: Sink[String, NotUsed] = logsSinkFor(nodeId)
+
+      // materialize the SinkRef (the remote is like a source of data for us):
+      val ref: SinkRef[String] = StreamRefs.sinkRef[String]().to(sink).run()
+
+      // wrap the SinkRef in some domain message, such that the sender knows what source it is
+      val reply = MeasurementsSinkReady(nodeId, ref)
+
+      // reply to sender
+      sender() ! reply
+  }
+
+  def logsSinkFor(nodeId: String): Sink[String, NotUsed] = ???
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L94-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class PrepareUpload {
+  final String id;
+
+  public PrepareUpload(String id) {
+    this.id = id;
+  }
+}
+
+static class MeasurementsSinkReady {
+  final String id;
+  final SinkRef&lt;String&gt; sinkRef;
+
+  public MeasurementsSinkReady(String id, SinkRef&lt;String&gt; ref) {
+    this.id = id;
+    this.sinkRef = ref;
+  }
+}
+
+static class DataReceiver extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            PrepareUpload.class,
+            prepare -&gt; {
+              Sink&lt;String, NotUsed&gt; sink = logsSinkFor(prepare.id);
+              SinkRef&lt;String&gt; sinkRef = StreamRefs.&lt;String&gt;sinkRef().to(sink).run(mat);
+
+              getSender().tell(new MeasurementsSinkReady(prepare.id, sinkRef), getSelf());
+            })
+        .build();
+  }
+
+  private Sink&lt;String, NotUsed&gt; logsSinkFor(String id) {
+    return Sink.&lt;String&gt;ignore().mapMaterializedValue(done -&gt; NotUsed.getInstance());
+  }
+}</code></pre></dd>
+</dl>
+<p>Using the offered <code>SinkRef</code> to send data to the origin of the <code>Sink</code> is also simple, as we can treat the <code>SinkRef</code> as any other <code>Sink</code> and directly <code>runWith</code> or <code>run</code> with it.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L100-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val receiver = system.actorOf(Props[DataReceiver](), &quot;receiver&quot;)
+
+receiver ! PrepareUpload(&quot;system-42-tmp&quot;)
+val ready = expectMsgType[MeasurementsSinkReady]
+
+// stream local metrics to Sink&#39;s origin:
+localMetrics().runWith(ready.sinkRef)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L138-L143" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef receiver = system.actorOf(Props.create(DataReceiver.class), &quot;dataReceiver&quot;);
+
+receiver.tell(new PrepareUpload(&quot;system-42-tmp&quot;), getTestActor());
+MeasurementsSinkReady ready = expectMsgClass(MeasurementsSinkReady.class);
+
+Source.repeat(&quot;hello&quot;).runWith(ready.sinkRef.getSink(), mat);</code></pre></dd>
+</dl>
+<p>The process of preparing and running a <code>SinkRef</code>-powered distributed stream is shown by the animation below:</p>
+<p><img src="../images/sink-ref-animation.gif" alt="SourceRef usage animation" /></p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>A <code>SinkRef</code> is <em>by design</em> &ldquo;single-shot&rdquo;; i.e., it may only be materialized once.  This is in order to not complicate the mental model of what materialization means.</p>
+<p>If you have a use case for building a fan-in operation that accepts writes from multiple remote nodes,  you can build your <code>Sink</code> and prepend it with a <code>MergeHub</code> operator, each time materializing a new <code>SinkRef</code>  targeting that <code>MergeHub</code>. This has the added benefit of giving you full control of how to merge these streams  (i.e., by using &ldquo;merge preferred&rdquo; or any other variation of the fan-in operators).</p></div>
+<h3><a href="#delivery-guarantees" name="delivery-guarantees" class="anchor"><span class="anchor-link"></span></a>Delivery guarantees</h3>
+<p>Stream refs utilise normal actor messaging for their transport, and therefore provide the same level of basic delivery guarantees. Stream refs do extend the semantics somewhat, through demand re-delivery and sequence fault detection. In other words:</p>
+<ul>
+  <li>messages are sent over actor remoting
+    <ul>
+      <li>which relies on TCP (classic remoting or Artery TCP) or Aeron UDP for basic redelivery mechanisms</li>
+    </ul>
+  </li>
+  <li>messages are guaranteed to to be in-order</li>
+  <li>messages can be lost, however:
+    <ul>
+      <li>a <em>dropped demand signal</em> will be re-delivered automatically (similar to system messages)</li>
+      <li>a <em>dropped element signal</em> will cause the stream to <em>fail</em></li>
+    </ul>
+  </li>
+</ul>
+<h2><a href="#bulk-stream-references" name="bulk-stream-references" class="anchor"><span class="anchor-link"></span></a>Bulk Stream References</h2><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Bulk stream references are not implemented yet.  See ticket <a href="https://github.com/akka/akka/issues/24276">Bulk Transfer Stream Refs #24276</a> to track progress or signal demand for this feature. </p></div>
+<p>Bulk stream refs can be used to create simple side-channels to transfer humongous amounts of data such as huge log files, messages or even media, with as much ease as if it was a trivial local stream.</p>
+<h2><a href="#serialization-of-sourceref-and-sinkref" name="serialization-of-sourceref-and-sinkref" class="anchor"><span class="anchor-link"></span></a>Serialization of SourceRef and SinkRef</h2>
+<p>StreamRefs require serialization, since the whole point is to send them between nodes of a cluster. A built in serializer is provided when <code>SourceRef</code> and <code>SinkRef</code> are sent directly as messages however the recommended use is to wrap them into your own actor message classes. </p>
+<p>When <a href="../serialization-jackson.html">Akka Jackson</a> is used, serialization of wrapped <code>SourceRef</code> and <code>SinkRef</code> will work out of the box.</p>
+<p>If you are using some other form of serialization you will need to use the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/StreamRefResolver.html" title="org.apache.pekko.stream.StreamRefResolver"><code>StreamRefResolver</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/StreamRefResolver.html" title="org.apache.pekko.stream.StreamRefResolver"><code>StreamRefResolver</code></a></span> extension from your serializer to get the <code>SourceRef</code> and <code>SinkRef</code>. The extension provides the methods <code>toSerializationFormat(sink or source)</code> to transform from refs to string and <code>resolve{Sink,Source}Ref(String)</code> to resolve refs from strings.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<h3><a href="#stream-reference-subscription-timeouts" name="stream-reference-subscription-timeouts" class="anchor"><span class="anchor-link"></span></a>Stream reference subscription timeouts</h3>
+<p>All stream references have a subscription timeout, which is intended to prevent resource leaks in case a remote node requests the allocation of many streams but never actually runs them. In order to prevent this, each stream reference has a default timeout (of 30 seconds), after which the origin will abort the stream offer if the target has not materialized the stream ref. After the timeout has triggered, materialization of the target side will fail, pointing out that the origin is missing.</p>
+<p>Since these timeouts are often very different based on the kind of stream offered, and there can be many different kinds of them in the same application, it is possible to not only configure this setting globally (<code>pekko.stream.materializer.stream-ref.subscription-timeout</code>), but also via attributes:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L112-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// configure the timeout for source
+import scala.concurrent.duration._
+import org.apache.pekko.stream.StreamRefAttributes
+
+// configuring Sink.sourceRef (notice that we apply the attributes to the Sink!):
+Source
+  .repeat(&quot;hello&quot;)
+  .runWith(StreamRefs.sourceRef().addAttributes(StreamRefAttributes.subscriptionTimeout(5.seconds)))
+
+// configuring SinkRef.source:
+StreamRefs
+  .sinkRef()
+  .addAttributes(StreamRefAttributes.subscriptionTimeout(5.seconds))
+  .runWith(Sink.ignore) // not very interesting Sink, just an example</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L154-L165" target="_blank" title="Go to snippet source">source</a><code class="language-java">FiniteDuration timeout = FiniteDuration.create(5, TimeUnit.SECONDS);
+Attributes timeoutAttributes = StreamRefAttributes.subscriptionTimeout(timeout);
+
+// configuring Sink.sourceRef (notice that we apply the attributes to the Sink!):
+Source.repeat(&quot;hello&quot;)
+    .runWith(StreamRefs.&lt;String&gt;sourceRef().addAttributes(timeoutAttributes), mat);
+
+// configuring SinkRef.source:
+StreamRefs.&lt;String&gt;sinkRef()
+    .addAttributes(timeoutAttributes)
+    .runWith(Sink.&lt;String&gt;ignore(), mat); // not very interesting sink, just an example
+</code></pre></dd>
+</dl>
+<h3><a href="#general-configuration" name="general-configuration" class="anchor"><span class="anchor-link"></span></a>General configuration</h3>
+<p>Other settings can be set globally in your <code>application.conf</code>, by overriding any of the following values in the <code>pekko.stream.materializer.stream-ref.*</code> keyspace:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream/src/main/resources/reference.conf#L129-L161" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># configure defaults for SourceRef and SinkRef
+stream-ref {
+  # Buffer of a SinkRef that is used to batch Request elements from the other side of the stream ref
+  #
+  # The buffer will be attempted to be filled eagerly even while the local stage did not request elements,
+  # because the delay of requesting over network boundaries is much higher.
+  buffer-capacity = 32
+
+  # Demand is signalled by sending a cumulative demand message (&quot;requesting messages until the n-th sequence number)
+  # Using a cumulative demand model allows us to re-deliver the demand message in case of message loss (which should
+  # be very rare in any case, yet possible -- mostly under connection break-down and re-establishment).
+  #
+  # The semantics of handling and updating the demand however are in-line with what Reactive Streams dictates.
+  #
+  # In normal operation, demand is signalled in response to arriving elements, however if no new elements arrive
+  # within `demand-redelivery-interval` a re-delivery of the demand will be triggered, assuming that it may have gotten lost.
+  demand-redelivery-interval = 1 second
+
+  # Subscription timeout, during which the &quot;remote side&quot; MUST subscribe (materialize) the handed out stream ref.
+  # This timeout does not have to be very low in normal situations, since the remote side may also need to
+  # prepare things before it is ready to materialize the reference. However the timeout is needed to avoid leaking
+  # in-active streams which are never subscribed to.
+  subscription-timeout = 30 seconds
+
+  # In order to guard the receiving end of a stream ref from never terminating (since awaiting a Completion or Failed
+  # message) after / before a Terminated is seen, a special timeout is applied once Terminated is received by it.
+  # This allows us to terminate stream refs that have been targeted to other nodes which are Downed, and as such the
+  # other side of the stream ref would never send the &quot;final&quot; terminal message.
+  #
+  # The timeout specifically means the time between the Terminated signal being received and when the local SourceRef
+  # determines to fail itself, assuming there was message loss or a complete partition of the completion signal.
+  final-termination-signal-deadline = 2 seconds
+}</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-refs.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-parallelism.html">Pipelining and Parallelism</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-refs.html#streamrefs-reactive-streams-over-the-network" class="header">StreamRefs - Reactive Streams over the network</a>
+  <ul>
+    <li><a href="../stream/stream-refs.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-refs.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-refs.html#stream-references" class="header">Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#bulk-stream-references" class="header">Bulk Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#serialization-of-sourceref-and-sinkref" class="header">Serialization of SourceRef and SinkRef</a></li>
+    <li><a href="../stream/stream-refs.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

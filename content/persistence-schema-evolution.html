@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Schema Evolution for Event Sourced Actors · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentpersistence-schema-evolution.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="active page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="active page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Akka Documentation</a></li>
+  <li><a href="typed/index-persistence.html">Persistence (Event Sourcing)</a></li>
+  <li>Schema Evolution for Event Sourced Actors</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#schema-evolution-for-event-sourced-actors" name="schema-evolution-for-event-sourced-actors" class="anchor"><span class="anchor-link"></span></a>Schema Evolution for Event Sourced Actors</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>This documentation page touches upon <a href="persistence.html">Akka Persistence</a>, so to follow those examples you will want to depend on:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "org.apache.pekko" %% "akka-persistence" % PekkoVersion,
+  "org.apache.pekko" %% "akka-persistence-testkit" % PekkoVersion % Test
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-persistence_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-persistence_${versions.ScalaBinary}"
+  testImplementation "org.apache.pekko:akka-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>When working on long running projects using <a href="persistence.html">Persistence</a>, or any kind of <a href="https://martinfowler.com/eaaDev/EventSourcing.html">Event Sourcing</a> architectures, schema evolution becomes one of the more important technical aspects of developing your application. The requirements as well as our own understanding of the business domain may (and will) change in time.</p>
+<p>In fact, if a project matures to the point where you need to evolve its schema to adapt to changing business requirements you can view this as first signs of its success – if you wouldn&rsquo;t need to adapt anything over an apps lifecycle that could mean that no-one is really using it actively.</p>
+<p>In this chapter we will investigate various schema evolution strategies and techniques from which you can pick and choose the ones that match your domain and challenge at hand.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>This page proposes a number of possible solutions to the schema evolution problem and explains how some of the utilities Akka provides can be used to achieve this, it is by no means a complete (closed) set of solutions.</p>
+<p>Sometimes, based on the capabilities of your serialization formats, you may be able to evolve your schema in different ways than outlined in the sections below. If you discover useful patterns or techniques for schema evolution feel free to submit Pull Requests to this page to extend it.</p></div>
+<h2><a href="#schema-evolution-in-event-sourced-systems" name="schema-evolution-in-event-sourced-systems" class="anchor"><span class="anchor-link"></span></a>Schema evolution in event-sourced systems</h2>
+<p>In recent years we have observed a tremendous move towards immutable append-only datastores, with event-sourcing being the prime technique successfully being used in these settings. For an excellent overview why and how immutable data makes scalability and systems design much simpler you may want to read Pat Helland&rsquo;s excellent <a href="http://cidrdb.org/cidr2015/Papers/CIDR15_Paper16.pdf">Immutability Changes Everything</a> whitepaper.</p>
+<p>Since with <a href="https://martinfowler.com/eaaDev/EventSourcing.html">Event Sourcing</a> the <strong>events are immutable</strong> and usually never deleted – the way schema evolution is handled differs from how one would go about it in a mutable database setting (e.g. in typical CRUD database applications).</p>
+<p>The system needs to be able to continue to work in the presence of &ldquo;old&rdquo; events which were stored under the &ldquo;old&rdquo; schema. We also want to limit complexity in the business logic layer, exposing a consistent view over all of the events of a given type to <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a></span> s and <a href="persistence-query.html">persistence queries</a>. This allows the business logic layer to focus on solving business problems instead of having to explicitly deal with different schemas.</p>
+<p>In summary, schema evolution in event sourced systems exposes the following characteristics:</p>
+<ul>
+  <li>Allow the system to continue operating without large scale migrations to be applied,</li>
+  <li>Allow the system to read &ldquo;old&rdquo; events from the underlying storage, however present them in a &ldquo;new&rdquo; view to the application logic,</li>
+  <li>Transparently promote events to the latest versions during recovery (or queries) such that the business logic need not consider multiple versions of events</li>
+</ul>
+<h3><a href="#types-of-schema-evolution" name="types-of-schema-evolution" class="anchor"><span class="anchor-link"></span></a>Types of schema evolution</h3>
+<p>Before we explain the various techniques that can be used to safely evolve the schema of your persistent events over time, we first need to define what the actual problem is, and what the typical styles of changes are.</p>
+<p>Since events are never deleted, we need to have a way to be able to replay (read) old events, in such way that does not force the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html" title="pekko.persistence.PersistentActor"><code>PersistentActor</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActor.html" title="pekko.persistence.AbstractPersistentActor"><code>AbstractPersistentActor</code></a></span> to be aware of all possible versions of an event that it may have persisted in the past. Instead, we want the Actors to work on some form of &ldquo;latest&rdquo; version of the event and provide some means of either converting old &ldquo;versions&rdquo; of stored events into this &ldquo;latest&rdquo; event type, or constantly evolve the event definition - in a backwards compatible way - such that the new deserialization code can still read old events.</p>
+<p>The most common schema changes you will likely are:</p>
+<ul>
+  <li><a href="persistence-schema-evolution.html#add-field">adding a field to an event type</a>,</li>
+  <li><a href="persistence-schema-evolution.html#rename-field">remove or rename field in event type</a>,</li>
+  <li><a href="persistence-schema-evolution.html#remove-event-class">remove event type</a>,</li>
+  <li><a href="persistence-schema-evolution.html#split-large-event-into-smaller">split event into multiple smaller events</a>.</li>
+</ul>
+<p>The following sections will explain some patterns which can be used to safely evolve your schema when facing those changes.</p>
+<h2><a href="#picking-the-right-serialization-format" name="picking-the-right-serialization-format" class="anchor"><span class="anchor-link"></span></a>Picking the right serialization format</h2>
+<p>Picking the serialization format is a very important decision you will have to make while building your application. It affects which kind of evolutions are simple (or hard) to do, how much work is required to add a new datatype, and, last but not least, serialization performance.</p>
+<p>If you find yourself realising you have picked &ldquo;the wrong&rdquo; serialization format, it is always possible to change the format used for storing new events, however you would have to keep the old deserialization code in order to be able to replay events that were persisted using the old serialization scheme. It is possible to &ldquo;rebuild&rdquo; an event-log from one serialization format to another one, however it may be a more involved process if you need to perform this on a live system.</p>
+<p><a href="serialization-jackson.html">Serialization with Jackson</a> is a good choice in many cases and our recommendation if you don&rsquo;t have other preference. It also has support for <a href="serialization-jackson.html#schema-evolution">Schema Evolution</a>.</p>
+<p><a href="https://developers.google.com/protocol-buffers/">Google Protocol Buffers</a> is good if you want more control over the schema evolution of your messages, but it requires more work to develop and maintain the mapping between serialized representation and domain representation.</p>
+<p>Binary serialization formats that we have seen work well for long-lived applications include the very flexible IDL based: <a href="https://developers.google.com/protocol-buffers">Google Protocol Buffers</a>, <a href="https://thrift.apache.org/">Apache Thrift</a> or <a href="https://avro.apache.org">Apache Avro</a>. Avro schema evolution is more &ldquo;entire schema&rdquo; based, instead of single fields focused like in protobuf or thrift, and usually requires using some kind of schema registry.</p>
+<p>There are plenty excellent blog posts explaining the various trade-offs between popular serialization formats, one post we would like to highlight is the very well illustrated <a href="https://martin.kleppmann.com/2012/12/05/schema-evolution-in-avro-protocol-buffers-thrift.html">Schema evolution in Avro, Protocol Buffers and Thrift</a> by Martin Kleppmann.</p>
+<h3><a href="#provided-default-serializers" name="provided-default-serializers" class="anchor"><span class="anchor-link"></span></a>Provided default serializers</h3>
+<p>Akka Persistence provides <a href="https://developers.google.com/protocol-buffers/">Google Protocol Buffers</a> based serializers (using <a href="serialization.html">Akka Serialization</a>) for its own message types such as <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistentRepr.html" title="org.apache.pekko.persistence.PersistentRepr"><code>PersistentRepr</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/PersistentRepr.html" title="org.apache.pekko.persistence.PersistentRepr"><code>PersistentRepr</code></a></span>, <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtomicWrite.html" title="org.apache.pekko.persistence.AtomicWrite"><code>AtomicWrite</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/AtomicWrite.html" title="org.apache.pekko.persistence.AtomicWrite"><code>AtomicWrite</code></a></span> and snapshots. Journal plugin implementations <em>may</em> choose to use those provided serializers, or pick a serializer which suits the underlying database better.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Serialization is <strong>NOT</strong> handled automatically by Akka Persistence itself. Instead, it only provides the above described serializers, and in case a <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/journal/AsyncWriteJournal.html" title="pekko.persistence.journal.AsyncWriteJournal"><code>AsyncWriteJournal</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/journal/japi/AsyncWriteJournal.html" title="pekko.persistence.journal.japi.AsyncWriteJournal"><code>AsyncWriteJournal</code></a></span> plugin implementation chooses to use them directly, the above serialization scheme will be used.</p>
+<p>Please refer to your write journal&rsquo;s documentation to learn more about how it handles serialization!</p>
+<p>For example, some journals may choose to not use Akka Serialization <em>at all</em> and instead store the data in a format that is more &ldquo;native&rdquo; for the underlying datastore, e.g. using JSON or some other kind of format that the target datastore understands directly.</p></div>
+<p>The below figure explains how the default serialization scheme works, and how it fits together with serializing the user provided message itself, which we will from here on refer to as the <code>payload</code> (highlighted in yellow):</p>
+<p><img src="./images/persistent-message-envelope.png" alt="persistent-message-envelope.png" /></p>
+<p>Akka Persistence provided serializers wrap the user payload in an envelope containing all persistence-relevant information. <strong>If the Journal uses provided Protobuf serializers for the wrapper types (e.g. PersistentRepr), then the payload will be serialized using the user configured serializer, and if none is provided explicitly, Java serialization will be used for it.</strong></p>
+<p>The blue colored regions of the <code>PersistentMessage</code> indicate what is serialized using the generated protocol buffers serializers, and the yellow payload indicates the user provided event (by calling <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/persistence/PersistentActor.html#persist[A](event:A)(handler:A=%3EUnit):Unit" title="pekko.persistence.PersistentActor"><code>persist(payload)(...)</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/persistence/AbstractPersistentActorLike.html#persist(A,org.apache.pekko.japi.Procedure)" title="pekko.persistence.AbstractPersistentActorLike"><code>persist(payload,...)</code></a></span>. As you can see, the <code>PersistentMessage</code> acts as an envelope around the payload, adding various fields related to the origin of the event (<code>persistenceId</code>, <code>sequenceNr</code> and more).</p>
+<p>More advanced techniques (e.g. <a href="persistence-schema-evolution.html#remove-event-class">Remove event class and ignore events</a>) will dive into using the manifests for increasing the flexibility of the persisted vs. exposed types even more. However for now we will focus on the simpler evolution techniques, concerning only configuring the payload serializers.</p>
+<p>By default the <code>payload</code> will be serialized using Java Serialization. This is fine for testing and initial phases of your development (while you&rsquo;re still figuring out things, and the data will not need to stay persisted forever). However, once you move to production you should really <em>pick a different serializer for your payloads</em>.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Do not rely on Java serialization for <em>serious</em> application development! It does not lean itself well to evolving schemas over long periods of time, and its performance is also not very high (it never was designed for high-throughput scenarios).</p></div>
+<h3><a href="#configuring-payload-serializers" name="configuring-payload-serializers" class="anchor"><span class="anchor-link"></span></a>Configuring payload serializers</h3>
+<p>This section aims to highlight the complete basics on how to define custom serializers using <a href="serialization.html">Akka Serialization</a>. Many journal plugin implementations use Akka Serialization, thus it is tremendously important to understand how to configure it to work with your event classes.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Read the <a href="serialization.html">Akka Serialization</a> docs to learn more about defining custom serializers.</p></div>
+<p>The below snippet explains in the minimal amount of lines how a custom serializer can be registered. For more in-depth explanations on how serialization picks the serializer to use etc, please refer to its documentation.</p>
+<p>First we start by defining our domain model class, here representing a person:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L177" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class Person(name: String, surname: String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L179-L187" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Person {
+  public final String name;
+  public final String surname;
+
+  public Person(String name, String surname) {
+    this.name = name;
+    this.surname = surname;
+  }
+}</code></pre></dd>
+</dl>
+<p>Next we implement a serializer (or extend an existing one to be able to handle the new <code>Person</code> class):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L181-L219" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Simplest possible serializer, uses a string representation of the Person class.
+ *
+ * Usually a serializer like this would use a library like:
+ * protobuf, kryo, avro, cap&#39;n proto, flatbuffers, SBE or some other dedicated serializer backend
+ * to perform the actual to/from bytes marshalling.
+ */
+class SimplestPossiblePersonSerializer extends SerializerWithStringManifest {
+  val Utf8 = Charset.forName(&quot;UTF-8&quot;)
+
+  val PersonManifest = classOf[Person].getName
+
+  // unique identifier of the serializer
+  def identifier = 1234567
+
+  // extract manifest to be stored together with serialized object
+  override def manifest(o: AnyRef): String = o.getClass.getName
+
+  // serialize the object
+  override def toBinary(obj: AnyRef): Array[Byte] = obj match {
+    case p: Person =&gt; s&quot;&quot;&quot;${p.name}|${p.surname}&quot;&quot;&quot;.getBytes(Utf8)
+    case _         =&gt; throw new IllegalArgumentException(s&quot;Unable to serialize to bytes, clazz was: ${obj.getClass}!&quot;)
+  }
+
+  // deserialize the object, using the manifest to indicate which logic to apply
+  override def fromBinary(bytes: Array[Byte], manifest: String): AnyRef =
+    manifest match {
+      case PersonManifest =&gt;
+        val nameAndSurname = new String(bytes, Utf8)
+        val Array(name, surname) = nameAndSurname.split(&quot;[|]&quot;)
+        Person(name, surname)
+      case _ =&gt;
+        throw new NotSerializableException(
+          s&quot;Unable to deserialize from bytes, manifest was: $manifest! Bytes length: &quot; +
+          bytes.length)
+    }
+
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L192-L243" target="_blank" title="Go to snippet source">source</a><code class="language-java">/**
+ * Simplest possible serializer, uses a string representation of the Person class.
+ *
+ * &lt;p&gt;Usually a serializer like this would use a library like: protobuf, kryo, avro, cap&#39;n
+ * proto, flatbuffers, SBE or some other dedicated serializer backend to perform the actual
+ * to/from bytes marshalling.
+ */
+static class SimplestPossiblePersonSerializer extends SerializerWithStringManifest {
+  private final Charset utf8 = StandardCharsets.UTF_8;
+
+  private final String personManifest = Person.class.getName();
+
+  // unique identifier of the serializer
+  @Override
+  public int identifier() {
+    return 1234567;
+  }
+
+  // extract manifest to be stored together with serialized object
+  @Override
+  public String manifest(Object o) {
+    return o.getClass().getName();
+  }
+
+  // serialize the object
+  @Override
+  public byte[] toBinary(Object obj) {
+    if (obj instanceof Person) {
+      Person p = (Person) obj;
+      return (p.name + &quot;|&quot; + p.surname).getBytes(utf8);
+    } else {
+      throw new IllegalArgumentException(
+          &quot;Unable to serialize to bytes, clazz was: &quot; + obj.getClass().getName());
+    }
+  }
+
+  // deserialize the object, using the manifest to indicate which logic to apply
+  @Override
+  public Object fromBinary(byte[] bytes, String manifest) throws NotSerializableException {
+    if (personManifest.equals(manifest)) {
+      String nameAndSurname = new String(bytes, utf8);
+      String[] parts = nameAndSurname.split(&quot;[|]&quot;);
+      return new Person(parts[0], parts[1]);
+    } else {
+      throw new NotSerializableException(
+          &quot;Unable to deserialize from bytes, manifest was: &quot;
+              + manifest
+              + &quot;! Bytes length: &quot;
+              + bytes.length);
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>And finally we register the serializer and bind it to handle the <code>docs.persistence.Person</code> class:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L226-L237" target="_blank" title="Go to snippet source">source</a><code class="language-scala"># application.conf
+pekko {
+  actor {
+    serializers {
+      person = &quot;docs.persistence.SimplestPossiblePersonSerializer&quot;
+    }
+
+    serialization-bindings {
+      &quot;docs.persistence.Person&quot; = person
+    }
+  }
+}</code></pre>
+<p>Deserialization will be performed by the same serializer which serialized the message initially because of the <code>identifier</code> being stored together with the message.</p>
+<p>Please refer to the <a href="serialization.html">Akka Serialization</a> documentation for more advanced use of serializers, especially the <a href="serialization.html#string-manifest-serializer">Serializer with String Manifest</a> section since it is very useful for Persistence based applications dealing with schema evolutions, as we will see in some of the examples below.</p>
+<h2><a href="#schema-evolution-in-action" name="schema-evolution-in-action" class="anchor"><span class="anchor-link"></span></a>Schema evolution in action</h2>
+<p>In this section we will discuss various schema evolution techniques using concrete examples and explaining some of the various options one might go about handling the described situation. The list below is by no means a complete guide, so feel free to adapt these techniques depending on your serializer&rsquo;s capabilities and/or other domain specific limitations.</p><div class="callout note "><div class="callout-title">Note</div>
+<p><a href="serialization-jackson.html">Serialization with Jackson</a> has good support for <a href="serialization-jackson.html#schema-evolution">Schema Evolution</a> and many of the scenarios described here can be solved with that Jackson transformation technique instead.</p></div>
+<a id="add-field"></a>
+<h3><a href="#add-fields" name="add-fields" class="anchor"><span class="anchor-link"></span></a>Add fields</h3>
+<p><strong>Situation:</strong> You need to add a field to an existing message type. For example, a <span class="group-scala"><code>SeatReserved(letter:String, row:Int)</code></span><span class="group-java"><code>SeatReserved(String letter, int row)</code></span> now needs to have an associated code which indicates if it is a window or aisle seat.</p>
+<p><strong>Solution:</strong> Adding fields is the most common change you&rsquo;ll need to apply to your messages so make sure the serialization format you picked for your payloads can handle it appropriately, i.e. such changes should be <em>binary compatible</em>. This is achieved using the right serializer toolkit. In the following examples we will be using protobuf. See also <a href="serialization-jackson.html#add-optional-field">how to add fields with Jackson</a>.</p>
+<p>While being able to read messages with missing fields is half of the solution, you also need to deal with the missing values somehow. This is usually modeled as some kind of default value, or by representing the field as an <span class="group-scala"><code>Option[T]</code></span><span class="group-java"><code>Optional&lt;T&gt;</code></span> See below for an example how reading an optional field from a serialized protocol buffers message might look like.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L60-L75" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed abstract class SeatType { def code: String }
+object SeatType {
+  def fromString(s: String) = s match {
+    case Window.code =&gt; Window
+    case Aisle.code  =&gt; Aisle
+    case Other.code  =&gt; Other
+    case _           =&gt; Unknown
+  }
+  case object Window extends SeatType { override val code = &quot;W&quot; }
+  case object Aisle extends SeatType { override val code = &quot;A&quot; }
+  case object Other extends SeatType { override val code = &quot;O&quot; }
+  case object Unknown extends SeatType { override val code = &quot;&quot; }
+
+}
+
+case class SeatReserved(letter: String, row: Int, seatType: SeatType)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L34-L67" target="_blank" title="Go to snippet source">source</a><code class="language-java">static enum SeatType {
+  Window(&quot;W&quot;),
+  Aisle(&quot;A&quot;),
+  Other(&quot;O&quot;),
+  Unknown(&quot;&quot;);
+
+  private final String code;
+
+  private SeatType(String code) {
+    this.code = code;
+  }
+
+  public static SeatType fromCode(String c) {
+    if (Window.code.equals(c)) return Window;
+    else if (Aisle.code.equals(c)) return Aisle;
+    else if (Other.code.equals(c)) return Other;
+    else return Unknown;
+  }
+}
+static class SeatReserved {
+  public final String letter;
+  public final int row;
+  public final SeatType seatType;
+
+  public SeatReserved(String letter, int row, SeatType seatType) {
+    this.letter = letter;
+    this.row = row;
+    this.seatType = seatType;
+  }
+}</code></pre></dd>
+</dl>
+<p>Next we prepare a protocol definition using the protobuf Interface Description Language, which we&rsquo;ll use to generate the serializer code to be used on the Akka Serialization layer (notice that the schema approach allows us to rename fields, as long as the numeric identifiers of the fields do not change):</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/main/protobuf/FlightAppModels.proto#L19-L27" target="_blank" title="Go to snippet source">source</a><code class="language-proto">// FlightAppModels.proto
+option java_package = &quot;docs.persistence.proto&quot;;
+option optimize_for = SPEED;
+
+message SeatReserved {
+  required string letter   = 1;
+  required uint32 row      = 2;
+  optional string seatType = 3; // the new field
+}</code></pre>
+<p>The serializer implementation uses the protobuf generated classes to marshall the payloads. Optional fields can be handled explicitly or missing values by calling the <code>has...</code> methods on the protobuf object, which we do for <code>seatType</code> in order to use a <code>Unknown</code> type in case the event was stored before we had introduced the field to this event type:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L79-L118" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Example serializer impl which uses protocol buffers generated classes (proto.*)
+ * to perform the to/from binary marshalling.
+ */
+class AddedFieldsSerializerWithProtobuf extends SerializerWithStringManifest {
+  override def identifier = 67876
+
+  final val SeatReservedManifest = classOf[SeatReserved].getName
+
+  override def manifest(o: AnyRef): String = o.getClass.getName
+
+  override def fromBinary(bytes: Array[Byte], manifest: String): AnyRef =
+    manifest match {
+      case SeatReservedManifest =&gt;
+        // use generated protobuf serializer
+        seatReserved(FlightAppModels.SeatReserved.parseFrom(bytes))
+      case _ =&gt;
+        throw new NotSerializableException(&quot;Unable to handle manifest: &quot; + manifest)
+    }
+
+  override def toBinary(o: AnyRef): Array[Byte] = o match {
+    case s: SeatReserved =&gt;
+      FlightAppModels.SeatReserved.newBuilder
+        .setRow(s.row)
+        .setLetter(s.letter)
+        .setSeatType(s.seatType.code)
+        .build()
+        .toByteArray
+  }
+
+  // -- fromBinary helpers --
+
+  private def seatReserved(p: FlightAppModels.SeatReserved): SeatReserved =
+    SeatReserved(p.getLetter, p.getRow, seatType(p))
+
+  // handle missing field by assigning &quot;Unknown&quot; value
+  private def seatType(p: FlightAppModels.SeatReserved): SeatType =
+    if (p.hasSeatType) SeatType.fromString(p.getSeatType) else SeatType.Unknown
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L72-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">/**
+ * Example serializer impl which uses protocol buffers generated classes (proto.*) to perform the
+ * to/from binary marshalling.
+ */
+static class AddedFieldsSerializerWithProtobuf extends SerializerWithStringManifest {
+  @Override
+  public int identifier() {
+    return 67876;
+  }
+
+  private final String seatReservedManifest = SeatReserved.class.getName();
+
+  @Override
+  public String manifest(Object o) {
+    return o.getClass().getName();
+  }
+
+  @Override
+  public Object fromBinary(byte[] bytes, String manifest) throws NotSerializableException {
+    if (seatReservedManifest.equals(manifest)) {
+      // use generated protobuf serializer
+      try {
+        return seatReserved(FlightAppModels.SeatReserved.parseFrom(bytes));
+      } catch (InvalidProtocolBufferException e) {
+        throw new IllegalArgumentException(e.getMessage());
+      }
+    } else {
+      throw new NotSerializableException(&quot;Unable to handle manifest: &quot; + manifest);
+    }
+  }
+
+  @Override
+  public byte[] toBinary(Object o) {
+    if (o instanceof SeatReserved) {
+      SeatReserved s = (SeatReserved) o;
+      return FlightAppModels.SeatReserved.newBuilder()
+          .setRow(s.row)
+          .setLetter(s.letter)
+          .setSeatType(s.seatType.code)
+          .build()
+          .toByteArray();
+
+    } else {
+      throw new IllegalArgumentException(&quot;Unable to handle: &quot; + o);
+    }
+  }
+
+  // -- fromBinary helpers --
+
+  private SeatReserved seatReserved(FlightAppModels.SeatReserved p) {
+    return new SeatReserved(p.getLetter(), p.getRow(), seatType(p));
+  }
+
+  // handle missing field by assigning &quot;Unknown&quot; value
+  private SeatType seatType(FlightAppModels.SeatReserved p) {
+    if (p.hasSeatType()) return SeatType.fromCode(p.getSeatType());
+    else return SeatType.Unknown;
+  }
+}</code></pre></dd>
+</dl>
+<a id="rename-field"></a>
+<h3><a href="#rename-fields" name="rename-fields" class="anchor"><span class="anchor-link"></span></a>Rename fields</h3>
+<p><strong>Situation:</strong> When first designing the system the <code>SeatReserved</code> event featured a <code>code</code> field. After some time you discover that what was originally called <code>code</code> actually means <code>seatNr</code>, thus the model should be changed to reflect this concept more accurately.</p>
+<p><strong>Solution 1 - using IDL based serializers:</strong> First, we will discuss the most efficient way of dealing with such kinds of schema changes – IDL based serializers.</p>
+<p>IDL stands for Interface Description Language, and means that the schema of the messages that will be stored is based on this description. Most IDL based serializers also generate the serializer / deserializer code so that using them is not too hard. Examples of such serializers are protobuf or thrift.</p>
+<p>Using these libraries rename operations are &ldquo;free&rdquo;, because the field name is never actually stored in the binary representation of the message. This is one of the advantages of schema based serializers, even though that they add the overhead of having to maintain the schema. When using serializers like this, no additional code change (except renaming the field and method used during serialization) is needed to perform such evolution:</p>
+<p><img src="./images/persistence-serializer-rename.png" alt="persistence-serializer-rename.png" /></p>
+<p>This is how such a rename would look in protobuf:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L125-L133" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// protobuf message definition, BEFORE:
+message SeatReserved {
+  required string code = 1;
+}
+
+// protobuf message definition, AFTER:
+message SeatReserved {
+  required string seatNr = 1; // field renamed, id remains the same
+}</code></pre>
+<p>It is important to learn about the strengths and limitations of your serializers, in order to be able to move swiftly and refactor your models fearlessly as you go on with the project.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Learn in-depth about the serialization engine you&rsquo;re using as it will impact how you can approach schema evolution.</p>
+<p>Some operations are &ldquo;free&rdquo; in certain serialization formats (more often than not: removing/adding optional fields, sometimes renaming fields etc.), while some other operations are strictly not possible.</p></div>
+<p><strong>Solution 2 - by manually handling the event versions:</strong> Another solution, in case your serialization format does not support renames like the above mentioned formats, is versioning your schema. For example, you could have made your events carry an additional field called <code>_version</code> which was set to <code>1</code> (because it was the initial schema), and once you change the schema you bump this number to <code>2</code>, and write an adapter which can perform the rename.</p>
+<p>This approach is popular when your serialization format is something like JSON, where renames can not be performed automatically by the serializer. See also <a href="serialization-jackson.html#rename-field">how to rename fields with Jackson</a>, which is using this kind of versioning approach.</p>
+<p><img src="./images/persistence-manual-rename.png" alt="persistence-manual-rename.png" /></p>
+<p>The following snippet showcases how one could apply renames if working with plain JSON (using <span class="group-scala"><code>spray.json.JsObject</code></span><span class="group-java">a <code>JsObject</code> as an example JSON representation</span>):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L140-L170" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class JsonRenamedFieldAdapter extends EventAdapter {
+  val marshaller = new ExampleJsonMarshaller
+
+  val V1 = &quot;v1&quot;
+  val V2 = &quot;v2&quot;
+
+  // this could be done independently for each event type
+  override def manifest(event: Any): String = V2
+
+  override def toJournal(event: Any): JsObject =
+    marshaller.toJson(event)
+
+  override def fromJournal(event: Any, manifest: String): EventSeq = event match {
+    case json: JsObject =&gt;
+      EventSeq(marshaller.fromJson(manifest match {
+        case V1      =&gt; rename(json, &quot;code&quot;, &quot;seatNr&quot;)
+        case V2      =&gt; json // pass-through
+        case unknown =&gt; throw new IllegalArgumentException(s&quot;Unknown manifest: $unknown&quot;)
+      }))
+    case _ =&gt;
+      val c = event.getClass
+      throw new IllegalArgumentException(&quot;Can only work with JSON, was: %s&quot;.format(c))
+  }
+
+  def rename(json: JsObject, from: String, to: String): JsObject = {
+    val value = json.fields(from)
+    val withoutOld = json.fields - from
+    JsObject(withoutOld + (to -&gt; value))
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L136-L171" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class JsonRenamedFieldAdapter implements EventAdapter {
+  // use your favorite json library
+  private final ExampleJsonMarshaller marshaller = new ExampleJsonMarshaller();
+
+  private final String V1 = &quot;v1&quot;;
+  private final String V2 = &quot;v2&quot;;
+
+  // this could be done independently for each event type
+  @Override
+  public String manifest(Object event) {
+    return V2;
+  }
+
+  @Override
+  public JsObject toJournal(Object event) {
+    return marshaller.toJson(event);
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    if (event instanceof JsObject) {
+      JsObject json = (JsObject) event;
+      if (V1.equals(manifest)) json = rename(json, &quot;code&quot;, &quot;seatNr&quot;);
+      return EventSeq.single(json);
+    } else {
+      throw new IllegalArgumentException(
+          &quot;Can only work with JSON, was: &quot; + event.getClass().getName());
+    }
+  }
+
+  private JsObject rename(JsObject json, String from, String to) {
+    // use your favorite json library to rename the field
+    JsObject renamed = json;
+    return renamed;
+  }
+}</code></pre></dd>
+</dl>
+<p>As you can see, manually handling renames induces some boilerplate onto the EventAdapter, however much of it you will find is common infrastructure code that can be either provided by an external library (for promotion management) or put together in a simple helper <span class="group-scala">trait</span><span class="group-java">class</span>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The technique of versioning events and then promoting them to the latest version using JSON transformations can be applied to more than just field renames – it also applies to adding fields and all kinds of changes in the message format.</p></div>
+<a id="remove-event-class"></a>
+<h3><a href="#remove-event-class-and-ignore-events" name="remove-event-class-and-ignore-events" class="anchor"><span class="anchor-link"></span></a>Remove event class and ignore events</h3>
+<p><strong>Situation:</strong> While investigating app performance you notice that unreasonable amounts of <code>CustomerBlinked</code> events are being stored for every customer each time he/she blinks. Upon investigation, you decide that the event does not add any value and should be deleted. You still have to be able to replay from a journal which contains those old CustomerBlinked events though.</p>
+<p><strong>Naive solution - drop events in EventAdapter:</strong></p>
+<p>The problem of removing an event type from the domain model is not as much its removal, as the implications for the recovery mechanisms that this entails. For example, a naive way of filtering out certain kinds of events from being delivered to a recovering <code>PersistentActor</code> is pretty simple, as one can filter them out in an <a href="persistence.html#event-adapters">EventAdapter</a>:</p>
+<p><img src="./images/persistence-drop-event.png" alt="persistence-drop-event.png" /></p>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span> can drop old events (**O**) by emitting an empty <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventSeq.html" title="org.apache.pekko.persistence.journal.EventSeq"><code>EventSeq</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventSeq.html" title="org.apache.pekko.persistence.journal.EventSeq"><code>EventSeq</code></a></span>. Other events can be passed through (**E**).</p>
+<p>This however does not address the underlying cost of having to deserialize all the events during recovery, even those which will be filtered out by the adapter. In the next section we will improve the above explained mechanism to avoid deserializing events which would be filtered out by the adapter anyway, thus allowing to save precious time during a recovery containing lots of such events (without actually having to delete them).</p>
+<p><strong>Improved solution - deserialize into tombstone:</strong></p>
+<p>In the just described technique we have saved the PersistentActor from receiving un-wanted events by filtering them out in the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span>, however the event itself still was deserialized and loaded into memory. This has two notable <em>downsides</em>:</p>
+<ul>
+  <li>first, that the deserialization was actually performed, so we spent some of our time budget on the deserialization, even though the event does not contribute anything to the persistent actors state.</li>
+  <li>second, that we are <em>unable to remove the event class</em> from the system – since the serializer still needs to create the actual instance of it, as it does not know it will not be used.</li>
+</ul>
+<p>The solution to these problems is to use a serializer that is aware of that event being no longer needed, and can notice this before starting to deserialize the object.</p>
+<p>This approach allows us to <em>remove the original class from our classpath</em>, which makes for less &ldquo;old&rdquo; classes lying around in the project. This can for example be implemented by using an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>SerializerWithStringManifest</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>SerializerWithStringManifest</code></a></span> (documented in depth in <a href="serialization.html#string-manifest-serializer">Serializer with String Manifest</a>). By looking at the string manifest, the serializer can notice that the type is no longer needed, and skip the deserialization all-together:</p>
+<p><img src="./images/persistence-drop-event-serializer.png" alt="persistence-drop-event-serializer.png" /></p>
+<p>The serializer is aware of the old event types that need to be skipped (**O**), and can skip deserializing them altogether by returning a &ldquo;tombstone&rdquo; (**T**), which the EventAdapter converts into an empty EventSeq. Other events (**E**) can just be passed through.</p>
+<p>The serializer detects that the string manifest points to a removed event type and skips attempting to deserialize it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L274-L296" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case object EventDeserializationSkipped
+
+class RemovedEventsAwareSerializer extends SerializerWithStringManifest {
+  val utf8 = Charset.forName(&quot;UTF-8&quot;)
+  override def identifier: Int = 8337
+
+  val SkipEventManifestsEvents = Set(&quot;docs.persistence.CustomerBlinked&quot; // ...
+  )
+
+  override def manifest(o: AnyRef): String = o.getClass.getName
+
+  override def toBinary(o: AnyRef): Array[Byte] = o match {
+    case _ =&gt; o.toString.getBytes(utf8) // example serialization
+  }
+
+  override def fromBinary(bytes: Array[Byte], manifest: String): AnyRef =
+    manifest match {
+      case m if SkipEventManifestsEvents.contains(m) =&gt;
+        EventDeserializationSkipped
+
+      case _ =&gt; new String(bytes, utf8)
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L339-L375" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class EventDeserializationSkipped {
+  public static EventDeserializationSkipped instance = new EventDeserializationSkipped();
+
+  private EventDeserializationSkipped() {}
+}
+
+static class RemovedEventsAwareSerializer extends SerializerWithStringManifest {
+  private final Charset utf8 = StandardCharsets.UTF_8;
+  private final String customerBlinkedManifest = &quot;blinked&quot;;
+
+  // unique identifier of the serializer
+  @Override
+  public int identifier() {
+    return 8337;
+  }
+
+  // extract manifest to be stored together with serialized object
+  @Override
+  public String manifest(Object o) {
+    if (o instanceof CustomerBlinked) return customerBlinkedManifest;
+    else return o.getClass().getName();
+  }
+
+  @Override
+  public byte[] toBinary(Object o) {
+    return o.toString().getBytes(utf8); // example serialization
+  }
+
+  @Override
+  public Object fromBinary(byte[] bytes, String manifest) {
+    if (customerBlinkedManifest.equals(manifest)) return EventDeserializationSkipped.instance;
+    else return new String(bytes, utf8);
+  }
+}</code></pre></dd>
+</dl>
+<p>The EventAdapter we implemented is aware of <code>EventDeserializationSkipped</code> events (our &ldquo;Tombstones&rdquo;), and emits and empty <code>EventSeq</code> whenever such object is encountered:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L300-L308" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class SkippedEventsAwareAdapter extends EventAdapter {
+  override def manifest(event: Any) = &quot;&quot;
+  override def toJournal(event: Any) = event
+
+  override def fromJournal(event: Any, manifest: String) = event match {
+    case EventDeserializationSkipped =&gt; EventSeq.empty
+    case _                           =&gt; EventSeq(event)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L380-L396" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class SkippedEventsAwareAdapter implements EventAdapter {
+  @Override
+  public String manifest(Object event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public Object toJournal(Object event) {
+    return event;
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    if (event == EventDeserializationSkipped.instance) return EventSeq.empty();
+    else return EventSeq.single(event);
+  }
+}</code></pre></dd>
+</dl>
+<a id="detach-domain-from-data-model"></a>
+<h3><a href="#detach-domain-model-from-data-model" name="detach-domain-model-from-data-model" class="anchor"><span class="anchor-link"></span></a>Detach domain model from data model</h3>
+<p><strong>Situation:</strong> You want to separate the application model (often called the &ldquo;<em>domain model</em>&rdquo;) completely from the models used to persist the corresponding events (the &ldquo;<em>data model</em>&rdquo;). For example because the data representation may change independently of the domain model.</p>
+<p>Another situation where this technique may be useful is when your serialization tool of choice requires generated classes to be used for serialization and deserialization of objects, like for example <a href="https://developers.google.com/protocol-buffers/">Google Protocol Buffers</a> do, yet you do not want to leak this implementation detail into the domain model itself, which you&rsquo;d like to model as plain <span class="group-scala">Scala case</span><span class="group-java">Java</span> classes.</p>
+<p><strong>Solution:</strong> In order to detach the domain model, which is often represented using pure <span class="group-scala">Scala (case)</span><span class="group-java">Java</span> classes, from the data model classes which very often may be less user-friendly yet highly optimised for throughput and schema evolution (like the classes generated by protobuf for example), it is possible to use a simple EventAdapter which maps between these types in a 1:1 style as illustrated below:</p>
+<p><img src="./images/persistence-detach-models.png" alt="persistence-detach-models.png" /></p>
+<p>Domain events (**A**) are adapted to the data model events (**D**) by the <code>EventAdapter</code>. The data model can be a format natively understood by the journal, such that it can store it more efficiently or include additional data for the event (e.g. tags), for ease of later querying.</p>
+<p>We will use the following domain and data models to showcase how the separation can be implemented by the adapter:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L336-L349" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/** Domain model - highly optimised for domain language and maybe &quot;fluent&quot; usage */
+object DomainModel {
+  final case class Customer(name: String)
+  final case class Seat(code: String) {
+    def bookFor(customer: Customer): SeatBooked = SeatBooked(code, customer)
+  }
+
+  final case class SeatBooked(code: String, customer: Customer)
+}
+
+/** Data model - highly optimised for schema evolution and persistence */
+object DataModel {
+  final case class SeatBooked(code: String, customerName: String)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L445-L494" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Domain model - highly optimised for domain language and maybe &quot;fluent&quot; usage
+static class Customer {
+  public final String name;
+
+  public Customer(String name) {
+    this.name = name;
+  }
+}
+
+static class Seat {
+  public final String code;
+
+  public Seat(String code) {
+    this.code = code;
+  }
+
+  public SeatBooked bookFor(Customer customer) {
+    return new SeatBooked(code, customer);
+  }
+}
+
+static class SeatBooked {
+  public final String code;
+  public final Customer customer;
+
+  public SeatBooked(String code, Customer customer) {
+    this.code = code;
+    this.customer = customer;
+  }
+}
+
+// Data model - highly optimised for schema evolution and persistence
+static class SeatBookedData {
+  public final String code;
+  public final String customerName;
+
+  public SeatBookedData(String code, String customerName) {
+    this.code = code;
+    this.customerName = customerName;
+  }
+}</code></pre></dd>
+</dl>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span> takes care of converting from one model to the other one (in both directions), allowing the models to be completely detached from each other, such that they can be optimised independently as long as the mapping logic is able to convert between them:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L353-L364" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class DetachedModelsAdapter extends EventAdapter {
+  override def manifest(event: Any): String = &quot;&quot;
+
+  override def toJournal(event: Any): Any = event match {
+    case DomainModel.SeatBooked(code, customer) =&gt;
+      DataModel.SeatBooked(code, customer.name)
+  }
+  override def fromJournal(event: Any, manifest: String): EventSeq = event match {
+    case DataModel.SeatBooked(code, customerName) =&gt;
+      EventSeq(DomainModel.SeatBooked(code, DomainModel.Customer(customerName)))
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L498-L523" target="_blank" title="Go to snippet source">source</a><code class="language-java">class DetachedModelsAdapter implements EventAdapter {
+  @Override
+  public String manifest(Object event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public Object toJournal(Object event) {
+    if (event instanceof SeatBooked) {
+      SeatBooked s = (SeatBooked) event;
+      return new SeatBookedData(s.code, s.customer.name);
+    } else {
+      throw new IllegalArgumentException(&quot;Unsupported: &quot; + event.getClass());
+    }
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    if (event instanceof SeatBookedData) {
+      SeatBookedData d = (SeatBookedData) event;
+      return EventSeq.single(new SeatBooked(d.code, new Customer(d.customerName)));
+    } else {
+      throw new IllegalArgumentException(&quot;Unsupported: &quot; + event.getClass());
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>The same technique could also be used directly in the Serializer if the end result of marshalling is bytes. Then the serializer can simply convert the bytes do the domain object by using the generated protobuf builders.</p>
+<a id="store-human-readable"></a>
+<h3><a href="#store-events-as-human-readable-data-model" name="store-events-as-human-readable-data-model" class="anchor"><span class="anchor-link"></span></a>Store events as human-readable data model</h3>
+<p><strong>Situation:</strong> You want to keep your persisted events in a human-readable format, for example JSON.</p>
+<p><strong>Solution:</strong> This is a special case of the <a href="persistence-schema-evolution.html#detach-domain-from-data-model">Detach domain model from data model</a> pattern, and thus requires some co-operation from the Journal implementation to achieve this.</p>
+<p>An example of a Journal which may implement this pattern is MongoDB, however other databases such as PostgreSQL and Cassandra could also do it because of their built-in JSON capabilities.</p>
+<p>In this approach, the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span> is used as the marshalling layer: it serializes the events to/from JSON. The journal plugin notices that the incoming event type is JSON (for example by performing a <code>match</code> on the incoming event) and stores the incoming object directly.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L374-L388" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class JsonDataModelAdapter extends EventAdapter {
+  override def manifest(event: Any): String = &quot;&quot;
+
+  val marshaller = new ExampleJsonMarshaller
+
+  override def toJournal(event: Any): JsObject =
+    marshaller.toJson(event)
+
+  override def fromJournal(event: Any, manifest: String): EventSeq = event match {
+    case json: JsObject =&gt;
+      EventSeq(marshaller.fromJson(json))
+    case _ =&gt;
+      throw new IllegalArgumentException(&quot;Unable to fromJournal a non-JSON object! Was: &quot; + event.getClass)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L528-L553" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class JsonDataModelAdapter implements EventAdapter {
+
+  // use your favorite json library
+  private final ExampleJsonMarshaller marshaller = new ExampleJsonMarshaller();
+
+  @Override
+  public String manifest(Object event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public JsObject toJournal(Object event) {
+    return marshaller.toJson(event);
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    if (event instanceof JsObject) {
+      JsObject json = (JsObject) event;
+      return EventSeq.single(marshaller.fromJson(json));
+    } else {
+      throw new IllegalArgumentException(
+          &quot;Unable to fromJournal a non-JSON object! Was: &quot; + event.getClass());
+    }
+  }
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>This technique only applies if the Akka Persistence plugin you are using provides this capability. Check the documentation of your favourite plugin to see if it supports this style of persistence.</p>
+<p>If it doesn&rsquo;t, you may want to skim the <a href="https://akka.io/community/#journal-plugins">list of existing journal plugins</a>, just in case some other plugin for your favourite datastore <em>does</em> provide this capability.</p></div>
+<p><strong>Alternative solution:</strong></p>
+<p>In fact, an AsyncWriteJournal implementation could natively decide to not use binary serialization at all, and <em>always</em> serialize the incoming messages as JSON - in which case the <code>toJournal</code> implementation of the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/journal/EventAdapter.html" title="org.apache.pekko.persistence.journal.EventAdapter"><code>EventAdapter</code></a></span> would be an identity function, and the <code>fromJournal</code> would need to de-serialize messages from JSON.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>If in need of human-readable events on the <em>write-side</em> of your application reconsider whether preparing materialized views using <a href="persistence-query.html">Persistence Query</a> would not be an efficient way to go about this, without compromising the write-side&rsquo;s throughput characteristics.</p>
+<p>If indeed you want to use a human-readable representation on the write-side, pick a Persistence plugin that provides that functionality, or – implement one yourself.</p></div>
+<a id="split-large-event-into-smaller"></a>
+<h3><a href="#split-large-event-into-fine-grained-events" name="split-large-event-into-fine-grained-events" class="anchor"><span class="anchor-link"></span></a>Split large event into fine-grained events</h3>
+<p><strong>Situation:</strong> While refactoring your domain events, you find that one of the events has become too large (coarse-grained) and needs to be split up into multiple fine-grained events.</p>
+<p><strong>Solution:</strong> Let us consider a situation where an event represents &ldquo;user details changed&rdquo;. After some time we discover that this event is too coarse, and needs to be split into &ldquo;user name changed&rdquo; and &ldquo;user address changed&rdquo;, because somehow users keep changing their usernames a lot and we&rsquo;d like to keep this as a separate event.</p>
+<p>The write side change is very simple, we persist <code>UserNameChanged</code> or <code>UserAddressChanged</code> depending on what the user actually intended to change (instead of the composite <code>UserDetailsChanged</code> that we had in version 1 of our model).</p>
+<p><img src="./images/persistence-event-adapter-1-n.png" alt="persistence-event-adapter-1-n.png" /></p>
+<p>The <code>EventAdapter</code> splits the incoming event into smaller more fine-grained events during recovery.</p>
+<p>During recovery however, we now need to convert the old <code>V1</code> model into the <code>V2</code> representation of the change. Depending if the old event contains a name change, we either emit the <code>UserNameChanged</code> or we don&rsquo;t, and the address change is handled similarly:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistenceSchemaEvolutionDocSpec.scala#L245-L268" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait Version1
+trait Version2
+
+// V1 event:
+final case class UserDetailsChanged(name: String, address: String) extends Version1
+
+// corresponding V2 events:
+final case class UserNameChanged(name: String) extends Version2
+final case class UserAddressChanged(address: String) extends Version2
+
+// event splitting adapter:
+class UserEventsAdapter extends EventAdapter {
+  override def manifest(event: Any): String = &quot;&quot;
+
+  override def fromJournal(event: Any, manifest: String): EventSeq = event match {
+    case UserDetailsChanged(null, address) =&gt; EventSeq(UserAddressChanged(address))
+    case UserDetailsChanged(name, null)    =&gt; EventSeq(UserNameChanged(name))
+    case UserDetailsChanged(name, address) =&gt;
+      EventSeq(UserNameChanged(name), UserAddressChanged(address))
+    case event: Version2 =&gt; EventSeq(event)
+  }
+
+  override def toJournal(event: Any): Any = event
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/PersistenceSchemaEvolutionDocTest.java#L260-L326" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface Version1 {};
+
+interface Version2 {}
+
+// V1 event:
+static class UserDetailsChanged implements Version1 {
+  public final String name;
+  public final String address;
+
+  public UserDetailsChanged(String name, String address) {
+    this.name = name;
+    this.address = address;
+  }
+}
+
+// corresponding V2 events:
+static class UserNameChanged implements Version2 {
+  public final String name;
+
+  public UserNameChanged(String name) {
+    this.name = name;
+  }
+}
+static class UserAddressChanged implements Version2 {
+  public final String address;
+
+  public UserAddressChanged(String address) {
+    this.address = address;
+  }
+}
+
+// event splitting adapter:
+static class UserEventsAdapter implements EventAdapter {
+  @Override
+  public String manifest(Object event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public EventSeq fromJournal(Object event, String manifest) {
+    if (event instanceof UserDetailsChanged) {
+      UserDetailsChanged c = (UserDetailsChanged) event;
+      if (c.name == null) return EventSeq.single(new UserAddressChanged(c.address));
+      else if (c.address == null) return EventSeq.single(new UserNameChanged(c.name));
+      else return EventSeq.create(new UserNameChanged(c.name), new UserAddressChanged(c.address));
+    } else {
+      return EventSeq.single(event);
+    }
+  }
+
+  @Override
+  public Object toJournal(Object event) {
+    return event;
+  }
+}</code></pre></dd>
+</dl>
+<p>By returning an <code>EventSeq</code> from the event adapter, the recovered event can be converted to multiple events before being delivered to the persistent actor.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/persistence-schema-evolution.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="persistence-query.html">Persistence Query</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="persistence-schema-evolution.html#schema-evolution-for-event-sourced-actors" class="header">Schema Evolution for Event Sourced Actors</a>
+  <ul>
+    <li><a href="persistence-schema-evolution.html#dependency" class="header">Dependency</a></li>
+    <li><a href="persistence-schema-evolution.html#introduction" class="header">Introduction</a></li>
+    <li><a href="persistence-schema-evolution.html#schema-evolution-in-event-sourced-systems" class="header">Schema evolution in event-sourced systems</a></li>
+    <li><a href="persistence-schema-evolution.html#picking-the-right-serialization-format" class="header">Picking the right serialization format</a></li>
+    <li><a href="persistence-schema-evolution.html#schema-evolution-in-action" class="header">Schema evolution in action</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

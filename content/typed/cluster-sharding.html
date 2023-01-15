@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Cluster Sharding · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Shard a clustered compute process across the network with locationally transparent message routing using Akka Cluster Sharding.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/cluster-sharding.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="active page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="active page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index-cluster.html">Cluster</a></li>
+  <li>Cluster Sharding</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#cluster-sharding" name="cluster-sharding" class="anchor"><span class="anchor-link"></span></a>Cluster Sharding</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Akka Classic documentation, see <a href="../cluster-sharding.html">Classic Cluster Sharding</a></p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Akka Cluster Sharding, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-sharding-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-sharding-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-sharding-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster Sharding (typed)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-sharding-typed</div>
+  <div>0.0.0+26524-b0ed4882-SNAPSHOT</div>
+  <div><a href="project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.sharding.typed</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://akka.io/">https://akka.io/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://doc.akka.io/api/akka/snapshot/akka/cluster/sharding/typed/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://doc.akka.io/japi/akka/snapshot/akka/cluster/sharding/typed/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://discuss.akka.io" target="_blank" rel="noopener noreferrer">Lightbend Discuss</a></div>
+  <div><a href="https://gitter.im/akka/akka" target="_blank" rel="noopener noreferrer">akka/akka Gitter channel</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/akka/akka/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>Cluster sharding is useful when you need to distribute actors across several nodes in the cluster and want to be able to interact with them using their logical identifier, but without having to care about their physical location in the cluster, which might also change over time.</p>
+
+<p>It could for example be actors representing Aggregate Roots in Domain-Driven Design terminology. Here we call these actors &ldquo;entities&rdquo;. These actors typically have persistent (durable) state, but this feature is not limited to actors with persistent state.</p>
+
+<p>The <a href="https://akka.io/blog/news/2019/12/16/akka-cluster-sharding-intro-video">Introduction to Akka Cluster Sharding video</a> is a good starting point for learning Cluster Sharding.</p>
+
+<p>Cluster sharding is typically used when you have many stateful actors that together consume more resources (e.g. memory) than fit on one machine. If you only have a few stateful actors it might be easier to run them on a <a href="cluster-singleton.html">Cluster Singleton</a> node. </p>
+
+<p>In this context sharding means that actors with an identifier, so called entities, can be automatically distributed across multiple nodes in the cluster. Each entity actor runs only at one place, and messages can be sent to the entity without requiring the sender to know the location of the destination actor. This is achieved by sending the messages via a <code>ShardRegion</code> actor provided by this extension, which knows how to route the message with the entity id to the final destination.</p>
+
+<p>Cluster sharding will not be active on members with status <a href="cluster-membership.html#weaklyup-members">WeaklyUp</a> if that feature is enabled.</p>
+<div class="callout warning "><div class="callout-title">Warning</div>
+<p>Make sure to not use a Cluster downing strategy that may split the cluster into several separate clusters in case of network problems or system overload (long GC pauses), since that will result in <em>multiple shards and entities</em> being started, one in each separate cluster! See <a href="cluster.html#downing">Downing</a>.</p></div>
+<h2><a href="#basic-example" name="basic-example" class="anchor"><span class="anchor-link"></span></a>Basic example</h2>
+<p>Sharding is accessed via the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding"><code>ClusterSharding</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.ClusterSharding"><code>ClusterSharding</code></a></span> extension</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L38-L44" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.sharding.typed.ShardingEnvelope
+import pekko.cluster.sharding.typed.scaladsl.ClusterSharding
+import pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
+import pekko.cluster.sharding.typed.scaladsl.EntityRef
+
+val sharding = ClusterSharding(system)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L27-L33" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.sharding.typed.ShardingEnvelope;
+import org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding;
+import org.apache.pekko.cluster.sharding.typed.javadsl.EntityTypeKey;
+import org.apache.pekko.cluster.sharding.typed.javadsl.EntityRef;
+import org.apache.pekko.cluster.sharding.typed.javadsl.Entity;
+import org.apache.pekko.persistence.typed.PersistenceId;
+
+ClusterSharding sharding = ClusterSharding.get(system);</code></pre></dd>
+</dl>
+<p>It is common for sharding to be used with persistence however any <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> can be used with sharding e.g. a basic counter:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L48-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Counter {
+  sealed trait Command
+  case object Increment extends Command
+  final case class GetValue(replyTo: ActorRef[Int]) extends Command
+
+  def apply(entityId: String): Behavior[Command] = {
+    def updated(value: Int): Behavior[Command] = {
+      Behaviors.receiveMessage[Command] {
+        case Increment =&gt;
+          updated(value + 1)
+        case GetValue(replyTo) =&gt;
+          replyTo ! value
+          Behaviors.same
+      }
+    }
+
+    updated(0)
+
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L52-L97" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Counter extends AbstractBehavior&lt;Counter.Command&gt; {
+
+  public interface Command {}
+
+  public enum Increment implements Command {
+    INSTANCE
+  }
+
+  public static class GetValue implements Command {
+    private final ActorRef&lt;Integer&gt; replyTo;
+
+    public GetValue(ActorRef&lt;Integer&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String entityId) {
+    return Behaviors.setup(context -&gt; new Counter(context, entityId));
+  }
+
+  private final String entityId;
+  private int value = 0;
+
+  private Counter(ActorContext&lt;Command&gt; context, String entityId) {
+    super(context);
+    this.entityId = entityId;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Increment.class, msg -&gt; onIncrement())
+        .onMessage(GetValue.class, this::onGetValue)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onIncrement() {
+    value++;
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGetValue(GetValue msg) {
+    msg.replyTo.tell(value);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>Each Entity type has a key that is then used to retrieve an EntityRef for a given entity identifier. Note in the sample&rsquo;s <span class="group-scala"><code>Counter.apply</code></span><span class="group-java"><code>Counter.create</code></span> function that the <code>entityId</code> parameter is not called, it is included to demonstrate how one can pass it to an entity. Another way to do this is by sending the <code>entityId</code> as part of the message if needed.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L71-L74" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val TypeKey = EntityTypeKey[Counter.Command](&quot;Counter&quot;)
+
+val shardRegion: ActorRef[ShardingEnvelope[Counter.Command]] =
+  sharding.init(Entity(TypeKey)(createBehavior = entityContext =&gt; Counter(entityContext.entityId)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L204-L207" target="_blank" title="Go to snippet source">source</a><code class="language-java">EntityTypeKey&lt;Counter.Command&gt; typeKey = EntityTypeKey.create(Counter.Command.class, &quot;Counter&quot;);
+
+ActorRef&lt;ShardingEnvelope&lt;Counter.Command&gt;&gt; shardRegion =
+    sharding.init(Entity.of(typeKey, ctx -&gt; Counter.create(ctx.getEntityId())));</code></pre></dd>
+</dl>
+<p>Messages to a specific entity are then sent via an <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityRef"><code>EntityRef</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef"><code>EntityRef</code></a></span>. The <code>entityId</code> and the name of the Entity&rsquo;s key can be retrieved from the <code>EntityRef</code>. It is also possible to wrap methods in a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingEnvelope.html" title="org.apache.pekko.cluster.sharding.typed.ShardingEnvelope"><code>ShardingEnvelope</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingEnvelope.html" title="org.apache.pekko.cluster.sharding.typed.ShardingEnvelope"><code>ShardingEnvelope</code></a></span> or define extractor functions and send messages directly to the shard region.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L78-L83" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// With an EntityRef
+val counterOne: EntityRef[Counter.Command] = sharding.entityRefFor(TypeKey, &quot;counter-1&quot;)
+counterOne ! Counter.Increment
+
+// Entity id is specified via an `ShardingEnvelope`
+shardRegion ! ShardingEnvelope(&quot;counter-1&quot;, Counter.Increment)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L211-L214" target="_blank" title="Go to snippet source">source</a><code class="language-java">EntityRef&lt;Counter.Command&gt; counterOne = sharding.entityRefFor(typeKey, &quot;counter-1&quot;);
+counterOne.tell(Counter.Increment.INSTANCE);
+
+shardRegion.tell(new ShardingEnvelope&lt;&gt;(&quot;counter-1&quot;, Counter.Increment.INSTANCE));</code></pre></dd>
+</dl>
+<p>Cluster sharding <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding.html#init(org.apache.pekko.cluster.sharding.typed.javadsl.Entity)" title="org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding"><code>init</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding.html#init[M,E](entity:org.apache.pekko.cluster.sharding.typed.scaladsl.Entity[M,E]):org.apache.pekko.actor.typed.ActorRef[E]" title="org.apache.pekko.cluster.sharding.typed.scaladsl.ClusterSharding"><code>init</code></a></span> should be called on every node for each entity type. Which nodes entity actors are created on can be controlled with <a href="cluster.html#node-roles">roles</a>. <code>init</code> will create a <code>ShardRegion</code> or a proxy depending on whether the node&rsquo;s role matches the entity&rsquo;s role. </p>
+<p>The behavior factory lambda passed to the init method is defined on each node and only used locally, this means it is safe to use it for injecting for example a node local <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that each sharded actor should have access to or some object that is not possible to serialize.</p>
+<p>Specifying the role:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L95-L96" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sharding.init(
+  Entity(TypeKey)(createBehavior = entityContext =&gt; Counter(entityContext.entityId)).withRole(&quot;backend&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L223-L227" target="_blank" title="Go to snippet source">source</a><code class="language-java">EntityTypeKey&lt;Counter.Command&gt; typeKey = EntityTypeKey.create(Counter.Command.class, &quot;Counter&quot;);
+
+ActorRef&lt;ShardingEnvelope&lt;Counter.Command&gt;&gt; shardRegionOrProxy =
+    sharding.init(
+        Entity.of(typeKey, ctx -&gt; Counter.create(ctx.getEntityId())).withRole(&quot;backend&quot;));</code></pre></dd>
+</dl>
+<h3><a href="#a-note-about-entityref-and-serialization" name="a-note-about-entityref-and-serialization" class="anchor"><span class="anchor-link"></span></a>A note about EntityRef and serialization</h3>
+<p>If including <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityRef"><code>EntityRef</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef"><code>EntityRef</code></a></span>&rsquo;s in messages or the <code>State</code>/<code>Event</code>s of an <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>, those <code>EntityRef</code>s will need to be serialized. The <span class="group-scala"><code>entityId</code>, <code>typeKey</code>, and (in multi-DC use-cases) <code>dataCenter</code> of an <code>EntityRef</code></span><span class="group-java"><code>getEntityId</code>, <code>getTypeKey</code>, and (in multi-DC use-cases) <code>getDataCenter</code> methods of an <code>EntityRef</code></span> provide exactly the information needed upon deserialization to regenerate an <code>EntityRef</code> equivalent to the one serialized, given an expected type of messages to send to the entity.</p>
+<p>At this time, serialization of <code>EntityRef</code>s requires a <a href="../serialization.html#customization">custom serializer</a>, as the specific <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityTypeKey"><code>EntityTypeKey</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey"><code>EntityTypeKey</code></a></span> (including the type of message which the desired entity type accepts) should not simply be encoded in the serialized representation but looked up on the deserializing side.</p>
+<h2><a href="#persistence-example" name="persistence-example" class="anchor"><span class="anchor-link"></span></a>Persistence example</h2>
+<p>When using sharding, entities can be moved to different nodes in the cluster. Persistence can be used to recover the state of an actor after it has moved.</p>
+<p>Akka Persistence is based on the single-writer principle, for a particular <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span> only one persistent actor instance should be active. If multiple instances were to persist events at the same time, the events would be interleaved and might not be interpreted correctly on replay. Cluster Sharding is typically used together with persistence to ensure that there is only one active entity for each <code>PersistenceId</code> (<code>entityId</code>).</p>
+<p>Here is an example of a persistent actor that is used as a sharded entity:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/HelloWorldPersistentEntityExample.scala#L57-L103" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.Behavior
+import pekko.cluster.sharding.typed.scaladsl.EntityTypeKey
+import pekko.persistence.typed.scaladsl.Effect
+
+object HelloWorld {
+
+  // Command
+  sealed trait Command extends CborSerializable
+  final case class Greet(whom: String)(val replyTo: ActorRef[Greeting]) extends Command
+  // Response
+  final case class Greeting(whom: String, numberOfPeople: Int) extends CborSerializable
+
+  // Event
+  final case class Greeted(whom: String) extends CborSerializable
+
+  // State
+  final case class KnownPeople(names: Set[String]) extends CborSerializable {
+    def add(name: String): KnownPeople = copy(names = names + name)
+
+    def numberOfPeople: Int = names.size
+  }
+
+  private val commandHandler: (KnownPeople, Command) =&gt; Effect[Greeted, KnownPeople] = { (_, cmd) =&gt;
+    cmd match {
+      case cmd: Greet =&gt; greet(cmd)
+    }
+  }
+
+  private def greet(cmd: Greet): Effect[Greeted, KnownPeople] =
+    Effect.persist(Greeted(cmd.whom)).thenRun(state =&gt; cmd.replyTo ! Greeting(cmd.whom, state.numberOfPeople))
+
+  private val eventHandler: (KnownPeople, Greeted) =&gt; KnownPeople = { (state, evt) =&gt;
+    state.add(evt.whom)
+  }
+
+  val TypeKey: EntityTypeKey[Command] =
+    EntityTypeKey[Command](&quot;HelloWorld&quot;)
+
+  def apply(entityId: String, persistenceId: PersistenceId): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      context.log.info(&quot;Starting HelloWorld {}&quot;, entityId)
+      EventSourcedBehavior(persistenceId, emptyState = KnownPeople(Set.empty), commandHandler, eventHandler)
+    }
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/HelloWorldPersistentEntityExample.java#L27-L32" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.cluster.sharding.typed.javadsl.EntityTypeKey;
+import org.apache.pekko.persistence.typed.PersistenceId;
+import org.apache.pekko.persistence.typed.javadsl.CommandHandler;
+import org.apache.pekko.persistence.typed.javadsl.Effect;
+import org.apache.pekko.persistence.typed.javadsl.EventHandler;
+
+public static class HelloWorld
+    extends EventSourcedBehavior&lt;HelloWorld.Command, HelloWorld.Greeted, HelloWorld.KnownPeople&gt; {
+
+  // Command
+  public interface Command extends CborSerializable {}
+
+  public static final class Greet implements Command {
+    public final String whom;
+    public final ActorRef&lt;Greeting&gt; replyTo;
+
+    public Greet(String whom, ActorRef&lt;Greeting&gt; replyTo) {
+      this.whom = whom;
+      this.replyTo = replyTo;
+    }
+  }
+
+  // Response
+  public static final class Greeting implements CborSerializable {
+    public final String whom;
+    public final int numberOfPeople;
+
+    public Greeting(String whom, int numberOfPeople) {
+      this.whom = whom;
+      this.numberOfPeople = numberOfPeople;
+    }
+  }
+
+  // Event
+  public static final class Greeted implements CborSerializable {
+    public final String whom;
+
+    @JsonCreator
+    public Greeted(String whom) {
+      this.whom = whom;
+    }
+  }
+
+  // State
+  static final class KnownPeople implements CborSerializable {
+    private Set&lt;String&gt; names = Collections.emptySet();
+
+    KnownPeople() {}
+
+    private KnownPeople(Set&lt;String&gt; names) {
+      this.names = names;
+    }
+
+    KnownPeople add(String name) {
+      Set&lt;String&gt; newNames = new HashSet&lt;&gt;(names);
+      newNames.add(name);
+      return new KnownPeople(newNames);
+    }
+
+    int numberOfPeople() {
+      return names.size();
+    }
+  }
+
+  public static final EntityTypeKey&lt;Command&gt; ENTITY_TYPE_KEY =
+      EntityTypeKey.create(Command.class, &quot;HelloWorld&quot;);
+
+  public static Behavior&lt;Command&gt; create(String entityId, PersistenceId persistenceId) {
+    return Behaviors.setup(context -&gt; new HelloWorld(context, entityId, persistenceId));
+  }
+
+  private HelloWorld(
+      ActorContext&lt;Command&gt; context, String entityId, PersistenceId persistenceId) {
+    super(persistenceId);
+    context.getLog().info(&quot;Starting HelloWorld {}&quot;, entityId);
+  }
+
+  @Override
+  public KnownPeople emptyState() {
+    return new KnownPeople();
+  }
+
+  @Override
+  public CommandHandler&lt;Command, Greeted, KnownPeople&gt; commandHandler() {
+    return newCommandHandlerBuilder().forAnyState().onCommand(Greet.class, this::greet).build();
+  }
+
+  private Effect&lt;Greeted, KnownPeople&gt; greet(KnownPeople state, Greet cmd) {
+    return Effect()
+        .persist(new Greeted(cmd.whom))
+        .thenRun(newState -&gt; cmd.replyTo.tell(new Greeting(cmd.whom, newState.numberOfPeople())));
+  }
+
+  @Override
+  public EventHandler&lt;KnownPeople, Greeted&gt; eventHandler() {
+    return (state, evt) -&gt; state.add(evt.whom);
+  }
+}</code></pre></dd>
+</dl>
+<p>To initialize and use the entity:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/HelloWorldPersistentEntityExample.scala#L30-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.sharding.typed.scaladsl.ClusterSharding
+import pekko.cluster.sharding.typed.scaladsl.Entity
+import pekko.util.Timeout
+
+class HelloWorldService(system: ActorSystem[_]) {
+  import system.executionContext
+
+  private val sharding = ClusterSharding(system)
+
+  // registration at startup
+  sharding.init(Entity(typeKey = HelloWorld.TypeKey) { entityContext =&gt;
+    HelloWorld(entityContext.entityId, PersistenceId(entityContext.entityTypeKey.name, entityContext.entityId))
+  })
+
+  private implicit val askTimeout: Timeout = Timeout(5.seconds)
+
+  def greet(worldId: String, whom: String): Future[Int] = {
+    val entityRef = sharding.entityRefFor(HelloWorld.TypeKey, worldId)
+    val greeting = entityRef ? HelloWorld.Greet(whom)
+    greeting.map(_.numberOfPeople)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/HelloWorldPersistentEntityExample.java#L36-L42" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding;
+import org.apache.pekko.cluster.sharding.typed.javadsl.EntityRef;
+import org.apache.pekko.cluster.sharding.typed.javadsl.Entity;
+import org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior;
+import org.apache.pekko.serialization.jackson.CborSerializable;
+import org.apache.pekko.util.Timeout;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+public static class HelloWorldService {
+  private final ActorSystem&lt;?&gt; system;
+  private final ClusterSharding sharding;
+  private final Duration askTimeout = Duration.ofSeconds(5);
+
+  // registration at startup
+  public HelloWorldService(ActorSystem&lt;?&gt; system) {
+    this.system = system;
+    sharding = ClusterSharding.get(system);
+
+    // registration at startup
+    sharding.init(
+        Entity.of(
+            HelloWorld.ENTITY_TYPE_KEY,
+            entityContext -&gt;
+                HelloWorld.create(
+                    entityContext.getEntityId(),
+                    PersistenceId.of(
+                        entityContext.getEntityTypeKey().name(), entityContext.getEntityId()))));
+  }
+
+  // usage example
+  public CompletionStage&lt;Integer&gt; sayHello(String worldId, String whom) {
+    EntityRef&lt;HelloWorld.Command&gt; entityRef =
+        sharding.entityRefFor(HelloWorld.ENTITY_TYPE_KEY, worldId);
+    CompletionStage&lt;HelloWorld.Greeting&gt; result =
+        entityRef.ask(replyTo -&gt; new HelloWorld.Greet(whom, replyTo), askTimeout);
+    return result.thenApply(greeting -&gt; greeting.numberOfPeople);
+  }
+}</code></pre></dd>
+</dl>
+<p>Note how an unique <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span> can be constructed from the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityTypeKey"><code>EntityTypeKey</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey"><code>EntityTypeKey</code></a></span> and the <code>entityId</code> provided by the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityContext.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityContext"><code>EntityContext</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityContext.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityContext"><code>EntityContext</code></a></span> in the factory function for the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span>. This is a typical way of defining the <code>PersistenceId</code> but other formats are possible, as described in the <a href="persistence.html#persistenceid">PersistenceId section</a>.</p>
+<p>Sending messages to persistent entities is the same as if the entity wasn&rsquo;t persistent. The only difference is when an entity is moved the state will be restored. In the above example <a href="interaction-patterns.html#outside-ask">ask</a> is used but <code>tell</code> or any of the other <a href="interaction-patterns.html">Interaction Patterns</a> can be used.</p>
+<p>See <a href="persistence.html">persistence</a> for more details.</p>
+<h2><a href="#shard-allocation" name="shard-allocation" class="anchor"><span class="anchor-link"></span></a>Shard allocation</h2>
+<p>A shard is a group of entities that will be managed together. The grouping is typically defined by a hashing function of the <code>entityId</code>. For a specific entity identifier the shard identifier must always be the same. Otherwise the entity actor might accidentally be started in several places at the same time.</p>
+<p>By default the shard identifier is the absolute value of the <code>hashCode</code> of the entity identifier modulo the total number of shards. The number of shards is configured by:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/main/resources/reference.conf#L4-L11" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding {
+  # Number of shards used by the default HashCodeMessageExtractor
+  # when no other message extractor is defined. This value must be
+  # the same for all nodes in the cluster and that is verified by
+  # configuration check when joining. Changing the value requires
+  # stopping all nodes in the cluster.
+  number-of-shards = 1000
+}</code></pre>
+<p>As a rule of thumb, the number of shards should be a factor ten greater than the planned maximum number of cluster nodes. It doesn&rsquo;t have to be exact. Fewer shards than number of nodes will result in that some nodes will not host any shards. Too many shards will result in less efficient management of the shards, e.g. rebalancing overhead, and increased latency because the coordinator is involved in the routing of the first message for each shard.</p>
+<p>The <code>number-of-shards</code> configuration value must be the same for all nodes in the cluster and that is verified by configuration check when joining. Changing the value requires stopping all nodes in the cluster.</p>
+<p>The shards are allocated to the nodes in the cluster. The decision of where to allocate a shard is done by a shard allocation strategy. </p>
+<p>The default implementation <code>LeastShardAllocationStrategy</code> allocates new shards to the <code>ShardRegion</code> (node) with least number of previously allocated shards. This strategy can be replaced by an application specific implementation.</p>
+<p>When a node is added to the cluster the shards on the existing nodes will be rebalanced to the new node. The <code>LeastShardAllocationStrategy</code> picks shards for rebalancing from the <code>ShardRegion</code>s with most number of previously allocated shards. They will then be allocated to the <code>ShardRegion</code> with least number of previously allocated shards, i.e. new members in the cluster. The amount of shards to rebalance in each round can be limited to make it progress slower since rebalancing too many shards at the same time could result in additional load on the system. For example, causing many Event Sourced entites to be started at the same time.</p>
+<p>A new rebalance algorithm was included in Akka 2.6.10. It can reach optimal balance in a few rebalance rounds (typically 1 or 2 rounds). For backwards compatibility the new algorithm is not enabled by default. The new algorithm is recommended and will become the default in future versions of Akka. You enable the new algorithm by setting <code>rebalance-absolute-limit</code> &gt; 0, for example:</p>
+<pre><code>pekko.cluster.sharding.least-shard-allocation-strategy.rebalance-absolute-limit = 20
+</code></pre>
+<p>The <code>rebalance-absolute-limit</code> is the maximum number of shards that will be rebalanced in one rebalance round.</p>
+<p>You may also want to tune the <code>pekko.cluster.sharding.least-shard-allocation-strategy.rebalance-relative-limit</code>. The <code>rebalance-relative-limit</code> is a fraction (&lt; 1.0) of total number of (known) shards that will be rebalanced in one rebalance round. The lower result of <code>rebalance-relative-limit</code> and <code>rebalance-absolute-limit</code> will be used.</p>
+<h3><a href="#external-shard-allocation" name="external-shard-allocation" class="anchor"><span class="anchor-link"></span></a>External shard allocation</h3>
+<p>An alternative allocation strategy is the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/external/ExternalShardAllocationStrategy.html" title="org.apache.pekko.cluster.sharding.external.ExternalShardAllocationStrategy"><code>ExternalShardAllocationStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/external/ExternalShardAllocationStrategy.html" title="org.apache.pekko.cluster.sharding.external.ExternalShardAllocationStrategy"><code>ExternalShardAllocationStrategy</code></a></span> which allows explicit control over where shards are allocated via the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/external/ExternalShardAllocation.html" title="org.apache.pekko.cluster.sharding.external.ExternalShardAllocation"><code>ExternalShardAllocation</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/external/ExternalShardAllocation.html" title="org.apache.pekko.cluster.sharding.external.ExternalShardAllocation"><code>ExternalShardAllocation</code></a></span> extension.</p>
+<p>This can be used, for example, to match up Kafka Partition consumption with shard locations. The video <a href="https://akka.io/blog/news/2020/03/18/akka-sharding-kafka-video">How to co-locate Kafka Partitions with Akka Cluster Shards</a> explains a setup for it. Alpakka Kafka provides <a href="https://doc.akka.io/docs/alpakka-kafka/current/cluster-sharding.html">an extension for Akka Cluster Sharding</a>.</p>
+<p>To use it set it as the allocation strategy on your <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/Entity.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.Entity"><code>Entity</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/Entity.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.Entity"><code>Entity</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ExternalShardAllocationCompileOnlySpec.scala#L38-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val TypeKey = EntityTypeKey[Counter.Command](&quot;Counter&quot;)
+
+val entity = Entity(TypeKey)(createBehavior = entityContext =&gt; Counter(entityContext.entityId))
+  .withAllocationStrategy(new ExternalShardAllocationStrategy(system, TypeKey.name))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ExternalShardAllocationCompileOnlyTest.java#L39-L42" target="_blank" title="Go to snippet source">source</a><code class="language-java">EntityTypeKey&lt;Counter.Command&gt; typeKey = EntityTypeKey.create(Counter.Command.class, &quot;Counter&quot;);
+
+ActorRef&lt;ShardingEnvelope&lt;Counter.Command&gt;&gt; shardRegion =
+    sharding.init(Entity.of(typeKey, ctx -&gt; Counter.create(ctx.getEntityId())));</code></pre></dd>
+</dl>
+<p>For any shardId that has not been allocated it will be allocated to the requesting node. To make explicit allocations:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ExternalShardAllocationCompileOnlySpec.scala#L48-L49" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val client: ExternalShardAllocationClient = ExternalShardAllocation(system).clientFor(TypeKey.name)
+val done: Future[Done] = client.updateShardLocation(&quot;shard-id-1&quot;, Address(&quot;akka&quot;, &quot;system&quot;, &quot;127.0.0.1&quot;, 2552))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ExternalShardAllocationCompileOnlyTest.java#L46-L49" target="_blank" title="Go to snippet source">source</a><code class="language-java">ExternalShardAllocationClient client =
+    ExternalShardAllocation.get(system).getClient(typeKey.name());
+CompletionStage&lt;Done&gt; done =
+    client.setShardLocation(&quot;shard-id-1&quot;, new Address(&quot;akka&quot;, &quot;system&quot;, &quot;127.0.0.1&quot;, 2552));</code></pre></dd>
+</dl>
+<p>Any new or moved shard allocations will be moved on the next rebalance.</p>
+<p>The communication from the client to the shard allocation strategy is via <a href="distributed-data.html">Distributed Data</a>. It uses a single <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/LWWMap.html" title="org.apache.pekko.cluster.ddata.LWWMap"><code>LWWMap</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/LWWMap.html" title="org.apache.pekko.cluster.ddata.LWWMap"><code>LWWMap</code></a></span> that can support 10s of thousands of shards. Later versions could use multiple keys to support a greater number of shards.</p>
+<h4><a href="#example-project-for-external-allocation-strategy" name="example-project-for-external-allocation-strategy" class="anchor"><span class="anchor-link"></span></a>Example project for external allocation strategy</h4>
+<p><a href="https://developer.lightbend.com/start/?group=akka&amp;project=akka-samples-kafka-to-sharding">Kafka to Cluster Sharding</a> is an example project that can be downloaded, and with instructions of how to run, that demonstrates how to use external sharding to co-locate Kafka partition consumption with shards.</p>
+<h3><a href="#custom-shard-allocation" name="custom-shard-allocation" class="anchor"><span class="anchor-link"></span></a>Custom shard allocation</h3>
+<p>An optional custom shard allocation strategy can be passed into the optional parameter when initializing an entity type or explicitly using the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/Entity.html#withAllocationStrategy(org.apache.pekko.cluster.sharding.ShardCoordinator.ShardAllocationStrategy)" title="org.apache.pekko.cluster.sharding.typed.javadsl.Entity"><code>withAllocationStrategy</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/Entity.html#withAllocationStrategy(newAllocationStrategy:org.apache.pekko.cluster.sharding.ShardCoordinator.ShardAllocationStrategy):org.apache.pekko.cluster.sharding.typed.scaladsl.Entity[M,E]" title="org.apache.pekko.cluster.sharding.typed.scaladsl.Entity"><code>withAllocationStrategy</code></a></span> function. See the API documentation of <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/cluster/sharding/ShardCoordinator$$ShardAllocationStrategy.html" title="pekko.cluster.sharding.ShardCoordinator.ShardAllocationStrategy"><code>ShardAllocationStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/cluster/sharding/ShardCoordinator.AbstractShardAllocationStrategy.html" title="pekko.cluster.sharding.ShardCoordinator.AbstractShardAllocationStrategy"><code>AbstractShardAllocationStrategy</code></a></span> for details of how to implement a custom <code>ShardAllocationStrategy</code>.</p>
+<h2><a href="#how-it-works" name="how-it-works" class="anchor"><span class="anchor-link"></span></a>How it works</h2>
+<p>See <a href="cluster-sharding-concepts.html">Cluster Sharding concepts</a>.</p>
+<h2><a href="#passivation" name="passivation" class="anchor"><span class="anchor-link"></span></a>Passivation</h2>
+<p>If the state of the entities are persistent you may stop entities that are not used to reduce memory consumption. This is done by the application specific implementation of the entity actors for example by defining receive timeout (<span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#setReceiveTimeout(java.time.Duration,T)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>context.setReceiveTimeout</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#setReceiveTimeout(timeout:scala.concurrent.duration.FiniteDuration,msg:T):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>context.setReceiveTimeout</code></a></span>). If a message is already enqueued to the entity when it stops itself the enqueued message in the mailbox will be dropped. To support graceful passivation without losing such messages the entity actor can send <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding$$Passivate.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding.Passivate"><code>ClusterSharding.Passivate</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding$$Passivate.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.ClusterSharding.Passivate"><code>ClusterSharding.Passivate</code></a></span> to the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-scala">[<a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/cluster/sharding/typed/scaladsl/ClusterSharding$$ShardCommand.html" title="cluster.sharding.typed.scaladsl.ClusterSharding.ShardCommand"><code>ShardCommand</code></a>]</span><span class="group-java">&lt;<a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding.ShardCommand.html" title="pekko.cluster.sharding.typed.javadsl.ClusterSharding.ShardCommand"><code>ShardCommand</code></a>&gt;</span> that was passed in to the factory method when creating the entity. The optional <code>stopMessage</code> message will be sent back to the entity, which is then supposed to stop itself, otherwise it will be stopped automatically. Incoming messages will be buffered by the <code>Shard</code> between reception of <code>Passivate</code> and termination of the entity. Such buffered messages are thereafter delivered to a new incarnation of the entity.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L107-L136" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Counter {
+  sealed trait Command
+  case object Increment extends Command
+  final case class GetValue(replyTo: ActorRef[Int]) extends Command
+  private case object Idle extends Command
+  case object GoodByeCounter extends Command
+
+  def apply(shard: ActorRef[ClusterSharding.ShardCommand], entityId: String): Behavior[Command] = {
+    Behaviors.setup { ctx =&gt;
+      def updated(value: Int): Behavior[Command] =
+        Behaviors.receiveMessage[Command] {
+          case Increment =&gt;
+            updated(value + 1)
+          case GetValue(replyTo) =&gt;
+            replyTo ! value
+            Behaviors.same
+          case Idle =&gt;
+            // after receive timeout
+            shard ! ClusterSharding.Passivate(ctx.self)
+            Behaviors.same
+          case GoodByeCounter =&gt;
+            // the stopMessage, used for rebalance and passivate
+            Behaviors.stopped
+        }
+
+      ctx.setReceiveTimeout(30.seconds, Idle)
+      updated(0)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L101-L177" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Counter2 extends AbstractBehavior&lt;Counter2.Command&gt; {
+
+  public interface Command {}
+
+  private enum Idle implements Command {
+    INSTANCE
+  }
+
+  public enum GoodByeCounter implements Command {
+    INSTANCE
+  }
+
+  public enum Increment implements Command {
+    INSTANCE
+  }
+
+  public static class GetValue implements Command {
+    private final ActorRef&lt;Integer&gt; replyTo;
+
+    public GetValue(ActorRef&lt;Integer&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(
+      ActorRef&lt;ClusterSharding.ShardCommand&gt; shard, String entityId) {
+    return Behaviors.setup(
+        ctx -&gt; {
+          ctx.setReceiveTimeout(Duration.ofSeconds(30), Idle.INSTANCE);
+          return new Counter2(ctx, shard, entityId);
+        });
+  }
+
+  private final ActorRef&lt;ClusterSharding.ShardCommand&gt; shard;
+  private final String entityId;
+  private int value = 0;
+
+  private Counter2(
+      ActorContext&lt;Command&gt; context,
+      ActorRef&lt;ClusterSharding.ShardCommand&gt; shard,
+      String entityId) {
+    super(context);
+    this.shard = shard;
+    this.entityId = entityId;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Increment.class, msg -&gt; onIncrement())
+        .onMessage(GetValue.class, this::onGetValue)
+        .onMessage(Idle.class, msg -&gt; onIdle())
+        .onMessage(GoodByeCounter.class, msg -&gt; onGoodByeCounter())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onIncrement() {
+    value++;
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGetValue(GetValue msg) {
+    msg.replyTo.tell(value);
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onIdle() {
+    // after receive timeout
+    shard.tell(new ClusterSharding.Passivate&lt;&gt;(getContext().getSelf()));
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGoodByeCounter() {
+    // the stopMessage, used for rebalance and passivate
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p>and then initialized with:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L140-L143" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val TypeKey = EntityTypeKey[Counter.Command](&quot;Counter&quot;)
+
+ClusterSharding(system).init(Entity(TypeKey)(createBehavior = entityContext =&gt;
+  Counter(entityContext.shard, entityContext.entityId)).withStopMessage(Counter.GoodByeCounter))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L185-L191" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>EntityTypeKey&lt;Counter2.Command&gt; typeKey =
+    EntityTypeKey.create(Counter2.Command.class, &quot;Counter&quot;);
+
+sharding.init(
+    Entity.of(typeKey, ctx -&gt; Counter2.create(ctx.getShard(), ctx.getEntityId()))
+        .withStopMessage(Counter2.GoodByeCounter.INSTANCE));</code></pre></dd>
+</dl>
+<p>Note that in the above example the <code>stopMessage</code> is specified as <code>GoodByeCounter</code>. That message will be sent to the entity when it&rsquo;s supposed to stop itself due to rebalance or passivation. If the <code>stopMessage</code> is not defined it will be stopped automatically without receiving a specific message. It can be useful to define a custom stop message if the entity needs to perform some asynchronous cleanup or interactions before stopping.</p>
+<p>The stop message is only sent locally, from the shard to the entity so does not require an entity id to end up in the right actor. When using a custom <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingMessageExtractor.html" title="org.apache.pekko.cluster.sharding.typed.ShardingMessageExtractor"><code>ShardingMessageExtractor</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingMessageExtractor.html" title="org.apache.pekko.cluster.sharding.typed.ShardingMessageExtractor"><code>ShardingMessageExtractor</code></a></span> without envelopes, the extractor will still have to handle the stop message type to please the compiler, even though it will never actually be passed to the extractor.</p>
+<h2><a href="#automatic-passivation" name="automatic-passivation" class="anchor"><span class="anchor-link"></span></a>Automatic Passivation</h2>
+<p>Entities are automatically passivated based on a passivation strategy. The default passivation strategy is to <a href="#idle-entity-passivation">passivate idle entities</a> when they haven&rsquo;t received a message within a specified interval, and this is the current default strategy to maintain compatibility with earlier versions. It&rsquo;s recommended to switch to a <a href="#active-entity-limits">passivation strategy with an active entity limit</a> and a pre-configured default strategy is provided. Active entity limits and idle entity timeouts can also be used together.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The automatic passivation strategies, except <a href="#idle-entity-passivation">passivate idle entities</a> are marked as <a href="../common/may-change.html">may change</a> in the sense of being the subject of final development. This means that the configuration or semantics can change without warning or deprecation period. The passivation strategies can be used in production, but we reserve the right to adjust the configuration after additional testing and feedback.</p></div>
+<p>Automatic passivation can be disabled by setting <code>pekko.cluster.sharding.passivation.strategy = none</code>. It is disabled automatically if <a href="cluster-sharding.html#remembering-entities">Remembering Entities</a> is enabled.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Only messages sent through Cluster Sharding are counted as entity activity for automatic passivation. Messages sent directly to the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>, including messages that the actor sends to itself, are not counted as entity activity.</p></div>
+<h3><a href="#idle-entity-passivation" name="idle-entity-passivation" class="anchor"><span class="anchor-link"></span></a>Idle entity passivation</h3>
+<p>Idle entities can be automatically passivated when they have not received a message for a specified length of time. This is currently the default strategy, for compatibility, and is enabled automatically with a timeout of 2 minutes. Specify a different idle timeout with configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L48-L50" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  default-idle-strategy.idle-entity.timeout = 3 minutes
+}</code></pre>
+<p>Or specify the idle timeout as a duration using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html#withPassivationStrategy(settings:org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings):org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>withPassivationStrategy</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html#withPassivationStrategy(org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings)" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>withPassivationStrategy</code></a></span> method on <code>ClusterShardingSettings</code>.</p>
+<p>Idle entity timeouts can be enabled and configured for any passivation strategy.</p>
+<h3><a href="#active-entity-limits" name="active-entity-limits" class="anchor"><span class="anchor-link"></span></a>Active entity limits</h3>
+<p>Automatic passivation strategies can limit the number of active entities. Limit-based passivation strategies use a replacement policy to determine which active entities should be passivated when the active entity limit is exceeded. The configurable limit is for a whole shard region and is divided evenly among the active shards in each region.</p>
+<p>A recommended passivation strategy, which will become the new default passivation strategy in future versions of Akka Cluster Sharding, can be enabled with configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L93-L95" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = default-strategy
+}</code></pre>
+<p>This default strategy uses a <a href="#composite-passivation-strategies">composite passivation strategy</a> which combines recency-based and frequency-based tracking: the main area is configured with a <a href="#segmented-least-recently-used-policy">segmented least recently used policy</a> with a frequency-biased <a href="#admission-filter">admission filter</a>, fronted by a recency-biased <a href="#admission-window-policy">admission window</a> with <a href="#admission-window-optimizer">adaptive sizing</a> enabled.</p>
+<p>The active entity limit for the default strategy can be configured:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L119-L124" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = default-strategy
+  default-strategy {
+    active-entity-limit = 1000000
+  }
+}</code></pre>
+<p>Or using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withActiveEntityLimit(limit:Int):org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withActiveEntityLimit</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withActiveEntityLimit(int)" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withActiveEntityLimit</code></a></span> method on <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<p>An <a href="#idle-entity-passivation">idle entity timeout</a> can also be enabled and configured for this strategy:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L148-L153" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = default-strategy
+  default-strategy {
+    idle-entity.timeout = 30.minutes
+  }
+}</code></pre>
+<p>Or using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withIdleEntityPassivation(settings:org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings.IdleSettings):org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withIdleEntityPassivation</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withIdleEntityPassivation(org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings.IdleSettings)" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withIdleEntityPassivation</code></a></span> method on <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<p>If the default strategy is not appropriate for particular workloads and access patterns, a <a href="#custom-passivation-strategies">custom passivation strategy</a> can be created with configurable replacement policies, active entity limits, and idle entity timeouts.</p>
+<h3><a href="#custom-passivation-strategies" name="custom-passivation-strategies" class="anchor"><span class="anchor-link"></span></a>Custom passivation strategies</h3>
+<p>To configure a custom passivation strategy, create a configuration section for the strategy under <code>pekko.cluster.sharding.passivation</code> and select this strategy using the <code>strategy</code> setting. The strategy needs a <em>replacement policy</em> to be chosen, an <em>active entity limit</em> to be set, and can optionally <a href="#idle-entity-passivation">passivate idle entities</a>. For example, a custom strategy can be configured to use the <a href="#least-recently-used-policy">least recently used policy</a>:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L178-L184" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-lru-strategy
+  custom-lru-strategy {
+    active-entity-limit = 1000000
+    replacement.policy = least-recently-used
+  }
+}</code></pre>
+<p>The active entity limit and replacement policy can also be configured using the <code>withPassivationStrategy</code> method on <code>ClusterShardingSettings</code>, passing custom <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<h3><a href="#least-recently-used-policy" name="least-recently-used-policy" class="anchor"><span class="anchor-link"></span></a>Least recently used policy</h3>
+<p>The <strong>least recently used</strong> policy passivates those entities that have the least recent activity when the number of active entities passes the specified limit.</p>
+<p><strong>When to use</strong>: the least recently used policy should be used when access patterns are recency biased, where entities that were recently accessed are likely to be accessed again. See the <a href="#segmented-least-recently-used-policy">segmented least recently used policy</a> for a variation that also distinguishes frequency of access.</p>
+<p>Configure a passivation strategy to use the least recently used policy:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L178-L184" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-lru-strategy
+  custom-lru-strategy {
+    active-entity-limit = 1000000
+    replacement.policy = least-recently-used
+  }
+}</code></pre>
+<p>Or using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withLeastRecentlyUsedReplacement():org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withLeastRecentlyUsedReplacement</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withLeastRecentlyUsedReplacement()" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withLeastRecentlyUsedReplacement</code></a></span> method on <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<h4><a href="#segmented-least-recently-used-policy" name="segmented-least-recently-used-policy" class="anchor"><span class="anchor-link"></span></a>Segmented least recently used policy</h4>
+<p>A variation of the least recently used policy can be enabled that divides the active entity space into multiple segments to introduce frequency information into the passivation strategy. Higher-level segments contain entities that have been accessed more often. The first segment is for entities that have only been accessed once, the second segment for entities that have been accessed at least twice, and so on. When an entity is accessed again, it will be promoted to the most recent position of the next-level or highest-level segment. The higher-level segments are limited, where the total limit is either evenly divided among segments, or proportions of the segments can be configured. When a higher-level segment exceeds its limit, the least recently used active entity tracked in that segment will be demoted to the level below. Only the least recently used entities in the lowest level will be candidates for passivation. The higher levels are considered &ldquo;protected&rdquo;, where entities will have additional opportunities to be accessed before being considered for passivation.</p>
+<p><strong>When to use</strong>: the segmented least recently used policy can be used for workloads where some entities are more popular than others, to prioritize those entities that are accessed more frequently.</p>
+<p>To configure a segmented least recently used (SLRU) policy, with two levels and a protected segment limited to 80% of the total limit:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L208-L222" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-slru-strategy
+  custom-slru-strategy {
+    active-entity-limit = 1000000
+    replacement {
+      policy = least-recently-used
+      least-recently-used {
+        segmented {
+          levels = 2
+          proportions = [0.2, 0.8]
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>Or to configure a 4-level segmented least recently used (S4LRU) policy, with 4 evenly divided levels:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L233-L244" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-s4lru-strategy
+  custom-s4lru-strategy {
+    active-entity-limit = 1000000
+    replacement {
+      policy = least-recently-used
+      least-recently-used {
+        segmented.levels = 4
+      }
+    }
+  }
+}</code></pre>
+<p>Or using custom <code>ClusterShardingSettings.PassivationStrategySettings.LeastRecentlyUsedSettings</code>.</p>
+<h3><a href="#most-recently-used-policy" name="most-recently-used-policy" class="anchor"><span class="anchor-link"></span></a>Most recently used policy</h3>
+<p>The <strong>most recently used</strong> policy passivates those entities that have the most recent activity when the number of active entities passes the specified limit.</p>
+<p><strong>When to use</strong>: the most recently used policy is most useful when the older an entity is, the more likely that entity will be accessed again; as seen in cyclic access patterns.</p>
+<p>Configure a passivation strategy to use the most recently used policy:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L296-L302" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-mru-strategy
+  custom-mru-strategy {
+    active-entity-limit = 1000000
+    replacement.policy = most-recently-used
+  }
+}</code></pre>
+<p>Or using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withMostRecentlyUsedReplacement():org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withMostRecentlyUsedReplacement</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withMostRecentlyUsedReplacement()" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withMostRecentlyUsedReplacement</code></a></span> method on <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<h3><a href="#least-frequently-used-policy" name="least-frequently-used-policy" class="anchor"><span class="anchor-link"></span></a>Least frequently used policy</h3>
+<p>The <strong>least frequently used</strong> policy passivates those entities that have the least frequent activity when the number of active entities passes the specified limit.</p>
+<p><strong>When to use</strong>: the least frequently used policy should be used when access patterns are frequency biased, where some entities are much more popular than others and should be prioritized. See the <a href="#least-frequently-used-with-dynamic-aging-policy">least frequently used with dynamic aging policy</a> for a variation that also handles shifts in popularity.</p>
+<p>Configure automatic passivation to use the least frequently used policy:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L350-L356" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-lfu-strategy
+  custom-lfu-strategy {
+    active-entity-limit = 1000000
+    replacement.policy = least-frequently-used
+  }
+}</code></pre>
+<p>Or using the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withLeastFrequentlyUsedReplacement():org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withLeastFrequentlyUsedReplacement</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings$$PassivationStrategySettings.html#withLeastFrequentlyUsedReplacement()" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings.PassivationStrategySettings"><code>withLeastFrequentlyUsedReplacement</code></a></span> method on <code>ClusterShardingSettings.PassivationStrategySettings</code>.</p>
+<h4><a href="#least-frequently-used-with-dynamic-aging-policy" name="least-frequently-used-with-dynamic-aging-policy" class="anchor"><span class="anchor-link"></span></a>Least frequently used with dynamic aging policy</h4>
+<p>A variation of the least frequently used policy can be enabled that uses &ldquo;dynamic aging&rdquo; to adapt to shifts in the set of popular entities, which is useful for smaller active entity limits and when shifts in popularity are common. If entities were frequently accessed in the past but then become unpopular, they can still remain active for a long time given their high frequency counts. Dynamic aging effectively increases the frequencies for recently accessed entities so they can more easily become higher priority over entities that are no longer accessed.</p>
+<p><strong>When to use</strong>: the least frequently used with dynamic aging policy can be used when workloads are frequency biased (there are some entities that are much more popular), but which entities are most popular changes over time. Shifts in popularity can have more impact on a least frequently used policy if the active entity limit is small.</p>
+<p>Configure dynamic aging with the least frequently used policy:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L408-L419" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-lfu-with-dynamic-aging
+  custom-lfu-with-dynamic-aging {
+    active-entity-limit = 1000
+    replacement {
+      policy = least-frequently-used
+      least-frequently-used {
+        dynamic-aging = on
+      }
+    }
+  }
+}</code></pre>
+<p>Or using custom <code>ClusterShardingSettings.PassivationStrategySettings.LeastFrequentlyUsedSettings</code>.</p>
+<h3><a href="#composite-passivation-strategies" name="composite-passivation-strategies" class="anchor"><span class="anchor-link"></span></a>Composite passivation strategies</h3>
+<p>Passivation strategies can be combined using an admission window and admission filter. The admission window tracks newly activated entities. Entities are replaced in the admission window using one of the replacement policies, such as the least recently used replacement policy. When an entity is replaced in the window area it has an opportunity to enter the main entity tracking area, based on the admission filter. The admission filter determines whether an entity that has left the window area should be admitted into the main area, or otherwise be passivated. A frequency sketch is the default admission filter and estimates the access frequency of entities over the lifespan of the cluster sharding node, selecting the entity that is estimated to be accessed more frequently. Composite passivation strategies with an admission window and admission filter are implementing the <em>Window-TinyLFU</em> caching algorithm.</p>
+<h4><a href="#admission-window-policy" name="admission-window-policy" class="anchor"><span class="anchor-link"></span></a>Admission window policy</h4>
+<p>The admission window tracks newly activated entities. When an entity is replaced in the window area, it has an opportunity to enter the main entity tracking area, based on the <a href="#admission-filter">admission filter</a>. The admission window can be enabled by selecting a policy (while the regular replacement policy is for the main area):</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L444-L451" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-strategy-with-admission-window
+  custom-strategy-with-admission-window {
+    active-entity-limit = 1000000
+    admission.window.policy = least-recently-used
+    replacement.policy = least-frequently-used
+  }
+}</code></pre>
+<p>The proportion of the active entity limit used for the admission window can be configured (the default is 1%):</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L470-L480" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-strategy-with-admission-window
+  custom-strategy-with-admission-window {
+    active-entity-limit = 1000000
+    admission.window {
+      policy = least-recently-used
+      proportion = 0.1 # 10%
+    }
+    replacement.policy = least-frequently-used
+  }
+}</code></pre>
+<p>The proportion for the admission window can also be adapted and optimized dynamically, by enabling an <a href="#admission-window-optimizer">admission window optimizer</a>.</p>
+<h4><a href="#admission-window-optimizer" name="admission-window-optimizer" class="anchor"><span class="anchor-link"></span></a>Admission window optimizer</h4>
+<p>The proportion of the active entity limit used for the admission window can be adapted dynamically using an optimizer. The window area will usually retain entities that are accessed again in a short time (recency-biased), while the main area can track entities that are accessed more frequently over longer times (frequency-biased). If access patterns for entities are changeable, then the adaptive sizing of the window allows the passivation strategy to adapt between recency-biased and frequency-biased workloads.</p>
+<p>The optimizer currently available uses a simple hill-climbing algorithm, which searches for a window proportion that provides an optimal active rate (where entities are already active when accessed, the <em>cache hit rate</em>). Enable adaptive window sizing by configuring the <code>hill-climbing</code> window optimizer:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L499-L509" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-strategy-with-admission-window
+  custom-strategy-with-admission-window {
+    active-entity-limit = 1000000
+    admission.window {
+      policy = least-recently-used
+      optimizer = hill-climbing
+    }
+    replacement.policy = least-frequently-used
+  }
+}</code></pre>
+<p>See the <code>reference.conf</code> for parameters that can be tuned for the hill climbing admission window optimizer.</p>
+<h4><a href="#admission-filter" name="admission-filter" class="anchor"><span class="anchor-link"></span></a>Admission filter</h4>
+<p>An admission filter can be enabled, which determines whether an entity that has left the window area (or a newly activated entity if there is no admission window) should be admitted into the main entity tracking area, or otherwise be passivated. If no admission filter is configured, then entities will always be admitted into the main area.</p>
+<p>A frequency sketch is the default admission filter and estimates the access frequency of entities over the lifespan of the cluster sharding node, selecting the entity that is estimated to be accessed more frequently. The frequency sketch automatically ages entries, using the approach from the <em>TinyLFU</em> cache admission algorithm. Enable an admission filter by configuring the <code>frequency-sketch</code> admission filter:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/test/scala/org/apache/pekko/cluster/sharding/ClusterShardingSettingsSpec.scala#L532-L553" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding.passivation {
+  strategy = custom-strategy-with-admission
+  custom-strategy-with-admission {
+    active-entity-limit = 1000000
+    admission {
+      window {
+        policy = least-recently-used
+        optimizer = hill-climbing
+      }
+      filter = frequency-sketch
+    }
+    replacement {
+      policy = least-recently-used
+      least-recently-used {
+        segmented {
+          levels = 2
+          proportions = [0.2, 0.8]
+        }
+      }
+    }
+  }
+}</code></pre>
+<p>See the <code>reference.conf</code> for parameters that can be tuned for the frequency sketch admission filter.</p>
+<h2><a href="#sharding-state" name="sharding-state" class="anchor"><span class="anchor-link"></span></a>Sharding State</h2>
+<p>There are two types of state managed:</p>
+<ol>
+  <li><a href="cluster-sharding-concepts.html#shardcoordinator-state">ShardCoordinator State</a> - the <code>Shard</code> locations. This is stored in the <code>State Store</code>.</li>
+  <li><a href="cluster-sharding.html#remembering-entities">Remembering Entities</a> - the active shards and the entities in each <code>Shard</code>, which is optional, and disabled by default. This is stored in the <code>Remember Entities Store</code>.</li>
+</ol>
+<h3><a href="#state-store" name="state-store" class="anchor"><span class="anchor-link"></span></a>State Store</h3>
+<p>A state store is mandatory for sharding, it contains the location of shards. The <code>ShardCoordinator</code> needs to load this state after it moves between nodes.</p>
+<p>There are two options for the state store:</p>
+<ul>
+  <li><a href="cluster-sharding.html#distributed-data-mode">Distributed Data Mode</a> - uses Akka <a href="distributed-data.html">Distributed Data</a> (CRDTs) (the default)</li>
+  <li><a href="cluster-sharding.html#persistence-mode">Persistence Mode</a> - (deprecated) uses Akka <a href="persistence.html">Persistence</a> (Event Sourcing)</li>
+</ul><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Persistence for state store mode is deprecated. It is recommended to migrate to <code>ddata</code> for the coordinator state and if using replicated entities migrate to <code>eventsourced</code> for the replicated entities state.</p>
+<p>The data written by the deprecated <code>persistence</code> state store mode for remembered entities can be read by the new remember entities <code>eventsourced</code> mode.</p>
+<p>Once you&rsquo;ve migrated you can not go back to <code>persistence</code> mode.</p></div>
+<h4><a href="#distributed-data-mode" name="distributed-data-mode" class="anchor"><span class="anchor-link"></span></a>Distributed Data Mode</h4>
+<p>To enable distributed data store mode (the default):</p>
+<pre><code>pekko.cluster.sharding.state-store-mode = ddata
+</code></pre>
+<p>The state of the <code>ShardCoordinator</code> is replicated across the cluster but is not stored to disk. <a href="distributed-data.html">Distributed Data</a> handles the <code>ShardCoordinator</code>&rsquo;s state with <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator$$WriteMajorityPlus.html" title="org.apache.pekko.cluster.ddata.Replicator.WriteMajorityPlus"><code>WriteMajorityPlus</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator$$WriteMajorityPlus.html" title="org.apache.pekko.cluster.ddata.Replicator.WriteMajorityPlus"><code>WriteMajorityPlus</code></a></span> / <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator$$ReadMajorityPlus.html" title="org.apache.pekko.cluster.ddata.Replicator.ReadMajorityPlus"><code>ReadMajorityPlus</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator$$ReadMajorityPlus.html" title="org.apache.pekko.cluster.ddata.Replicator.ReadMajorityPlus"><code>ReadMajorityPlus</code></a></span> consistency. When all nodes in the cluster have been stopped, the state is no longer needed and dropped.</p>
+<p>Cluster Sharding uses its own Distributed Data <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator.html" title="org.apache.pekko.cluster.ddata.Replicator"><code>Replicator</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/ddata/Replicator.html" title="org.apache.pekko.cluster.ddata.Replicator"><code>Replicator</code></a></span> per node. If using roles with sharding there is one <code>Replicator</code> per role, which enables a subset of all nodes for some entity types and another subset for other entity types. Each replicator has a name that contains the node role and therefore the role configuration must be the same on all nodes in the cluster, for example you can&rsquo;t change the roles when performing a rolling update. Changing roles requires <a href="../additional/rolling-updates.html#cluster-sharding-configuration-change">a full cluster restart</a>.</p>
+<p>The <code>pekko.cluster.sharding.distributed-data</code> config section configures the settings for Distributed Data. It&rsquo;s not possible to have different <code>distributed-data</code> settings for different sharding entity types.</p>
+<h4><a href="#persistence-mode" name="persistence-mode" class="anchor"><span class="anchor-link"></span></a>Persistence mode</h4>
+<p>To enable persistence store mode:</p>
+<pre><code>pekko.cluster.sharding.state-store-mode = persistence
+</code></pre>
+<p>Since it is running in a cluster <a href="persistence.html">Persistence</a> must be configured with a distributed journal.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Persistence mode for <a href="cluster-sharding.html#remembering-entities">Remembering Entities</a> has been replaced by a remember entities state mode. It should not be used for new projects and existing projects should migrate as soon as possible.</p></div>
+<h2><a href="#remembering-entities" name="remembering-entities" class="anchor"><span class="anchor-link"></span></a>Remembering Entities</h2>
+<p>Remembering entities automatically restarts entities after a rebalance or entity crash. Without remembered entities restarts happen on the arrival of a message.</p>
+<p>Enabling remembered entities disables <a href="cluster-sharding.html#automatic-passivation">Automatic Passivation</a>.</p>
+<p>The state of the entities themselves is not restored unless they have been made persistent, for example with <a href="persistence.html">Event Sourcing</a>.</p>
+<p>To enable remember entities set <code>rememberEntities</code> flag to true in <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>ClusterShardingSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>ClusterShardingSettings</code></a></span> when starting a shard region (or its proxy) for a given <code>entity</code> type or configure <code>pekko.cluster.sharding.remember-entities = on</code>.</p>
+<p>Starting and stopping entities has an overhead but this is limited by batching operations to the underlying remember entities store.</p>
+<h3><a href="#behavior-when-enabled" name="behavior-when-enabled" class="anchor"><span class="anchor-link"></span></a>Behavior When Enabled</h3>
+<p>When <code>rememberEntities</code> is enabled, whenever a <code>Shard</code> is rebalanced onto another node or recovers after a crash, it will recreate all the entities which were previously running in that <code>Shard</code>. </p>
+<p>To permanently stop entities send a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding$$Passivate.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding.Passivate"><code>ClusterSharding.Passivate</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding$$Passivate.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.ClusterSharding.Passivate"><code>ClusterSharding.Passivate</code></a></span> to the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-scala">[<a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding$$ShardCommand.html" title="pekko.cluster.sharding.typed.scaladsl.ClusterSharding.ShardCommand"><code>ShardCommand</code></a>]</span><span class="group-java">&lt;<a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding.ShardCommand.html" title="pekko.cluster.sharding.typed.javadsl.ClusterSharding.ShardCommand"><code>ShardCommand</code></a>&gt;</span> that was passed in to the factory method when creating the entity. Otherwise, the entity will be automatically restarted after the entity restart backoff specified in the configuration.</p>
+<h3><a href="#remember-entities-store" name="remember-entities-store" class="anchor"><span class="anchor-link"></span></a>Remember entities store</h3>
+<p>There are two options for the remember entities store:</p>
+<ol>
+  <li><code>ddata</code></li>
+  <li><code>eventsourced</code></li>
+</ol>
+<h4><a href="#remember-entities-distributed-data-mode" name="remember-entities-distributed-data-mode" class="anchor"><span class="anchor-link"></span></a>Remember entities distributed data mode</h4>
+<p>Enable ddata mode with (enabled by default):</p>
+<pre><code>pekko.cluster.sharding.remember-entities-store = ddata
+</code></pre>
+<p>To support restarting entities after a full cluster restart (non-rolling) the remember entities store is persisted to disk by distributed data. This can be disabled if not needed:</p>
+<pre><code>pekko.cluster.sharding.distributed-data.durable.keys = []
+</code></pre>
+<p>Reasons for disabling:</p>
+<ul>
+  <li>No requirement for remembering entities after a full cluster shutdown</li>
+  <li>Running in an environment without access to disk between restarts e.g. Kubernetes without persistent volumes</li>
+</ul>
+<p>For supporting remembered entities in an environment without disk storage use <code>eventsourced</code> mode instead.</p>
+<h4><a href="#event-sourced-mode" name="event-sourced-mode" class="anchor"><span class="anchor-link"></span></a>Event sourced mode</h4>
+<p>Enable <code>eventsourced</code> mode with:</p>
+<pre><code>pekko.cluster.sharding.remember-entities-store = eventsourced
+</code></pre>
+<p>This mode uses <a href="persistence.html">Event Sourcing</a> to store the active shards and active entities for each shard so a persistence and snapshot plugin must be configured.</p>
+<pre><code>pekko.cluster.sharding.journal-plugin-id = &lt;plugin&gt;
+pekko.cluster.sharding.snapshot-plugin-id = &lt;plugin&gt;
+</code></pre>
+<h3><a href="#migrating-from-deprecated-persistence-mode" name="migrating-from-deprecated-persistence-mode" class="anchor"><span class="anchor-link"></span></a>Migrating from deprecated persistence mode</h3>
+<p>If not using remembered entities you can migrate to ddata with a full cluster restart.</p>
+<p>If using remembered entities there are two migration options: </p>
+<ul>
+  <li><code>ddata</code> for the state store and <code>ddata</code> for remembering entities. All remembered entities will be lost after a full cluster restart.</li>
+  <li><code>ddata</code> for the state store and <code>eventsourced</code> for remembering entities. The new <code>eventsourced</code> remembering entities store  reads the data written by the old <code>persistence</code> mode. Your remembered entities will be remembered after a full cluster restart.</li>
+</ul>
+<p>For migrating existing remembered entities an event adapter needs to be configured in the config for the journal you use in your <code>application.conf</code>. In this example <code>cassandra</code> is the used journal:</p>
+<pre><code>pekko.persistence.cassandra.journal {
+  event-adapters {
+    coordinator-migration = &quot;org.apache.pekko.cluster.sharding.OldCoordinatorStateMigrationEventAdapter&quot;
+  }
+
+  event-adapter-bindings {
+    &quot;org.apache.pekko.cluster.sharding.ShardCoordinator$Internal$DomainEvent&quot; = coordinator-migration
+  }
+}
+</code></pre>
+<p>Once you have migrated you cannot go back to the old persistence store, a rolling update is therefore not possible.</p>
+<p>When <a href="cluster-sharding.html#distributed-data-mode">Distributed Data mode</a> is used the identifiers of the entities are stored in <a href="distributed-data.html#durable-storage">Durable Storage</a> of Distributed Data. You may want to change the configuration of the <code>pekko.cluster.sharding.distributed-data.durable.lmdb.dir</code>, since the default directory contains the remote port of the actor system. If using a dynamically assigned port (0) it will be different each time and the previously stored data will not be loaded.</p>
+<p>The reason for storing the identifiers of the active entities in durable storage, i.e. stored to disk, is that the same entities should be started also after a complete cluster restart. If this is not needed you can disable durable storage and benefit from better performance by using the following configuration:</p>
+<pre><code>pekko.cluster.sharding.distributed-data.durable.keys = []
+</code></pre>
+<h2><a href="#startup-after-minimum-number-of-members" name="startup-after-minimum-number-of-members" class="anchor"><span class="anchor-link"></span></a>Startup after minimum number of members</h2>
+<p>It&rsquo;s recommended to use Cluster Sharding with the Cluster setting <code>pekko.cluster.min-nr-of-members</code> or <code>pekko.cluster.role.&lt;role-name&gt;.min-nr-of-members</code>. <code>min-nr-of-members</code> will defer the allocation of the shards until at least that number of regions have been started and registered to the coordinator. This avoids that many shards are allocated to the first region that registers and only later are rebalanced to other nodes.</p>
+<p>See <a href="cluster.html#how-to-startup-when-a-cluster-size-is-reached">How To Startup when Cluster Size Reached</a> for more information about <code>min-nr-of-members</code>.</p>
+<h2><a href="#health-check" name="health-check" class="anchor"><span class="anchor-link"></span></a>Health check</h2>
+<p>An <a href="https://doc.akka.io/docs/akka-management/current/healthchecks.html">Akka Management compatible health check</a> is included that returns healthy once the local shard region has registered with the coordinator. This health check should be used in cases where you don&rsquo;t want to receive production traffic until the local shard region is ready to retrieve locations for shards. For shard regions that aren&rsquo;t critical and therefore should not block this node becoming ready do not include them.</p>
+<p>The health check does not fail after an initial successful check. Once a shard region is registered and is operational it stays available for incoming message. </p>
+<p>Cluster sharding enables the health check automatically. To disable:</p>
+<pre class="prettyprint"><code class="language-ruby">pekko.management.health-checks.readiness-checks {
+  sharding = &quot;&quot;
+}
+</code></pre>
+<p>Monitoring of each shard region is off by default. Add them by defining the entity type names (<code>EntityTypeKey.name</code>):</p>
+<pre class="prettyprint"><code class="language-ruby">pekko.cluster.sharding.healthcheck.names = [&quot;counter-1&quot;, &quot;HelloWorld&quot;]
+</code></pre>
+<p>See also additional information about how to make <a href="../additional/rolling-updates.html#cluster-sharding">smooth rolling updates</a>.</p>
+<h2><a href="#inspecting-cluster-sharding-state" name="inspecting-cluster-sharding-state" class="anchor"><span class="anchor-link"></span></a>Inspecting cluster sharding state</h2>
+<p>Two requests to inspect the cluster state are available:</p>
+<p><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/GetShardRegionState.html" title="org.apache.pekko.cluster.sharding.typed.GetShardRegionState"><code>GetShardRegionState</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/GetShardRegionState.html" title="org.apache.pekko.cluster.sharding.typed.GetShardRegionState"><code>GetShardRegionState</code></a></span> which will reply with a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardRegion$$CurrentShardRegionState.html" title="org.apache.pekko.cluster.sharding.ShardRegion.CurrentShardRegionState"><code>ShardRegion.CurrentShardRegionState</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardRegion$$CurrentShardRegionState.html" title="org.apache.pekko.cluster.sharding.ShardRegion.CurrentShardRegionState"><code>ShardRegion.CurrentShardRegionState</code></a></span> that contains the identifiers of the shards running in a Region and what entities are alive for each of them.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L197-L203" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.sharding.typed.GetShardRegionState
+import pekko.cluster.sharding.ShardRegion.CurrentShardRegionState
+
+val replyTo: ActorRef[CurrentShardRegionState] = replyMessageAdapter
+
+ClusterSharding(system).shardState ! GetShardRegionState(Counter.TypeKey, replyTo)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L37-L280" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.sharding.typed.GetShardRegionState;
+import org.apache.pekko.cluster.sharding.ShardRegion.CurrentShardRegionState;
+
+ActorRef&lt;CurrentShardRegionState&gt; replyTo = replyMessageAdapter;
+
+ClusterSharding.get(system).shardState().tell(new GetShardRegionState(typeKey, replyTo));</code></pre></dd>
+</dl>
+<p><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/GetClusterShardingStats.html" title="org.apache.pekko.cluster.sharding.typed.GetClusterShardingStats"><code>GetClusterShardingStats</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/GetClusterShardingStats.html" title="org.apache.pekko.cluster.sharding.typed.GetClusterShardingStats"><code>GetClusterShardingStats</code></a></span> which will query all the regions in the cluster and reply with a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardRegion$$ClusterShardingStats.html" title="org.apache.pekko.cluster.sharding.ShardRegion.ClusterShardingStats"><code>ShardRegion.ClusterShardingStats</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardRegion$$ClusterShardingStats.html" title="org.apache.pekko.cluster.sharding.ShardRegion.ClusterShardingStats"><code>ShardRegion.ClusterShardingStats</code></a></span> containing the identifiers of the shards running in each region and a count of entities that are alive in each shard.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L216-L224" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.sharding.typed.GetClusterShardingStats
+import pekko.cluster.sharding.ShardRegion.ClusterShardingStats
+import scala.concurrent.duration._
+
+val replyTo: ActorRef[ClusterShardingStats] = replyMessageAdapter
+val timeout: FiniteDuration = 5.seconds
+
+ClusterSharding(system).shardState ! GetClusterShardingStats(Counter.TypeKey, timeout, replyTo)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlyTest.java#L42-L295" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.sharding.typed.GetClusterShardingStats;
+import org.apache.pekko.cluster.sharding.ShardRegion.ClusterShardingStats;
+
+ActorRef&lt;ClusterShardingStats&gt; replyTo = replyMessageAdapter;
+Duration timeout = Duration.ofSeconds(5);
+
+ClusterSharding.get(system)
+    .shardState()
+    .tell(new GetClusterShardingStats(typeKey, timeout, replyTo));</code></pre></dd>
+</dl>
+<p>If any shard queries failed, for example due to timeout if a shard was too busy to reply within the configured <code>pekko.cluster.sharding.shard-region-query-timeout</code>, <code>ShardRegion.CurrentShardRegionState</code> and <code>ShardRegion.ClusterShardingStats</code> will also include the set of shard identifiers by region that failed.</p>
+<p>The purpose of these messages is testing and monitoring, they are not provided to give access to directly sending messages to the individual entities.</p>
+<h2><a href="#lease" name="lease" class="anchor"><span class="anchor-link"></span></a>Lease</h2>
+<p>A <a href="../coordination.html">lease</a> can be used as an additional safety measure to ensure a shard does not run on two nodes.</p>
+<p>Reasons for how this can happen:</p>
+<ul>
+  <li>Network partitions without an appropriate downing provider</li>
+  <li>Mistakes in the deployment process leading to two separate Akka Clusters</li>
+  <li>Timing issues between removing members from the Cluster on one side of a network partition and shutting them down on the other side</li>
+</ul>
+<p>A lease can be a final backup that means that each shard won&rsquo;t create child entity actors unless it has the lease. </p>
+<p>To use a lease for sharding set <code>pekko.cluster.sharding.use-lease</code> to the configuration location of the lease to use. Each shard will try and acquire a lease with with the name <code>&lt;actor system name&gt;-shard-&lt;type name&gt;-&lt;shard id&gt;</code> and the owner is set to the <code>Cluster(system).selfAddress.hostPort</code>.</p>
+<p>If a shard can&rsquo;t acquire a lease it will remain uninitialized so messages for entities it owns will be buffered in the <code>ShardRegion</code>. If the lease is lost after initialization the Shard will be terminated.</p>
+<h2><a href="#removal-of-internal-cluster-sharding-data" name="removal-of-internal-cluster-sharding-data" class="anchor"><span class="anchor-link"></span></a>Removal of internal Cluster Sharding data</h2>
+<p>Removal of internal Cluster Sharding data is only relevant for &ldquo;Persistent Mode&rdquo;. The Cluster Sharding <code>ShardCoordinator</code> stores locations of the shards. This data is safely be removed when restarting the whole Akka Cluster. Note that this does not include application data.</p>
+<p>There is a utility program <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/RemoveInternalClusterShardingData$.html" title="org.apache.pekko.cluster.sharding.RemoveInternalClusterShardingData"><code>RemoveInternalClusterShardingData</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/RemoveInternalClusterShardingData$.html" title="org.apache.pekko.cluster.sharding.RemoveInternalClusterShardingData"><code>RemoveInternalClusterShardingData</code></a></span> that removes this data.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Never use this program while there are running Akka Cluster nodes that are using Cluster Sharding. Stop all Cluster nodes before using this program.</p></div>
+<p>It can be needed to remove the data if the Cluster Sharding coordinator cannot startup because of corrupt data, which may happen if accidentally two clusters were running at the same time, e.g. caused by an invalid downing provider when there was a network partition.</p>
+<p>Use this program as a standalone Java main program:</p>
+<pre><code>java -classpath &lt;jar files, including pekko-cluster-sharding&gt;
+  org.apache.pekko.cluster.sharding.RemoveInternalClusterShardingData
+    -2.3 entityType1 entityType2 entityType3
+</code></pre>
+<p>The program is included in the <code>akka-cluster-sharding</code> jar file. It is easiest to run it with same classpath and configuration as your ordinary application. It can be run from sbt or Maven in similar way.</p>
+<p>Specify the entity type names (same as you use in the <code>init</code> method of <code>ClusterSharding</code>) as program arguments.</p>
+<p>If you specify <code>-2.3</code> as the first program argument it will also try to remove data that was stored by Cluster Sharding in Akka 2.3.x using different persistenceId.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>The <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/ClusterSharding.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.ClusterSharding"><code>ClusterSharding</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/ClusterSharding.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.ClusterSharding"><code>ClusterSharding</code></a></span> extension can be configured with the following properties. These configuration properties are read by the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>ClusterShardingSettings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ClusterShardingSettings.html" title="org.apache.pekko.cluster.sharding.typed.ClusterShardingSettings"><code>ClusterShardingSettings</code></a></span> when created with an ActorSystem parameter. It is also possible to amend the <code>ClusterShardingSettings</code> or create it from another config section with the same layout as below. </p>
+<p>One important configuration property is <code>number-of-shards</code> as described in <a href="cluster-sharding.html#shard-allocation">Shard allocation</a>.</p>
+<p>You may also need to tune the configuration properties is <code>rebalance-absolute-limit</code> and <code>rebalance-relative-limit</code> as described in <a href="cluster-sharding.html#shard-allocation">Shard allocation</a>.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding/src/main/resources/reference.conf#L10-L446" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Settings for the ClusterShardingExtension
+pekko.cluster.sharding {
+
+  # The extension creates a top level actor with this name in top level system scope,
+  # e.g. &#39;/system/sharding&#39;
+  guardian-name = sharding
+
+  # Specifies that entities run on cluster nodes with a specific role.
+  # If the role is not specified (or empty) all nodes in the cluster are used.
+  role = &quot;&quot;
+
+  # When this is set to &#39;on&#39; the active entity actors will automatically be restarted
+  # upon Shard restart. i.e. if the Shard is started on a different ShardRegion
+  # due to rebalance or crash.
+  remember-entities = off
+
+  # When &#39;remember-entities&#39; is enabled and the state store mode is ddata this controls
+  # how the remembered entities and shards are stored. Possible values are &quot;eventsourced&quot; and &quot;ddata&quot;
+  # Default is ddata for backwards compatibility.
+  remember-entities-store = &quot;ddata&quot;
+
+  # Deprecated: use the `passivation.default-idle-strategy.idle-entity.timeout` setting instead.
+  # Set this to a time duration to have sharding passivate entities when they have not
+  # received any message in this length of time. Set to &#39;off&#39; to disable.
+  # It is always disabled if `remember-entities` is enabled.
+  passivate-idle-entity-after = null
+
+  # Automatic entity passivation settings.
+  passivation {
+
+    # Automatic passivation strategy to use.
+    # Set to &quot;none&quot; or &quot;off&quot; to disable automatic passivation.
+    # Set to &quot;default-strategy&quot; to switch to the recommended default strategy with an active entity limit.
+    # See the strategy-defaults section for possible passivation strategy settings and default values.
+    # Passivation strategies are always disabled if `remember-entities` is enabled.
+    #
+    # API MAY CHANGE: Configuration for passivation strategies, except default-idle-strategy,
+    # may change after additional testing and feedback.
+    strategy = &quot;default-idle-strategy&quot;
+
+    # Default passivation strategy without active entity limit; time out idle entities after 2 minutes.
+    default-idle-strategy {
+      idle-entity.timeout = 120s
+    }
+
+    # Recommended default strategy for automatic passivation with an active entity limit.
+    # Configured with an adaptive recency-based admission window, a frequency-based admission filter, and
+    # a segmented least recently used (SLRU) replacement policy for the main active entity tracking.
+    default-strategy {
+      # Default limit of 100k active entities in a shard region (in a cluster node).
+      active-entity-limit = 100000
+
+      # Admisson window with LRU policy and adaptive sizing, and a frequency sketch admission filter to the main area.
+      admission {
+        window {
+          policy = least-recently-used
+          optimizer = hill-climbing
+        }
+        filter = frequency-sketch
+      }
+
+      # Main area with segmented LRU replacement policy with an 80% &quot;protected&quot; level by default.
+      replacement {
+        policy = least-recently-used
+        least-recently-used {
+          segmented {
+            levels = 2
+            proportions = [0.2, 0.8]
+          }
+        }
+      }
+    }
+
+    strategy-defaults {
+      # Passivate entities when they have not received a message for a specified length of time.
+      idle-entity {
+        # Passivate idle entities after the timeout. Set to &quot;none&quot; or &quot;off&quot; to disable.
+        timeout = none
+
+        # Check idle entities every interval. Set to &quot;default&quot; to use half the timeout by default.
+        interval = default
+      }
+
+      # Limit of active entities in a shard region.
+      # Passivate entities when the number of active entities in a shard region reaches this limit.
+      # The per-region limit is divided evenly among the active shards in a region.
+      # Set to &quot;none&quot; or &quot;off&quot; to disable limit-based automatic passivation, to only use idle entity timeouts.
+      active-entity-limit = none
+
+      # Entity replacement settings, for when the active entity limit is reached.
+      replacement {
+        # Entity replacement policy to use when the active entity limit is reached. Possible values are:
+        #   - &quot;least-recently-used&quot;
+        #   - &quot;most-recently-used&quot;
+        #   - &quot;least-frequently-used&quot;
+        # Set to &quot;none&quot; or &quot;off&quot; to disable the replacement policy and ignore the active entity limit.
+        policy = none
+
+        # Least recently used entity replacement policy.
+        least-recently-used {
+          # Optionally use a &quot;segmented&quot; least recently used strategy.
+          # Disabled when segmented.levels are set to &quot;none&quot; or &quot;off&quot;.
+          segmented {
+            # Number of segmented levels.
+            levels = none
+
+            # Fractional proportions for the segmented levels.
+            # If empty then segments are divided evenly by the number of levels.
+            proportions = []
+          }
+        }
+
+        # Most recently used entity replacement policy.
+        most-recently-used {}
+
+        # Least frequently used entity replacement policy.
+        least-frequently-used {
+          # New frequency counts will be &quot;dynamically aged&quot; when enabled.
+          dynamic-aging = off
+        }
+      }
+
+      # An optional admission area, with a window for newly and recently activated entities, and an admission filter
+      # to determine whether a candidate should be admitted to the main area of the passivation strategy.
+      admission {
+        # An optional window area, where newly created entities will be admitted initially, and when evicted
+        # from the window area have an opportunity to move to the main area based on the admission filter.
+        window {
+          # The initial sizing for the window area (if enabled), as a fraction of the total active entity limit.
+          proportion = 0.01
+
+          # The minimum adaptive sizing for the window area, as a fraction of the total active entity limit.
+          # Only applies when an adaptive window optimizer is enabled.
+          minimum-proportion = 0.01
+
+          # The maximum adaptive sizing for the window area, as a fraction of the total active entity limit.
+          # Only applies when an adaptive window optimizer is enabled.
+          maximum-proportion = 1.0
+
+          # Adaptive optimizer to use for dynamically resizing the window area. Possible values are:
+          #   - &quot;hill-climbing&quot;
+          # Set to &quot;none&quot; or &quot;off&quot; to disable adaptive sizing of the window area.
+          optimizer = off
+
+          # A window proportion optimizer using a simple hill-climbing algorithm.
+          hill-climbing {
+            # Multiplier of the active entity limit for how often (in accesses) to adjust the window proportion.
+            adjust-multiplier = 10.0
+
+            # The size of the initial step to take (also used when the climbing restarts).
+            initial-step = 0.0625
+
+            # A threshold for the change in active rate (hit rate) to restart climbing.
+            restart-threshold = 0.05
+
+            # The decay ratio applied on each climbing step.
+            step-decay = 0.98
+          }
+
+          # Replacement policy to use for the window area.
+          # Entities that are evicted from the window area may move to the main area, based on the admission filter.
+          # Possible values are the same as for the main replacement policy.
+          # Set to &quot;none&quot; or &quot;off&quot; to disable the window area.
+          policy = none
+
+          least-recently-used {
+            segmented {
+              levels = none
+              proportions = []
+            }
+          }
+
+          most-recently-used {}
+
+          least-frequently-used {
+            dynamic-aging = off
+          }
+        }
+
+        # The admission filter for the main area of the passivation strategy. Possible values are:
+        #   - &quot;frequency-sketch&quot;
+        # Set to &quot;none&quot; or &quot;off&quot; to disable the admission filter and always admit to the main area.
+        filter = none
+
+        # An admission filter based on a frequency sketch (a variation of a count-min sketch).
+        frequency-sketch {
+          # The depth of the frequency sketch (the number of hash functions).
+          depth = 4
+
+          # The size of the frequency counters in bits: 2, 4, 8, 16, 32, or 64 bits.
+          counter-bits = 4
+
+          # Multiplier of the active entity limit for the width of the frequency sketch.
+          width-multiplier = 4
+
+          # Multiplier of the active entity limit for how often the reset operation of the frequency sketch is applied.
+          reset-multiplier = 10.0
+        }
+      }
+    }
+  }
+
+  # If the coordinator can&#39;t store state changes it will be stopped
+  # and started again after this duration, with an exponential back-off
+  # of up to 5 times this duration.
+  coordinator-failure-backoff = 5 s
+
+  # The ShardRegion retries registration and shard location requests to the
+  # ShardCoordinator with this interval if it does not reply.
+  retry-interval = 2 s
+
+  # Maximum number of messages that are buffered by a ShardRegion actor.
+  buffer-size = 100000
+
+  # Timeout of the shard rebalancing process.
+  # Additionally, if an entity doesn&#39;t handle the stopMessage
+  # after (handoff-timeout - 5.seconds).max(1.second) it will be stopped forcefully
+  handoff-timeout = 60 s
+
+  # Time given to a region to acknowledge it&#39;s hosting a shard.
+  shard-start-timeout = 10 s
+
+  # If the shard is remembering entities and can&#39;t store state changes, it
+  # will be stopped and then started again after this duration. Any messages
+  # sent to an affected entity may be lost in this process.
+  shard-failure-backoff = 10 s
+
+  # If the shard is remembering entities and an entity stops itself without
+  # using passivate, the entity will be restarted after this duration or when
+  # the next message for it is received, whichever occurs first.
+  entity-restart-backoff = 10 s
+
+  # Rebalance check is performed periodically with this interval.
+  rebalance-interval = 10 s
+
+  # Absolute path to the journal plugin configuration entity that is to be
+  # used for the internal persistence of ClusterSharding. If not defined,
+  # the default journal plugin is used. Note that this is not related to
+  # persistence used by the entity actors.
+  # Only used when state-store-mode=persistence
+  journal-plugin-id = &quot;&quot;
+
+  # Absolute path to the snapshot plugin configuration entity that is to be
+  # used for the internal persistence of ClusterSharding. If not defined,
+  # the default snapshot plugin is used. Note that this is not related to
+  # persistence used by the entity actors.
+  # Only used when state-store-mode=persistence
+  snapshot-plugin-id = &quot;&quot;
+
+  # Defines how the coordinator stores its state. Same is also used by the
+  # shards for rememberEntities.
+  # Valid values are &quot;ddata&quot; or &quot;persistence&quot;.
+  # &quot;persistence&quot; mode is deprecated
+  state-store-mode = &quot;ddata&quot;
+
+  # The shard saves persistent snapshots after this number of persistent
+  # events. Snapshots are used to reduce recovery times. A snapshot trigger might be delayed if a batch of updates is processed.
+  # Only used when state-store-mode=persistence
+  snapshot-after = 1000
+
+  # The shard deletes persistent events (messages and snapshots) after doing snapshot
+  # keeping this number of old persistent batches.
+  # Batch is of size `snapshot-after`.
+  # When set to 0, after snapshot is successfully done, all events with equal or lower sequence number will be deleted.
+  # Default value of 2 leaves last maximum 2*`snapshot-after` events and 3 snapshots (2 old ones + latest snapshot).
+  # If larger than 0, one additional batch of journal messages is kept when state-store-mode=persistence to include messages from delayed snapshots.
+  keep-nr-of-batches = 2
+
+  # Settings for LeastShardAllocationStrategy.
+  #
+  # A new rebalance algorithm was included in Pekko 2.6.10. It can reach optimal balance in
+  # less rebalance rounds (typically 1 or 2 rounds). The amount of shards to rebalance in each
+  # round can still be limited to make it progress slower. For backwards compatibility,
+  # the new algorithm is not enabled by default. Enable the new algorithm by setting
+  # `rebalance-absolute-limit` &gt; 0, for example:
+  # pekko.cluster.sharding.least-shard-allocation-strategy.rebalance-absolute-limit=20
+  # The new algorithm is recommended and will become the default in future versions of Pekko.
+  least-shard-allocation-strategy {
+    # Maximum number of shards that will be rebalanced in one rebalance round.
+    # The lower of this and `rebalance-relative-limit` will be used.
+    rebalance-absolute-limit = 0
+
+    # Maximum number of shards that will be rebalanced in one rebalance round.
+    # Fraction of total number of (known) shards.
+    # The lower of this and `rebalance-absolute-limit` will be used.
+    rebalance-relative-limit = 0.1
+
+    # Deprecated: Use rebalance-absolute-limit and rebalance-relative-limit instead. This property is not used
+    # when rebalance-absolute-limit &gt; 0.
+    #
+    # Threshold of how large the difference between most and least number of
+    # allocated shards must be to begin the rebalancing.
+    # The difference between number of shards in the region with most shards and
+    # the region with least shards must be greater than (&gt;) the `rebalanceThreshold`
+    # for the rebalance to occur.
+    # It is also the maximum number of shards that will start rebalancing per rebalance-interval
+    # 1 gives the best distribution and therefore typically the best choice.
+    # Increasing the threshold can result in quicker rebalance but has the
+    # drawback of increased difference between number of shards (and therefore load)
+    # on different nodes before rebalance will occur.
+    rebalance-threshold = 1
+
+    # Deprecated: Use rebalance-absolute-limit and rebalance-relative-limit instead. This property is not used
+    # when rebalance-absolute-limit &gt; 0.
+    #
+    # The number of ongoing rebalancing processes is limited to this number.
+    max-simultaneous-rebalance = 3
+  }
+
+  external-shard-allocation-strategy {
+    # How long to wait for the client to persist an allocation to ddata or get all shard locations
+    client-timeout = 5s
+  }
+
+  # Timeout of waiting the initial distributed state for the shard coordinator (an initial state will be queried again if the timeout happened)
+  # and for a shard to get its state when remembered entities is enabled
+  # The read from ddata is a ReadMajority, for small clusters (&lt; majority-min-cap) every node needs to respond
+  # so is more likely to time out if there are nodes restarting e.g. when there is a rolling re-deploy happening
+  waiting-for-state-timeout = 2 s
+
+  # Timeout of waiting for update the distributed state (update will be retried if the timeout happened)
+  # Also used as timeout for writes of remember entities when that is enabled
+  updating-state-timeout = 5 s
+
+  # Timeout to wait for querying all shards for a given `ShardRegion`.
+  shard-region-query-timeout = 3 s
+
+  # The shard uses this strategy to determines how to recover the underlying entity actors. The strategy is only used
+  # by the persistent shard when rebalancing or restarting and is applied per remembered shard starting up (not for
+  # entire shard region). The value can either be &quot;all&quot; or &quot;constant&quot;. The &quot;all&quot;
+  # strategy start all the underlying entity actors at the same time. The constant strategy will start the underlying
+  # entity actors at a fix rate. The default strategy &quot;all&quot;.
+  entity-recovery-strategy = &quot;all&quot;
+
+  # Default settings for the constant rate entity recovery strategy
+  entity-recovery-constant-rate-strategy {
+    # Sets the frequency at which a batch of entity actors is started.
+    frequency = 100 ms
+    # Sets the number of entity actors to be restart at a particular interval
+    number-of-entities = 5
+  }
+
+  event-sourced-remember-entities-store {
+    # When using remember entities and the event sourced remember entities store the batches
+    # written to the store are limited by this number to avoid getting a too large event for
+    # the journal to handle. If using long persistence ids you may have to increase this.
+    max-updates-per-write = 100
+  }
+
+  # Settings for the coordinator singleton. Same layout as pekko.cluster.singleton.
+  # The &quot;role&quot; of the singleton configuration is not used. The singleton role will
+  # be the same as &quot;pekko.cluster.sharding.role&quot; if
+  # &quot;pekko.cluster.sharding.coordinator-singleton-role-override&quot; is enabled. Disabling it will allow to
+  # use separate nodes for the shard coordinator and the shards themselves.
+  # A lease can be configured in these settings for the coordinator singleton
+  coordinator-singleton = ${pekko.cluster.singleton}
+
+
+  # Copies the role for the coordinator singleton from the shards role instead of using the one provided in the
+  # &quot;pekko.cluster.sharding.coordinator-singleton.role&quot;
+  coordinator-singleton-role-override = on
+
+  coordinator-state {
+    # State updates are required to be written to a majority of nodes plus this
+    # number of additional nodes. Can also be set to &quot;all&quot; to require
+    # writes to all nodes. The reason for write/read to more than majority
+    # is to have more tolerance for membership changes between write and read.
+    # The tradeoff of increasing this is that updates will be slower.
+    # It is more important to increase the `read-majority-plus`.
+    write-majority-plus = 3
+    # State retrieval when ShardCoordinator is started is required to be read
+    # from a majority of nodes plus this number of additional nodes. Can also
+    # be set to &quot;all&quot; to require reads from all nodes. The reason for write/read
+    # to more than majority is to have more tolerance for membership changes between
+    # write and read.
+    # The tradeoff of increasing this is that coordinator startup will be slower.
+    read-majority-plus = 5
+  }
+  
+  # Settings for the Distributed Data replicator. 
+  # Same layout as pekko.cluster.distributed-data.
+  # The &quot;role&quot; of the distributed-data configuration is not used. The distributed-data
+  # role will be the same as &quot;pekko.cluster.sharding.role&quot;.
+  # Note that there is one Replicator per role and it&#39;s not possible
+  # to have different distributed-data settings for different sharding entity types.
+  # Only used when state-store-mode=ddata
+  distributed-data = ${pekko.cluster.distributed-data}
+  distributed-data {
+    # minCap parameter to MajorityWrite and MajorityRead consistency level.
+    majority-min-cap = 5
+    durable.keys = [&quot;shard-*&quot;]
+    
+    # When using many entities with &quot;remember entities&quot; the Gossip message
+    # can become too large if including too many in same message. Limit to
+    # the same number as the number of ORSet per shard.
+    max-delta-elements = 5
+
+    # ShardCoordinator is singleton running on oldest
+    prefer-oldest = on
+  }
+
+  # The id of the dispatcher to use for ClusterSharding actors.
+  # If specified, you need to define the settings of the actual dispatcher.
+  # This dispatcher for the entity actors is defined by the user provided
+  # Props, i.e. this dispatcher is not used for the entity actors.
+  use-dispatcher = &quot;pekko.actor.internal-dispatcher&quot;
+
+  # Config path of the lease that each shard must acquire before starting entity actors
+  # default is no lease
+  # A lease can also be used for the singleton coordinator by settings it in the coordinator-singleton properties
+  use-lease = &quot;&quot;
+
+  # The interval between retries for acquiring the lease
+  lease-retry-interval = 5s
+
+  # Provide a higher level of details in the debug logs, often per routed message. Be careful about enabling
+  # in production systems.
+  verbose-debug-logging = off
+
+  # Throw an exception if the internal state machine in the Shard actor does an invalid state transition.
+  # Mostly for the Pekko test suite. If off, the invalid transition is logged as a warning instead of throwing and
+  # crashing the shard.
+  fail-on-invalid-entity-state-transition = off
+
+  # Healthcheck that can be used with Pekko management health checks: https://doc.akka.io/docs/pekko-management/current/healthchecks.html
+  healthcheck {
+    # sharding names to check have registered with the coordinator for the health check to pass
+    # once initial registration has taken place the health check always returns true to prevent the coordinator
+    # moving making the health check of all nodes fail
+    # by default no sharding instances are monitored
+    names = []
+
+    # Timeout for the local shard region to respond. This should be lower than your monitoring system&#39;s
+    # timeout for health checks
+    timeout = 5s
+  }
+}</code></pre>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/cluster-sharding-typed/src/main/resources/reference.conf#L4-L11" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.sharding {
+  # Number of shards used by the default HashCodeMessageExtractor
+  # when no other message extractor is defined. This value must be
+  # the same for all nodes in the cluster and that is verified by
+  # configuration check when joining. Changing the value requires
+  # stopping all nodes in the cluster.
+  number-of-shards = 1000
+}</code></pre>
+<h2><a href="#example-project" name="example-project" class="anchor"><span class="anchor-link"></span></a>Example project</h2>
+<p><span class="group-java"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=akka-samples-cluster-sharding-java">Sharding example project</a></span> <span class="group-scala"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=akka-samples-cluster-sharding-scala">Sharding example project</a></span> is an example project that can be downloaded, and with instructions of how to run.</p>
+<p>This project contains a KillrWeather sample illustrating how to use Cluster Sharding.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/cluster-sharding.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/cluster-sharding-concepts.html">Cluster Sharding concepts</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/cluster-sharding.html#cluster-sharding" class="header">Cluster Sharding</a>
+  <ul>
+    <li><a href="../typed/cluster-sharding.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/cluster-sharding.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/cluster-sharding.html#basic-example" class="header">Basic example</a></li>
+    <li><a href="../typed/cluster-sharding.html#persistence-example" class="header">Persistence example</a></li>
+    <li><a href="../typed/cluster-sharding.html#shard-allocation" class="header">Shard allocation</a></li>
+    <li><a href="../typed/cluster-sharding.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../typed/cluster-sharding.html#passivation" class="header">Passivation</a></li>
+    <li><a href="../typed/cluster-sharding.html#automatic-passivation" class="header">Automatic Passivation</a></li>
+    <li><a href="../typed/cluster-sharding.html#sharding-state" class="header">Sharding State</a></li>
+    <li><a href="../typed/cluster-sharding.html#remembering-entities" class="header">Remembering Entities</a></li>
+    <li><a href="../typed/cluster-sharding.html#startup-after-minimum-number-of-members" class="header">Startup after minimum number of members</a></li>
+    <li><a href="../typed/cluster-sharding.html#health-check" class="header">Health check</a></li>
+    <li><a href="../typed/cluster-sharding.html#inspecting-cluster-sharding-state" class="header">Inspecting cluster sharding state</a></li>
+    <li><a href="../typed/cluster-sharding.html#lease" class="header">Lease</a></li>
+    <li><a href="../typed/cluster-sharding.html#removal-of-internal-cluster-sharding-data" class="header">Removal of internal Cluster Sharding data</a></li>
+    <li><a href="../typed/cluster-sharding.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/cluster-sharding.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Persistence - Building a storage backend · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentpersistence-journals.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/warnOldVersion.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
+<script type="text/javascript" src="js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="active page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="active page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">Akka Documentation</a></li>
+  <li><a href="typed/index-persistence.html">Persistence (Event Sourcing)</a></li>
+  <li>Persistence - Building a storage backend</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#persistence-building-a-storage-backend" name="persistence-building-a-storage-backend" class="anchor"><span class="anchor-link"></span></a>Persistence - Building a storage backend</h1>
+<p>Storage backends for journals and snapshot stores are pluggable in the Akka persistence extension. A directory of persistence journal and snapshot store plugins is available at the Akka Community Projects page, see <a href="https://akka.io/community/">Community plugins</a> This documentation described how to build a new storage backend.</p>
+<p>Applications can provide their own plugins by implementing a plugin API and activating them by configuration. Plugin development requires the following imports:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L27-L31" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.persistence._
+import pekko.persistence.journal._
+import pekko.persistence.snapshot._
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistencePluginDocTest.java#L17-L20" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.dispatch.Futures;
+import org.apache.pekko.persistence.*;
+import org.apache.pekko.persistence.journal.japi.*;
+import org.apache.pekko.persistence.snapshot.japi.*;</code></pre></dd>
+</dl>
+<h2><a href="#journal-plugin-api" name="journal-plugin-api" class="anchor"><span class="anchor-link"></span></a>Journal plugin API</h2>
+<p>A journal plugin extends <code>AsyncWriteJournal</code>.</p>
+<p><code>AsyncWriteJournal</code> is an actor and the methods to be implemented are:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/scala/org/apache/pekko/persistence/journal/AsyncWriteJournal.scala#L212-L297" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Plugin API: asynchronously writes a batch (`Seq`) of persistent messages to the
+ * journal.
+ *
+ * The batch is only for performance reasons, i.e. all messages don&#39;t have to be written
+ * atomically. Higher throughput can typically be achieved by using batch inserts of many
+ * records compared to inserting records one-by-one, but this aspect depends on the
+ * underlying data store and a journal implementation can implement it as efficient as
+ * possible. Journals should aim to persist events in-order for a given `persistenceId`
+ * as otherwise in case of a failure, the persistent state may be end up being inconsistent.
+ *
+ * Each `AtomicWrite` message contains the single `PersistentRepr` that corresponds to
+ * the event that was passed to the `persist` method of the `PersistentActor`, or it
+ * contains several `PersistentRepr` that corresponds to the events that were passed
+ * to the `persistAll` method of the `PersistentActor`. All `PersistentRepr` of the
+ * `AtomicWrite` must be written to the data store atomically, i.e. all or none must
+ * be stored. If the journal (data store) cannot support atomic writes of multiple
+ * events it should reject such writes with a `Try` `Failure` with an
+ * `UnsupportedOperationException` describing the issue. This limitation should
+ * also be documented by the journal plugin.
+ *
+ * If there are failures when storing any of the messages in the batch the returned
+ * `Future` must be completed with failure. The `Future` must only be completed with
+ * success when all messages in the batch have been confirmed to be stored successfully,
+ * i.e. they will be readable, and visible, in a subsequent replay. If there is
+ * uncertainty about if the messages were stored or not the `Future` must be completed
+ * with failure.
+ *
+ * Data store connection problems must be signaled by completing the `Future` with
+ * failure.
+ *
+ * The journal can also signal that it rejects individual messages (`AtomicWrite`) by
+ * the returned `immutable.Seq[Try[Unit]]`. It is possible but not mandatory to reduce
+ * number of allocations by returning `Future.successful(Nil)` for the happy path,
+ * i.e. when no messages are rejected. Otherwise the returned `Seq` must have as many elements
+ * as the input `messages` `Seq`. Each `Try` element signals if the corresponding
+ * `AtomicWrite` is rejected or not, with an exception describing the problem. Rejecting
+ * a message means it was not stored, i.e. it must not be included in a later replay.
+ * Rejecting a message is typically done before attempting to store it, e.g. because of
+ * serialization error.
+ *
+ * Data store connection problems must not be signaled as rejections.
+ *
+ * It is possible but not mandatory to reduce number of allocations by returning
+ * `Future.successful(Nil)` for the happy path, i.e. when no messages are rejected.
+ *
+ * Calls to this method are serialized by the enclosing journal actor. If you spawn
+ * work in asynchronous tasks it is alright that they complete the futures in any order,
+ * but the actual writes for a specific persistenceId should be serialized to avoid
+ * issues such as events of a later write are visible to consumers (query side, or replay)
+ * before the events of an earlier write are visible.
+ * A PersistentActor will not send a new WriteMessages request before the previous one
+ * has been completed.
+ *
+ * Please note that the `sender` field of the contained PersistentRepr objects has been
+ * nulled out (i.e. set to `ActorRef.noSender`) in order to not use space in the journal
+ * for a sender reference that will likely be obsolete during replay.
+ *
+ * Please also note that requests for the highest sequence number may be made concurrently
+ * to this call executing for the same `persistenceId`, in particular it is possible that
+ * a restarting actor tries to recover before its outstanding writes have completed. In
+ * the latter case it is highly desirable to defer reading the highest sequence number
+ * until all outstanding writes have completed, otherwise the PersistentActor may reuse
+ * sequence numbers.
+ *
+ * This call is protected with a circuit-breaker.
+ */
+def asyncWriteMessages(messages: immutable.Seq[AtomicWrite]): Future[immutable.Seq[Try[Unit]]]
+
+/**
+ * Plugin API: asynchronously deletes all persistent messages up to `toSequenceNr`
+ * (inclusive).
+ *
+ * This call is protected with a circuit-breaker.
+ * Message deletion doesn&#39;t affect the highest sequence number of messages,
+ * journal must maintain the highest sequence number and never decrease it.
+ */
+def asyncDeleteMessagesTo(persistenceId: String, toSequenceNr: Long): Future[Unit]
+
+/**
+ * Plugin API
+ *
+ * Allows plugin implementers to use `f pipeTo self` and
+ * handle additional messages for implementing advanced features
+ */
+def receivePluginInternal: Actor.Receive = Actor.emptyBehavior</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/java/org/apache/pekko/persistence/journal/japi/AsyncWritePlugin.java#L24-L85" target="_blank" title="Go to snippet source">source</a><code class="language-java">/**
+ * Java API, Plugin API: asynchronously writes a batch (`Iterable`) of persistent messages to the
+ * journal.
+ *
+ * &lt;p&gt;The batch is only for performance reasons, i.e. all messages don&#39;t have to be written
+ * atomically. Higher throughput can typically be achieved by using batch inserts of many records
+ * compared to inserting records one-by-one, but this aspect depends on the underlying data store
+ * and a journal implementation can implement it as efficient as possible. Journals should aim to
+ * persist events in-order for a given `persistenceId` as otherwise in case of a failure, the
+ * persistent state may be end up being inconsistent.
+ *
+ * &lt;p&gt;Each `AtomicWrite` message contains the single `PersistentRepr` that corresponds to the
+ * event that was passed to the `persist` method of the `PersistentActor`, or it contains several
+ * `PersistentRepr` that corresponds to the events that were passed to the `persistAll` method of
+ * the `PersistentActor`. All `PersistentRepr` of the `AtomicWrite` must be written to the data
+ * store atomically, i.e. all or none must be stored. If the journal (data store) cannot support
+ * atomic writes of multiple events it should reject such writes with an `Optional` with an
+ * `UnsupportedOperationException` describing the issue. This limitation should also be documented
+ * by the journal plugin.
+ *
+ * &lt;p&gt;If there are failures when storing any of the messages in the batch the returned `Future`
+ * must be completed with failure. The `Future` must only be completed with success when all
+ * messages in the batch have been confirmed to be stored successfully, i.e. they will be
+ * readable, and visible, in a subsequent replay. If there is uncertainty about if the messages
+ * were stored or not the `Future` must be completed with failure.
+ *
+ * &lt;p&gt;Data store connection problems must be signaled by completing the `Future` with failure.
+ *
+ * &lt;p&gt;The journal can also signal that it rejects individual messages (`AtomicWrite`) by the
+ * returned `Iterable&amp;lt;Optional&amp;lt;Exception&amp;gt;&amp;gt;`. The returned `Iterable` must have as many
+ * elements as the input `messages` `Iterable`. Each `Optional` element signals if the
+ * corresponding `AtomicWrite` is rejected or not, with an exception describing the problem.
+ * Rejecting a message means it was not stored, i.e. it must not be included in a later replay.
+ * Rejecting a message is typically done before attempting to store it, e.g. because of
+ * serialization error.
+ *
+ * &lt;p&gt;Data store connection problems must not be signaled as rejections.
+ *
+ * &lt;p&gt;Note that it is possible to reduce number of allocations by caching some result `Iterable`
+ * for the happy path, i.e. when no messages are rejected.
+ *
+ * &lt;p&gt;Calls to this method are serialized by the enclosing journal actor. If you spawn work in
+ * asynchronous tasks it is alright that they complete the futures in any order, but the actual
+ * writes for a specific persistenceId should be serialized to avoid issues such as events of a
+ * later write are visible to consumers (query side, or replay) before the events of an earlier
+ * write are visible. This can also be done with consistent hashing if it is too fine grained to
+ * do it on the persistenceId level. Normally a `PersistentActor` will only have one outstanding
+ * write request to the journal but it may emit several write requests when `persistAsync` is used
+ * and the max batch size is reached.
+ *
+ * &lt;p&gt;This call is protected with a circuit-breaker.
+ */
+Future&lt;Iterable&lt;Optional&lt;Exception&gt;&gt;&gt; doAsyncWriteMessages(Iterable&lt;AtomicWrite&gt; messages);
+
+/**
+ * Java API, Plugin API: synchronously deletes all persistent messages up to `toSequenceNr`.
+ *
+ * &lt;p&gt;This call is protected with a circuit-breaker.
+ *
+ * @see AsyncRecoveryPlugin
+ */
+Future&lt;Void&gt; doAsyncDeleteMessagesTo(String persistenceId, long toSequenceNr);</code></pre></dd>
+</dl>
+<p>If the storage backend API only supports synchronous, blocking writes, the methods should be implemented as:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L167-L171" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def asyncWriteMessages(messages: immutable.Seq[AtomicWrite]): Future[immutable.Seq[Try[Unit]]] =
+  Future.fromTry(Try {
+    // blocking call here
+    ???
+  })</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistencePluginDocTest.java#L107-L118" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Future&lt;Iterable&lt;Optional&lt;Exception&gt;&gt;&gt; doAsyncWriteMessages(
+    Iterable&lt;AtomicWrite&gt; messages) {
+  try {
+    Iterable&lt;Optional&lt;Exception&gt;&gt; result = new ArrayList&lt;Optional&lt;Exception&gt;&gt;();
+    // blocking call here...
+    // result.add(..)
+    return Futures.successful(result);
+  } catch (Exception e) {
+    return Futures.failed(e);
+  }
+}</code></pre></dd>
+</dl>
+<p>A journal plugin must also implement the methods defined in <code>AsyncRecovery</code> for replays and sequence number recovery:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/scala/org/apache/pekko/persistence/journal/AsyncRecovery.scala#L26-L80" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Plugin API: asynchronously replays persistent messages. Implementations replay
+ * a message by calling `replayCallback`. The returned future must be completed
+ * when all messages (matching the sequence number bounds) have been replayed.
+ * The future must be completed with a failure if any of the persistent messages
+ * could not be replayed.
+ *
+ * The `replayCallback` must also be called with messages that have been marked
+ * as deleted. In this case a replayed message&#39;s `deleted` method must return
+ * `true`.
+ *
+ * The `toSequenceNr` is the lowest of what was returned by [[#asyncReadHighestSequenceNr]]
+ * and what the user specified as recovery [[pekko.persistence.Recovery]] parameter.
+ * This does imply that this call is always preceded by reading the highest sequence
+ * number for the given `persistenceId`.
+ *
+ * This call is NOT protected with a circuit-breaker because it may take long time
+ * to replay all events. The plugin implementation itself must protect against
+ * an unresponsive backend store and make sure that the returned Future is
+ * completed with success or failure within reasonable time. It is not allowed
+ * to ignore completing the future.
+ *
+ * @param persistenceId persistent actor id.
+ * @param fromSequenceNr sequence number where replay should start (inclusive).
+ * @param toSequenceNr sequence number where replay should end (inclusive).
+ * @param max maximum number of messages to be replayed.
+ * @param recoveryCallback called to replay a single message. Can be called from any
+ *                       thread.
+ *
+ * @see [[AsyncWriteJournal]]
+ */
+def asyncReplayMessages(persistenceId: String, fromSequenceNr: Long, toSequenceNr: Long, max: Long)(
+    recoveryCallback: PersistentRepr =&gt; Unit): Future[Unit]
+
+/**
+ * Plugin API: asynchronously reads the highest stored sequence number for the
+ * given `persistenceId`. The persistent actor will use the highest sequence
+ * number after recovery as the starting point when persisting new events.
+ * This sequence number is also used as `toSequenceNr` in subsequent call
+ * to [[#asyncReplayMessages]] unless the user has specified a lower `toSequenceNr`.
+ * Journal must maintain the highest sequence number and never decrease it.
+ *
+ * This call is protected with a circuit-breaker.
+ *
+ * Please also note that requests for the highest sequence number may be made concurrently
+ * to writes executing for the same `persistenceId`, in particular it is possible that
+ * a restarting actor tries to recover before its outstanding writes have completed.
+ *
+ * @param persistenceId persistent actor id.
+ * @param fromSequenceNr hint where to start searching for the highest sequence
+ *                       number. When a persistent actor is recovering this
+ *                       `fromSequenceNr` will be the sequence number of the used
+ *                       snapshot or `0L` if no snapshot is used.
+ */
+def asyncReadHighestSequenceNr(persistenceId: String, fromSequenceNr: Long): Future[Long]</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/java/org/apache/pekko/persistence/journal/japi/AsyncRecoveryPlugin.java#L24-L60" target="_blank" title="Go to snippet source">source</a><code class="language-java">/**
+ * Java API, Plugin API: asynchronously replays persistent messages. Implementations replay a
+ * message by calling `replayCallback`. The returned future must be completed when all messages
+ * (matching the sequence number bounds) have been replayed. The future must be completed with a
+ * failure if any of the persistent messages could not be replayed.
+ *
+ * &lt;p&gt;The `replayCallback` must also be called with messages that have been marked as deleted. In
+ * this case a replayed message&#39;s `deleted` method must return `true`.
+ *
+ * &lt;p&gt;The `toSequenceNr` is the lowest of what was returned by {@link
+ * #doAsyncReadHighestSequenceNr} and what the user specified as recovery {@link
+ * org.apache.pekko.persistence.Recovery} parameter.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param fromSequenceNr sequence number where replay should start (inclusive).
+ * @param toSequenceNr sequence number where replay should end (inclusive).
+ * @param max maximum number of messages to be replayed.
+ * @param replayCallback called to replay a single message. Can be called from any thread.
+ */
+Future&lt;Void&gt; doAsyncReplayMessages(
+    String persistenceId,
+    long fromSequenceNr,
+    long toSequenceNr,
+    long max,
+    Consumer&lt;PersistentRepr&gt; replayCallback);
+
+/**
+ * Java API, Plugin API: asynchronously reads the highest stored sequence number for the given
+ * `persistenceId`. The persistent actor will use the highest sequence number after recovery as
+ * the starting point when persisting new events. This sequence number is also used as
+ * `toSequenceNr` in subsequent call to [[#asyncReplayMessages]] unless the user has specified a
+ * lower `toSequenceNr`.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param fromSequenceNr hint where to start searching for the highest sequence number.
+ */
+Future&lt;Long&gt; doAsyncReadHighestSequenceNr(String persistenceId, long fromSequenceNr);</code></pre></dd>
+</dl>
+<p>A journal plugin can be activated with the following minimal configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L79-L88" target="_blank" title="Go to snippet source">source</a><code class="language-scala"># Path to the journal plugin to be used
+pekko.persistence.journal.plugin = &quot;my-journal&quot;
+
+# My custom journal plugin
+my-journal {
+  # Class name of the plugin.
+  class = &quot;docs.persistence.MyJournal&quot;
+  # Dispatcher for the plugin actor.
+  plugin-dispatcher = &quot;pekko.actor.default-dispatcher&quot;
+}</code></pre>
+<p>The journal plugin instance is an actor so the methods corresponding to requests from persistent actors are executed sequentially. It may delegate to asynchronous libraries, spawn futures, or delegate to other actors to achieve parallelism.</p>
+<p>The journal plugin class must have a constructor with one of these signatures:</p>
+<ul>
+  <li>constructor with one <code>com.typesafe.config.Config</code> parameter and a <code>String</code> parameter for the config path</li>
+  <li>constructor with one <code>com.typesafe.config.Config</code> parameter</li>
+  <li>constructor without parameters</li>
+</ul>
+<p>The plugin section of the actor system&rsquo;s config will be passed in the config constructor parameter. The config path of the plugin is passed in the <code>String</code> parameter.</p>
+<p>The <code>plugin-dispatcher</code> is the dispatcher used for the plugin actor. If not specified, it defaults to <code>pekko.persistence.dispatchers.default-plugin-dispatcher</code>.</p>
+<p>Don&rsquo;t run journal tasks/futures on the system default dispatcher, since that might starve other tasks.</p>
+<h2><a href="#snapshot-store-plugin-api" name="snapshot-store-plugin-api" class="anchor"><span class="anchor-link"></span></a>Snapshot store plugin API</h2>
+<p>A snapshot store plugin must extend the <code>SnapshotStore</code> actor and implement the following methods:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/scala/org/apache/pekko/persistence/snapshot/SnapshotStore.scala#L137-L188" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>/**
+ * Plugin API: asynchronously loads a snapshot.
+ *
+ * If the future `Option` is `None` then all events will be replayed,
+ * i.e. there was no snapshot. If snapshot could not be loaded the `Future`
+ * should be completed with failure. That is important because events may
+ * have been deleted and just replaying the events might not result in a valid
+ * state.
+ *
+ * This call is protected with a circuit-breaker.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param criteria selection criteria for loading.
+ */
+def loadAsync(persistenceId: String, criteria: SnapshotSelectionCriteria): Future[Option[SelectedSnapshot]]
+
+/**
+ * Plugin API: asynchronously saves a snapshot.
+ *
+ * This call is protected with a circuit-breaker.
+ *
+ * @param metadata snapshot metadata.
+ * @param snapshot snapshot.
+ */
+def saveAsync(metadata: SnapshotMetadata, snapshot: Any): Future[Unit]
+
+/**
+ * Plugin API: deletes the snapshot identified by `metadata`.
+ *
+ * This call is protected with a circuit-breaker.
+ *
+ * @param metadata snapshot metadata.
+ */
+def deleteAsync(metadata: SnapshotMetadata): Future[Unit]
+
+/**
+ * Plugin API: deletes all snapshots matching `criteria`.
+ *
+ * This call is protected with a circuit-breaker.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param criteria selection criteria for deleting.
+ */
+def deleteAsync(persistenceId: String, criteria: SnapshotSelectionCriteria): Future[Unit]
+
+/**
+ * Plugin API
+ * Allows plugin implementers to use `f pipeTo self` and
+ * handle additional messages for implementing advanced features
+ */
+def receivePluginInternal: Actor.Receive = Actor.emptyBehavior</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/persistence/src/main/java/org/apache/pekko/persistence/snapshot/japi/SnapshotStorePlugin.java#L25-L55" target="_blank" title="Go to snippet source">source</a><code class="language-java">/**
+ * Java API, Plugin API: asynchronously loads a snapshot.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param criteria selection criteria for loading.
+ */
+Future&lt;Optional&lt;SelectedSnapshot&gt;&gt; doLoadAsync(
+    String persistenceId, SnapshotSelectionCriteria criteria);
+
+/**
+ * Java API, Plugin API: asynchronously saves a snapshot.
+ *
+ * @param metadata snapshot metadata.
+ * @param snapshot snapshot.
+ */
+Future&lt;Void&gt; doSaveAsync(SnapshotMetadata metadata, Object snapshot);
+
+/**
+ * Java API, Plugin API: deletes the snapshot identified by `metadata`.
+ *
+ * @param metadata snapshot metadata.
+ */
+Future&lt;Void&gt; doDeleteAsync(SnapshotMetadata metadata);
+
+/**
+ * Java API, Plugin API: deletes all snapshots matching `criteria`.
+ *
+ * @param persistenceId id of the persistent actor.
+ * @param criteria selection criteria for deleting.
+ */
+Future&lt;Void&gt; doDeleteAsync(String persistenceId, SnapshotSelectionCriteria criteria);</code></pre></dd>
+</dl>
+<p>A snapshot store plugin can be activated with the following minimal configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L92-L101" target="_blank" title="Go to snippet source">source</a><code class="language-scala"># Path to the snapshot store plugin to be used
+pekko.persistence.snapshot-store.plugin = &quot;my-snapshot-store&quot;
+
+# My custom snapshot store plugin
+my-snapshot-store {
+  # Class name of the plugin.
+  class = &quot;docs.persistence.MySnapshotStore&quot;
+  # Dispatcher for the plugin actor.
+  plugin-dispatcher = &quot;pekko.persistence.dispatchers.default-plugin-dispatcher&quot;
+}</code></pre>
+<p>The snapshot store instance is an actor so the methods corresponding to requests from persistent actors are executed sequentially. It may delegate to asynchronous libraries, spawn futures, or delegate to other actors to achieve parallelism.</p>
+<p>The snapshot store plugin class must have a constructor with one of these signatures:</p>
+<ul>
+  <li>constructor with one <code>com.typesafe.config.Config</code> parameter and a <code>String</code> parameter for the config path</li>
+  <li>constructor with one <code>com.typesafe.config.Config</code> parameter</li>
+  <li>constructor without parameters</li>
+</ul>
+<p>The plugin section of the actor system&rsquo;s config will be passed in the config constructor parameter. The config path of the plugin is passed in the <code>String</code> parameter.</p>
+<p>The <code>plugin-dispatcher</code> is the dispatcher used for the plugin actor. If not specified, it defaults to <code>pekko.persistence.dispatchers.default-plugin-dispatcher</code>.</p>
+<p>Don&rsquo;t run snapshot store tasks/futures on the system default dispatcher, since that might starve other tasks.</p>
+<h2><a href="#plugin-tck" name="plugin-tck" class="anchor"><span class="anchor-link"></span></a>Plugin TCK</h2>
+<p>In order to help developers build correct and high quality storage plugins, we provide a Technology Compatibility Kit (<a href="https://en.wikipedia.org/wiki/Technology_Compatibility_Kit">TCK</a> for short).</p>
+<p>The TCK is usable from Java as well as Scala projects. To test your implementation (independently of language) you need to include the pekko-persistence-tck dependency:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-persistence-tck" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-tck_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence-tck_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>To include the Journal TCK tests in your test suite simply extend the provided <span class="group-scala"><code>JournalSpec</code></span><span class="group-java"><code>JavaJournalSpec</code></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L198-L207" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyJournalSpec
+    extends JournalSpec(
+      config = ConfigFactory.parseString(&quot;&quot;&quot;pekko.persistence.journal.plugin = &quot;my.journal.plugin&quot;&quot;&quot;&quot;)) {
+
+  override def supportsRejectingNonSerializableObjects: CapabilityFlag =
+    false // or CapabilityFlag.off
+
+  override def supportsSerialization: CapabilityFlag =
+    true // or CapabilityFlag.on
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistencePluginDocTest.java#L145-L159" target="_blank" title="Go to snippet source">source</a><code class="language-java">@RunWith(JUnitRunner.class)
+class MyJournalSpecTest extends JavaJournalSpec {
+
+  public MyJournalSpecTest() {
+    super(
+        ConfigFactory.parseString(
+            &quot;pekko.persistence.journal.plugin = &quot;
+                + &quot;\&quot;pekko.persistence.journal.leveldb-shared\&quot;&quot;));
+  }
+
+  @Override
+  public CapabilityFlag supportsRejectingNonSerializableObjects() {
+    return CapabilityFlag.off();
+  }
+}</code></pre></dd>
+</dl>
+<p>Please note that some of the tests are optional, and by overriding the <code>supports...</code> methods you give the TCK the needed information about which tests to run. You can implement these methods using <span class="group-scala">boolean values or</span> the provided <code>CapabilityFlag.on</code> / <code>CapabilityFlag.off</code> values.</p>
+<p>We also provide a simple benchmarking class <span class="group-scala"><code>JournalPerfSpec</code></span><span class="group-java"><code>JavaJournalPerfSpec</code></span> which includes all the tests that <span class="group-scala"><code>JournalSpec</code></span><span class="group-java"><code>JavaJournalSpec</code></span> has, and also performs some longer operations on the Journal while printing its performance stats. While it is NOT aimed to provide a proper benchmarking environment it can be used to get a rough feel about your journal&rsquo;s performance in the most typical scenarios.</p>
+<p>In order to include the <code>SnapshotStore</code> TCK tests in your test suite extend the <code>SnapshotStoreSpec</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L214-L222" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MySnapshotStoreSpec
+    extends SnapshotStoreSpec(
+      config = ConfigFactory.parseString(&quot;&quot;&quot;
+    pekko.persistence.snapshot-store.plugin = &quot;my.snapshot-store.plugin&quot;
+    &quot;&quot;&quot;)) {
+
+  override def supportsSerialization: CapabilityFlag =
+    true // or CapabilityFlag.on
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistencePluginDocTest.java#L166-L175" target="_blank" title="Go to snippet source">source</a><code class="language-java">@RunWith(JUnitRunner.class)
+class MySnapshotStoreTest extends JavaSnapshotStoreSpec {
+
+  public MySnapshotStoreTest() {
+    super(
+        ConfigFactory.parseString(
+            &quot;pekko.persistence.snapshot-store.plugin = &quot;
+                + &quot;\&quot;pekko.persistence.snapshot-store.local\&quot;&quot;));
+  }
+}</code></pre></dd>
+</dl>
+<p>In case your plugin requires some setting up (starting a mock database, removing temporary files etc.) you can override the <code>beforeAll</code> and <code>afterAll</code> methods to hook into the tests lifecycle:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/persistence/PersistencePluginDocSpec.scala#L232-L254" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyJournalSpec
+    extends JournalSpec(config = ConfigFactory.parseString(&quot;&quot;&quot;
+    pekko.persistence.journal.plugin = &quot;my.journal.plugin&quot;
+    &quot;&quot;&quot;)) {
+
+  override def supportsRejectingNonSerializableObjects: CapabilityFlag =
+    true // or CapabilityFlag.on
+
+  val storageLocations = List(
+    new File(system.settings.config.getString(&quot;pekko.persistence.journal.leveldb.dir&quot;)),
+    new File(config.getString(&quot;pekko.persistence.snapshot-store.local.dir&quot;)))
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    storageLocations.foreach(FileUtils.deleteRecursively)
+  }
+
+  override def afterAll(): Unit = {
+    storageLocations.foreach(FileUtils.deleteRecursively)
+    super.afterAll()
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/persistence/LambdaPersistencePluginDocTest.java#L183-L221" target="_blank" title="Go to snippet source">source</a><code class="language-java">@RunWith(JUnitRunner.class)
+class MyJournalSpecTest extends JavaJournalSpec {
+
+  List&lt;File&gt; storageLocations = new ArrayList&lt;File&gt;();
+
+  public MyJournalSpecTest() {
+    super(
+        ConfigFactory.parseString(
+            &quot;persistence.journal.plugin = &quot;
+                + &quot;\&quot;pekko.persistence.journal.leveldb-shared\&quot;&quot;));
+
+    Config config = system().settings().config();
+    storageLocations.add(
+        new File(config.getString(&quot;pekko.persistence.journal.leveldb.dir&quot;)));
+    storageLocations.add(
+        new File(config.getString(&quot;pekko.persistence.snapshot-store.local.dir&quot;)));
+  }
+
+  @Override
+  public CapabilityFlag supportsRejectingNonSerializableObjects() {
+    return CapabilityFlag.on();
+  }
+
+  @Override
+  public void beforeAll() {
+    for (File storageLocation : storageLocations) {
+      FileUtils.deleteRecursively(storageLocation);
+    }
+    super.beforeAll();
+  }
+
+  @Override
+  public void afterAll() {
+    super.afterAll();
+    for (File storageLocation : storageLocations) {
+      FileUtils.deleteRecursively(storageLocation);
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>We <em>highly recommend</em> including these specifications in your test suite, as they cover a broad range of cases you might have otherwise forgotten to test for when writing a plugin from scratch.</p>
+<h2><a href="#corrupt-event-logs" name="corrupt-event-logs" class="anchor"><span class="anchor-link"></span></a>Corrupt event logs</h2>
+<p>If a journal can&rsquo;t prevent users from running persistent actors with the same <code>persistenceId</code> concurrently it is likely that an event log will be corrupted by having events with the same sequence number.</p>
+<p>It is recommended that journals should still deliver these events during recovery so that a <code>replay-filter</code> can be used to decide what to do about it in a journal agnostic way.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/persistence-journals.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="typed/replicated-eventsourcing-examples.html">Replicated Event Sourcing Examples</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="persistence-journals.html#persistence-building-a-storage-backend" class="header">Persistence - Building a storage backend</a>
+  <ul>
+    <li><a href="persistence-journals.html#journal-plugin-api" class="header">Journal plugin API</a></li>
+    <li><a href="persistence-journals.html#snapshot-store-plugin-api" class="header">Snapshot store plugin API</a></li>
+    <li><a href="persistence-journals.html#plugin-tck" class="header">Plugin TCK</a></li>
+    <li><a href="persistence-journals.html#corrupt-event-logs" class="header">Corrupt event logs</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="js/magellan.js"></script>
+
+<style type="text/css">@import "lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

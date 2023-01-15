@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>How the Actor Model Meets the Needs of Modern, Distributed Systems · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/guide/actors-intro.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/page.js"></script>
+<script type="text/javascript" src="../../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../../js/groups.js"></script>
+<script type="text/javascript" src="../../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="active page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="active page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../../index.html">Akka Documentation</a></li>
+  <li><a href="../../typed/guide/index.html">Getting Started Guide</a></li>
+  <li>How the Actor Model Meets the Needs of Modern, Distributed Systems</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#how-the-actor-model-meets-the-needs-of-modern-distributed-systems" name="how-the-actor-model-meets-the-needs-of-modern-distributed-systems" class="anchor"><span class="anchor-link"></span></a>How the Actor Model Meets the Needs of Modern, Distributed Systems</h1>
+<p>As described in the previous topic, common programming practices do not properly address the needs of demanding modern systems. Thankfully, we don&rsquo;t need to scrap everything we know. Instead, the actor model addresses these shortcomings in a principled way, allowing systems to behave in a way that better matches our mental model. The actor model abstraction allows you to think about your code in terms of communication, not unlike the exchanges that occur between people in a large organization.</p>
+<p>Use of actors allows us to:</p>
+<ul>
+  <li>Enforce encapsulation without resorting to locks.</li>
+  <li>Use the model of cooperative entities reacting to signals, changing state, and sending signals to each other  to drive the whole application forward.</li>
+  <li>Stop worrying about an executing mechanism which is a mismatch to our world view.</li>
+</ul>
+<h3><a href="#usage-of-message-passing-avoids-locking-and-blocking" name="usage-of-message-passing-avoids-locking-and-blocking" class="anchor"><span class="anchor-link"></span></a>Usage of message passing avoids locking and blocking</h3>
+<p>Instead of calling methods, actors send messages to each other. Sending a message does not transfer the thread of execution from the sender to the destination. An actor can send a message and continue without blocking. Therefore, it can accomplish more in the same amount of time.</p>
+<p>With objects, when a method returns, it releases control of its executing thread. In this respect, actors behave much like objects, they react to messages and return execution when they finish processing the current message. In this way, actors actually achieve the execution we imagined for objects:</p>
+<p><img src="diagrams/actor_graph.png" alt="actors interact with each other by sending messages" /></p>
+<p>An important difference between passing messages and calling methods is that messages have no return value. By sending a message, an actor delegates work to another actor. As we saw in <a href="actors-motivation.html#the-illusion-of-a-call-stack">The illusion of a call stack</a>, if it expected a return value, the sending actor would either need to block or to execute the other actor&rsquo;s work on the same thread. Instead, the receiving actor delivers the results in a reply message.</p>
+<p>The second key change we need in our model is to reinstate encapsulation. Actors react to messages just like objects &ldquo;react&rdquo; to methods invoked on them. The difference is that instead of multiple threads &ldquo;protruding&rdquo; into our actor and wreaking havoc to internal state and invariants, actors execute independently from the senders of a message, and they react to incoming messages sequentially, one at a time. While each actor processes messages sent to it sequentially, different actors work concurrently with each other so that an actor system can process as many messages simultaneously as the hardware will support.</p>
+<p>Since there is always at most one message being processed per actor, the invariants of an actor can be kept without synchronization. This happens automatically without using locks:</p>
+<p><img src="diagrams/serialized_timeline_invariants.png" alt="messages do not invalidate invariants as they are processed sequentially" /></p>
+<p>In summary, this is what happens when an actor receives a message:</p>
+<ol>
+  <li>The actor adds the message to the end of a queue.</li>
+  <li>If the actor was not scheduled for execution, it is marked as ready to execute.</li>
+  <li>A (hidden) scheduler entity takes the actor and starts executing it.</li>
+  <li>Actor picks the message from the front of the queue.</li>
+  <li>Actor modifies internal state, sends messages to other actors.</li>
+  <li>The actor is unscheduled.</li>
+</ol>
+<p>To accomplish this behavior, actors have:</p>
+<ul>
+  <li>A mailbox (the queue where messages end up).</li>
+  <li>A behavior (the state of the actor, internal variables etc.).</li>
+  <li>Messages (pieces of data representing a signal, similar to method calls and their parameters).</li>
+  <li>An execution environment (the machinery that takes actors that have messages to react to and invokes  their message handling code).</li>
+  <li>An address (more on this later).</li>
+</ul>
+<p>Messages go into actor mailboxes. The behavior of the actor describes how the actor responds to messages (like sending more messages and/or changing state). An execution environment orchestrates a pool of threads to drive all these actions completely transparently.</p>
+<p>This is a very simple model and it solves the issues enumerated previously:</p>
+<ul>
+  <li>Encapsulation is preserved by decoupling execution from signaling (method calls transfer execution,  message passing does not).</li>
+  <li>There is no need for locks. Modifying the internal state of an actor is only possible via messages, which are  processed one at a time eliminating races when trying to keep invariants.</li>
+  <li>There are no locks used anywhere, and senders are not blocked. Millions of actors can be efficiently scheduled on a  dozen of threads reaching the full potential of modern CPUs. Task delegation is the natural mode of operation for actors.</li>
+  <li>State of actors is local and not shared, changes and data is propagated via messages, which maps to how modern  memory hierarchy actually works. In many cases, this means transferring over only the cache lines that contain the data in the message while keeping local state and data cached at the original core. The same model maps exactly to remote communication where the state is kept in the RAM of machines and changes/data is propagated over the network as packets.</li>
+</ul>
+<h3><a href="#actors-handle-error-situations-gracefully" name="actors-handle-error-situations-gracefully" class="anchor"><span class="anchor-link"></span></a>Actors handle error situations gracefully</h3>
+<p>Since we no longer have a shared call stack between actors that send messages to each other, we need to handle error situations differently. There are two kinds of errors we need to consider:</p>
+<ul>
+  <li>The first case is when the delegated task on the target actor failed due to an error in the task (typically some  validation issue, like a non-existent user ID). In this case, the service encapsulated by the target actor is intact,  it is only the task itself that is erroneous.  The service actor should reply to the sender with a message, presenting the error case. There is nothing special here, errors are part of the domain and hence become ordinary messages.</li>
+  <li>The second case is when a service itself encounters an internal fault. Akka enforces that all actors are organized  into a tree-like hierarchy, i.e. an actor that creates another actor becomes the parent of that new actor. This is very similar to how operating systems organize processes into a tree. Just like with processes, when an actor fails,  its parent actor can decide how to react to the failure. Also, if the parent actor is stopped,  all of its children are recursively stopped, too. This service is called supervision and it is central to Akka.</li>
+</ul>
+<p>A supervisor strategy is typically defined by the parent actor when it is starting a child actor. It can decide to restart the child actor on certain types of failures or stop it completely on others. Children never go silently dead (with the notable exception of entering an infinite loop) instead they are either failing and the supervisor strategy can react to the fault, or they are stopped (in which case interested parties are notified). There is always a responsible entity for managing an actor: its parent. Restarts are not visible from the outside: collaborating actors can keep sending messages while the target actor restarts.</p>
+<p>Now, let&rsquo;s take a short tour of the functionality Akka provides.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/guide/actors-intro.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../../typed/guide/modules.html">Overview of Akka libraries and modules</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../../typed/guide/actors-intro.html#how-the-actor-model-meets-the-needs-of-modern-distributed-systems" class="header">How the Actor Model Meets the Needs of Modern, Distributed Systems</a>
+  <ul>
+    <li><a href="../../typed/guide/actors-intro.html#usage-of-message-passing-avoids-locking-and-blocking" class="header">Usage of message passing avoids locking and blocking</a></li>
+    <li><a href="../../typed/guide/actors-intro.html#actors-handle-error-situations-gracefully" class="header">Actors handle error situations gracefully</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../../js/magellan.js"></script>
+
+<style type="text/css">@import "../../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

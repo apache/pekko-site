@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Basics and working with Flows · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-flows-and-basics.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="active page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="active page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Basics and working with Flows</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#basics-and-working-with-flows" name="basics-and-working-with-flows" class="anchor"><span class="anchor-link"></span></a>Basics and working with Flows</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<h2><a href="#core-concepts" name="core-concepts" class="anchor"><span class="anchor-link"></span></a>Core concepts</h2>
+<p>Akka Streams is a library to process and transfer a sequence of elements using bounded buffer space. This latter property is what we refer to as <em>boundedness</em>, and it is the defining feature of Akka Streams. Translated to everyday terms, it is possible to express a chain (or as we see later, graphs) of processing entities. Each of these entities executes independently (and possibly concurrently) from the others while only buffering a limited number of elements at any given time. This property of bounded buffers is one of the differences from the actor model, where each actor usually has an unbounded, or a bounded, but dropping mailbox. Akka Stream processing entities have bounded &ldquo;mailboxes&rdquo; that do not drop.</p>
+<p>Before we move on, let&rsquo;s define some basic terminology which will be used throughout the entire documentation:</p>
+<dl>
+  <dt>Stream</dt>
+  <dd>An active process that involves moving and transforming data.</dd>
+  <dt>Element</dt>
+  <dd>An element is the processing unit of streams. All operations transform and transfer elements from upstream to downstream. Buffer sizes are always expressed as number of elements independently from the actual size of the elements.</dd>
+  <dt>Back-pressure
+  </dt>
+  <dd>A means of flow-control, a way for consumers of data to notify a producer about their current availability, effectively slowing down the upstream producer to match their consumption speeds. In the context of Akka Streams back-pressure is always understood as <em>non-blocking</em> and <em>asynchronous</em>.</dd>
+  <dt>Non-Blocking
+  </dt>
+  <dd>Means that a certain operation does not hinder the progress of the calling thread, even if it takes a long time to finish the requested operation.</dd>
+  <dt>Graph</dt>
+  <dd>A description of a stream processing topology, defining the pathways through which elements shall flow when the stream is running.</dd>
+  <dt>Operator</dt>
+  <dd>The common name for all building blocks that build up a Graph. Examples of operators are <code>map()</code>, <code>filter()</code>, custom ones extending <a href="stream-customize.html"><code>GraphStage</code>s</a> and graph junctions like <code>Merge</code> or <code>Broadcast</code>. For the full list of built-in operators see the <a href="operators/index.html">operator index</a></dd>
+</dl>
+<p>When we talk about <em>asynchronous, non-blocking backpressure</em>, we mean that the operators available in Akka Streams will not use blocking calls but asynchronous message passing to exchange messages between each other. This way they can slow down a fast producer without blocking its thread. This is a thread-pool friendly design, since entities that need to wait (a fast producer waiting on a slow consumer) will not block the thread but can hand it back for further use to an underlying thread-pool.</p>
+<h2><a href="#defining-and-running-streams" name="defining-and-running-streams" class="anchor"><span class="anchor-link"></span></a>Defining and running streams</h2>
+<p>Linear processing pipelines can be expressed in Akka Streams using the following core abstractions:</p>
+<dl>
+  <dt>Source</dt>
+  <dd>An operator with <em>exactly one output</em>, emitting data elements whenever downstream operators are ready to receive them.</dd>
+  <dt>Sink</dt>
+  <dd>An operator with <em>exactly one input</em>, requesting and accepting data elements, possibly slowing down the upstream producer of elements.</dd>
+  <dt>Flow</dt>
+  <dd>An operator which has <em>exactly one input and output</em>, which connects its upstream and downstream by transforming the data elements flowing through it.</dd>
+  <dt>RunnableGraph</dt>
+  <dd>A Flow that has both ends &ldquo;attached&rdquo; to a Source and Sink respectively, and is ready to be <code>run()</code>.</dd>
+</dl>
+<p>It is possible to attach a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> to a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> resulting in a composite source, and it is also possible to prepend a <code>Flow</code> to a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> to get a new sink. After a stream is properly constructed by having both a source and a sink, it will be represented by the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RunnableGraph.html" title="org.apache.pekko.stream.javadsl.RunnableGraph"><code>RunnableGraph</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RunnableGraph.html" title="org.apache.pekko.stream.scaladsl.RunnableGraph"><code>RunnableGraph</code></a></span> type, indicating that it is ready to be executed.</p>
+<p>It is important to remember that even after constructing the <code>RunnableGraph</code> by connecting all the source, sink and different operators, no data will flow through it until it is materialized. Materialization is the process of allocating all resources needed to run the computation described by a Graph (in Akka Streams this will often involve starting up Actors). Thanks to Flows being a description of the processing pipeline they are <em>immutable, thread-safe, and freely shareable</em>, which means that it is for example safe to share and send them between actors, to have one actor prepare the work, and then have it be materialized at some completely different place in the code.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L47-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val source = Source(1 to 10)
+val sink = Sink.fold[Int, Int](0)(_ + _)
+
+// connect the Source to the Sink, obtaining a RunnableGraph
+val runnable: RunnableGraph[Future[Int]] = source.toMat(sink)(Keep.right)
+
+// materialize the flow and get the value of the sink
+val sum: Future[Int] = runnable.run()
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L79-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+// note that the Future is scala.concurrent.Future
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sink = Sink.fold(0, Integer::sum);
+
+// connect the Source to the Sink, obtaining a RunnableFlow
+final RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; runnable = source.toMat(sink, Keep.right());
+
+// materialize the flow
+final CompletionStage&lt;Integer&gt; sum = runnable.run(system);</code></pre></dd>
+</dl><div class="group-scala">
+<p>After running (materializing) the <code>RunnableGraph[T]</code> we get back the materialized value of type T. Every stream operator can produce a materialized value, and it is the responsibility of the user to combine them to a new type. In the above example, we used <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Source.html#toMat[Mat2,Mat3](sink:org.apache.pekko.stream.Graph[org.apache.pekko.stream.SinkShape[Out],Mat2])(combine:(Mat,Mat2)=%3EMat3):org.apache.pekko.stream.scaladsl.RunnableGraph[Mat3]" title="pekko.stream.scaladsl.Source"><code>toMat</code></a> to indicate that we want to transform the materialized value of the source and sink, and we used the convenience function <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Keep$.html#right[L,R]:(L,R)=%3ER" title="pekko.stream.scaladsl.Keep"><code>Keep.right</code></a> to say that we are only interested in the materialized value of the sink.</p>
+<p>In our example, the <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Sink$.html#fold[U,T](zero:U)(f:(U,T)=&gt;U):org.apache.pekko.stream.scaladsl.Sink[T,scala.concurrent.Future[U]]" title="pekko.stream.scaladsl.Sink"><code>Sink.fold</code></a> materializes a value of type <a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a> which will represent the result of the folding process over the stream. In general, a stream can expose multiple materialized values, but it is quite common to be interested in only the value of the Source or the Sink in the stream. For this reason there is a convenience method called <code>runWith()</code> available for <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Sink.html" title="pekko.stream.scaladsl.Sink"><code>Sink</code></a>, <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Source.html" title="pekko.stream.scaladsl.Source"><code>Source</code></a> or <a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/stream/scaladsl/Flow.html" title="pekko.stream.scaladsl.Flow"><code>Flow</code></a> requiring, respectively, a supplied <code>Source</code> (in order to run a <code>Sink</code>), a <code>Sink</code> (in order to run a <code>Source</code>) or both a <code>Source</code> and a <code>Sink</code> (in order to run a <code>Flow</code>, since it has neither attached yet).</p></div><div class="group-java">
+<p>After running (materializing) the <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/javadsl/RunnableGraph.html" title="pekko.stream.javadsl.RunnableGraph"><code>RunnableGraph</code></a> we get a special container object, the <code>MaterializedMap</code>. Both sources and sinks are able to put specific objects into this map. Whether they put something in or not is implementation dependent. </p>
+<p>For example, a <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/javadsl/Sink$.html#fold(java.lang.Object,org.apache.pekko.japi.function.Function2)" title="pekko.stream.javadsl.Sink"><code>Sink.fold</code></a> will make a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a> available in this map which will represent the result of the folding process over the stream. In general, a stream can expose multiple materialized values, but it is quite common to be interested in only the value of the Source or the Sink in the stream. For this reason there is a convenience method called <code>runWith()</code> available for <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/javadsl/Sink.html" title="pekko.stream.javadsl.Sink"><code>Sink</code></a>, <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/javadsl/Source.html" title="pekko.stream.javadsl.Source"><code>Source</code></a> or <a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/stream/javadsl/Flow.html" title="pekko.stream.javadsl.Flow"><code>Flow</code></a> requiring, respectively, a supplied <code>Source</code> (in order to run a <code>Sink</code>), a <code>Sink</code> (in order to run a <code>Source</code>) or both a <code>Source</code> and a <code>Sink</code> (in order to run a <code>Flow</code>, since it has neither attached yet).</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L61-L65" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val source = Source(1 to 10)
+val sink = Sink.fold[Int, Int](0)(_ + _)
+
+// materialize the flow, getting the Sink&#39;s materialized value
+val sum: Future[Int] = source.runWith(sink)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L98-L103" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sink = Sink.fold(0, Integer::sum);
+
+// materialize the flow, getting the Sink&#39;s materialized value
+final CompletionStage&lt;Integer&gt; sum = source.runWith(sink, system);</code></pre></dd>
+</dl>
+<p>It is worth pointing out that since operators are <em>immutable</em>, connecting them returns a new operator, instead of modifying the existing instance, so while constructing long flows, remember to assign the new value to a variable or run it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L36-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val source = Source(1 to 10)
+source.map(_ =&gt; 0) // has no effect on source, since it&#39;s immutable
+source.runWith(Sink.fold(0)(_ + _)) // 55
+
+val zeroes = source.map(_ =&gt; 0) // returns new Source[Int], with `map()` appended
+zeroes.runWith(Sink.fold(0)(_ + _)) // 0</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L61-L69" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+source.map(x -&gt; 0); // has no effect on source, since it&#39;s immutable
+source.runWith(Sink.fold(0, Integer::sum), system); // 55
+
+// returns new Source&lt;Integer&gt;, with `map()` appended
+final Source&lt;Integer, NotUsed&gt; zeroes = source.map(x -&gt; 0);
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; fold = Sink.fold(0, Integer::sum);
+zeroes.runWith(fold, system); // 0</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>By default, Akka Streams elements support <strong>exactly one</strong> downstream operator. Making fan-out (supporting multiple downstream operators) an explicit opt-in feature allows default stream elements to be less complex and more efficient. Also, it allows for greater flexibility on <em>how exactly</em> to handle the multicast scenarios, by providing named fan-out elements such as broadcast (signals all down-stream elements) or balance (signals one of available down-stream elements).</p></div>
+<p>In the above example we used the <code>runWith</code> method, which both materializes the stream and returns the materialized value of the given sink or source.</p>
+<p>Since a stream can be materialized multiple times, the <span class="group-scala">materialized value will also be calculated anew</span> <span class="group-java"><code>MaterializedMap</code> returned is different</span> for each such materialization, usually leading to different values being returned each time. In the example below, we create two running materialized instances of the stream that we described in the <code>runnable</code> variable. Both materializations give us a different <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> from the map even though we used the same <code>sink</code> to refer to the future:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L71-L80" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// connect the Source to the Sink, obtaining a RunnableGraph
+val sink = Sink.fold[Int, Int](0)(_ + _)
+val runnable: RunnableGraph[Future[Int]] =
+  Source(1 to 10).toMat(sink)(Keep.right)
+
+// get the materialized value of the sink
+val sum1: Future[Int] = runnable.run()
+val sum2: Future[Int] = runnable.run()
+
+// sum1 and sum2 are different Futures!</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L113-L122" target="_blank" title="Go to snippet source">source</a><code class="language-java">// connect the Source to the Sink, obtaining a RunnableGraph
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sink = Sink.fold(0, Integer::sum);
+final RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; runnable =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)).toMat(sink, Keep.right());
+
+// get the materialized value of the FoldSink
+final CompletionStage&lt;Integer&gt; sum1 = runnable.run(system);
+final CompletionStage&lt;Integer&gt; sum2 = runnable.run(system);
+
+// sum1 and sum2 are different Futures!</code></pre></dd>
+</dl>
+<h3><a href="#defining-sources-sinks-and-flows" name="defining-sources-sinks-and-flows" class="anchor"><span class="anchor-link"></span></a>Defining sources, sinks and flows</h3>
+<p>The objects <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> define various ways to create sources and sinks of elements. The following examples show some of the most useful constructs (refer to the API documentation for more details):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L104-L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Create a source from an Iterable
+Source(List(1, 2, 3))
+
+// Create a source from a Future
+Source.future(Future.successful(&quot;Hello Streams!&quot;))
+
+// Create a source from a single element
+Source.single(&quot;only one element&quot;)
+
+// an empty source
+Source.empty
+
+// Sink that folds over the stream and returns a Future
+// of the final result as its materialized value
+Sink.fold[Int, Int](0)(_ + _)
+
+// Sink that returns a Future as its materialized value,
+// containing the first element of the stream
+Sink.head
+
+// A Sink that consumes a stream without doing anything with the elements
+Sink.ignore
+
+// A Sink that executes a side-effecting call for every element of the stream
+Sink.foreach[String](println(_))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L154-L182" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Create a source from an Iterable
+List&lt;Integer&gt; list = new LinkedList&lt;&gt;();
+list.add(1);
+list.add(2);
+list.add(3);
+Source.from(list);
+
+// Create a source form a Future
+Source.future(Futures.successful(&quot;Hello Streams!&quot;));
+
+// Create a source from a single element
+Source.single(&quot;only one element&quot;);
+
+// an empty source
+Source.empty();
+
+// Sink that folds over the stream and returns a Future
+// of the final result in the MaterializedMap
+Sink.fold(0, Integer::sum);
+
+// Sink that returns a Future in the MaterializedMap,
+// containing the first element of the stream
+Sink.head();
+
+// A Sink that consumes a stream without doing anything with the elements
+Sink.ignore();
+
+// A Sink that executes a side-effecting call for every element of the stream
+Sink.foreach(System.out::println);</code></pre></dd>
+</dl>
+<p>There are various ways to wire up different parts of a stream, the following examples show some of the available options:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L134-L149" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Explicitly creating and wiring up a Source, Sink and Flow
+Source(1 to 6).via(Flow[Int].map(_ * 2)).to(Sink.foreach(println(_)))
+
+// Starting from a Source
+val source = Source(1 to 6).map(_ * 2)
+source.to(Sink.foreach(println(_)))
+
+// Starting from a Sink
+val sink: Sink[Int, NotUsed] = Flow[Int].map(_ * 2).to(Sink.foreach(println(_)))
+Source(1 to 6).to(sink)
+
+// Broadcast to a sink inline
+val otherSink: Sink[Int, NotUsed] =
+  Flow[Int].alsoTo(Sink.foreach(println(_))).to(Sink.ignore)
+Source(1 to 6).to(otherSink)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L189-L202" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Explicitly creating and wiring up a Source, Sink and Flow
+Source.from(Arrays.asList(1, 2, 3, 4))
+    .via(Flow.of(Integer.class).map(elem -&gt; elem * 2))
+    .to(Sink.foreach(System.out::println));
+
+// Starting from a Source
+final Source&lt;Integer, NotUsed&gt; source =
+    Source.from(Arrays.asList(1, 2, 3, 4)).map(elem -&gt; elem * 2);
+source.to(Sink.foreach(System.out::println));
+
+// Starting from a Sink
+final Sink&lt;Integer, NotUsed&gt; sink =
+    Flow.of(Integer.class).map(elem -&gt; elem * 2).to(Sink.foreach(System.out::println));
+Source.from(Arrays.asList(1, 2, 3, 4)).to(sink);</code></pre></dd>
+</dl>
+<h3><a href="#illegal-stream-elements" name="illegal-stream-elements" class="anchor"><span class="anchor-link"></span></a>Illegal stream elements</h3>
+<p>In accordance to the Reactive Streams specification (<a href="https://github.com/reactive-streams/reactive-streams-jvm#2.13">Rule 2.13</a>) Akka Streams do not allow <code>null</code> to be passed through the stream as an element. In case you want to model the concept of absence of a value we recommend using <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/Option.html" title="scala.Option"><code>scala.Option</code></a> or <a href="http://www.scala-lang.org/api/2.13.8/scala/util/Either.html" title="scala.util.Either"><code>scala.util.Either</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" title="java.util.Optional"><code>java.util.Optional</code></a> which is available since Java 8</span>.</p>
+<h2><a href="#back-pressure-explained" name="back-pressure-explained" class="anchor"><span class="anchor-link"></span></a>Back-pressure explained</h2>
+<p>Akka Streams implement an asynchronous non-blocking back-pressure protocol standardised by the <a href="https://www.reactive-streams.org/">Reactive Streams</a> specification, which Akka is a founding member of.</p>
+<p>The user of the library does not have to write any explicit back-pressure handling code — it is built in and dealt with automatically by all of the provided Akka Streams operators. It is possible however to add explicit buffer operators with overflow strategies that can influence the behavior of the stream. This is especially important in complex processing graphs which may even contain loops (which <em>must</em> be treated with very special care, as explained in <a href="stream-graphs.html#graph-cycles">Graph cycles, liveness and deadlocks</a>).</p>
+<p>The back pressure protocol is defined in terms of the number of elements a downstream <code>Subscriber</code> is able to receive and buffer, referred to as <code>demand</code>. The source of data, referred to as <code>Publisher</code> in Reactive Streams terminology and implemented as <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> in Akka Streams, guarantees that it will never emit more elements than the received total demand for any given <code>Subscriber</code>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The Reactive Streams specification defines its protocol in terms of <code>Publisher</code> and <code>Subscriber</code>. These types are <strong>not</strong> meant to be user facing API, instead they serve as the low-level building blocks for different Reactive Streams implementations.</p>
+<p>Akka Streams implements these concepts as <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>, <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> (referred to as <code>Processor</code> in Reactive Streams) and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> without exposing the Reactive Streams interfaces directly. If you need to integrate with other Reactive Stream libraries, read <a href="reactive-streams-interop.html">Integrating with Reactive Streams</a>.</p></div>
+<p>The mode in which Reactive Streams back-pressure works can be colloquially described as &ldquo;dynamic push / pull mode&rdquo;, since it will switch between push and pull based back-pressure models depending on the downstream being able to cope with the upstream production rate or not.</p>
+<p>To illustrate this further let us consider both problem situations and how the back-pressure protocol handles them:</p>
+<h3><a href="#slow-publisher-fast-subscriber" name="slow-publisher-fast-subscriber" class="anchor"><span class="anchor-link"></span></a>Slow Publisher, fast Subscriber</h3>
+<p>This is the happy case – we do not need to slow down the Publisher in this case. However signalling rates are rarely constant and could change at any point in time, suddenly ending up in a situation where the Subscriber is now slower than the Publisher. In order to safeguard from these situations, the back-pressure protocol must still be enabled during such situations, however we do not want to pay a high penalty for this safety net being enabled.</p>
+<p>The Reactive Streams protocol solves this by asynchronously signalling from the Subscriber to the Publisher <span class="group-scala"><code>Request(n:Int)</code></span> <span class="group-java"><code>Request(int n)</code></span> signals. The protocol guarantees that the Publisher will never signal <em>more</em> elements than the signalled demand. Since the Subscriber however is currently faster, it will be signalling these Request messages at a higher rate (and possibly also batching together the demand - requesting multiple elements in one Request signal). This means that the Publisher should not ever have to wait (be back-pressured) with publishing its incoming elements.</p>
+<p>As we can see, in this scenario we effectively operate in so called push-mode since the Publisher can continue producing elements as fast as it can, since the pending demand will be recovered just-in-time while it is emitting elements.</p>
+<h3><a href="#fast-publisher-slow-subscriber" name="fast-publisher-slow-subscriber" class="anchor"><span class="anchor-link"></span></a>Fast Publisher, slow Subscriber</h3>
+<p>This is the case when back-pressuring the <code>Publisher</code> is required, because the <code>Subscriber</code> is not able to cope with the rate at which its upstream would like to emit data elements.</p>
+<p>Since the <code>Publisher</code> is not allowed to signal more elements than the pending demand signalled by the <code>Subscriber</code>, it will have to abide to this back-pressure by applying one of the below strategies:</p>
+<ul>
+  <li>not generate elements, if it is able to control their production rate,</li>
+  <li>try buffering the elements in a <em>bounded</em> manner until more demand is signalled,</li>
+  <li>drop elements until more demand is signalled,</li>
+  <li>tear down the stream if unable to apply any of the above strategies.</li>
+</ul>
+<p>As we can see, this scenario effectively means that the <code>Subscriber</code> will <em>pull</em> the elements from the Publisher – this mode of operation is referred to as pull-based back-pressure.</p>
+<h2><a href="#stream-materialization" name="stream-materialization" class="anchor"><span class="anchor-link"></span></a>Stream Materialization</h2>
+<p>When constructing flows and graphs in Akka Streams think of them as preparing a blueprint, an execution plan. Stream materialization is the process of taking a stream description (<span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/RunnableGraph.html" title="org.apache.pekko.stream.javadsl.RunnableGraph"><code>RunnableGraph</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/RunnableGraph.html" title="org.apache.pekko.stream.scaladsl.RunnableGraph"><code>RunnableGraph</code></a></span>) and allocating all the necessary resources it needs in order to run. In the case of Akka Streams this often means starting up Actors which power the processing, but is not restricted to that—it could also mean opening files or socket connections etc.—depending on what the stream needs.</p>
+<p>Materialization is triggered at so called &ldquo;terminal operations&rdquo;. Most notably this includes the various forms of the <code>run()</code> and <code>runWith()</code> methods defined on <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> elements as well as a small number of special syntactic sugars for running with well-known sinks, such as <span class="group-scala"><code>runForeach(el =&gt; ...)</code></span><span class="group-java"><code>runForeach(el -&gt; ...)</code></span> (being an alias to <span class="group-scala"><code>runWith(Sink.foreach(el =&gt; ...))</code></span><span class="group-java"><code>runWith(Sink.foreach(el -&gt; ...))</code></span>).</p>
+<p>Materialization is performed synchronously on the materializing thread by an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> global <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span>. The actual stream processing is handled by actors started up during the streams materialization, which will be running on the thread pools they have been configured to run on - which defaults to the dispatcher set in the <code>ActorSystem</code> config or provided as attributes on the stream that is getting materialized.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Reusing <em>instances</em> of linear computation operators (Source, Sink, Flow) inside composite Graphs is legal, yet will materialize that operator multiple times.</p></div>
+<h3><a href="#operator-fusion" name="operator-fusion" class="anchor"><span class="anchor-link"></span></a>Operator Fusion</h3>
+<p>By default, Akka Streams will fuse the stream operators. This means that the processing steps of a flow or stream can be executed within the same Actor and has two consequences:</p>
+<ul>
+  <li>passing elements from one operator to the next is a lot faster between fused operators due to avoiding the asynchronous messaging overhead</li>
+  <li>fused stream operators do not run in parallel to each other, meaning that only up to one CPU core is used for each fused part</li>
+</ul>
+<p>To allow for parallel processing you will have to insert asynchronous boundaries manually into your flows and operators by way of adding <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Attributes$.html#asyncBoundary:org.apache.pekko.stream.Attributes" title="org.apache.pekko.stream.Attributes"><code>Attributes.asyncBoundary</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Attributes$.html#asyncBoundary()" title="org.apache.pekko.stream.Attributes"><code>Attributes.asyncBoundary</code></a></span> using the method <code>async</code> on <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>, <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> and <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> to operators that shall communicate with the downstream of the graph in an asynchronous fashion.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L230" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Source(List(1, 2, 3)).map(_ + 1).async.map(_ * 2).to(Sink.ignore)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L303" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source.range(1, 3).map(x -&gt; x + 1).async().map(x -&gt; x * 2).to(Sink.ignore());</code></pre></dd>
+</dl>
+<p>In this example we create two regions within the flow which will be executed in one Actor each—assuming that adding and multiplying integers is an extremely costly operation this will lead to a performance gain since two CPUs can work on the tasks in parallel. It is important to note that asynchronous boundaries are not singular places within a flow where elements are passed asynchronously (as in other streaming libraries), but instead attributes always work by adding information to the flow graph that has been constructed up to this point:</p>
+<p><img src="../images/asyncBoundary.png" alt="asyncBoundary.png" /></p>
+<p>This means that everything that is inside the red bubble will be executed by one actor and everything outside of it by another. This scheme can be applied successively, always having one such boundary enclose the previous ones plus all operators that have been added since then.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Without fusing (i.e. up to version 2.0-M2) each stream operator had an implicit input buffer that holds a few elements for efficiency reasons. If your flow graphs contain cycles then these buffers may have been crucial in order to avoid deadlocks. With fusing these implicit buffers are no longer there, data elements are passed without buffering between fused operators. In those cases where buffering is needed in order to allow the stream to run at all, you will have to insert explicit buffers with the <code>.buffer()</code> operator—typically a buffer of size 2 is enough to allow a feedback loop to function.</p></div>
+<a id="flow-combine-mat"></a>
+<h3><a href="#combining-materialized-values" name="combining-materialized-values" class="anchor"><span class="anchor-link"></span></a>Combining materialized values</h3>
+<p>Since every operator in Akka Streams can provide a materialized value after being materialized, it is necessary to somehow express how these values should be composed to a final value when we plug these operators together. For this, many operator methods have variants that take an additional argument, a function, that will be used to combine the resulting values. Some examples of using these combiners are illustrated in the example below.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L165-L224" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// A source that can be signalled explicitly from the outside
+val source: Source[Int, Promise[Option[Int]]] = Source.maybe[Int]
+
+// A flow that internally throttles elements to 1/second, and returns a Cancellable
+// which can be used to shut down the stream
+val flow: Flow[Int, Int, Cancellable] = throttler
+
+// A sink that returns the first element of a stream in the returned Future
+val sink: Sink[Int, Future[Int]] = Sink.head[Int]
+
+// By default, the materialized value of the leftmost stage is preserved
+val r1: RunnableGraph[Promise[Option[Int]]] = source.via(flow).to(sink)
+
+// Simple selection of materialized values by using Keep.right
+val r2: RunnableGraph[Cancellable] = source.viaMat(flow)(Keep.right).to(sink)
+val r3: RunnableGraph[Future[Int]] = source.via(flow).toMat(sink)(Keep.right)
+
+// Using runWith will always give the materialized values of the stages added
+// by runWith() itself
+val r4: Future[Int] = source.via(flow).runWith(sink)
+val r5: Promise[Option[Int]] = flow.to(sink).runWith(source)
+val r6: (Promise[Option[Int]], Future[Int]) = flow.runWith(source, sink)
+
+// Using more complex combinations
+val r7: RunnableGraph[(Promise[Option[Int]], Cancellable)] =
+  source.viaMat(flow)(Keep.both).to(sink)
+
+val r8: RunnableGraph[(Promise[Option[Int]], Future[Int])] =
+  source.via(flow).toMat(sink)(Keep.both)
+
+val r9: RunnableGraph[((Promise[Option[Int]], Cancellable), Future[Int])] =
+  source.viaMat(flow)(Keep.both).toMat(sink)(Keep.both)
+
+val r10: RunnableGraph[(Cancellable, Future[Int])] =
+  source.viaMat(flow)(Keep.right).toMat(sink)(Keep.both)
+
+// It is also possible to map over the materialized values. In r9 we had a
+// doubly nested pair, but we want to flatten it out
+val r11: RunnableGraph[(Promise[Option[Int]], Cancellable, Future[Int])] =
+  r9.mapMaterializedValue {
+    case ((promise, cancellable), future) =&gt;
+      (promise, cancellable, future)
+  }
+
+// Now we can use pattern matching to get the resulting materialized values
+val (promise, cancellable, future) = r11.run()
+
+// Type inference works as expected
+promise.success(None)
+cancellable.cancel()
+future.map(_ + 3)
+
+// The result of r11 can be also achieved by using the Graph API
+val r12: RunnableGraph[(Promise[Option[Int]], Cancellable, Future[Int])] =
+  RunnableGraph.fromGraph(GraphDSL.createGraph(source, flow, sink)((_, _, _)) { implicit builder =&gt; (src, f, dst) =&gt;
+    import GraphDSL.Implicits._
+    src ~&gt; f ~&gt; dst
+    ClosedShape
+  })
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L221-L272" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>// An empty source that can be shut down explicitly from the outside
+Source&lt;Integer, CompletableFuture&lt;Optional&lt;Integer&gt;&gt;&gt; source = Source.&lt;Integer&gt;maybe();
+
+// A flow that internally throttles elements to 1/second, and returns a Cancellable
+// which can be used to shut down the stream
+Flow&lt;Integer, Integer, Cancellable&gt; flow = throttler;
+
+// A sink that returns the first element of a stream in the returned Future
+Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sink = Sink.head();
+
+// By default, the materialized value of the leftmost stage is preserved
+RunnableGraph&lt;CompletableFuture&lt;Optional&lt;Integer&gt;&gt;&gt; r1 = source.via(flow).to(sink);
+
+// Simple selection of materialized values by using Keep.right
+RunnableGraph&lt;Cancellable&gt; r2 = source.viaMat(flow, Keep.right()).to(sink);
+RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; r3 = source.via(flow).toMat(sink, Keep.right());
+
+// Using runWith will always give the materialized values of the stages added
+// by runWith() itself
+CompletionStage&lt;Integer&gt; r4 = source.via(flow).runWith(sink, system);
+CompletableFuture&lt;Optional&lt;Integer&gt;&gt; r5 = flow.to(sink).runWith(source, system);
+Pair&lt;CompletableFuture&lt;Optional&lt;Integer&gt;&gt;, CompletionStage&lt;Integer&gt;&gt; r6 =
+    flow.runWith(source, sink, system);
+
+// Using more complex combinations
+RunnableGraph&lt;Pair&lt;CompletableFuture&lt;Optional&lt;Integer&gt;&gt;, Cancellable&gt;&gt; r7 =
+    source.viaMat(flow, Keep.both()).to(sink);
+
+RunnableGraph&lt;Pair&lt;CompletableFuture&lt;Optional&lt;Integer&gt;&gt;, CompletionStage&lt;Integer&gt;&gt;&gt; r8 =
+    source.via(flow).toMat(sink, Keep.both());
+
+RunnableGraph&lt;
+        Pair&lt;Pair&lt;CompletableFuture&lt;Optional&lt;Integer&gt;&gt;, Cancellable&gt;, CompletionStage&lt;Integer&gt;&gt;&gt;
+    r9 = source.viaMat(flow, Keep.both()).toMat(sink, Keep.both());
+
+RunnableGraph&lt;Pair&lt;Cancellable, CompletionStage&lt;Integer&gt;&gt;&gt; r10 =
+    source.viaMat(flow, Keep.right()).toMat(sink, Keep.both());
+
+// It is also possible to map over the materialized values. In r9 we had a
+// doubly nested pair, but we want to flatten it out
+
+RunnableGraph&lt;Cancellable&gt; r11 =
+    r9.mapMaterializedValue(
+        (nestedTuple) -&gt; {
+          CompletableFuture&lt;Optional&lt;Integer&gt;&gt; p = nestedTuple.first().first();
+          Cancellable c = nestedTuple.first().second();
+          CompletionStage&lt;Integer&gt; f = nestedTuple.second();
+
+          // Picking the Cancellable, but we could  also construct a domain class here
+          return c;
+        });</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>In Graphs it is possible to access the materialized value from inside the stream. For details see <a href="stream-graphs.html#graph-matvalue">Accessing the materialized value inside the Graph</a>.</p></div>
+<h3><a href="#source-pre-materialization" name="source-pre-materialization" class="anchor"><span class="anchor-link"></span></a>Source pre-materialization</h3>
+<p>There are situations in which you require a <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> materialized value <strong>before</strong> the <code>Source</code> gets hooked up to the rest of the graph. This is particularly useful in the case of &ldquo;materialized value powered&rdquo; <code>Source</code>s, like <code>Source.queue</code>, <code>Source.actorRef</code> or <code>Source.maybe</code>.</p>
+<p>By using the <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#preMaterialize(org.apache.pekko.stream.Materializer)" title="org.apache.pekko.stream.javadsl.Source"><code>preMaterialize</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#preMaterialize()(implicitmaterializer:org.apache.pekko.stream.Materializer):(Mat,Source.this.ReprMat[Out,org.apache.pekko.NotUsed])" title="org.apache.pekko.stream.scaladsl.Source"><code>preMaterialize</code></a></span> operator on a <code>Source</code>, you can obtain its materialized value and another <code>Source</code>. The latter can be used to consume messages from the original <code>Source</code>. Note that this can be materialized multiple times.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L236-L249" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val completeWithDone: PartialFunction[Any, CompletionStrategy] = { case Done =&gt; CompletionStrategy.immediately }
+val matValuePoweredSource =
+  Source.actorRef[String](
+    completionMatcher = completeWithDone,
+    failureMatcher = PartialFunction.empty,
+    bufferSize = 100,
+    overflowStrategy = OverflowStrategy.fail)
+
+val (actorRef, source) = matValuePoweredSource.preMaterialize()
+
+actorRef ! &quot;Hello!&quot;
+
+// pass source around for materialization
+source.runWith(Sink.foreach(println))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L279-L297" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;String, ActorRef&gt; matValuePoweredSource =
+    Source.actorRef(
+        elem -&gt; {
+          // complete stream immediately if we send it Done
+          if (elem == Done.done()) return Optional.of(CompletionStrategy.immediately());
+          else return Optional.empty();
+        },
+        // never fail the stream because of a message
+        elem -&gt; Optional.empty(),
+        100,
+        OverflowStrategy.fail());
+
+Pair&lt;ActorRef, Source&lt;String, NotUsed&gt;&gt; actorRefSourcePair =
+    matValuePoweredSource.preMaterialize(system);
+
+actorRefSourcePair.first().tell(&quot;Hello!&quot;, ActorRef.noSender());
+
+// pass source around for materialization
+actorRefSourcePair.second().runWith(Sink.foreach(System.out::println), system);</code></pre></dd>
+</dl>
+<h2><a href="#stream-ordering" name="stream-ordering" class="anchor"><span class="anchor-link"></span></a>Stream ordering</h2>
+<p>In Akka Streams almost all computation operators <em>preserve input order</em> of elements. This means that if inputs <code>{IA1,IA2,...,IAn}</code> &ldquo;cause&rdquo; outputs <code>{OA1,OA2,...,OAk}</code> and inputs <code>{IB1,IB2,...,IBm}</code> &ldquo;cause&rdquo; outputs <code>{OB1,OB2,...,OBl}</code> and all of <code>IAi</code> happened before all <code>IBi</code> then <code>OAi</code> happens before <code>OBi</code>.</p>
+<p>This property is even upheld by async operations such as <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#mapAsync(int,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>mapAsync</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#mapAsync[T](parallelism:Int)(f:Out=%3Escala.concurrent.Future[T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>mapAsync</code></a></span>, however an unordered version exists called <span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#mapAsyncUnordered(int,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.stream.javadsl.Source"><code>mapAsyncUnordered</code></a></span><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#mapAsyncUnordered[T](parallelism:Int)(f:Out=&gt;scala.concurrent.Future[T]):FlowOps.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>mapAsyncUnordered</code></a></span> which does not preserve this ordering.</p>
+<p>However, in the case of Junctions which handle multiple input streams (e.g. <code>Merge</code>) the output order is, in general, <em>not defined</em> for elements arriving on different input ports. That is a merge-like operation may emit <code>Ai</code> before emitting <code>Bi</code>, and it is up to its internal logic to decide the order of emitted elements. Specialized elements such as <code>Zip</code> however <em>do guarantee</em> their outputs order, as each output element depends on all upstream elements having been signalled already – thus the ordering in the case of zipping is defined by this property.</p>
+<p>If you find yourself in need of fine grained control over order of emitted elements in fan-in scenarios consider using <code>MergePreferred</code>, <code>MergePrioritized</code> or <a href="stream-customize.html"><code>GraphStage</code></a> – which gives you full control over how the merge is performed.</p>
+<h2><a href="#actor-materializer-lifecycle" name="actor-materializer-lifecycle" class="anchor"><span class="anchor-link"></span></a>Actor Materializer Lifecycle</h2>
+<p>The <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span> is a component that is responsible for turning the stream blueprint into a running stream and emitting the &ldquo;materialized value&rdquo;. An <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> wide <code>Materializer</code> is provided by the Akka <code>Extension</code> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/SystemMaterializer.html" title="org.apache.pekko.stream.SystemMaterializer"><code>SystemMaterializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/SystemMaterializer.html" title="org.apache.pekko.stream.SystemMaterializer"><code>SystemMaterializer</code></a></span> by <span class="group-scala">having an implicit <code>ActorSystem</code> in scope</span><span class="group-java">passing the <code>ActorSystem</code> to the various <code>run</code> methods</span> this way there is no need to worry about the <code>Materializer</code> unless there are special requirements.</p>
+<p>The use case that may require a custom instance of <code>Materializer</code> is when all streams materialized in an actor should be tied to the Actor lifecycle and stop if the Actor stops or crashes. </p>
+<p>An important aspect of working with streams and actors is understanding a <code>Materializer</code>&rsquo;s life-cycle. The materializer is bound to the lifecycle of the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html" title="org.apache.pekko.actor.ActorRefFactory"><code>ActorRefFactory</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html" title="org.apache.pekko.actor.ActorRefFactory"><code>ActorRefFactory</code></a></span> it is created from, which in practice will be either an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> or <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorContext.html" title="org.apache.pekko.actor.ActorContext"><code>ActorContext</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorContext.html" title="org.apache.pekko.actor.ActorContext"><code>ActorContext</code></a></span> (when the materializer is created within an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span>). </p>
+<p>Tying it to the <code>ActorSystem</code> should be replaced with using the system materializer from Akka 2.6 and on.</p>
+<p>When run by the system materializer the streams will run until the <code>ActorSystem</code> is shut down. When the materializer is shut down <em>before</em> the streams have run to completion, they will be terminated abruptly. This is a little different than the usual way to terminate streams, which is by cancelling/completing them. The stream lifecycles are bound to the materializer like this to prevent leaks, and in normal operations you should not rely on the mechanism and rather use <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/KillSwitch.html" title="org.apache.pekko.stream.KillSwitch"><code>KillSwitch</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/KillSwitch.html" title="org.apache.pekko.stream.KillSwitch"><code>KillSwitch</code></a></span> or normal completion signals to manage the lifecycles of your streams. </p>
+<p>If we look at the following example, where we create the <code>Materializer</code> within an <code>Actor</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L257-L269" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final class RunWithMyself extends Actor {
+  implicit val mat: Materializer = Materializer(context)
+
+  Source.maybe.runWith(Sink.onComplete {
+    case Success(done) =&gt; println(s&quot;Completed: $done&quot;)
+    case Failure(ex)   =&gt; println(s&quot;Failed: ${ex.getMessage}&quot;)
+  })
+
+  def receive = {
+    case &quot;boom&quot; =&gt;
+      context.stop(self) // will also terminate the stream
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L308-L334" target="_blank" title="Go to snippet source">source</a><code class="language-java">final class RunWithMyself extends AbstractActor {
+
+  Materializer mat = Materializer.createMaterializer(context());
+
+  @Override
+  public void preStart() throws Exception {
+    Source.repeat(&quot;hello&quot;)
+        .runWith(
+            Sink.onComplete(
+                tryDone -&gt; {
+                  System.out.println(&quot;Terminated stream: &quot; + tryDone);
+                }),
+            mat);
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            String.class,
+            p -&gt; {
+              // this WILL terminate the above stream as well
+              context().stop(self());
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>In the above example we used the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorContext.html" title="org.apache.pekko.actor.ActorContext"><code>ActorContext</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorContext.html" title="org.apache.pekko.actor.ActorContext"><code>ActorContext</code></a></span> to create the materializer. This binds its lifecycle to the surrounding <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span>. In other words, while the stream we started there would under normal circumstances run forever, if we stop the Actor it would terminate the stream as well. We have <em>bound the stream&rsquo;s lifecycle to the surrounding actor&rsquo;s lifecycle</em>. This is a very useful technique if the stream is closely related to the actor, e.g. when the actor represents a user or other entity, that we continuously query using the created stream &ndash; and it would not make sense to keep the stream alive when the actor has terminated already. The streams termination will be signalled by an &ldquo;Abrupt termination exception&rdquo; signaled by the stream.</p>
+<p>You may also cause a <code>Materializer</code> to shut down by explicitly calling <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html#shutdown():Unit" title="org.apache.pekko.stream.Materializer"><code>shutdown()</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html#shutdown()" title="org.apache.pekko.stream.Materializer"><code>shutdown()</code></a></span> on it, resulting in abruptly terminating all of the streams it has been running then. </p>
+<p>Sometimes, however, you may want to explicitly create a stream that will out-last the actor&rsquo;s life. For example, you are using an Akka stream to push some large stream of data to an external service. You may want to eagerly stop the Actor since it has performed all of its duties already:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/FlowDocSpec.scala#L273-L284" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final class RunForever(implicit val mat: Materializer) extends Actor {
+
+  Source.maybe.runWith(Sink.onComplete {
+    case Success(done) =&gt; println(s&quot;Completed: $done&quot;)
+    case Failure(ex)   =&gt; println(s&quot;Failed: ${ex.getMessage}&quot;)
+  })
+
+  def receive = {
+    case &quot;boom&quot; =&gt;
+      context.stop(self) // will NOT terminate the stream (it&#39;s bound to the system!)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/FlowDocTest.java#L338-L367" target="_blank" title="Go to snippet source">source</a><code class="language-java">final class RunForever extends AbstractActor {
+
+  private final Materializer materializer;
+
+  public RunForever(Materializer materializer) {
+    this.materializer = materializer;
+  }
+
+  @Override
+  public void preStart() throws Exception {
+    Source.repeat(&quot;hello&quot;)
+        .runWith(
+            Sink.onComplete(
+                tryDone -&gt; {
+                  System.out.println(&quot;Terminated stream: &quot; + tryDone);
+                }),
+            materializer);
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            String.class,
+            p -&gt; {
+              // will NOT terminate the stream (it&#39;s bound to the system!)
+              context().stop(self());
+            })
+        .build();
+  }</code></pre></dd>
+</dl>
+<p>In the above example we pass in a materializer to the Actor, which results in binding its lifecycle to the entire <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> rather than the single enclosing actor. This can be useful if you want to share a materializer or group streams into specific materializers, for example because of the materializer&rsquo;s settings etc.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Do not create new actor materializers inside actors by passing the <span class="group-scala"><a href="https://doc.akka.io/api/akka/2.6/org/apache/pekko/actor/ActorContext.html#system:org.apache.pekko.actor.ActorSystem" title="pekko.actor.ActorContext"><code>context.system</code></a></span><span class="group-java"><a href="https://doc.akka.io/japi/akka/2.6/org/apache/pekko/actor/ActorContext.html#system()" title="pekko.actor.ActorContext"><code>context.system()</code></a></span> to it. This will cause a new <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span> to be created and potentially leaked (unless you shut it down explicitly) for each such actor. It is instead recommended to either pass-in the Materializer or create one using the actor&rsquo;s <code>context</code>.</p></div>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-flows-and-basics.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-graphs.html">Working with Graphs</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-flows-and-basics.html#basics-and-working-with-flows" class="header">Basics and working with Flows</a>
+  <ul>
+    <li><a href="../stream/stream-flows-and-basics.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#core-concepts" class="header">Core concepts</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#defining-and-running-streams" class="header">Defining and running streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#back-pressure-explained" class="header">Back-pressure explained</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#stream-materialization" class="header">Stream Materialization</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#stream-ordering" class="header">Stream ordering</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html#actor-materializer-lifecycle" class="header">Actor Materializer Lifecycle</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

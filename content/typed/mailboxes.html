@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Mailboxes · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currenttyped/mailboxes.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="active page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="active page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../typed/index.html">Actors</a></li>
+  <li>Mailboxes</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#mailboxes" name="mailboxes" class="anchor"><span class="anchor-link"></span></a>Mailboxes</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Akka Classic documentation, see <a href="../mailboxes.html">Classic Mailboxes</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>Mailboxes are part of core Akka, which means that they are part of the <code>akka-actor</code> dependency. This page describes how to use mailboxes with <code>akka-actor-typed</code>, which has dependency:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-actor-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-actor-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Each actor in Akka has a <code>Mailbox</code>, this is where the messages are enqueued before being processed by the actor.</p>
+<p>By default an unbounded mailbox is used, this means any number of messages can be enqueued into the mailbox. </p>
+<p>The unbounded mailbox is a convenient default but in a scenario where messages are added to the mailbox faster than the actor can process them, this can lead to the application running out of memory. For this reason a bounded mailbox can be specified, the bounded mailbox will pass new messages to <code>deadletters</code> when the mailbox is full.</p>
+<p>For advanced use cases it is also possible to defer mailbox selection to config by pointing to a config path.</p>
+<h2><a href="#selecting-what-mailbox-is-used" name="selecting-what-mailbox-is-used" class="anchor"><span class="anchor-link"></span></a>Selecting what mailbox is used</h2>
+<h3><a href="#selecting-a-mailbox-type-for-an-actor" name="selecting-a-mailbox-type-for-an-actor" class="anchor"><span class="anchor-link"></span></a>Selecting a Mailbox Type for an Actor</h3>
+<p>To select a specific mailbox for an actor use <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/MailboxSelector$.html" title="org.apache.pekko.actor.typed.MailboxSelector"><code>MailboxSelector</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/MailboxSelector$.html" title="org.apache.pekko.actor.typed.MailboxSelector"><code>MailboxSelector</code></a></span> to create a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Props.html" title="org.apache.pekko.actor.typed.Props"><code>Props</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Props.html" title="org.apache.pekko.actor.typed.Props"><code>Props</code></a></span> instance for spawning your actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/MailboxDocSpec.scala#L37-L40" target="_blank" title="Go to snippet source">source</a><code class="language-scala">context.spawn(childBehavior, &quot;bounded-mailbox-child&quot;, MailboxSelector.bounded(100))
+
+val props = MailboxSelector.fromConfig(&quot;my-app.my-special-mailbox&quot;)
+context.spawn(childBehavior, &quot;from-config-mailbox-child&quot;, props)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/MailboxDocTest.java#L47-L52" target="_blank" title="Go to snippet source">source</a><code class="language-java">context.spawn(childBehavior, &quot;bounded-mailbox-child&quot;, MailboxSelector.bounded(100));
+
+context.spawn(
+    childBehavior,
+    &quot;from-config-mailbox-child&quot;,
+    MailboxSelector.fromConfig(&quot;my-app.my-special-mailbox&quot;));</code></pre></dd>
+</dl>
+<p><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/MailboxSelector$.html#fromConfig(path:String):org.apache.pekko.actor.typed.MailboxSelector" title="org.apache.pekko.actor.typed.MailboxSelector"><code>fromConfig</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/MailboxSelector$.html#fromConfig(java.lang.String)" title="org.apache.pekko.actor.typed.MailboxSelector"><code>fromConfig</code></a></span> takes an absolute config path to a block defining the dispatcher in the config file:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/actor-typed-tests/src/test/resources/mailbox-config-sample.conf" target="_blank" title="Go to snippet source">source</a><code class="language-conf">my-app {
+  my-special-mailbox {
+    mailbox-type = &quot;org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox&quot;
+  }
+}</code></pre>
+<h3><a href="#default-mailbox" name="default-mailbox" class="anchor"><span class="anchor-link"></span></a>Default Mailbox</h3>
+<p>The default mailbox is used when the mailbox is not specified and is the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/SingleConsumerOnlyUnboundedMailbox.html" title="org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox"><code>SingleConsumerOnlyUnboundedMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/SingleConsumerOnlyUnboundedMailbox.html" title="org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox"><code>SingleConsumerOnlyUnboundedMailbox</code></a></span></p>
+<h3><a href="#which-configuration-is-passed-to-the-mailbox-type" name="which-configuration-is-passed-to-the-mailbox-type" class="anchor"><span class="anchor-link"></span></a>Which Configuration is passed to the Mailbox Type</h3>
+<p>Each mailbox type is implemented by a class which extends <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/MailboxType.html" title="org.apache.pekko.dispatch.MailboxType"><code>MailboxType</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/MailboxType.html" title="org.apache.pekko.dispatch.MailboxType"><code>MailboxType</code></a></span> and takes two constructor arguments: a <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Settings.html" title="org.apache.pekko.actor.typed.Settings"><code>ActorSystem.Settings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/Settings.html" title="org.apache.pekko.actor.typed.Settings"><code>ActorSystem.Settings</code></a></span> object and a <a href="https://lightbend.github.io/config/latest/api/index.html?com/typesafe/config/Config.html">Config</a> section. The latter is computed by obtaining the named configuration section from the <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> configuration, overriding its <code>id</code> key with the configuration path of the mailbox type and adding a fall-back to the default mailbox configuration section.</p>
+<h2><a href="#mailbox-implementations" name="mailbox-implementations" class="anchor"><span class="anchor-link"></span></a>Mailbox Implementations</h2>
+<p>Akka ships with a number of mailbox implementations:</p>
+<ul>
+  <li> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/SingleConsumerOnlyUnboundedMailbox.html" title="org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox"><code>SingleConsumerOnlyUnboundedMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/SingleConsumerOnlyUnboundedMailbox.html" title="org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox"><code>SingleConsumerOnlyUnboundedMailbox</code></a></span> (default)
+    <ul>
+      <li>This is the default</li>
+      <li>Backed by a Multiple-Producer Single-Consumer queue, cannot be used with <code>BalancingDispatcher</code></li>
+      <li>Blocking: No</li>
+      <li>Bounded: No</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.SingleConsumerOnlyUnboundedMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedMailbox.html" title="org.apache.pekko.dispatch.UnboundedMailbox"><code>UnboundedMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedMailbox.html" title="org.apache.pekko.dispatch.UnboundedMailbox"><code>UnboundedMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/ConcurrentLinkedQueue.html" title="java.util.concurrent.ConcurrentLinkedQueue"><code>java.util.concurrent.ConcurrentLinkedQueue</code></a></li>
+      <li>Blocking: No</li>
+      <li>Bounded: No</li>
+      <li>Configuration name: <code>&quot;unbounded&quot;</code> or <code>&quot;org.apache.pekko.dispatch.UnboundedMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/NonBlockingBoundedMailbox.html" title="org.apache.pekko.dispatch.NonBlockingBoundedMailbox"><code>NonBlockingBoundedMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/NonBlockingBoundedMailbox.html" title="org.apache.pekko.dispatch.NonBlockingBoundedMailbox"><code>NonBlockingBoundedMailbox</code></a></span></p>
+    <ul>
+      <li>Backed by a very efficient Multiple-Producer Single-Consumer queue</li>
+      <li>Blocking: No (discards overflowing messages into deadLetters)</li>
+      <li>Bounded: Yes</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.NonBlockingBoundedMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedControlAwareMailbox.html" title="org.apache.pekko.dispatch.UnboundedControlAwareMailbox"><code>UnboundedControlAwareMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedControlAwareMailbox.html" title="org.apache.pekko.dispatch.UnboundedControlAwareMailbox"><code>UnboundedControlAwareMailbox</code></a></span>
+    <ul>
+      <li>Delivers messages that extend <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/ControlMessage.html" title="org.apache.pekko.dispatch.ControlMessage"><code>dispatch.ControlMessage</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/ControlMessage.html" title="org.apache.pekko.dispatch.ControlMessage"><code>dispatch.ControlMessage</code></a></span> with higher priority</li>
+      <li>Backed by two <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/ConcurrentLinkedQueue.html" title="java.util.concurrent.ConcurrentLinkedQueue"><code>java.util.concurrent.ConcurrentLinkedQueue</code></a></li>
+      <li>Blocking: No</li>
+      <li>Bounded: No</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.UnboundedControlAwareMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedPriorityMailbox.html" title="org.apache.pekko.dispatch.UnboundedPriorityMailbox"><code>UnboundedPriorityMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedPriorityMailbox.html" title="org.apache.pekko.dispatch.UnboundedPriorityMailbox"><code>UnboundedPriorityMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/PriorityBlockingQueue.html" title="java.util.concurrent.PriorityBlockingQueue"><code>java.util.concurrent.PriorityBlockingQueue</code></a></li>
+      <li>Delivery order for messages of equal priority is undefined - contrast with the <code>UnboundedStablePriorityMailbox</code></li>
+      <li>Blocking: No</li>
+      <li>Bounded: No</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.UnboundedPriorityMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li> <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedStablePriorityMailbox.html" title="org.apache.pekko.dispatch.UnboundedStablePriorityMailbox"><code>UnboundedStablePriorityMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/UnboundedStablePriorityMailbox.html" title="org.apache.pekko.dispatch.UnboundedStablePriorityMailbox"><code>UnboundedStablePriorityMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/PriorityBlockingQueue.html" title="java.util.concurrent.PriorityBlockingQueue"><code>java.util.concurrent.PriorityBlockingQueue</code></a> wrapped in an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/PriorityQueueStabilizer.html" title="org.apache.pekko.util.PriorityQueueStabilizer"><code>util.PriorityQueueStabilizer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/PriorityQueueStabilizer.html" title="org.apache.pekko.util.PriorityQueueStabilizer"><code>util.PriorityQueueStabilizer</code></a></span></li>
+      <li>FIFO order is preserved for messages of equal priority - contrast with the <code>UnboundedPriorityMailbox</code></li>
+      <li>Blocking: No</li>
+      <li>Bounded: No</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.UnboundedStablePriorityMailbox&quot;</code></li>
+    </ul>
+  </li>
+</ul>
+<p>Other bounded mailbox implementations which will block the sender if the capacity is reached and configured with non-zero <code>mailbox-push-timeout-time</code>. </p><div class="callout note "><div class="callout-title">Note</div>
+<p>The following mailboxes should only be used with zero <code>mailbox-push-timeout-time</code>.</p></div>
+<ul>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedMailbox.html" title="org.apache.pekko.dispatch.BoundedMailbox"><code>BoundedMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedMailbox.html" title="org.apache.pekko.dispatch.BoundedMailbox"><code>BoundedMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/LinkedBlockingQueue.html" title="java.util.concurrent.LinkedBlockingQueue"><code>java.util.concurrent.LinkedBlockingQueue</code></a></li>
+      <li>Blocking: Yes if used with non-zero <code>mailbox-push-timeout-time</code>, otherwise No</li>
+      <li>Bounded: Yes</li>
+      <li>Configuration name: <code>&quot;bounded&quot;</code> or <code>&quot;org.apache.pekko.dispatch.BoundedMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedPriorityMailbox.html" title="org.apache.pekko.dispatch.BoundedPriorityMailbox"><code>BoundedPriorityMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedPriorityMailbox.html" title="org.apache.pekko.dispatch.BoundedPriorityMailbox"><code>BoundedPriorityMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/PriorityQueue.html" title="java.util.PriorityQueue"><code>java.util.PriorityQueue</code></a> wrapped in an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/BoundedBlockingQueue.html" title="org.apache.pekko.util.BoundedBlockingQueue"><code>util.BoundedBlockingQueue</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/BoundedBlockingQueue.html" title="org.apache.pekko.util.BoundedBlockingQueue"><code>util.BoundedBlockingQueue</code></a></span></li>
+      <li>Delivery order for messages of equal priority is undefined - contrast with the <code>BoundedStablePriorityMailbox</code></li>
+      <li>Blocking: Yes if used with non-zero <code>mailbox-push-timeout-time</code>, otherwise No</li>
+      <li>Bounded: Yes</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.BoundedPriorityMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedStablePriorityMailbox.html" title="org.apache.pekko.dispatch.BoundedStablePriorityMailbox"><code>BoundedStablePriorityMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedStablePriorityMailbox.html" title="org.apache.pekko.dispatch.BoundedStablePriorityMailbox"><code>BoundedStablePriorityMailbox</code></a></span>
+    <ul>
+      <li>Backed by a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/PriorityQueue.html" title="java.util.PriorityQueue"><code>java.util.PriorityQueue</code></a> wrapped in an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/PriorityQueueStabilizer.html" title="org.apache.pekko.util.PriorityQueueStabilizer"><code>util.PriorityQueueStabilizer</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/PriorityQueueStabilizer.html" title="org.apache.pekko.util.PriorityQueueStabilizer"><code>util.PriorityQueueStabilizer</code></a></span> and an <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/BoundedBlockingQueue.html" title="org.apache.pekko.util.BoundedBlockingQueue"><code>util.BoundedBlockingQueue</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/BoundedBlockingQueue.html" title="org.apache.pekko.util.BoundedBlockingQueue"><code>util.BoundedBlockingQueue</code></a></span></li>
+      <li>FIFO order is preserved for messages of equal priority - contrast with the BoundedPriorityMailbox</li>
+      <li>Blocking: Yes if used with non-zero <code>mailbox-push-timeout-time</code>, otherwise No</li>
+      <li>Bounded: Yes</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.BoundedStablePriorityMailbox&quot;</code></li>
+    </ul>
+  </li>
+  <li><span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedControlAwareMailbox.html" title="org.apache.pekko.dispatch.BoundedControlAwareMailbox"><code>BoundedControlAwareMailbox</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/BoundedControlAwareMailbox.html" title="org.apache.pekko.dispatch.BoundedControlAwareMailbox"><code>BoundedControlAwareMailbox</code></a></span>
+    <ul>
+      <li>Delivers messages that extend <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/ControlMessage.html" title="org.apache.pekko.dispatch.ControlMessage"><code>dispatch.ControlMessage</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/dispatch/ControlMessage.html" title="org.apache.pekko.dispatch.ControlMessage"><code>dispatch.ControlMessage</code></a></span> with higher priority</li>
+      <li>Backed by two <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/ConcurrentLinkedQueue.html" title="java.util.concurrent.ConcurrentLinkedQueue"><code>java.util.concurrent.ConcurrentLinkedQueue</code></a> and blocking on enqueue if capacity has been reached</li>
+      <li>Blocking: Yes if used with non-zero <code>mailbox-push-timeout-time</code>, otherwise No</li>
+      <li>Bounded: Yes</li>
+      <li>Configuration name: <code>&quot;org.apache.pekko.dispatch.BoundedControlAwareMailbox&quot;</code></li>
+    </ul>
+  </li>
+</ul>
+<h2><a href="#custom-mailbox-type" name="custom-mailbox-type" class="anchor"><span class="anchor-link"></span></a>Custom Mailbox type</h2>
+<p>The best way to show how to create your own Mailbox type is by example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/dispatcher/MyUnboundedMailbox.scala#L66-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Marker trait used for mailbox requirements mapping
+trait MyUnboundedMessageQueueSemantics</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/dispatcher/MyUnboundedMessageQueueSemantics.java#L17-L18" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Marker interface used for mailbox requirements mapping
+public interface MyUnboundedMessageQueueSemantics {}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/dispatcher/MyUnboundedMailbox.scala#L17-L62" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorRef
+import pekko.actor.ActorSystem
+import pekko.dispatch.Envelope
+import pekko.dispatch.MailboxType
+import pekko.dispatch.MessageQueue
+import pekko.dispatch.ProducesMessageQueue
+import com.typesafe.config.Config
+import java.util.concurrent.ConcurrentLinkedQueue
+import scala.Option
+
+object MyUnboundedMailbox {
+  // This is the MessageQueue implementation
+  class MyMessageQueue extends MessageQueue with MyUnboundedMessageQueueSemantics {
+
+    private final val queue = new ConcurrentLinkedQueue[Envelope]()
+
+    // these should be implemented; queue used as example
+    def enqueue(receiver: ActorRef, handle: Envelope): Unit =
+      queue.offer(handle)
+    def dequeue(): Envelope = queue.poll()
+    def numberOfMessages: Int = queue.size
+    def hasMessages: Boolean = !queue.isEmpty
+    def cleanUp(owner: ActorRef, deadLetters: MessageQueue): Unit = {
+      while (hasMessages) {
+        deadLetters.enqueue(owner, dequeue())
+      }
+    }
+  }
+}
+
+// This is the Mailbox implementation
+class MyUnboundedMailbox extends MailboxType with ProducesMessageQueue[MyUnboundedMailbox.MyMessageQueue] {
+
+  import MyUnboundedMailbox._
+
+  // This constructor signature must exist, it will be called by Akka
+  def this(settings: ActorSystem.Settings, config: Config) = {
+    // put your initialization code here
+    this()
+  }
+
+  // The create method is called to create the MessageQueue
+  final override def create(owner: Option[ActorRef], system: Option[ActorSystem]): MessageQueue =
+    new MyMessageQueue()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/dispatcher/MyUnboundedMailbox.java#L17-L68" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.dispatch.Envelope;
+import org.apache.pekko.dispatch.MailboxType;
+import org.apache.pekko.dispatch.MessageQueue;
+import org.apache.pekko.dispatch.ProducesMessageQueue;
+import com.typesafe.config.Config;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Queue;
+import scala.Option;
+
+public class MyUnboundedMailbox
+    implements MailboxType, ProducesMessageQueue&lt;MyUnboundedMailbox.MyMessageQueue&gt; {
+
+  // This is the MessageQueue implementation
+  public static class MyMessageQueue implements MessageQueue, MyUnboundedMessageQueueSemantics {
+    private final Queue&lt;Envelope&gt; queue = new ConcurrentLinkedQueue&lt;Envelope&gt;();
+
+    // these must be implemented; queue used as example
+    public void enqueue(ActorRef receiver, Envelope handle) {
+      queue.offer(handle);
+    }
+
+    public Envelope dequeue() {
+      return queue.poll();
+    }
+
+    public int numberOfMessages() {
+      return queue.size();
+    }
+
+    public boolean hasMessages() {
+      return !queue.isEmpty();
+    }
+
+    public void cleanUp(ActorRef owner, MessageQueue deadLetters) {
+      while (!queue.isEmpty()) {
+        deadLetters.enqueue(owner, dequeue());
+      }
+    }
+  }
+
+  // This constructor signature must exist, it will be called by Akka
+  public MyUnboundedMailbox(ActorSystem.Settings settings, Config config) {
+    // put your initialization code here
+  }
+
+  // The create method is called to create the MessageQueue
+  public MessageQueue create(Option&lt;ActorRef&gt; owner, Option&lt;ActorSystem&gt; system) {
+    return new MyMessageQueue();
+  }
+}</code></pre></dd>
+</dl>
+<p>And then you specify the FQCN of your MailboxType as the value of the &ldquo;mailbox-type&rdquo; in the dispatcher configuration, or the mailbox configuration.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Make sure to include a constructor which takes <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem$$Settings.html" title="org.apache.pekko.actor.ActorSystem.Settings"><code>actor.ActorSystem.Settings</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/actor/ActorSystem$$Settings.html" title="org.apache.pekko.actor.ActorSystem.Settings"><code>actor.ActorSystem.Settings</code></a></span> and <a href="https://lightbend.github.io/config/latest/api/index.html?com/typesafe/config/Config.html">com.typesafe.config.Config</a> arguments, as this constructor is invoked reflectively to construct your mailbox type. The config passed in as second argument is that section from the configuration which describes the dispatcher or mailbox setting using this mailbox type; the mailbox type will be instantiated once for each dispatcher or mailbox setting using it.</p></div>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/typed/mailboxes.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../typed/testing.html">Testing</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../typed/mailboxes.html#mailboxes" class="header">Mailboxes</a>
+  <ul>
+    <li><a href="../typed/mailboxes.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/mailboxes.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/mailboxes.html#selecting-what-mailbox-is-used" class="header">Selecting what mailbox is used</a></li>
+    <li><a href="../typed/mailboxes.html#mailbox-implementations" class="header">Mailbox Implementations</a></li>
+    <li><a href="../typed/mailboxes.html#custom-mailbox-type" class="header">Custom Mailbox type</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

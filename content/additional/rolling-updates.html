@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Rolling Updates · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='How to do rolling updates and restarts with Akka Cluster.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentadditional/rolling-updates.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="active page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="active page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../additional/deploy.html">Package, Deploy and Run</a></li>
+  <li>Rolling Updates</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#rolling-updates" name="rolling-updates" class="anchor"><span class="anchor-link"></span></a>Rolling Updates</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>There are a few instances <a href="rolling-updates.html#when-shutdown-startup-is-required">when a full cluster restart is required</a> versus being able to do a rolling update.</p></div>
+<p>A rolling update is the process of replacing one version of the system with another without downtime. The changes can be new code, changed dependencies such as new Akka version, or modified configuration.</p>
+<p>In Akka, rolling updates are typically used for a stateful Akka Cluster where you can&rsquo;t run two separate clusters in parallel during the update, for example in blue green deployments.</p>
+<p>For rolling updates related to Akka dependency version upgrades and the migration guides, please see <a href="../project/rolling-update.html">Rolling Updates and Akka versions</a></p>
+<h2><a href="#serialization-compatibility" name="serialization-compatibility" class="anchor"><span class="anchor-link"></span></a>Serialization Compatibility</h2>
+<p>There are two parts of Akka that need careful consideration when performing an rolling update.</p>
+<ol>
+  <li>Compatibility of remote message protocols. Old nodes may send messages to new nodes and vice versa.</li>
+  <li>Serialization format of persisted events and snapshots. New nodes must be able to read old data, and  during the update old nodes must be able to read data stored by new nodes.</li>
+</ol>
+<p>There are many more application specific aspects for serialization changes during rolling updates to consider. For example based on the use case and requirements, whether to allow dropped messages or tear down the TCP connection when the manifest is unknown. When some message loss during a rolling update is acceptable versus a full shutdown and restart, assuming the application recovers afterwards * If a <code>java.io.NotSerializableException</code> is thrown in <code>fromBinary</code> this is treated as a transient problem, the issue logged and the message is dropped * If other exceptions are thrown it can be an indication of corrupt bytes from the underlying transport, and the connection is broken</p>
+<p>For more zero-impact rolling updates, it is important to consider a strategy for serialization that can be evolved. One approach to retiring a serializer without downtime is described in <a href="../serialization.html#rolling-updates">two rolling update steps to switch to the new serializer</a>. Additionally you can find advice on <a href="../persistence-schema-evolution.html">Persistence - Schema Evolution</a> which also applies to remote messages when deploying with rolling updates.</p>
+<h2><a href="#cluster-sharding" name="cluster-sharding" class="anchor"><span class="anchor-link"></span></a>Cluster Sharding</h2>
+<p>During a rolling update, sharded entities receiving traffic may be moved, based on the pluggable allocation strategy and settings. When an old node is stopped the shards that were running on it are moved to one of the other remaining nodes in the cluster when messages are sent to those shards.</p>
+<p>To make rolling updates as smooth as possible there is a configuration property that defines the version of the application. This is used by rolling update features to distinguish between old and new nodes. For example, the default <code>LeastShardAllocationStrategy</code> avoids allocating shards to old nodes during a rolling update. The <code>LeastShardAllocationStrategy</code> sees that there is rolling update in progress when there are members with different configured <code>app-version</code>.</p>
+<p>To make use of this feature you need to define the <code>app-version</code> and increase it for each rolling update.</p>
+<pre><code>pekko.cluster.app-version = 1.2.3
+</code></pre>
+<p>To understand which is old and new it compares the version numbers using normal conventions, see <span class="group-scala"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/Version.html" title="org.apache.pekko.util.Version"><code>Version</code></a></span><span class="group-java"><a href="https://doc.akka.io/api/akka/0.0.0+26524-b0ed4882-SNAPSHOT/org/apache/pekko/util/Version.html" title="org.apache.pekko.util.Version"><code>Version</code></a></span> for more details.</p>
+<p>Rebalance is also disabled during rolling updates, since shards from stopped nodes are anyway supposed to be started on new nodes. Messages to shards that were stopped on the old nodes will allocate corresponding shards on the new nodes, without waiting for rebalance actions. </p>
+<p>You should also enable the <a href="../typed/cluster-sharding.html#health-check">health check for Cluster Sharding</a> if you use Akka Management. The readiness check will delay incoming traffic to the node until Sharding has been initialized and can accept messages.</p>
+<p>The <code>ShardCoordinator</code> is itself a cluster singleton. To minimize downtime of the shard coordinator, see the strategies about <a href="rolling-updates.html#cluster-singleton">ClusterSingleton</a> rolling updates below.</p>
+<p>A few specific changes to sharding configuration require <a href="rolling-updates.html#cluster-sharding-configuration-change">a full cluster restart</a>.</p>
+<h2><a href="#cluster-singleton" name="cluster-singleton" class="anchor"><span class="anchor-link"></span></a>Cluster Singleton</h2>
+<p>Cluster singletons are always running on the oldest node. To avoid moving cluster singletons more than necessary during a rolling update, it is recommended to upgrade the oldest node last. This way cluster singletons are only moved once during a full rolling update. Otherwise, in the worst case cluster singletons may be migrated from node to node which requires coordination and initialization overhead several times.</p>
+<p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Kubernetes Deployments</a> with <code>RollingUpdate</code> strategy will roll out updates in this preferred order, from newest to oldest. </p>
+<h2><a href="#cluster-shutdown" name="cluster-shutdown" class="anchor"><span class="anchor-link"></span></a>Cluster Shutdown</h2>
+<h3><a href="#graceful-shutdown" name="graceful-shutdown" class="anchor"><span class="anchor-link"></span></a>Graceful shutdown</h3>
+<p>For rolling updates it is best to leave the Cluster gracefully via <a href="../coordinated-shutdown.html">Coordinated Shutdown</a>, which will run automatically on SIGTERM, when the Cluster node sees itself as <code>Exiting</code>. Environments such as Kubernetes send a SIGTERM, however if the JVM is wrapped with a script ensure that it forwards the signal. <a href="../cluster-sharding.html#graceful-shutdown">Graceful shutdown</a> of Cluster Singletons and Cluster Sharding similarly happen automatically.</p>
+<h3><a href="#ungraceful-shutdown" name="ungraceful-shutdown" class="anchor"><span class="anchor-link"></span></a>Ungraceful shutdown</h3>
+<p>In case of network failures it may still be necessary to set the node&rsquo;s status to Down in order to complete the removal. <a href="../typed/cluster.html#downing">Cluster Downing</a> details downing nodes and downing providers. <a href="../split-brain-resolver.html">Split Brain Resolver</a> can be used to ensure the cluster continues to function during network partitions and node failures. For example if there is an unreachability problem Split Brain Resolver would make a decision based on the configured downing strategy. </p>
+<h2><a href="#configuration-compatibility-checks" name="configuration-compatibility-checks" class="anchor"><span class="anchor-link"></span></a>Configuration Compatibility Checks</h2>
+<p>During rolling updates the configuration from existing nodes should pass the Cluster configuration compatibility checks. For example, it is possible to migrate Cluster Sharding from Classic to Typed Actors in a rolling update using a two step approach as of Akka version <code>2.5.23</code>:</p>
+<ul>
+  <li>Deploy with the new nodes set to <code>pekko.cluster.configuration-compatibility-check.enforce-on-join = off</code> and ensure all nodes are in this state</li>
+  <li>Deploy again and with the new nodes set to <code>pekko.cluster.configuration-compatibility-check.enforce-on-join = on</code>.</li>
+</ul>
+<p>Full documentation about enforcing these checks on joining nodes and optionally adding custom checks can be found in<br/><a href="../typed/cluster.html#configuration-compatibility-check">Akka Cluster configuration compatibility checks</a>.</p>
+<h2><a href="#rolling-updates-and-migrating-akka" name="rolling-updates-and-migrating-akka" class="anchor"><span class="anchor-link"></span></a>Rolling Updates and Migrating Akka</h2>
+<h3><a href="#from-java-serialization-to-jackson" name="from-java-serialization-to-jackson" class="anchor"><span class="anchor-link"></span></a>From Java serialization to Jackson</h3>
+<p>If you are migrating from Akka 2.5 to 2.6, and use Java serialization you can replace it with, for example, the new <a href="../serialization-jackson.html">Serialization with Jackson</a> and still be able to perform a rolling updates without bringing down the entire cluster.</p>
+<p>The procedure for changing from Java serialization to Jackson would look like:</p>
+<ol>
+  <li>Rolling update from 2.5.24 (or later) to 2.6.0
+    <ul>
+      <li>Use config <code>pekko.actor.allow-java-serialization=on</code>.</li>
+      <li>Roll out the change.</li>
+      <li>Java serialization will be used as before.</li>
+      <li>This step is optional and you could combine it with next step if you like, but could be good to  make one change at a time.</li>
+    </ul>
+  </li>
+  <li>Rolling update to support deserialization but not enable serialization
+    <ul>
+      <li>Change message classes by adding the marker interface and possibly needed annotations as  described in <a href="../serialization-jackson.html">Serialization with Jackson</a>.</li>
+      <li>Test the system with the new serialization in a new test cluster (no rolling update).</li>
+      <li>Remove the binding for the marker interface in <code>pekko.actor.serialization-bindings</code>, so that Jackson is not used for serialization (toBinary) yet.</li>
+      <li>Configure <code>pekko.serialization.jackson.allowed-class-prefix=[&quot;com.myapp&quot;]</code>
+        <ul>
+          <li>This is needed for Jackson deserialization when the <code>serialization-bindings</code> isn&rsquo;t defined.</li>
+          <li>Replace <code>com.myapp</code> with the name of the root package of your application to trust all classes.</li>
+        </ul>
+      </li>
+      <li>Roll out the change.</li>
+      <li>Java serialization is still used, but this version is prepared for next roll out.</li>
+    </ul>
+  </li>
+  <li>Rolling update to enable serialization with Jackson.
+    <ul>
+      <li>Add the binding to the marker interface in <code>pekko.actor.serialization-bindings</code> to the Jackson serializer.</li>
+      <li>Remove <code>pekko.serialization.jackson.allowed-class-prefix</code>.</li>
+      <li>Roll out the change.</li>
+      <li>Old nodes will still send messages with Java serialization, and that can still be deserialized by new nodes.</li>
+      <li>New nodes will send messages with Jackson serialization, and old node can deserialize those because they were  prepared in previous roll out.</li>
+    </ul>
+  </li>
+  <li>Rolling update to disable Java serialization
+    <ul>
+      <li>Remove <code>allow-java-serialization</code> config, to use the default <code>allow-java-serialization=off</code>.</li>
+      <li>Remove <code>warn-about-java-serializer-usage</code> config if you had changed that, to use the default <code>warn-about-java-serializer-usage=on</code>.</li>
+      <li>Roll out the change.</li>
+    </ul>
+  </li>
+</ol>
+<p>A similar approach can be used when changing between other serializers, for example between Jackson and Protobuf. </p>
+<h3><a href="#akka-typed-with-receptionist-or-cluster-receptionist" name="akka-typed-with-receptionist-or-cluster-receptionist" class="anchor"><span class="anchor-link"></span></a>Akka Typed with Receptionist or Cluster Receptionist</h3>
+<p>If you are migrating from Akka 2.5 to 2.6, and use the <code>Receptionist</code> or <code>Cluster Receptionist</code> with Akka Typed, during a rolling update information will not be disseminated between 2.5 and 2.6 nodes. However once all old nodes have been phased out during the rolling update it will work properly again.</p>
+<h2><a href="#when-shutdown-startup-is-required" name="when-shutdown-startup-is-required" class="anchor"><span class="anchor-link"></span></a>When Shutdown Startup Is Required</h2>
+<p>There are a few instances when a full shutdown and startup is required versus being able to do a rolling update.</p>
+<h3><a href="#cluster-sharding-configuration-change" name="cluster-sharding-configuration-change" class="anchor"><span class="anchor-link"></span></a>Cluster Sharding configuration change</h3>
+<p>If you need to change any of the following aspects of sharding it will require a full cluster restart versus a rolling update:</p>
+<ul>
+  <li>The <code>extractShardId</code> function</li>
+  <li>The role that the shard regions run on</li>
+  <li>The persistence mode - It&rsquo;s important to use the same mode on all nodes in the cluster</li>
+  <li>The <a href="../typed/cluster-sharding.html#basic-example"><code>number-of-shards</code></a> - Note: changing the number  of nodes in the cluster does not require changing the number of shards.</li>
+</ul>
+<h3><a href="#cluster-configuration-change" name="cluster-configuration-change" class="anchor"><span class="anchor-link"></span></a>Cluster configuration change</h3>
+<ul>
+  <li>A full restart is required if you change the <a href="https://doc.akka.io/docs/akka/current/split-brain-resolver.html#strategies">SBR strategy</a></li>
+</ul>
+<h3><a href="#migrating-from-persistentfsm-to-eventsourcedbehavior" name="migrating-from-persistentfsm-to-eventsourcedbehavior" class="anchor"><span class="anchor-link"></span></a>Migrating from PersistentFSM to EventSourcedBehavior</h3>
+<p>If you&rsquo;ve <a href="../persistence-fsm.html#migration-to-eventsourcedbehavior">migrated from <code>PersistentFSM</code> to <code>EventSourcedBehavior</code></a> and are using PersistenceFSM with Cluster Sharding, a full shutdown is required as shards can move between new and old nodes.</p>
+<h3><a href="#migrating-from-classic-remoting-to-artery" name="migrating-from-classic-remoting-to-artery" class="anchor"><span class="anchor-link"></span></a>Migrating from classic remoting to Artery</h3>
+<p>If you&rsquo;ve migrated from classic remoting to Artery which has a completely different protocol, a rolling update is not supported. For more details on this migration see <a href="../project/migration-guide-2.5.x-2.6.x.html#migrating-from-classic-remoting-to-artery">the migration guide</a>.</p>
+<h3><a href="#changing-remoting-transport" name="changing-remoting-transport" class="anchor"><span class="anchor-link"></span></a>Changing remoting transport</h3>
+<p>Rolling update is not supported when <a href="../remoting-artery.html#selecting-a-transport">changing the remoting transport</a>.</p>
+<h3><a href="#migrating-from-classic-sharding-to-typed-sharding" name="migrating-from-classic-sharding-to-typed-sharding" class="anchor"><span class="anchor-link"></span></a>Migrating from Classic Sharding to Typed Sharding</h3>
+<p>If you have been using classic sharding it is possible to do a rolling update to typed sharding using a 3 step procedure. The steps along with example commits are detailed in <a href="https://github.com/akka/akka-samples/pull/110">this sample PR</a> </p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/additional/rolling-updates.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../project/index.html">Project Information</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../additional/rolling-updates.html#rolling-updates" class="header">Rolling Updates</a>
+  <ul>
+    <li><a href="../additional/rolling-updates.html#serialization-compatibility" class="header">Serialization Compatibility</a></li>
+    <li><a href="../additional/rolling-updates.html#cluster-sharding" class="header">Cluster Sharding</a></li>
+    <li><a href="../additional/rolling-updates.html#cluster-singleton" class="header">Cluster Singleton</a></li>
+    <li><a href="../additional/rolling-updates.html#cluster-shutdown" class="header">Cluster Shutdown</a></li>
+    <li><a href="../additional/rolling-updates.html#configuration-compatibility-checks" class="header">Configuration Compatibility Checks</a></li>
+    <li><a href="../additional/rolling-updates.html#rolling-updates-and-migrating-akka" class="header">Rolling Updates and Migrating Akka</a></li>
+    <li><a href="../additional/rolling-updates.html#when-shutdown-startup-is-required" class="header">When Shutdown Startup Is Required</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>

@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Working with Graphs · Akka Documentation</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.'/>
+<link rel="canonical" href="https://doc.akka.io/docs/akka/currentstream/stream-graphs.html"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<script type="text/javascript" src="../js/snippets.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="active page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Akka Documentation</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Akka Documentation
+</a>
+<div class="version-number">
+0.0.0+26524-b0ed4882*
+</div>
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<div class="nav-toc">
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/2017-02-10-java-serialization.html" class="page">Java Serialization, Fixed in Akka 2.4.17</a></li>
+    <li><a href="../security/2017-08-09-camel.html" class="page">Camel Dependency, Fixed in Akka 2.5.4</a></li>
+    <li><a href="../security/2018-08-29-aes-rng.html" class="page">Broken random number generators AES128CounterSecureRNG / AES256CounterSecureRNG, Fixed in Akka 2.5.16</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Akka</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Akka libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Akka and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Akka Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Akka Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Akka Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="active page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Akka</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Akka modules</a></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Akka in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Akka Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Akka Documentation</a></li>
+  <li><a href="../stream/index.html">Streams</a></li>
+  <li>Working with Graphs</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#working-with-graphs" name="working-with-graphs" class="anchor"><span class="anchor-link"></span></a>Working with Graphs</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Akka Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26524-b0ed4882-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "akka-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;akka-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26524-b0ed4882-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;akka-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:akka-bom_${versions.ScalaBinary}:0.0.0+26524-b0ed4882-SNAPSHOT")
+
+  implementation "org.apache.pekko:akka-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>In Akka Streams computation graphs are not expressed using a fluent DSL like linear computations are, instead they are written in a more graph-resembling DSL which aims to make translating graph drawings (e.g. from notes taken from design discussions, or illustrations in protocol specifications) to and from code simpler. In this section we&rsquo;ll dive into the multiple ways of constructing and re-using graphs, as well as explain common pitfalls and how to avoid them.</p>
+<p>Graphs are needed whenever you want to perform any kind of fan-in (&ldquo;multiple inputs&rdquo;) or fan-out (&ldquo;multiple outputs&rdquo;) operations. Considering linear Flows to be like roads, we can picture graph operations as junctions: multiple flows being connected at a single point. Some operators which are common enough and fit the linear style of Flows, such as <code>concat</code> (which concatenates two streams, such that the second one is consumed after the first one has completed), may have shorthand methods defined on <code>Flow</code> or <code>Source</code> themselves, however you should keep in mind that those are also implemented as graph junctions.</p>
+<a id="graph-dsl"></a>
+<h2><a href="#constructing-graphs" name="constructing-graphs" class="anchor"><span class="anchor-link"></span></a>Constructing Graphs</h2>
+<p>Graphs are built from simple Flows which serve as the linear connections within the graphs as well as junctions which serve as fan-in and fan-out points for Flows. Thanks to the junctions having meaningful types based on their behavior and making them explicit elements these elements should be rather straightforward to use.</p>
+<p>Akka Streams currently provide these junctions (for a detailed list see the <a href="operators/index.html">operator index</a>):</p>
+<ul>
+  <li>
+    <p><strong>Fan-out</strong></p>
+    <ul>
+      <li><span class="group-scala"><code>Broadcast[T]</code></span><span class="group-java"><code>Broadcast&lt;T&gt;</code></span> – <em>(1 input, N outputs)</em> given an input element emits to each output</li>
+      <li><span class="group-scala"><code>Balance[T]</code></span><span class="group-java"><code>Balance&lt;T&gt;</code></span> – <em>(1 input, N outputs)</em> given an input element emits to one of its output ports</li>
+      <li><span class="group-scala"><code>UnzipWith[In,A,B,...]</code></span><span class="group-java"><code>UnzipWith&lt;In,A,B,...&gt;</code></span> – <em>(1 input, N outputs)</em> takes a function of 1 input that given a value for each input emits N output elements (where N &lt;= 20)</li>
+      <li><span class="group-scala"><code>UnZip[A,B]</code></span><span class="group-java"><code>UnZip&lt;A,B&gt;</code></span> – <em>(1 input, 2 outputs)</em> splits a stream of <span class="group-scala"><code>(A,B)</code></span><span class="group-java"><code>Pair&lt;A,B&gt;</code></span> tuples into two streams, one of type <code>A</code> and one of type <code>B</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Fan-in</strong></p>
+    <ul>
+      <li><span class="group-scala"><code>Merge[In]</code></span><span class="group-java"><code>Merge&lt;In&gt;</code></span> – <em>(N inputs , 1 output)</em> picks randomly from inputs pushing them one by one to its output</li>
+      <li><span class="group-scala"><code>MergePreferred[In]</code></span><span class="group-java"><code>MergePreferred&lt;In&gt;</code></span> – like <code>Merge</code> but if elements are available on <code>preferred</code> port, it picks from it, otherwise randomly from <code>others</code></li>
+      <li><span class="group-scala"><code>MergePrioritized[In]</code></span><span class="group-java"><code>MergePrioritized&lt;In&gt;</code></span> – like <code>Merge</code> but if elements are available on all input ports, it picks from them randomly based on their <code>priority</code></li>
+      <li><span class="group-scala"><code>MergeLatest[In]</code></span><span class="group-java"><code>MergeLatest&lt;In&gt;</code></span> – <em>(N inputs, 1 output)</em> emits <code>List[In]</code>, when i-th input stream emits element, then i-th element in emitted list is updated</li>
+      <li><span class="group-scala"><code>MergeSequence[In]</code></span><span class="group-java"><code>MergeSequence&lt;In&gt;</code></span> – <em>(N inputs, 1 output)</em> emits <code>List[In]</code>, where the input streams must represent a partitioned sequence that must be merged back together in order</li>
+      <li><span class="group-scala"><code>ZipWith[A,B,...,Out]</code></span><span class="group-java"><code>ZipWith&lt;A,B,...,Out&gt;</code></span> – <em>(N inputs, 1 output)</em> which takes a function of N inputs that given a value for each input emits 1 output element</li>
+      <li><span class="group-scala"><code>Zip[A,B]</code></span><span class="group-java"><code>Zip&lt;A,B&gt;</code></span> – <em>(2 inputs, 1 output)</em> is a <code>ZipWith</code> specialised to zipping input streams of <code>A</code> and <code>B</code> into a <span class="group-scala"><code>(A,B)</code></span><span class="group-java"><code>Pair(A,B)</code></span> tuple stream</li>
+      <li><span class="group-scala"><code>Concat[A]</code></span><span class="group-java"><code>Concat&lt;A&gt;</code></span> – <em>(2 inputs, 1 output)</em> concatenates two streams (first consume one, then the second one)</li>
+    </ul>
+  </li>
+</ul>
+<p>One of the goals of the GraphDSL DSL is to look similar to how one would draw a graph on a whiteboard, so that it is simple to translate a design from whiteboard to code and be able to relate those two. Let&rsquo;s illustrate this by translating the below hand drawn graph into Akka Streams:</p>
+<p><img src="../images/simple-graph-example.png" alt="simple-graph-example.png" /></p>
+<p>Such graph is simple to translate to the Graph DSL since each linear element corresponds to a <code>Flow</code>, and each circle corresponds to either a <code>Junction</code> or a <code>Source</code> or <code>Sink</code> if it is beginning or ending a <code>Flow</code>. <span class="group-scala">Junctions must always be created with defined type parameters, as otherwise the <code>Nothing</code> type will be inferred.</span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L33-L46" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val g = RunnableGraph.fromGraph(GraphDSL.create() { implicit builder: GraphDSL.Builder[NotUsed] =&gt;
+  import GraphDSL.Implicits._
+  val in = Source(1 to 10)
+  val out = Sink.ignore
+
+  val bcast = builder.add(Broadcast[Int](2))
+  val merge = builder.add(Merge[Int](2))
+
+  val f1, f2, f3, f4 = Flow[Int].map(_ + 10)
+
+  in ~&gt; f1 ~&gt; bcast ~&gt; f2 ~&gt; merge ~&gt; f3 ~&gt; out
+  bcast ~&gt; f4 ~&gt; merge
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/java/org/apache/pekko/stream/javadsl/GraphDslTest.java#L48-L77" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; in = Source.from(Arrays.asList(1, 2, 3, 4, 5));
+final Sink&lt;List&lt;String&gt;, CompletionStage&lt;List&lt;String&gt;&gt;&gt; sink = Sink.head();
+final Flow&lt;Integer, Integer, NotUsed&gt; f1 = Flow.of(Integer.class).map(elem -&gt; elem + 10);
+final Flow&lt;Integer, Integer, NotUsed&gt; f2 = Flow.of(Integer.class).map(elem -&gt; elem + 20);
+final Flow&lt;Integer, String, NotUsed&gt; f3 = Flow.of(Integer.class).map(elem -&gt; elem.toString());
+final Flow&lt;Integer, Integer, NotUsed&gt; f4 = Flow.of(Integer.class).map(elem -&gt; elem + 30);
+
+final RunnableGraph&lt;CompletionStage&lt;List&lt;String&gt;&gt;&gt; result =
+    RunnableGraph.fromGraph(
+        GraphDSL // create() function binds sink, out which is sink&#39;s out port and builder DSL
+            .create( // we need to reference out&#39;s shape in the builder DSL below (in to()
+            // function)
+            sink, // previously created sink (Sink)
+            (builder, out) -&gt; { // variables: builder (GraphDSL.Builder) and out (SinkShape)
+              final UniformFanOutShape&lt;Integer, Integer&gt; bcast =
+                  builder.add(Broadcast.create(2));
+              final UniformFanInShape&lt;Integer, Integer&gt; merge = builder.add(Merge.create(2));
+
+              final Outlet&lt;Integer&gt; source = builder.add(in).out();
+              builder
+                  .from(source)
+                  .via(builder.add(f1))
+                  .viaFanOut(bcast)
+                  .via(builder.add(f2))
+                  .viaFanIn(merge)
+                  .via(builder.add(f3.grouped(1000)))
+                  .to(out); // to() expects a SinkShape
+              builder.from(bcast).via(builder.add(f4)).toFanIn(merge);
+              return ClosedShape.getInstance();
+            }));</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>Junction <em>reference equality</em> defines <em>graph node equality</em> (i.e. the same merge <em>instance</em> used in a GraphDSL refers to the same location in the resulting graph).</p></div>
+<p><span class="group-scala">Notice the <code>import GraphDSL.Implicits._</code> which brings into scope the <code>~&gt;</code> operator (read as &ldquo;edge&rdquo;, &ldquo;via&rdquo; or &ldquo;to&rdquo;) and its inverted counterpart <code>&lt;~</code> (for noting down flows in the opposite direction where appropriate).</span></p>
+<p>By looking at the snippets above, it should be apparent that the <span class="group-scala"><code>GraphDSL.Builder</code></span><span class="group-java"><code>builder</code></span> object is <em>mutable</em>. <span class="group-scala">It is used (implicitly) by the <code>~&gt;</code> operator, also making it a mutable operation as well.</span> The reason for this design choice is to enable simpler creation of complex graphs, which may even contain cycles. Once the GraphDSL has been constructed though, the <span class="group-scala"><code>GraphDSL</code></span><span class="group-java"><code>RunnableGraph</code></span> instance <em>is immutable, thread-safe, and freely shareable</em>. The same is true of all operators—sources, sinks, and flows—once they are constructed. This means that you can safely re-use one given Flow or junction in multiple places in a processing graph.</p>
+<p>We have seen examples of such re-use already above: the merge and broadcast junctions were imported into the graph using <code>builder.add(...)</code>, an operation that will make a copy of the blueprint that is passed to it and return the inlets and outlets of the resulting copy so that they can be wired up. Another alternative is to pass existing graphs—of any shape—into the factory method that produces a new graph. The difference between these approaches is that importing using <code>builder.add(...)</code> ignores the materialized value of the imported graph while importing via the factory method allows its inclusion; for more details see <a href="stream-flows-and-basics.html#stream-materialization">Stream Materialization</a>.</p>
+<p>In the example below we prepare a graph that consists of two parallel streams, in which we re-use the same instance of <code>Flow</code>, yet it will properly be materialized as two connections between the corresponding Sources and Sinks:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L76-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>val topHeadSink = Sink.head[Int]
+val bottomHeadSink = Sink.head[Int]
+val sharedDoubler = Flow[Int].map(_ * 2)
+
+RunnableGraph.fromGraph(GraphDSL.createGraph(topHeadSink, bottomHeadSink)((_, _)) { implicit builder =&gt;
+  (topHS, bottomHS) =&gt;
+  import GraphDSL.Implicits._
+  val broadcast = builder.add(Broadcast[Int](2))
+  Source.single(1) ~&gt; broadcast.in
+
+  broadcast ~&gt; sharedDoubler ~&gt; topHS.in
+  broadcast ~&gt; sharedDoubler ~&gt; bottomHS.in
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/java/org/apache/pekko/stream/javadsl/GraphDslTest.java#L121-L141" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; topHeadSink = Sink.head();
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; bottomHeadSink = Sink.head();
+final Flow&lt;Integer, Integer, NotUsed&gt; sharedDoubler =
+    Flow.of(Integer.class).map(elem -&gt; elem * 2);
+
+final RunnableGraph&lt;Pair&lt;CompletionStage&lt;Integer&gt;, CompletionStage&lt;Integer&gt;&gt;&gt; g =
+    RunnableGraph.fromGraph(
+        GraphDSL.create(
+            topHeadSink, // import this sink into the graph
+            bottomHeadSink, // and this as well
+            Keep.both(),
+            (b, top, bottom) -&gt; {
+              final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+
+              b.from(b.add(Source.single(1)))
+                  .viaFanOut(bcast)
+                  .via(b.add(sharedDoubler))
+                  .to(top);
+              b.from(bcast).via(b.add(sharedDoubler)).to(bottom);
+              return ClosedShape.getInstance();
+            }));</code></pre></dd>
+</dl>
+<p>In some cases we may have a list of graph elements, for example if they are dynamically created. If these graphs have similar signatures, we can construct a graph collecting all their materialized values as a collection:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/scala/org/apache/pekko/stream/scaladsl/GraphOpsIntegrationSpec.scala#L222-L237" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinks = immutable
+  .Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+  .map(prefix =&gt; Flow[String].filter(str =&gt; str.startsWith(prefix)).toMat(Sink.head[String])(Keep.right))
+
+val g: RunnableGraph[Seq[Future[String]]] = RunnableGraph.fromGraph(GraphDSL.create(sinks) {
+  implicit b =&gt; sinkList =&gt;
+    import GraphDSL.Implicits._
+    val broadcast = b.add(Broadcast[String](sinkList.size))
+
+    Source(List(&quot;ax&quot;, &quot;bx&quot;, &quot;cx&quot;)) ~&gt; broadcast
+    sinkList.foreach(sink =&gt; broadcast ~&gt; sink)
+
+    ClosedShape
+})
+
+val matList: Seq[Future[String]] = g.run()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/java/org/apache/pekko/stream/javadsl/GraphDslTest.java#L193-L224" target="_blank" title="Go to snippet source">source</a><code class="language-java">// create the source
+final Source&lt;String, NotUsed&gt; in = Source.from(Arrays.asList(&quot;ax&quot;, &quot;bx&quot;, &quot;cx&quot;));
+// generate the sinks from code
+List&lt;String&gt; prefixes = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);
+final List&lt;Sink&lt;String, CompletionStage&lt;String&gt;&gt;&gt; list = new ArrayList&lt;&gt;();
+for (String prefix : prefixes) {
+  final Sink&lt;String, CompletionStage&lt;String&gt;&gt; sink =
+      Flow.of(String.class)
+          .filter(str -&gt; str.startsWith(prefix))
+          .toMat(Sink.head(), Keep.right());
+  list.add(sink);
+}
+
+final RunnableGraph&lt;List&lt;CompletionStage&lt;String&gt;&gt;&gt; g =
+    RunnableGraph.fromGraph(
+        GraphDSL.create(
+            list,
+            (GraphDSL.Builder&lt;List&lt;CompletionStage&lt;String&gt;&gt;&gt; builder,
+                List&lt;SinkShape&lt;String&gt;&gt; outs) -&gt; {
+              final UniformFanOutShape&lt;String, String&gt; bcast =
+                  builder.add(Broadcast.create(outs.size()));
+
+              final Outlet&lt;String&gt; source = builder.add(in).out();
+              builder.from(source).viaFanOut(bcast);
+
+              for (SinkShape&lt;String&gt; sink : outs) {
+                builder.from(bcast).to(sink);
+              }
+
+              return ClosedShape.getInstance();
+            }));
+List&lt;CompletionStage&lt;String&gt;&gt; result = g.run(system);</code></pre></dd>
+</dl>
+<a id="partial-graph-dsl"></a>
+<h2><a href="#constructing-and-combining-partial-graphs" name="constructing-and-combining-partial-graphs" class="anchor"><span class="anchor-link"></span></a>Constructing and combining Partial Graphs</h2>
+<p>Sometimes it is not possible (or needed) to construct the entire computation graph in one place, but instead construct all of its different phases in different places and in the end connect them all into a complete graph and run it.</p>
+<p>This can be achieved by <span class="group-scala">returning a different <code>Shape</code> than <code>ClosedShape</code>, for example <code>FlowShape(in, out)</code>, from the function given to <code>GraphDSL.create</code>. See <a href="stream-graphs.html#predefined-shapes">Predefined shapes</a> for a list of such predefined shapes. Making a <code>Graph</code> a <code>RunnableGraph</code></span><span class="group-java">using the returned <code>Graph</code> from <code>GraphDSL.create()</code> rather than passing it to <code>RunnableGraph.fromGraph()</code> to wrap it in a <code>RunnableGraph</code>.The reason of representing it as a different type is that a <code>RunnableGraph</code></span> requires all ports to be connected, and if they are not it will throw an exception at construction time, which helps to avoid simple wiring errors while working with graphs. A partial graph however allows you to return the set of yet to be connected ports from the code block that performs the internal wiring.</p>
+<p>Let&rsquo;s imagine we want to provide users with a specialized element that given 3 inputs will pick the greatest int value of each zipped triple. We&rsquo;ll want to expose 3 input ports (unconnected sources) and one output port (unconnected sink).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamPartialGraphDSLDocSpec.scala#L31-L57" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pickMaxOfThree = GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val zip1 = b.add(ZipWith[Int, Int, Int](math.max _))
+  val zip2 = b.add(ZipWith[Int, Int, Int](math.max _))
+  zip1.out ~&gt; zip2.in0
+
+  UniformFanInShape(zip2.out, zip1.in0, zip1.in1, zip2.in1)
+}
+
+val resultSink = Sink.head[Int]
+
+val g = RunnableGraph.fromGraph(GraphDSL.createGraph(resultSink) { implicit b =&gt; sink =&gt;
+  import GraphDSL.Implicits._
+
+  // importing the partial graph will return its shape (inlets &amp; outlets)
+  val pm3 = b.add(pickMaxOfThree)
+
+  Source.single(1) ~&gt; pm3.in(0)
+  Source.single(2) ~&gt; pm3.in(1)
+  Source.single(3) ~&gt; pm3.in(2)
+  pm3.out          ~&gt; sink.in
+  ClosedShape
+})
+
+val max: Future[Int] = g.run()
+Await.result(max, 300.millis) should equal(3)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamPartialGraphDSLDocTest.java#L55-L87" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Graph&lt;FanInShape2&lt;Integer, Integer, Integer&gt;, NotUsed&gt; zip =
+    ZipWith.create((Integer left, Integer right) -&gt; Math.max(left, right));
+
+final Graph&lt;UniformFanInShape&lt;Integer, Integer&gt;, NotUsed&gt; pickMaxOfThree =
+    GraphDSL.create(
+        builder -&gt; {
+          final FanInShape2&lt;Integer, Integer, Integer&gt; zip1 = builder.add(zip);
+          final FanInShape2&lt;Integer, Integer, Integer&gt; zip2 = builder.add(zip);
+
+          builder.from(zip1.out()).toInlet(zip2.in0());
+          // return the shape, which has three inputs and one output
+          return UniformFanInShape.&lt;Integer, Integer&gt;create(
+              zip2.out(), Arrays.asList(zip1.in0(), zip1.in1(), zip2.in1()));
+        });
+
+final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; resultSink = Sink.&lt;Integer&gt;head();
+
+final RunnableGraph&lt;CompletionStage&lt;Integer&gt;&gt; g =
+    RunnableGraph.&lt;CompletionStage&lt;Integer&gt;&gt;fromGraph(
+        GraphDSL.create(
+            resultSink,
+            (builder, sink) -&gt; {
+              // import the partial graph explicitly
+              final UniformFanInShape&lt;Integer, Integer&gt; pm = builder.add(pickMaxOfThree);
+
+              builder.from(builder.add(Source.single(1))).toInlet(pm.in(0));
+              builder.from(builder.add(Source.single(2))).toInlet(pm.in(1));
+              builder.from(builder.add(Source.single(3))).toInlet(pm.in(2));
+              builder.from(pm.out()).to(sink);
+              return ClosedShape.getInstance();
+            }));
+
+final CompletionStage&lt;Integer&gt; max = g.run(system);</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>While the above example shows composing two 2-input <code>ZipWith</code>s, in reality ZipWith already provides numerous overloads including a 3 (and many more) parameter versions. So this could be implemented using one ZipWith using the 3 parameter version, like this: <span class="group-scala"><code>ZipWith((a, b, c) =&gt; out)</code></span><span class="group-java"><code>ZipWith.create((a, b, c) -&gt; out)</code></span>. (The ZipWith with N input has N+1 type parameter; the last type param is the output type.)</p></div>
+<p>As you can see, first we construct the partial graph that <span class="group-scala">contains all the zipping and comparing of stream elements. This partial graph will have three inputs and one output, wherefore we use the <code>UniformFanInShape</code></span><span class="group-java">describes how to compute the maximum of two input streams. then we reuse that twice while constructing the partial graph that extends this to three input streams</span>. Then we import it (all of its nodes and connections) explicitly into the <span class="group-scala">closed graph built in the second step</span><span class="group-java">last graph</span> in which all the undefined elements are rewired to real sources and sinks. The graph can then be run and yields the expected result.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Please note that <code>GraphDSL</code> is not able to provide compile time type-safety about whether or not all elements have been properly connected—this validation is performed as a runtime check during the graph&rsquo;s instantiation.</p>
+<p>A partial graph also verifies that all ports are either connected or part of the returned <code>Shape</code>.</p></div>
+<a id="constructing-sources-sinks-flows-from-partial-graphs"></a>
+<h2><a href="#constructing-sources-sinks-and-flows-from-partial-graphs" name="constructing-sources-sinks-and-flows-from-partial-graphs" class="anchor"><span class="anchor-link"></span></a>Constructing Sources, Sinks and Flows from Partial Graphs</h2>
+<p>Instead of treating a <span class="group-scala">partial graph</span><span class="group-java"><code>Graph</code></span> as a collection of flows and junctions which may not yet all be connected it is sometimes useful to expose such a complex graph as a simpler structure, such as a <code>Source</code>, <code>Sink</code> or <code>Flow</code>.</p>
+<p>In fact, these concepts can be expressed as special cases of a partially connected graph:</p>
+<ul>
+  <li><code>Source</code> is a partial graph with <em>exactly one</em> output, that is it returns a <code>SourceShape</code>.</li>
+  <li><code>Sink</code> is a partial graph with <em>exactly one</em> input, that is it returns a <code>SinkShape</code>.</li>
+  <li><code>Flow</code> is a partial graph with <em>exactly one</em> input and <em>exactly one</em> output, that is it returns a <code>FlowShape</code>.</li>
+</ul>
+<p>Being able to hide complex graphs inside of simple elements such as Sink / Source / Flow enables you to create one complex element and from there on treat it as simple compound operator for linear computations.</p>
+<p>In order to create a Source from a graph the method <code>Source.fromGraph</code> is used, to use it we must have a <span class="group-scala"><code>Graph[SourceShape, T]</code></span><span class="group-java"><code>Graph</code> with a <code>SourceShape</code></span>. This is constructed using <span class="group-scala"><code>GraphDSL.create</code> and returning a <code>SourceShape</code> from the function passed in</span><span class="group-java"><code>GraphDSL.create</code> and providing building a <code>SourceShape</code> graph</span>. The single outlet must be provided to the <code>SourceShape.of</code> method and will become “the sink that must be attached before this Source can run”.</p>
+<p>Refer to the example below, in which we create a Source that zips together two numbers, to see this graph construction in action:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamPartialGraphDSLDocSpec.scala#L63-L78" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pairs = Source.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  // prepare graph elements
+  val zip = b.add(Zip[Int, Int]())
+  def ints = Source.fromIterator(() =&gt; Iterator.from(1))
+
+  // connect the graph
+  ints.filter(_ % 2 != 0) ~&gt; zip.in0
+  ints.filter(_ % 2 == 0) ~&gt; zip.in1
+
+  // expose port
+  SourceShape(zip.out)
+})
+
+val firstPair: Future[(Int, Int)] = pairs.runWith(Sink.head)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamPartialGraphDSLDocTest.java#L93-L128" target="_blank" title="Go to snippet source">source</a><code class="language-java">// first create an indefinite source of integer numbers
+class Ints implements Iterator&lt;Integer&gt; {
+  private int next = 0;
+
+  @Override
+  public boolean hasNext() {
+    return true;
+  }
+
+  @Override
+  public Integer next() {
+    return next++;
+  }
+}
+  final Source&lt;Integer, NotUsed&gt; ints = Source.fromIterator(() -&gt; new Ints());
+
+  final Source&lt;Pair&lt;Integer, Integer&gt;, NotUsed&gt; pairs =
+      Source.fromGraph(
+          GraphDSL.create(
+              builder -&gt; {
+                final FanInShape2&lt;Integer, Integer, Pair&lt;Integer, Integer&gt;&gt; zip =
+                    builder.add(Zip.create());
+
+                builder.from(builder.add(ints.filter(i -&gt; i % 2 == 0))).toInlet(zip.in0());
+                builder.from(builder.add(ints.filter(i -&gt; i % 2 == 1))).toInlet(zip.in1());
+
+                return SourceShape.of(zip.out());
+              }));
+
+  final CompletionStage&lt;Pair&lt;Integer, Integer&gt;&gt; firstPair =
+      pairs.runWith(Sink.&lt;Pair&lt;Integer, Integer&gt;&gt;head(), system);</code></pre></dd>
+</dl>
+<p>Similarly the same can be done for a <span class="group-scala"><code>Sink[T]</code></span><span class="group-java"><code>Sink&lt;T&gt;</code></span>, using <code>SinkShape.of</code> in which case the provided value must be an <span class="group-scala"><code>Inlet[T]</code></span><span class="group-java"><code>Inlet&lt;T&gt;</code></span>. For defining a <span class="group-scala"><code>Flow[T]</code></span><span class="group-java"><code>Flow&lt;T&gt;</code></span> we need to expose both an <span class="group-scala">inlet and an outlet</span><span class="group-java">undefined source and sink</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamPartialGraphDSLDocSpec.scala#L85-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val pairUpWithToString =
+  Flow.fromGraph(GraphDSL.create() { implicit b =&gt;
+    import GraphDSL.Implicits._
+
+    // prepare graph elements
+    val broadcast = b.add(Broadcast[Int](2))
+    val zip = b.add(Zip[Int, String]())
+
+    // connect the graph
+    broadcast.out(0).map(identity)   ~&gt; zip.in0
+    broadcast.out(1).map(_.toString) ~&gt; zip.in1
+
+    // expose ports
+    FlowShape(broadcast.in, zip.out)
+  })
+
+pairUpWithToString.runWith(Source(List(1)), Sink.head)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamPartialGraphDSLDocTest.java#L136-L155" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Integer, Pair&lt;Integer, String&gt;, NotUsed&gt; pairs =
+    Flow.fromGraph(
+        GraphDSL.create(
+            b -&gt; {
+              final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+              final FanInShape2&lt;Integer, String, Pair&lt;Integer, String&gt;&gt; zip =
+                  b.add(Zip.create());
+
+              b.from(bcast).toInlet(zip.in0());
+              b.from(bcast)
+                  .via(b.add(Flow.of(Integer.class).map(i -&gt; i.toString())))
+                  .toInlet(zip.in1());
+
+              return FlowShape.of(bcast.in(), zip.out());
+            }));
+
+    Source.single(1).via(pairs).runWith(Sink.&lt;Pair&lt;Integer, String&gt;&gt;head(), system);</code></pre></dd>
+</dl>
+<h2><a href="#combining-sources-and-sinks-with-simplified-api" name="combining-sources-and-sinks-with-simplified-api" class="anchor"><span class="anchor-link"></span></a>Combining Sources and Sinks with simplified API</h2>
+<p>There is a simplified API you can use to combine sources and sinks with junctions like: <span class="group-scala"><code>Broadcast[T]</code>, <code>Balance[T]</code>, <code>Merge[In]</code> and <code>Concat[A]</code></span><span class="group-java"><code>Broadcast&lt;T&gt;</code>, <code>Balance&lt;T&gt;</code>, <code>Merge&lt;In&gt;</code> and <code>Concat&lt;A&gt;</code></span> without the need for using the Graph DSL. The combine method takes care of constructing the necessary graph underneath. In following example we combine two sources into one (fan-in):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamPartialGraphDSLDocSpec.scala#L115-L119" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sourceOne = Source(List(1))
+val sourceTwo = Source(List(2))
+val merged = Source.combine(sourceOne, sourceTwo)(Merge(_))
+
+val mergedResult: Future[Int] = merged.runWith(Sink.fold(0)(_ + _))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamPartialGraphDSLDocTest.java#L164-L172" target="_blank" title="Go to snippet source">source</a><code class="language-java">Source&lt;Integer, NotUsed&gt; source1 = Source.single(1);
+Source&lt;Integer, NotUsed&gt; source2 = Source.single(2);
+
+final Source&lt;Integer, NotUsed&gt; sources =
+    Source.combine(source1, source2, new ArrayList&lt;&gt;(), i -&gt; Merge.&lt;Integer&gt;create(i));
+    sources.runWith(Sink.&lt;Integer, Integer&gt;fold(0, (a, b) -&gt; a + b), system);</code></pre></dd>
+</dl>
+<p>The same can be done for a <span class="group-scala"><code>Sink[T]</code></span><span class="group-java"><code>Sink</code></span> but in this case it will be fan-out:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/StreamPartialGraphDSLDocSpec.scala#L127-L132" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sendRemotely = Sink.actorRef(actorRef, &quot;Done&quot;, _ =&gt; &quot;Failed&quot;)
+val localProcessing = Sink.foreach[Int](_ =&gt; /* do something useful */ ())
+
+val sink = Sink.combine(sendRemotely, localProcessing)(Broadcast[Int](_))
+
+Source(List(0, 1, 2)).runWith(sink)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/StreamPartialGraphDSLDocTest.java#L184-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">Sink&lt;Integer, NotUsed&gt; sendRemotely = Sink.actorRef(actorRef, &quot;Done&quot;);
+Sink&lt;Integer, CompletionStage&lt;Done&gt;&gt; localProcessing =
+    Sink.&lt;Integer&gt;foreach(
+        a -&gt; {
+          /*do something useful*/
+        });
+Sink&lt;Integer, NotUsed&gt; sinks =
+    Sink.combine(sendRemotely, localProcessing, new ArrayList&lt;&gt;(), a -&gt; Broadcast.create(a));
+
+Source.&lt;Integer&gt;from(Arrays.asList(new Integer[] {0, 1, 2})).runWith(sinks, system);</code></pre></dd>
+</dl>
+<h2><a href="#building-reusable-graph-components" name="building-reusable-graph-components" class="anchor"><span class="anchor-link"></span></a>Building reusable Graph components</h2>
+<p>It is possible to build reusable, encapsulated components of arbitrary input and output ports using the graph DSL.</p>
+<p>As an example, we will build a graph junction that represents a pool of workers, where a worker is expressed as a <span class="group-scala"><code>Flow[I,O,_]</code></span><span class="group-java"><code>Flow&lt;I,O,M&gt;</code></span>, i.e. a simple transformation of jobs of type <code>I</code> to results of type <code>O</code> (as you have seen already, this flow can actually contain a complex graph inside). Our reusable worker pool junction will not preserve the order of the incoming jobs (they are assumed to have a proper ID field) and it will use a <code>Balance</code> junction to schedule jobs to available workers. On top of this, our junction will feature a &ldquo;fastlane&rdquo;, a dedicated port where jobs of higher priority can be sent.</p>
+<p>Altogether, our junction will have two input ports of type <code>I</code> (for the normal and priority jobs) and an output port of type <code>O</code>. To represent this interface, we need to define a custom <code>Shape</code>. The following lines show how to do that.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L106-L123" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// A shape represents the input and output ports of a reusable
+// processing module
+case class PriorityWorkerPoolShape[In, Out](jobsIn: Inlet[In], priorityJobsIn: Inlet[In], resultsOut: Outlet[Out])
+    extends Shape {
+
+  // It is important to provide the list of all input and output
+  // ports with a stable order. Duplicates are not allowed.
+  override val inlets: immutable.Seq[Inlet[_]] =
+    jobsIn :: priorityJobsIn :: Nil
+  override val outlets: immutable.Seq[Outlet[_]] =
+    resultsOut :: Nil
+
+  // A Shape must be able to create a copy of itself. Basically
+  // it means a new instance with copies of the ports
+  override def deepCopy() =
+    PriorityWorkerPoolShape(jobsIn.carbonCopy(), priorityJobsIn.carbonCopy(), resultsOut.carbonCopy())
+
+}</code></pre></dd>
+</dl>
+<h2><a href="#predefined-shapes" name="predefined-shapes" class="anchor"><span class="anchor-link"></span></a>Predefined shapes</h2>
+<p>In general a custom <code>Shape</code> needs to be able to provide all its input and output ports, be able to copy itself, and also be able to create a new instance from given ports. There are some predefined shapes provided to avoid unnecessary boilerplate:</p>
+<ul>
+  <li><code>SourceShape</code>, <code>SinkShape</code>, <code>FlowShape</code> for simpler shapes,</li>
+  <li><code>UniformFanInShape</code> and <code>UniformFanOutShape</code> for junctions with multiple input (or output) ports of the same type,</li>
+  <li><code>FanInShape1</code>, <code>FanInShape2</code>, &hellip;, <code>FanOutShape1</code>, <code>FanOutShape2</code>, &hellip; for junctions with multiple input (or output) ports of different types.</li>
+</ul>
+<p>Since our shape has two input ports and one output port, we can use the <code>FanInShape</code> DSL to define our custom shape:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L187-L196" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import FanInShape.{ Init, Name }
+
+class PriorityWorkerPoolShape2[In, Out](_init: Init[Out] = Name(&quot;PriorityWorkerPool&quot;))
+    extends FanInShape[Out](_init) {
+  protected override def construct(i: Init[Out]) = new PriorityWorkerPoolShape2(i)
+
+  val jobsIn = newInlet[In](&quot;jobsIn&quot;)
+  val priorityJobsIn = newInlet[In](&quot;priorityJobsIn&quot;)
+  // Outlet[Out] with name &quot;out&quot; is automatically created
+}</code></pre></dd>
+</dl>
+<p>Now that we have a <code>Shape</code> we can wire up a Graph that represents our worker pool. First, we will merge incoming normal and priority jobs using <code>MergePreferred</code>, then we will send the jobs to a <code>Balance</code> junction which will fan-out to a configurable number of workers (flows), finally we merge all these results together and send them out through our only output port. This is expressed by the following code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L127-L158" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object PriorityWorkerPool {
+  def apply[In, Out](
+      worker: Flow[In, Out, Any],
+      workerCount: Int): Graph[PriorityWorkerPoolShape[In, Out], NotUsed] = {
+
+    GraphDSL.create() { implicit b =&gt;
+      import GraphDSL.Implicits._
+
+      val priorityMerge = b.add(MergePreferred[In](1))
+      val balance = b.add(Balance[In](workerCount))
+      val resultsMerge = b.add(Merge[Out](workerCount))
+
+      // After merging priority and ordinary jobs, we feed them to the balancer
+      priorityMerge ~&gt; balance
+
+      // Wire up each of the outputs of the balancer to a worker flow
+      // then merge them back
+      for (i &lt;- 0 until workerCount)
+        balance.out(i) ~&gt; worker ~&gt; resultsMerge.in(i)
+
+      // We now expose the input ports of the priorityMerge and the output
+      // of the resultsMerge as our PriorityWorkerPool ports
+      // -- all neatly wrapped in our domain specific Shape
+      PriorityWorkerPoolShape(
+        jobsIn = priorityMerge.in(0),
+        priorityJobsIn = priorityMerge.preferred,
+        resultsOut = resultsMerge.out)
+    }
+
+  }
+
+}</code></pre></dd>
+</dl>
+<p>All we need to do now is to use our custom junction in a graph. The following code simulates some simple workers and jobs using plain strings and prints out the results. Actually we used <em>two</em> instances of our worker pool junction using <code>add()</code> twice.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L164-L183" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val worker1 = Flow[String].map(&quot;step 1 &quot; + _)
+val worker2 = Flow[String].map(&quot;step 2 &quot; + _)
+
+RunnableGraph
+  .fromGraph(GraphDSL.create() { implicit b =&gt;
+    import GraphDSL.Implicits._
+
+    val priorityPool1 = b.add(PriorityWorkerPool(worker1, 4))
+    val priorityPool2 = b.add(PriorityWorkerPool(worker2, 2))
+
+    Source(1 to 100).map(&quot;job: &quot; + _)          ~&gt; priorityPool1.jobsIn
+    Source(1 to 100).map(&quot;priority job: &quot; + _) ~&gt; priorityPool1.priorityJobsIn
+
+    priorityPool1.resultsOut                        ~&gt; priorityPool2.jobsIn
+    Source(1 to 100).map(&quot;one-step, priority &quot; + _) ~&gt; priorityPool2.priorityJobsIn
+
+    priorityPool2.resultsOut ~&gt; Sink.foreach(println)
+    ClosedShape
+  })
+  .run()</code></pre></dd>
+</dl>
+<a id="bidi-flow"></a>
+<h2><a href="#bidirectional-flows" name="bidirectional-flows" class="anchor"><span class="anchor-link"></span></a>Bidirectional Flows</h2>
+<p>A graph topology that is often useful is that of two flows going in opposite directions. Take for example a codec operator that serializes outgoing messages and deserializes incoming octet streams. Another such operator could add a framing protocol that attaches a length header to outgoing data and parses incoming frames back into the original octet stream chunks. These two operators are meant to be composed, applying one atop the other as part of a protocol stack. For this purpose exists the special type <code>BidiFlow</code> which is a graph that has exactly two open inlets and two open outlets. The corresponding shape is called <code>BidiShape</code> and is defined like this:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream/src/main/scala/org/apache/pekko/stream/Shape.scala#L341-L372" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * A bidirectional flow of elements that consequently has two inputs and two
+ * outputs, arranged like this:
+ *
+ * {{{
+ *        +------+
+ *  In1 ~&gt;|      |~&gt; Out1
+ *        | bidi |
+ * Out2 &lt;~|      |&lt;~ In2
+ *        +------+
+ * }}}
+ */
+final case class BidiShape[-In1, +Out1, -In2, +Out2](
+    in1: Inlet[In1 @uncheckedVariance],
+    out1: Outlet[Out1 @uncheckedVariance],
+    in2: Inlet[In2 @uncheckedVariance],
+    out2: Outlet[Out2 @uncheckedVariance])
+    extends Shape {
+  override val inlets: immutable.Seq[Inlet[_]] = in1 :: in2 :: Nil
+  override val outlets: immutable.Seq[Outlet[_]] = out1 :: out2 :: Nil
+
+  /**
+   * Java API for creating from a pair of unidirectional flows.
+   */
+  def this(top: FlowShape[In1, Out1], bottom: FlowShape[In2, Out2]) = this(top.in, top.out, bottom.in, bottom.out)
+
+  override def deepCopy(): BidiShape[In1, Out1, In2, Out2] =
+    BidiShape(in1.carbonCopy(), out1.carbonCopy(), in2.carbonCopy(), out2.carbonCopy())
+
+}</code></pre>
+<p>A bidirectional flow is defined just like a unidirectional <code>Flow</code> as demonstrated for the codec mentioned above:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/BidiFlowDocSpec.scala#L27-L65" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait Message
+case class Ping(id: Int) extends Message
+case class Pong(id: Int) extends Message
+
+def toBytes(msg: Message): ByteString = {
+  implicit val order = ByteOrder.LITTLE_ENDIAN
+  msg match {
+    case Ping(id) =&gt; ByteString.newBuilder.putByte(1).putInt(id).result()
+    case Pong(id) =&gt; ByteString.newBuilder.putByte(2).putInt(id).result()
+  }
+}
+
+def fromBytes(bytes: ByteString): Message = {
+  implicit val order = ByteOrder.LITTLE_ENDIAN
+  val it = bytes.iterator
+  it.getByte match {
+    case 1     =&gt; Ping(it.getInt)
+    case 2     =&gt; Pong(it.getInt)
+    case other =&gt; throw new RuntimeException(s&quot;parse error: expected 1|2 got $other&quot;)
+  }
+}
+
+val codecVerbose = BidiFlow.fromGraph(GraphDSL.create() { b =&gt;
+  // construct and add the top flow, going outbound
+  val outbound = b.add(Flow[Message].map(toBytes))
+  // construct and add the bottom flow, going inbound
+  val inbound = b.add(Flow[ByteString].map(fromBytes))
+  // fuse them together into a BidiShape
+  BidiShape.fromFlows(outbound, inbound)
+})
+
+// this is the same as the above
+val codec = BidiFlow.fromFunctions(toBytes _, fromBytes _)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/BidiFlowDocTest.java#L57-L142" target="_blank" title="Go to snippet source">source</a><code class="language-java">static interface Message {}
+
+static class Ping implements Message {
+  final int id;
+
+  public Ping(int id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Ping) {
+      return ((Ping) o).id == id;
+    } else return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return id;
+  }
+}
+
+static class Pong implements Message {
+  final int id;
+
+  public Pong(int id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Pong) {
+      return ((Pong) o).id == id;
+    } else return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return id;
+  }
+}
+
+public static ByteString toBytes(Message msg) {
+  if (msg instanceof Ping) {
+    final int id = ((Ping) msg).id;
+    return new ByteStringBuilder().putByte((byte) 1).putInt(id, ByteOrder.LITTLE_ENDIAN).result();
+  } else {
+    final int id = ((Pong) msg).id;
+    return new ByteStringBuilder().putByte((byte) 2).putInt(id, ByteOrder.LITTLE_ENDIAN).result();
+  }
+}
+
+public static Message fromBytes(ByteString bytes) {
+  final ByteIterator it = bytes.iterator();
+  switch (it.getByte()) {
+    case 1:
+      return new Ping(it.getInt(ByteOrder.LITTLE_ENDIAN));
+    case 2:
+      return new Pong(it.getInt(ByteOrder.LITTLE_ENDIAN));
+    default:
+      throw new RuntimeException(&quot;message format error&quot;);
+  }
+}
+
+public final BidiFlow&lt;Message, ByteString, ByteString, Message, NotUsed&gt; codecVerbose =
+    BidiFlow.fromGraph(
+        GraphDSL.create(
+            b -&gt; {
+              final FlowShape&lt;Message, ByteString&gt; top =
+                  b.add(Flow.of(Message.class).map(BidiFlowDocTest::toBytes));
+              final FlowShape&lt;ByteString, Message&gt; bottom =
+                  b.add(Flow.of(ByteString.class).map(BidiFlowDocTest::fromBytes));
+              return BidiShape.fromFlows(top, bottom);
+            }));
+
+public final BidiFlow&lt;Message, ByteString, ByteString, Message, NotUsed&gt; codec =
+    BidiFlow.fromFunctions(BidiFlowDocTest::toBytes, BidiFlowDocTest::fromBytes);</code></pre></dd>
+</dl>
+<p>The first version resembles the partial graph constructor, while for the simple case of a functional 1:1 transformation there is a concise convenience method as shown on the last line. The implementation of the two functions is not difficult either:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/BidiFlowDocSpec.scala#L32-L52" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def toBytes(msg: Message): ByteString = {
+  implicit val order = ByteOrder.LITTLE_ENDIAN
+  msg match {
+    case Ping(id) =&gt; ByteString.newBuilder.putByte(1).putInt(id).result()
+    case Pong(id) =&gt; ByteString.newBuilder.putByte(2).putInt(id).result()
+  }
+}
+
+def fromBytes(bytes: ByteString): Message = {
+  implicit val order = ByteOrder.LITTLE_ENDIAN
+  val it = bytes.iterator
+  it.getByte match {
+    case 1     =&gt; Ping(it.getInt)
+    case 2     =&gt; Pong(it.getInt)
+    case other =&gt; throw new RuntimeException(s&quot;parse error: expected 1|2 got $other&quot;)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/BidiFlowDocTest.java#L100-L124" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static ByteString toBytes(Message msg) {
+  if (msg instanceof Ping) {
+    final int id = ((Ping) msg).id;
+    return new ByteStringBuilder().putByte((byte) 1).putInt(id, ByteOrder.LITTLE_ENDIAN).result();
+  } else {
+    final int id = ((Pong) msg).id;
+    return new ByteStringBuilder().putByte((byte) 2).putInt(id, ByteOrder.LITTLE_ENDIAN).result();
+  }
+}
+
+public static Message fromBytes(ByteString bytes) {
+  final ByteIterator it = bytes.iterator();
+  switch (it.getByte()) {
+    case 1:
+      return new Ping(it.getInt(ByteOrder.LITTLE_ENDIAN));
+    case 2:
+      return new Pong(it.getInt(ByteOrder.LITTLE_ENDIAN));
+    default:
+      throw new RuntimeException(&quot;message format error&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<p>In this way you can integrate any other serialization library that turns an object into a sequence of bytes.</p>
+<p>The other operator that we talked about is a little more involved since reversing a framing protocol means that any received chunk of bytes may correspond to zero or more messages. This is best implemented using <a href="stream-customize.html"><code>GraphStage</code></a> (see also <a href="stream-customize.html#graphstage">Custom processing with GraphStage</a>).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/BidiFlowDocSpec.scala#L69-L145" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val framing = BidiFlow.fromGraph(GraphDSL.create() { b =&gt;
+  implicit val order = ByteOrder.LITTLE_ENDIAN
+
+  def addLengthHeader(bytes: ByteString) = {
+    val len = bytes.length
+    ByteString.newBuilder.putInt(len).append(bytes).result()
+  }
+
+  class FrameParser extends GraphStage[FlowShape[ByteString, ByteString]] {
+
+    val in = Inlet[ByteString](&quot;FrameParser.in&quot;)
+    val out = Outlet[ByteString](&quot;FrameParser.out&quot;)
+    override val shape = FlowShape.of(in, out)
+
+    override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = new GraphStageLogic(shape) {
+
+      // this holds the received but not yet parsed bytes
+      var stash = ByteString.empty
+      // this holds the current message length or -1 if at a boundary
+      var needed = -1
+
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            if (isClosed(in)) run()
+            else pull(in)
+          }
+        })
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val bytes = grab(in)
+            stash = stash ++ bytes
+            run()
+          }
+
+          override def onUpstreamFinish(): Unit = {
+            // either we are done
+            if (stash.isEmpty) completeStage()
+            // or we still have bytes to emit
+            // wait with completion and let run() complete when the
+            // rest of the stash has been sent downstream
+            else if (isAvailable(out)) run()
+          }
+        })
+
+      private def run(): Unit = {
+        if (needed == -1) {
+          // are we at a boundary? then figure out next length
+          if (stash.length &lt; 4) {
+            if (isClosed(in)) completeStage()
+            else pull(in)
+          } else {
+            needed = stash.iterator.getInt
+            stash = stash.drop(4)
+            run() // cycle back to possibly already emit the next chunk
+          }
+        } else if (stash.length &lt; needed) {
+          // we are in the middle of a message, need more bytes,
+          // or have to stop if input closed
+          if (isClosed(in)) completeStage()
+          else pull(in)
+        } else {
+          // we have enough to emit at least one message, so do it
+          val emit = stash.take(needed)
+          stash = stash.drop(needed)
+          needed = -1
+          push(out, emit)
+        }
+      }
+    }
+  }
+
+  val outbound = b.add(Flow[ByteString].map(addLengthHeader))
+  val inbound = b.add(Flow[ByteString].via(new FrameParser))
+  BidiShape.fromFlows(outbound, inbound)
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/BidiFlowDocTest.java#L146-L240" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static ByteString addLengthHeader(ByteString bytes) {
+  final int len = bytes.size();
+  return new ByteStringBuilder().putInt(len, ByteOrder.LITTLE_ENDIAN).append(bytes).result();
+}
+
+public static class FrameParser extends GraphStage&lt;FlowShape&lt;ByteString, ByteString&gt;&gt; {
+  public Inlet&lt;ByteString&gt; in = Inlet.create(&quot;FrameParser.in&quot;);
+  public Outlet&lt;ByteString&gt; out = Outlet.create(&quot;FrameParser.out&quot;);
+  private FlowShape&lt;ByteString, ByteString&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;ByteString, ByteString&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+
+      // this holds the received but not yet parsed bytes
+      private ByteString stash = emptyByteString();
+      // this holds the current message length or -1 if at a boundary
+      private int needed = -1;
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                ByteString bytes = grab(in);
+                stash = stash.concat(bytes);
+                run();
+              }
+
+              @Override
+              public void onUpstreamFinish() throws Exception {
+                // either we are done
+                if (stash.isEmpty()) completeStage();
+                // or we still have bytes to emit
+                // wait with completion and let run() complete when the
+                // rest of the stash has been sent downstream
+                else if (isAvailable(out)) run();
+              }
+            });
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                if (isClosed(in)) run();
+                else pull(in);
+              }
+            });
+      }
+
+      private void run() {
+        if (needed == -1) {
+          // are we at a boundary? then figure out next length
+          if (stash.size() &lt; 4) {
+            if (isClosed(in)) completeStage();
+            else pull(in);
+          } else {
+            needed = stash.iterator().getInt(ByteOrder.LITTLE_ENDIAN);
+            stash = stash.drop(4);
+            run(); // cycle back to possibly already emit the next chunk
+          }
+        } else if (stash.size() &lt; needed) {
+          // we are in the middle of a message, need more bytes
+          // or in is already closed and we cannot pull any more
+          if (isClosed(in)) completeStage();
+          else pull(in);
+        } else {
+          // we have enough to emit at least one message, so do it
+          final ByteString emit = stash.take(needed);
+          stash = stash.drop(needed);
+          needed = -1;
+          push(out, emit);
+        }
+      }
+    };
+  }
+}
+
+public final BidiFlow&lt;ByteString, ByteString, ByteString, ByteString, NotUsed&gt; framing =
+    BidiFlow.fromGraph(
+        GraphDSL.create(
+            b -&gt; {
+              final FlowShape&lt;ByteString, ByteString&gt; top =
+                  b.add(Flow.of(ByteString.class).map(BidiFlowDocTest::addLengthHeader));
+              final FlowShape&lt;ByteString, ByteString&gt; bottom =
+                  b.add(Flow.of(ByteString.class).via(new FrameParser()));
+              return BidiShape.fromFlows(top, bottom);
+            }));</code></pre></dd>
+</dl>
+<p>With these implementations we can build a protocol stack and test it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/BidiFlowDocSpec.scala#L166-L183" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/* construct protocol stack
+ *         +------------------------------------+
+ *         | stack                              |
+ *         |                                    |
+ *         |  +-------+            +---------+  |
+ *    ~&gt;   O~~o       |     ~&gt;     |         o~~O    ~&gt;
+ * Message |  | codec | ByteString | framing |  | ByteString
+ *    &lt;~   O~~o       |     &lt;~     |         o~~O    &lt;~
+ *         |  +-------+            +---------+  |
+ *         +------------------------------------+
+ */
+val stack = codec.atop(framing)
+
+// test it by plugging it into its own inverse and closing the right end
+val pingpong = Flow[Message].collect { case Ping(id) =&gt; Pong(id) }
+val flow = stack.atop(stack.reversed).join(pingpong)
+val result = Source((0 to 9).map(Ping(_))).via(flow).limit(20).runWith(Sink.seq)
+Await.result(result, 1.second) should ===((0 to 9).map(Pong(_)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/BidiFlowDocTest.java#L246-L273" target="_blank" title="Go to snippet source">source</a><code class="language-java">/* construct protocol stack
+ *         +------------------------------------+
+ *         | stack                              |
+ *         |                                    |
+ *         |  +-------+            +---------+  |
+ *    ~&gt;   O~~o       |     ~&gt;     |         o~~O    ~&gt;
+ * Message |  | codec | ByteString | framing |  | ByteString
+ *    &lt;~   O~~o       |     &lt;~     |         o~~O    &lt;~
+ *         |  +-------+            +---------+  |
+ *         +------------------------------------+
+ */
+final BidiFlow&lt;Message, ByteString, ByteString, Message, NotUsed&gt; stack = codec.atop(framing);
+
+// test it by plugging it into its own inverse and closing the right end
+final Flow&lt;Message, Message, NotUsed&gt; pingpong =
+    Flow.of(Message.class)
+        .collect(
+            new PFBuilder&lt;Message, Message&gt;().match(Ping.class, p -&gt; new Pong(p.id)).build());
+final Flow&lt;Message, Message, NotUsed&gt; flow = stack.atop(stack.reversed()).join(pingpong);
+final CompletionStage&lt;List&lt;Message&gt;&gt; result =
+    Source.from(Arrays.asList(0, 1, 2))
+        .&lt;Message&gt;map(id -&gt; new Ping(id))
+        .via(flow)
+        .grouped(10)
+        .runWith(Sink.&lt;List&lt;Message&gt;&gt;head(), system);
+assertArrayEquals(
+    new Message[] {new Pong(0), new Pong(1), new Pong(2)},
+    result.toCompletableFuture().get(1, TimeUnit.SECONDS).toArray(new Message[0]));</code></pre></dd>
+</dl>
+<p>This example demonstrates how <code>BidiFlow</code> subgraphs can be hooked together and also turned around with the <span class="group-scala"><code>.reversed</code></span><span class="group-java"><code>.reversed()</code></span> method. The test simulates both parties of a network communication protocol without actually having to open a network connection—the flows can be connected directly.</p>
+<a id="graph-matvalue"></a>
+<h2><a href="#accessing-the-materialized-value-inside-the-graph" name="accessing-the-materialized-value-inside-the-graph" class="anchor"><span class="anchor-link"></span></a>Accessing the materialized value inside the Graph</h2>
+<p>In certain cases it might be necessary to feed back the materialized value of a Graph (partial, closed or backing a Source, Sink, Flow or BidiFlow). This is possible by using <code>builder.materializedValue</code> which gives an <code>Outlet</code> that can be used in the graph as an ordinary source or outlet, and which will eventually emit the materialized value. If the materialized value is needed at more than one place, it is possible to call <code>materializedValue</code> any number of times to acquire the necessary number of outlets.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L203-L207" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import GraphDSL.Implicits._
+val foldFlow: Flow[Int, Int, Future[Int]] = Flow.fromGraph(GraphDSL.createGraph(Sink.fold[Int, Int](0)(_ + _)) {
+  implicit builder =&gt; fold =&gt;
+    FlowShape(fold.in, builder.materializedValue.mapAsync(4)(identity).outlet)
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/java/org/apache/pekko/stream/javadsl/GraphDslTest.java#L151-L168" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; foldSink =
+    Sink.fold(
+        0,
+        (a, b) -&gt; {
+          return a + b;
+        });
+
+final Flow&lt;CompletionStage&lt;Integer&gt;, Integer, NotUsed&gt; flatten =
+    Flow.&lt;CompletionStage&lt;Integer&gt;&gt;create().mapAsync(4, x -&gt; x);
+
+final Flow&lt;Integer, Integer, CompletionStage&lt;Integer&gt;&gt; foldingFlow =
+    Flow.fromGraph(
+        GraphDSL.create(
+            foldSink,
+            (b, fold) -&gt; {
+              return FlowShape.of(
+                  fold.in(), b.from(b.materializedValue()).via(b.add(flatten)).out());
+            }));</code></pre></dd>
+</dl>
+<p>Be careful not to introduce a cycle where the materialized value actually contributes to the materialized value. The following example demonstrates a case where the materialized <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> of a fold is fed back to the fold itself.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphDSLDocSpec.scala#L213-L224" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import GraphDSL.Implicits._
+// This cannot produce any value:
+val cyclicFold: Source[Int, Future[Int]] =
+  Source.fromGraph(GraphDSL.createGraph(Sink.fold[Int, Int](0)(_ + _)) { implicit builder =&gt; fold =&gt;
+    // - Fold cannot complete until its upstream mapAsync completes
+    // - mapAsync cannot complete until the materialized Future produced by
+    //   fold completes
+    // As a result this Source will never emit anything, and its materialited
+    // Future will never complete
+    builder.materializedValue.mapAsync(4)(identity) ~&gt; fold
+    SourceShape(builder.materializedValue.mapAsync(4)(identity).outlet)
+  })</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/stream-tests/src/test/java/org/apache/pekko/stream/javadsl/GraphDslTest.java#L172-L186" target="_blank" title="Go to snippet source">source</a><code class="language-java">// This cannot produce any value:
+final Source&lt;Integer, CompletionStage&lt;Integer&gt;&gt; cyclicSource =
+    Source.fromGraph(
+        GraphDSL.create(
+            foldSink,
+            (b, fold) -&gt; {
+              // - Fold cannot complete until its upstream mapAsync completes
+              // - mapAsync cannot complete until the materialized Future produced by
+              //   fold completes
+              // As a result this Source will never emit anything, and its materialited
+              // Future will never complete
+              b.from(b.materializedValue()).via(b.add(flatten)).to(fold);
+              return SourceShape.of(b.from(b.materializedValue()).via(b.add(flatten)).out());
+            }));
+</code></pre></dd>
+</dl>
+<a id="graph-cycles"></a>
+<h2><a href="#graph-cycles-liveness-and-deadlocks" name="graph-cycles-liveness-and-deadlocks" class="anchor"><span class="anchor-link"></span></a>Graph cycles, liveness and deadlocks</h2>
+<p>Cycles in bounded stream topologies need special considerations to avoid potential deadlocks and other liveness issues. This section shows several examples of problems that can arise from the presence of feedback arcs in stream processing graphs.</p>
+<p>In the following examples runnable graphs are created but do not run because each have some issue and will deadlock after start. <code>Source</code> variable is not defined as the nature and number of element does not matter for described problems.</p>
+<p>The first example demonstrates a graph that contains a naïve cycle. The graph takes elements from the source, prints them, then broadcasts those elements to a consumer (we just used <code>Sink.ignore</code> for now) and to a feedback arc that is merged back into the main stream via a <code>Merge</code> junction.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The graph DSL allows the connection arrows to be reversed, which is particularly handy when writing cycles—as we will see there are cases where this is very helpful.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphCyclesSpec.scala#L29-L39" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// WARNING! The graph below deadlocks!
+RunnableGraph.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val merge = b.add(Merge[Int](2))
+  val bcast = b.add(Broadcast[Int](2))
+
+  source ~&gt; merge ~&gt; Flow[Int].map { s =&gt; println(s); s } ~&gt; bcast ~&gt; Sink.ignore
+            merge                    &lt;~                      bcast
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/GraphCyclesDocTest.java#L52-L73" target="_blank" title="Go to snippet source">source</a><code class="language-java">// WARNING! The graph below deadlocks!
+final Flow&lt;Integer, Integer, NotUsed&gt; printFlow =
+    Flow.of(Integer.class)
+        .map(
+            s -&gt; {
+              System.out.println(s);
+              return s;
+            });
+
+RunnableGraph.fromGraph(
+    GraphDSL.create(
+        b -&gt; {
+          final UniformFanInShape&lt;Integer, Integer&gt; merge = b.add(Merge.create(2));
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+          final Outlet&lt;Integer&gt; src = b.add(source).out();
+          final FlowShape&lt;Integer, Integer&gt; printer = b.add(printFlow);
+          final SinkShape&lt;Integer&gt; ignore = b.add(Sink.ignore());
+
+          b.from(src).viaFanIn(merge).via(printer).viaFanOut(bcast).to(ignore);
+          b.to(merge).fromFanOut(bcast);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>Running this we observe that after a few numbers have been printed, no more elements are logged to the console - all processing stops after some time. After some investigation we observe that:</p>
+<ul>
+  <li>through merging from <code>source</code> we increase the number of elements flowing in the cycle</li>
+  <li>by broadcasting back to the cycle we do not decrease the number of elements in the cycle</li>
+</ul>
+<p>Since Akka Streams (and Reactive Streams in general) guarantee bounded processing (see the &ldquo;Buffering&rdquo; section for more details) it means that only a bounded number of elements are buffered over any time span. Since our cycle gains more and more elements, eventually all of its internal buffers become full, backpressuring <code>source</code> forever. To be able to process more elements from <code>source</code> elements would need to leave the cycle somehow.</p>
+<p>If we modify our feedback loop by replacing the <code>Merge</code> junction with a <code>MergePreferred</code> we can avoid the deadlock. <code>MergePreferred</code> is unfair as it always tries to consume from a preferred input port if there are elements available before trying the other lower priority input ports. Since we feed back through the preferred port it is always guaranteed that the elements in the cycles can flow.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphCyclesSpec.scala#L47-L57" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// WARNING! The graph below stops consuming from &quot;source&quot; after a few steps
+RunnableGraph.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val merge = b.add(MergePreferred[Int](1))
+  val bcast = b.add(Broadcast[Int](2))
+
+  source ~&gt; merge ~&gt; Flow[Int].map { s =&gt; println(s); s } ~&gt; bcast ~&gt; Sink.ignore
+            merge.preferred              &lt;~                  bcast
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/GraphCyclesDocTest.java#L87-L100" target="_blank" title="Go to snippet source">source</a><code class="language-java">// WARNING! The graph below stops consuming from &quot;source&quot; after a few steps
+RunnableGraph.fromGraph(
+    GraphDSL.create(
+        b -&gt; {
+          final MergePreferredShape&lt;Integer&gt; merge = b.add(MergePreferred.create(1));
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+          final Outlet&lt;Integer&gt; src = b.add(source).out();
+          final FlowShape&lt;Integer, Integer&gt; printer = b.add(printFlow);
+          final SinkShape&lt;Integer&gt; ignore = b.add(Sink.ignore());
+
+          b.from(src).viaFanIn(merge).via(printer).viaFanOut(bcast).to(ignore);
+          b.to(merge.preferred()).fromFanOut(bcast);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>If we run the example we see that the same sequence of numbers are printed over and over again, but the processing does not stop. Hence, we avoided the deadlock, but <code>source</code> is still back-pressured forever, because buffer space is never recovered: the only action we see is the circulation of a couple of initial elements from <code>source</code>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>What we see here is that in certain cases we need to choose between boundedness and liveness. Our first example would not deadlock if there were an infinite buffer in the loop, or vice versa, if the elements in the cycle were balanced (as many elements are removed as many are injected) then there would be no deadlock.</p></div>
+<p>To make our cycle both live (not deadlocking) and fair we can introduce a dropping element on the feedback arc. In this case we chose the <code>buffer()</code> operation giving it a dropping strategy <code>OverflowStrategy.dropHead</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphCyclesSpec.scala#L65-L74" target="_blank" title="Go to snippet source">source</a><code class="language-scala">RunnableGraph.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val merge = b.add(Merge[Int](2))
+  val bcast = b.add(Broadcast[Int](2))
+
+  source ~&gt; merge ~&gt; Flow[Int].map { s =&gt; println(s); s } ~&gt; bcast ~&gt; Sink.ignore
+      merge &lt;~ Flow[Int].buffer(10, OverflowStrategy.dropHead) &lt;~ bcast
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/GraphCyclesDocTest.java#L114-L128" target="_blank" title="Go to snippet source">source</a><code class="language-java">RunnableGraph.fromGraph(
+    GraphDSL.create(
+        b -&gt; {
+          final UniformFanInShape&lt;Integer, Integer&gt; merge = b.add(Merge.create(2));
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+          final FlowShape&lt;Integer, Integer&gt; droppyFlow =
+              b.add(Flow.of(Integer.class).buffer(10, OverflowStrategy.dropHead()));
+          final Outlet&lt;Integer&gt; src = b.add(source).out();
+          final FlowShape&lt;Integer, Integer&gt; printer = b.add(printFlow);
+          final SinkShape&lt;Integer&gt; ignore = b.add(Sink.ignore());
+
+          b.from(src).viaFanIn(merge).via(printer).viaFanOut(bcast).to(ignore);
+          b.to(merge).via(droppyFlow).fromFanOut(bcast);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>If we run this example we see that</p>
+<ul>
+  <li>The flow of elements does not stop, there are always elements printed</li>
+  <li>We see that some of the numbers are printed several times over time (due to the feedback loop) but on average the numbers are increasing in the long term</li>
+</ul>
+<p>This example highlights that one solution to avoid deadlocks in the presence of potentially unbalanced cycles (cycles where the number of circulating elements are unbounded) is to drop elements. An alternative would be to define a larger buffer with <code>OverflowStrategy.fail</code> which would fail the stream instead of deadlocking it after all buffer space has been consumed.</p>
+<p>As we discovered in the previous examples, the core problem was the unbalanced nature of the feedback loop. We circumvented this issue by adding a dropping element, but now we want to build a cycle that is balanced from the beginning instead. To achieve this we modify our first graph by replacing the <code>Merge</code> junction with a <code>ZipWith</code>. Since <code>ZipWith</code> takes one element from <code>source</code> <em>and</em> from the feedback arc to inject one element into the cycle, we maintain the balance of elements.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphCyclesSpec.scala#L82-L93" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// WARNING! The graph below never processes any elements
+RunnableGraph.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val zip = b.add(ZipWith[Int, Int, Int]((left, right) =&gt; right))
+  val bcast = b.add(Broadcast[Int](2))
+
+  source ~&gt; zip.in0
+  zip.out.map { s =&gt; println(s); s } ~&gt; bcast ~&gt; Sink.ignore
+  zip.in1             &lt;~                bcast
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/GraphCyclesDocTest.java#L142-L156" target="_blank" title="Go to snippet source">source</a><code class="language-java">// WARNING! The graph below never processes any elements
+RunnableGraph.fromGraph(
+    GraphDSL.create(
+        b -&gt; {
+          final FanInShape2&lt;Integer, Integer, Integer&gt; zip =
+              b.add(ZipWith.create((Integer left, Integer right) -&gt; left));
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+          final FlowShape&lt;Integer, Integer&gt; printer = b.add(printFlow);
+          final SinkShape&lt;Integer&gt; ignore = b.add(Sink.ignore());
+
+          b.from(b.add(source)).toInlet(zip.in0());
+          b.from(zip.out()).via(printer).viaFanOut(bcast).to(ignore);
+          b.to(zip.in1()).fromFanOut(bcast);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>Still, when we try to run the example it turns out that no element is printed at all! After some investigation we realize that:</p>
+<ul>
+  <li>In order to get the first element from <code>source</code> into the cycle we need an already existing element in the cycle</li>
+  <li>In order to get an initial element in the cycle we need an element from <code>source</code></li>
+</ul>
+<p>These two conditions are a typical &ldquo;chicken-and-egg&rdquo; problem. The solution is to inject an initial element into the cycle that is independent from <code>source</code>. We do this by using a <code>Concat</code> junction on the backwards arc that injects a single element using <code>Source.single</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/scala/docs/stream/GraphCyclesSpec.scala#L101-L114" target="_blank" title="Go to snippet source">source</a><code class="language-scala">RunnableGraph.fromGraph(GraphDSL.create() { implicit b =&gt;
+  import GraphDSL.Implicits._
+
+  val zip = b.add(ZipWith((left: Int, right: Int) =&gt; left))
+  val bcast = b.add(Broadcast[Int](2))
+  val concat = b.add(Concat[Int]())
+  val start = Source.single(0)
+
+  source ~&gt; zip.in0
+  zip.out.map { s =&gt; println(s); s } ~&gt; bcast ~&gt; Sink.ignore
+  zip.in1 &lt;~ concat &lt;~ start
+             concat         &lt;~          bcast
+  ClosedShape
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/akka/akka/tree/main/docs/src/test/java/jdocs/stream/GraphCyclesDocTest.java#L170-L185" target="_blank" title="Go to snippet source">source</a><code class="language-java">RunnableGraph.fromGraph(
+    GraphDSL.create(
+        b -&gt; {
+          final FanInShape2&lt;Integer, Integer, Integer&gt; zip =
+              b.add(ZipWith.create((Integer left, Integer right) -&gt; left));
+          final UniformFanOutShape&lt;Integer, Integer&gt; bcast = b.add(Broadcast.create(2));
+          final UniformFanInShape&lt;Integer, Integer&gt; concat = b.add(Concat.create());
+          final FlowShape&lt;Integer, Integer&gt; printer = b.add(printFlow);
+          final SinkShape&lt;Integer&gt; ignore = b.add(Sink.ignore());
+
+          b.from(b.add(source)).toInlet(zip.in0());
+          b.from(zip.out()).via(printer).viaFanOut(bcast).to(ignore);
+          b.to(zip.in1()).viaFanIn(concat).from(b.add(Source.single(1)));
+          b.to(concat).fromFanOut(bcast);
+          return ClosedShape.getInstance();
+        }));</code></pre></dd>
+</dl>
+<p>When we run the above example we see that processing starts and never stops. The important takeaway from this example is that balanced cycles often need an initial &ldquo;kick-off&rdquo; element to be injected into the cycle.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/akka/akka/tree/main/docs/src/main/paradox/stream/stream-graphs.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../stream/stream-composition.html">Modularity, Composition and Hierarchy</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../stream/stream-graphs.html#working-with-graphs" class="header">Working with Graphs</a>
+  <ul>
+    <li><a href="../stream/stream-graphs.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-graphs.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-graphs.html#constructing-graphs" class="header">Constructing Graphs</a></li>
+    <li><a href="../stream/stream-graphs.html#constructing-and-combining-partial-graphs" class="header">Constructing and combining Partial Graphs</a></li>
+    <li><a href="../stream/stream-graphs.html#constructing-sources-sinks-and-flows-from-partial-graphs" class="header">Constructing Sources, Sinks and Flows from Partial Graphs</a></li>
+    <li><a href="../stream/stream-graphs.html#combining-sources-and-sinks-with-simplified-api" class="header">Combining Sources and Sinks with simplified API</a></li>
+    <li><a href="../stream/stream-graphs.html#building-reusable-graph-components" class="header">Building reusable Graph components</a></li>
+    <li><a href="../stream/stream-graphs.html#predefined-shapes" class="header">Predefined shapes</a></li>
+    <li><a href="../stream/stream-graphs.html#bidirectional-flows" class="header">Bidirectional Flows</a></li>
+    <li><a href="../stream/stream-graphs.html#accessing-the-materialized-value-inside-the-graph" class="header">Accessing the materialized value inside the Graph</a></li>
+    <li><a href="../stream/stream-graphs.html#graph-cycles-liveness-and-deadlocks" class="header">Graph cycles, liveness and deadlocks</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2023</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.0+26524-b0ed4882-SNAPSHOT', 'https://akka.io/')});</script>
+
+
+</html>
