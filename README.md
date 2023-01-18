@@ -4,7 +4,7 @@ Publishing the Apache Pekko web site requires:
 
 1. Clone https://github.com/apache/incubator-pekko-site into a local directory.
 2. Check out the asf-staging branch.
-3. If you have used `sbt docs/paradox` in `incubator-pekko` repo, you can use `cp -r <path>/incubator-pekko/docs/target/paradox/site/main/ content/`
+3. If you have used `sbt docs/paradox` in `incubator-pekko` repo, you can use `rm -r content; cp -r <path>/incubator-pekko/docs/target/paradox/site/main/ content/`
 4. Perform `git add` on the affected files and `git commit`.
 5. Perform `git push`.
 6. After a few minutes review https://pekko.staged.apache.org and make sure the appropriate changes are present.
