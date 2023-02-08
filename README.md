@@ -23,5 +23,6 @@ cp -r <path>/incubator-pekko/target/javaunidoc/ content/japi/pekko/current
 9. Perform `git rebase asf-staging` followed by `git push`.
 10. After a few minutes verify that https://pekko.apache.org has the correct changes.
 
-Further information regarding what to edit in the site during a release may be found at
-[How to Release - Update the Web Site](https://cwiki.apache.org/confluence/display/FLUME/How+to+Release#HowtoRelease-Updatethewebsite).
+This approach is based on the support for publishing sites provided by INFRA team. See [.asf.yaml features](https://cwiki.apache.org/confluence/display/INFRA/git+-+.asf.yaml+features) documentation.
+
+This approach is based on the Apache Flume process, see [How to Release - Update the Web Site](https://cwiki.apache.org/confluence/display/FLUME/How+to+Release#HowtoRelease-Updatethewebsite).
