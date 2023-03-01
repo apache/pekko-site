@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Core Server API · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Core Server API
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html#core-server-api" class="active page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../server-side/low-level-api.html#core-server-api" class="header">Core Server API</a>
+  <ul>
+    <li><a href="../server-side/low-level-api.html#streams-and-http" class="header">Streams and HTTP</a></li>
+    <li><a href="../server-side/low-level-api.html#starting-and-stopping" class="header">Starting and Stopping</a></li>
+    <li><a href="../server-side/low-level-api.html#request-response-cycle" class="header">Request-Response Cycle</a></li>
+    <li><a href="../server-side/low-level-api.html#configuring-server-side-https" class="header">Configuring Server-side HTTPS</a></li>
+    <li><a href="../server-side/low-level-api.html#stand-alone-http-layer-usage" class="header">Stand-Alone HTTP Layer Usage</a></li>
+    <li><a href="../server-side/low-level-api.html#controlling-server-parallelism" class="header">Controlling server parallelism</a></li>
+    <li><a href="../server-side/low-level-api.html#handling-http-server-failures-in-the-low-level-api" class="header">Handling HTTP Server failures in the Low-Level API</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../server-side/low-level-api.html#core-server-api" class="header">Core Server API</a>
+  <ul>
+    <li><a href="../server-side/low-level-api.html#streams-and-http" class="header">Streams and HTTP</a></li>
+    <li><a href="../server-side/low-level-api.html#starting-and-stopping" class="header">Starting and Stopping</a></li>
+    <li><a href="../server-side/low-level-api.html#request-response-cycle" class="header">Request-Response Cycle</a></li>
+    <li><a href="../server-side/low-level-api.html#configuring-server-side-https" class="header">Configuring Server-side HTTPS</a></li>
+    <li><a href="../server-side/low-level-api.html#stand-alone-http-layer-usage" class="header">Stand-Alone HTTP Layer Usage</a></li>
+    <li><a href="../server-side/low-level-api.html#controlling-server-parallelism" class="header">Controlling server parallelism</a></li>
+    <li><a href="../server-side/low-level-api.html#handling-http-server-failures-in-the-low-level-api" class="header">Handling HTTP Server failures in the Low-Level API</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#core-server-api" name="core-server-api" class="anchor"><span class="anchor-link"></span></a>Core Server API</h1>
+<p>The core Server API is scoped with a clear focus on the essential functionality of an HTTP/1.1 server:</p>
+<ul>
+  <li>Connection management</li>
+  <li>Parsing and rendering of messages and headers</li>
+  <li>Timeout management (for requests and connections)</li>
+  <li>Response ordering (for transparent pipelining support)</li>
+</ul>
+<p>All non-core features of typical HTTP servers (like request routing, file serving, compression, etc.) are left to the <a href="../routing-dsl/index.html">higher layers</a>, they are not implemented by the <code>pekko-http-core</code>-level server itself. Apart from general focus this design keeps the server core small and light-weight as well as easy to understand and maintain.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It is recommended to read the <a href="../implications-of-streaming-http-entity.html">Implications of the streaming nature of Request/Response Entities</a> section, as it explains the underlying full-stack streaming concepts, which may be unexpected when coming from a background with non-&ldquo;streaming first&rdquo; HTTP Servers.</p></div>
+<h2><a href="#streams-and-http" name="streams-and-http" class="anchor"><span class="anchor-link"></span></a>Streams and HTTP</h2>
+<p>The Apache Pekko HTTP server is implemented on top of <a href="https://pekko.apache.org/docs/pekko/current/stream/index.html">Streams</a> and makes heavy use of it - in its implementation as well as on all levels of its API.</p>
+<p>On the connection level, Apache Pekko HTTP offers basically the same kind of interface as <a href="https://pekko.apache.org/docs/pekko/current/stream/stream-io.html">Working with streaming IO</a>: A socket binding is represented as a stream of incoming connections. The application pulls connections from this stream source and, for each of them, provides a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;HttpRequest, HttpResponse, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[HttpRequest, HttpResponse, _]</code></a></span> to &ldquo;translate&rdquo; requests into responses.</p>
+<p>Apart from regarding a socket bound on the server-side as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;IncomingConnection, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[IncomingConnection, _]</code></a></span> and each connection as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;HttpRequest, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[HttpRequest, _]</code></a></span> with a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink&lt;HttpResponse, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink[HttpResponse, _]</code></a></span> the stream abstraction is also present inside a single HTTP message: The entities of HTTP requests and responses are generally modeled as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, _]</code></a></span>. See also the <a href="../common/http-model.html">HTTP Model</a> for more information on how HTTP messages are represented in Apache Pekko HTTP.</p>
+<h2><a href="#starting-and-stopping" name="starting-and-stopping" class="anchor"><span class="anchor-link"></span></a>Starting and Stopping</h2>
+<p>On the most basic level an Apache Pekko HTTP server is bound by invoking the <code>bind</code> method of the <span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/Http$.html" title="org.apache.pekko.http.scaladsl.Http"><code>org.apache.pekko.http.scaladsl.Http</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/Http.html" title="org.apache.pekko.http.javadsl.Http"><code>org.apache.pekko.http.javadsl.Http</code></a></span> extension:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L39-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.stream.scaladsl._
+
+implicit val system = ActorSystem()
+implicit val executionContext = system.dispatcher
+
+val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
+  Http().newServerAt(&quot;localhost&quot;, 8080).connectionSource()
+val bindingFuture: Future[Http.ServerBinding] =
+  serverSource.to(Sink.foreach { connection =&gt; // foreach materializes the source
+    println(&quot;Accepted new connection from &quot; + connection.remoteAddress)
+    // ... and then actually handle the connection
+  }).run()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L53-L64" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+
+Source&lt;IncomingConnection, CompletionStage&lt;ServerBinding&gt;&gt; serverSource =
+  Http.get(system).bind(ConnectHttp.toHost(&quot;localhost&quot;, 8080));
+
+CompletionStage&lt;ServerBinding&gt; serverBindingFuture =
+  serverSource.to(Sink.foreach(connection -&gt; {
+      System.out.println(&quot;Accepted new connection from &quot; + connection.remoteAddress());
+      // ... and then actually handle the connection
+    }
+  )).run(materializer);</code></pre></dd>
+</dl>
+<p>Arguments to the <code>Http().bind</code> method specify the interface and port to bind to and register interest in handling incoming HTTP connections. Additionally, the method also allows for the definition of socket options as well as a larger number of settings for configuring the server according to your needs.</p>
+<p>The result of the <code>bind</code> method is a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;Http.IncomingConnection&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[Http.IncomingConnection]</code></a></span> which must be drained by the application in order to accept incoming connections. The actual binding is not performed before this source is materialized as part of a processing pipeline. In case the bind fails (e.g. because the port is already busy) the materialized stream will immediately be terminated with a respective exception. The binding is released (i.e. the underlying socket unbound) when the subscriber of the incoming connection source has cancelled its subscription. Alternatively one can use the <code>unbind()</code> method of the <code>Http.ServerBinding</code> instance that is created as part of the connection source&rsquo;s materialization process. The <code>Http.ServerBinding</code> also provides a way to get a hold of the actual local address of the bound socket, which is useful for example when binding to port zero (and thus letting the OS pick an available port).</p>
+<a id="http-low-level-server-side-example"></a>
+<h2><a href="#request-response-cycle" name="request-response-cycle" class="anchor"><span class="anchor-link"></span></a>Request-Response Cycle</h2>
+<p>When a new connection has been accepted it will be published as an <code>Http.IncomingConnection</code> which consists of the remote address and methods to provide a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;HttpRequest, HttpResponse, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[HttpRequest, HttpResponse, _]</code></a></span> to handle requests coming in over this connection.</p>
+<p>Requests are handled by calling one of the <code>handleWithXXX</code> methods with a handler, which can either be</p>
+<blockquote>
+  <ul>
+    <li>a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;HttpRequest, HttpResponse, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[HttpRequest, HttpResponse, _]</code></a></span> for <code>handleWith</code>,</li>
+    <li>a function <span class="group-scala"><code>HttpRequest =&gt; HttpResponse</code></span><span class="group-java"><code>Function&lt;HttpRequest, HttpResponse&gt;</code></span> for <code>handleWithSyncHandler</code>,</li>
+    <li>a function <span class="group-scala"><code>HttpRequest =&gt; Future[HttpResponse]</code></span><span class="group-java"><code>Function&lt;HttpRequest, CompletionStage&lt;HttpResponse&gt;&gt;</code></span> for <code>handleWithAsyncHandler</code>.</li>
+  </ul>
+</blockquote>
+<p>Here is a complete example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L161-L197" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model.HttpMethods._
+import pekko.http.scaladsl.model._
+import pekko.stream.scaladsl.Sink
+
+implicit val system = ActorSystem()
+implicit val executionContext = system.dispatcher
+
+val serverSource = Http().newServerAt(&quot;localhost&quot;, 8080).connectionSource()
+
+val requestHandler: HttpRequest =&gt; HttpResponse = {
+  case HttpRequest(GET, Uri.Path(&quot;/&quot;), _, _, _) =&gt;
+    HttpResponse(entity = HttpEntity(
+      ContentTypes.`text/html(UTF-8)`,
+      &quot;&lt;html&gt;&lt;body&gt;Hello world!&lt;/body&gt;&lt;/html&gt;&quot;))
+
+  case HttpRequest(GET, Uri.Path(&quot;/ping&quot;), _, _, _) =&gt;
+    HttpResponse(entity = &quot;PONG!&quot;)
+
+  case HttpRequest(GET, Uri.Path(&quot;/crash&quot;), _, _, _) =&gt;
+    sys.error(&quot;BOOM!&quot;)
+
+  case r: HttpRequest =&gt;
+    r.discardEntityBytes() // important to drain incoming HTTP Entity stream
+    HttpResponse(404, entity = &quot;Unknown resource!&quot;)
+}
+
+val bindingFuture: Future[Http.ServerBinding] =
+  serverSource.to(Sink.foreach { connection =&gt;
+    println(&quot;Accepted new connection from &quot; + connection.remoteAddress)
+
+    connection.handleWithSyncHandler(requestHandler)
+  // this is equivalent to
+  // connection handleWith { Flow[HttpRequest] map requestHandler }
+  }).run()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L163-L215" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+  final Materializer materializer = ActorMaterializer.create(system);
+
+  Source&lt;IncomingConnection, CompletionStage&lt;ServerBinding&gt;&gt; serverSource =
+    Http.get(system).bind(ConnectHttp.toHost(&quot;localhost&quot;, 8080));
+
+  final Function&lt;HttpRequest, HttpResponse&gt; requestHandler =
+    new Function&lt;HttpRequest, HttpResponse&gt;() {
+      private final HttpResponse NOT_FOUND =
+        HttpResponse.create()
+          .withStatus(404)
+          .withEntity(&quot;Unknown resource!&quot;);
+
+
+      @Override
+      public HttpResponse apply(HttpRequest request) throws Exception {
+        Uri uri = request.getUri();
+        if (request.method() == HttpMethods.GET) {
+          if (uri.path().equals(&quot;/&quot;)) {
+            return
+              HttpResponse.create()
+                .withEntity(ContentTypes.TEXT_HTML_UTF8,
+                  &quot;&lt;html&gt;&lt;body&gt;Hello world!&lt;/body&gt;&lt;/html&gt;&quot;);
+          } else if (uri.path().equals(&quot;/hello&quot;)) {
+            String name = uri.query().get(&quot;name&quot;).orElse(&quot;Mister X&quot;);
+
+            return
+              HttpResponse.create()
+                .withEntity(&quot;Hello &quot; + name + &quot;!&quot;);
+          } else if (uri.path().equals(&quot;/ping&quot;)) {
+            return HttpResponse.create().withEntity(&quot;PONG!&quot;);
+          } else {
+            return NOT_FOUND;
+          }
+        } else {
+          return NOT_FOUND;
+        }
+      }
+    };
+
+  CompletionStage&lt;ServerBinding&gt; serverBindingFuture =
+    serverSource.to(Sink.foreach(connection -&gt; {
+      System.out.println(&quot;Accepted new connection from &quot; + connection.remoteAddress());
+
+      connection.handleWithSyncHandler(requestHandler, materializer);
+      // this is equivalent to
+      //connection.handleWith(Flow.of(HttpRequest.class).map(requestHandler), materializer);
+    })).run(materializer);</code></pre></dd>
+</dl>
+<p>In this example, a request is handled by transforming the request stream with a function <span class="group-scala"><code>HttpRequest =&gt; HttpResponse</code></span><span class="group-java"><code>Function&lt;HttpRequest, HttpResponse&gt;</code></span> using <code>handleWithSyncHandler</code> (or equivalently, Apache Pekko Stream&rsquo;s <code>map</code> operator). Depending on the use case many other ways of providing a request handler are conceivable using Apache Pekko Stream&rsquo;s combinators. If the application provides a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> it is also the responsibility of the application to generate exactly one response for every request and that the ordering of responses matches the ordering of the associated requests (which is relevant if HTTP pipelining is enabled where processing of multiple incoming requests may overlap). When relying on <code>handleWithSyncHandler</code> or <code>handleWithAsyncHandler</code>, or the <code>map</code> or <code>mapAsync</code> stream operators, this requirement will be automatically fulfilled.</p>
+<p>See <a href="../routing-dsl/overview.html">Routing DSL Overview</a> for a more convenient high-level DSL to create request handlers.</p>
+<h3><a href="#streaming-request-response-entities" name="streaming-request-response-entities" class="anchor"><span class="anchor-link"></span></a>Streaming Request/Response Entities</h3>
+<p>Streaming of HTTP message entities is supported through subclasses of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span>. The application needs to be able to deal with streamed entities when receiving a request as well as, in many cases, when constructing responses. See <a href="../common/http-model.html#httpentity">HttpEntity</a> for a description of the alternatives.</p>
+<p>If you rely on the <a href="../common/marshalling.html">Marshalling</a> and/or <a href="../common/unmarshalling.html">Unmarshalling</a> facilities provided by Apache Pekko HTTP then the conversion of custom types to and from streamed entities can be quite convenient.</p>
+<a id="http-closing-connection-low-level"></a>
+<h3><a href="#closing-a-connection" name="closing-a-connection" class="anchor"><span class="anchor-link"></span></a>Closing a connection</h3>
+<p>The HTTP connection will be closed when the handling <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> cancels its upstream subscription or the peer closes the connection. An often times more convenient alternative is to explicitly add a <code>Connection: close</code> header to an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span>. This response will then be the last one on the connection and the server will actively close the connection when it has been sent out.</p>
+<p>Connection will also be closed if request entity has been cancelled (e.g. by attaching it to <code>Sink.cancelled()</code> or consumed only partially (e.g. by using <code>take</code> combinator). In order to prevent this behaviour entity should be explicitly drained by attaching it to <code>Sink.ignore()</code>.</p>
+<h2><a href="#configuring-server-side-https" name="configuring-server-side-https" class="anchor"><span class="anchor-link"></span></a>Configuring Server-side HTTPS</h2>
+<p>For detailed documentation about configuring and using HTTPS on the server-side refer to <a href="server-https-support.html">Server-Side HTTPS Support</a>.</p>
+<a id="http-server-layer"></a>
+<h2><a href="#stand-alone-http-layer-usage" name="stand-alone-http-layer-usage" class="anchor"><span class="anchor-link"></span></a>Stand-Alone HTTP Layer Usage</h2>
+<p>Due to its Reactive-Streams-based nature, the Apache Pekko HTTP layer is fully detachable from the underlying TCP interface. While in most applications this &ldquo;feature&rdquo; will not be crucial it can be useful in certain cases to be able to &ldquo;run&rdquo; the HTTP layer (and, potentially, higher-layers) against data that do not come from the network but rather some other source. Potential scenarios where this might be useful include tests, debugging or low-level event-sourcing (e.g by replaying network traffic).</p><div class="group-scala">
+<p>On the server-side the stand-alone HTTP layer forms a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/BidiFlow.html" title="org.apache.pekko.stream.javadsl.BidiFlow"><code>BidiFlow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/BidiFlow.html" title="org.apache.pekko.stream.scaladsl.BidiFlow"><code>BidiFlow</code></a></span> that is defined like this:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/main/scala/org/apache/pekko/http/scaladsl/Http.scala#L873-L885" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * The type of the server-side HTTP layer as a stand-alone BidiFlow
+ * that can be put atop the TCP layer to form an HTTP server.
+ *
+ * {{{
+ *                +------+
+ * HttpResponse ~&gt;|      |~&gt; SslTlsOutbound
+ *                | bidi |
+ * HttpRequest  &lt;~|      |&lt;~ SslTlsInbound
+ *                +------+
+ * }}}
+ */
+type ServerLayer = BidiFlow[HttpResponse, SslTlsOutbound, SslTlsInbound, HttpRequest, NotUsed]</code></pre>
+<p>You create an instance of <code>Http.ServerLayer</code> by calling one of the two overloads of the <code>Http().serverLayer</code> method, which also allows for varying degrees of configuration.</p></div><div class="group-java">
+<p>On the server-side the stand-alone HTTP layer forms a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/BidiFlow.html" title="org.apache.pekko.stream.javadsl.BidiFlow"><code>BidiFlow&lt;HttpResponse, SslTlsOutbound, SslTlsInbound, HttpRequest, NotUsed&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/BidiFlow.html" title="org.apache.pekko.stream.scaladsl.BidiFlow"><code>BidiFlow[HttpResponse, SslTlsOutbound, SslTlsInbound, HttpRequest, NotUsed]</code></a></span>, that is a stage that &ldquo;upgrades&rdquo; a potentially encrypted raw connection to the HTTP level.</p>
+<p>You create an instance of the layer by calling one of the two overloads of the <code>Http.get(system).serverLayer</code> method, which also allows for varying degrees of configuration. Note, that the returned instance is not reusable and can only be materialized once.</p></div>
+<h2><a href="#controlling-server-parallelism" name="controlling-server-parallelism" class="anchor"><span class="anchor-link"></span></a>Controlling server parallelism</h2>
+<p>Request handling can be parallelized on two axes, by handling several connections in parallel and by relying on HTTP pipelining to send several requests on one connection without waiting for a response first. In both cases the client controls the number of ongoing requests. To prevent being overloaded by too many requests, Apache Pekko HTTP can limit the number of requests it handles in parallel.</p>
+<p>To limit the number of simultaneously open connections, use the <code>pekko.http.server.max-connections</code> setting. This setting applies to all of <code>Http.bindAndHandle*</code> methods. If you use <code>Http.bind</code>, incoming connections are represented by a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;IncomingConnection, ...&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[IncomingConnection, ...]</code></a></span>. Use Apache Pekko Stream&rsquo;s combinators to apply backpressure to control the flow of incoming connections, e.g. by using <code>throttle</code> or <code>mapAsync</code>.</p>
+<p>HTTP pipelining is generally discouraged (and <a href="https://en.wikipedia.org/w/index.php?title=HTTP_pipelining&oldid=700966692#Implementation_in_web_browsers">disabled by most browsers</a>) but is nevertheless fully supported in Apache Pekko HTTP. The limit is applied on two levels. First, there&rsquo;s the <code>pekko.http.server.pipelining-limit</code> config setting which prevents that more than the given number of outstanding requests is ever given to the user-supplied handler-flow. On the other hand, the handler flow itself can apply any kind of throttling itself. If you use the <code>Http.bindAndHandleAsync</code> entry-point, you can specify the <code>parallelism</code> argument (which defaults to <code>1</code>, which means that pipelining is disabled) to control the number of concurrent requests per connection. If you use <code>Http.bindAndHandle</code> or <code>Http.bind</code>, the user-supplied handler flow has full control over how many request it accepts simultaneously by applying backpressure. In this case, you can e.g. use Apache Pekko Stream&rsquo;s <code>mapAsync</code> combinator with a given parallelism to limit the number of concurrently handled requests. Effectively, the more constraining one of these two measures, config setting and manual flow shaping, will determine how parallel requests on one connection are handled.</p>
+<a id="handling-http-server-failures-low-level"></a>
+<h2><a href="#handling-http-server-failures-in-the-low-level-api" name="handling-http-server-failures-in-the-low-level-api" class="anchor"><span class="anchor-link"></span></a>Handling HTTP Server failures in the Low-Level API</h2>
+<p>There are various situations when failure may occur while initialising or running an Apache Pekko HTTP server. Apache Pekko by default will log all these failures, however sometimes one may want to react to failures in addition to them just being logged, for example by shutting down the actor system, or notifying some external monitoring end-point explicitly.</p>
+<p>There are multiple things that can fail when creating and materializing an HTTP Server (similarly, the same applied to a plain streaming <code>Tcp()</code> server). The types of failures that can happen on different layers of the stack, starting from being unable to start the server, and ending with failing to unmarshal an HttpRequest, examples of failures include (from outer-most, to inner-most):</p>
+<ul>
+  <li>Failure to <code>bind</code> to the specified address/port,</li>
+  <li>Failure while accepting new <code>IncomingConnection</code>s, for example when the OS has run out of file descriptors or memory,</li>
+  <li>Failure while handling a connection, for example if the incoming <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> is malformed.</li>
+</ul>
+<p>This section describes how to handle each failure situation, and in which situations these failures may occur.</p>
+<h4><a href="#bind-failures" name="bind-failures" class="anchor"><span class="anchor-link"></span></a>Bind failures</h4>
+<p>The first type of failure is when the server is unable to bind to the given port. For example when the port is already taken by another application, or if the port is privileged (i.e. only usable by <code>root</code>). In this case the &ldquo;binding future&rdquo; will fail immediately, and we can react to it by listening on the <span class="group-scala">Future&rsquo;s</span><span class="group-java">CompletionStage’s</span> completion:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L65-L86" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.Http.ServerBinding
+
+import scala.concurrent.Future
+
+implicit val system = ActorSystem()
+// needed for the future foreach in the end
+implicit val executionContext = system.dispatcher
+
+// let&#39;s say the OS won&#39;t allow us to bind to 80.
+val (host, port) = (&quot;localhost&quot;, 80)
+val serverSource = Http().newServerAt(host, port).connectionSource()
+
+val bindingFuture: Future[ServerBinding] = serverSource
+  .to(handleConnections) // Sink[Http.IncomingConnection, _]
+  .run()
+
+bindingFuture.failed.foreach { ex =&gt;
+  log.error(ex, &quot;Failed to bind to {}:{}!&quot;, host, port)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L71-L86" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+
+Source&lt;IncomingConnection, CompletionStage&lt;ServerBinding&gt;&gt; serverSource =
+  Http.get(system).bind(ConnectHttp.toHost(&quot;localhost&quot;, 80));
+
+CompletionStage&lt;ServerBinding&gt; serverBindingFuture =
+  serverSource.to(Sink.foreach(connection -&gt; {
+      System.out.println(&quot;Accepted new connection from &quot; + connection.remoteAddress());
+      // ... and then actually handle the connection
+    }
+  )).run(materializer);
+
+serverBindingFuture.whenCompleteAsync((binding, failure) -&gt; {
+  // possibly report the failure somewhere...
+}, system.dispatcher());</code></pre></dd>
+</dl>
+<p>Once the server has successfully bound to a port, the <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;IncomingConnection, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[IncomingConnection, _]</code></a></span> starts running and emitting new incoming connections. This source technically can signal a failure as well, however this should only happen in very dramatic situations such as running out of file descriptors or memory available to the system, such that it&rsquo;s not able to accept a new incoming connection. Handling failures in Apache Pekko Streams is pretty straight forward, as failures are signaled through the stream starting from the stage which failed, all the way downstream to the final stages.</p>
+<h4><a href="#connections-source-failures" name="connections-source-failures" class="anchor"><span class="anchor-link"></span></a>Connections Source failures</h4>
+<p>In the example below we add a custom <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> in order to react to the stream&rsquo;s failure. See <a href="https://pekko.apache.org/docs/pekko/current/stream/stream-customize.html">Custom stream processing</a> for more on custom stages. We signal a <code>failureMonitor</code> actor with the cause why the stream is going down, and let the Actor handle the rest – maybe it&rsquo;ll decide to restart the server or shutdown the ActorSystem, that however is not our concern anymore.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L96-L120" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.actor.ActorRef
+import pekko.http.scaladsl.Http
+import pekko.stream.scaladsl.Flow
+
+implicit val system = ActorSystem()
+implicit val executionContext = system.dispatcher
+
+import Http._
+val (host, port) = (&quot;localhost&quot;, 8080)
+val serverSource = Http().newServerAt(host, port).connectionSource()
+
+val failureMonitor: ActorRef = system.actorOf(MyExampleMonitoringActor.props)
+
+val reactToTopLevelFailures = Flow[IncomingConnection]
+  .watchTermination()((_, termination) =&gt;
+    termination.failed.foreach {
+      cause =&gt; failureMonitor ! cause
+    })
+
+serverSource
+  .via(reactToTopLevelFailures)
+  .to(handleConnections) // Sink[Http.IncomingConnection, _]
+  .run()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L93-L116" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+
+Source&lt;IncomingConnection, CompletionStage&lt;ServerBinding&gt;&gt; serverSource =
+  Http.get(system).bind(ConnectHttp.toHost(&quot;localhost&quot;, 8080));
+
+Flow&lt;IncomingConnection, IncomingConnection, NotUsed&gt; failureDetection =
+  Flow.of(IncomingConnection.class).watchTermination((notUsed, termination) -&gt; {
+    termination.whenComplete((done, cause) -&gt; {
+      if (cause != null) {
+        // signal the failure to external monitoring service!
+      }
+    });
+    return NotUsed.getInstance();
+  });
+
+CompletionStage&lt;ServerBinding&gt; serverBindingFuture =
+  serverSource
+    .via(failureDetection) // feed signals through our custom stage
+    .to(Sink.foreach(connection -&gt; {
+      System.out.println(&quot;Accepted new connection from &quot; + connection.remoteAddress());
+      // ... and then actually handle the connection
+    }))
+    .run(materializer);</code></pre></dd>
+</dl>
+<h4><a href="#connection-failures" name="connection-failures" class="anchor"><span class="anchor-link"></span></a>Connection failures</h4>
+<p>The third type of failure that can occur is when the connection has been properly established, however afterwards is terminated abruptly – for example by the client aborting the underlying TCP connection.</p>
+<p>To handle this failure we can use the same pattern as in the previous snippet, however apply it to the connection&rsquo;s Flow:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L126-L155" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+import pekko.stream.scaladsl.Flow
+
+implicit val system = ActorSystem()
+implicit val executionContext = system.dispatcher
+
+val (host, port) = (&quot;localhost&quot;, 8080)
+val serverSource = Http().newServerAt(host, port).connectionSource()
+
+val reactToConnectionFailure = Flow[HttpRequest]
+  .recover[HttpRequest] {
+    case ex =&gt;
+      // handle the failure somehow
+      throw ex
+  }
+
+val httpEcho = Flow[HttpRequest]
+  .via(reactToConnectionFailure)
+  .map { request =&gt;
+    // simple streaming (!) &quot;echo&quot; response:
+    HttpResponse(entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, request.entity.dataBytes))
+  }
+
+serverSource
+  .runForeach { con =&gt;
+    con.handleWith(httpEcho)
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L123-L156" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+
+Source&lt;IncomingConnection, CompletionStage&lt;ServerBinding&gt;&gt; serverSource =
+  Http.get(system).bind(ConnectHttp.toHost(&quot;localhost&quot;, 8080));
+
+Flow&lt;HttpRequest, HttpRequest, NotUsed&gt; failureDetection =
+  Flow.of(HttpRequest.class)
+    .watchTermination((notUsed, termination) -&gt; {
+      termination.whenComplete((done, cause) -&gt; {
+        if (cause != null) {
+          // signal the failure to external monitoring service!
+        }
+      });
+      return NotUsed.getInstance();
+    });
+
+Flow&lt;HttpRequest, HttpResponse, NotUsed&gt; httpEcho =
+  Flow.of(HttpRequest.class)
+    .via(failureDetection)
+    .map(request -&gt; {
+      Source&lt;ByteString, Object&gt; bytes = request.entity().getDataBytes();
+      HttpEntity.Chunked entity = HttpEntities.create(ContentTypes.TEXT_PLAIN_UTF8, bytes);
+
+      return HttpResponse.create()
+        .withEntity(entity);
+    });
+
+CompletionStage&lt;ServerBinding&gt; serverBindingFuture =
+  serverSource.to(Sink.foreach(conn -&gt; {
+      System.out.println(&quot;Accepted new connection from &quot; + conn.remoteAddress());
+      conn.handleWith(httpEcho, materializer);
+    }
+  )).run(materializer);</code></pre></dd>
+</dl>
+<p>Note that this is when the TCP connection is closed correctly, if the client just goes away, for example because of a network failure, it will not be seen as this kind of stream failure. It will instead be detected through the <a href="../common/timeouts.html#timeouts">idle timeout</a>).</p>
+<p>These failures can be described more or less infrastructure related, they are failing bindings or connections. Most of the time you won&rsquo;t need to dive into those very deeply, as Apache Pekko will simply log errors of this kind anyway, which is a reasonable default for such problems.</p>
+<p>In order to learn more about handling exceptions in the actual routing layer, which is where your application code comes into the picture, refer to <a href="../routing-dsl/exception-handling.html">Exception Handling</a> which focuses explicitly on explaining how exceptions thrown in routes can be handled and transformed into <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> s with appropriate error codes and human-readable failure descriptions.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/server-side/low-level-api.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../routing-dsl/testkit.html" title="Route TestKit" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Route TestKit
+</span>
+</div>
+</a>
+<a href="../server-side/websocket-support.html" title="Server WebSocket Support" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Server WebSocket Support
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

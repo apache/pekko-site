@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Server HTTPS Support · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Server HTTPS Support
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html#server-https-support" class="active page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../server-side/server-https-support.html#server-https-support" class="header">Server HTTPS Support</a>
+  <ul>
+    <li><a href="../server-side/server-https-support.html#obtaining-ssl-tls-certificates" class="header">Obtaining SSL/TLS Certificates</a></li>
+    <li><a href="../server-side/server-https-support.html#using-https" class="header">Using HTTPS</a></li>
+    <li><a href="../server-side/server-https-support.html#running-both-http-and-https" class="header">Running both HTTP and HTTPS</a></li>
+    <li><a href="../server-side/server-https-support.html#mutual-authentication" class="header">Mutual authentication</a></li>
+    <li><a href="../server-side/server-https-support.html#further-reading" class="header">Further reading</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../server-side/server-https-support.html#server-https-support" class="header">Server HTTPS Support</a>
+  <ul>
+    <li><a href="../server-side/server-https-support.html#obtaining-ssl-tls-certificates" class="header">Obtaining SSL/TLS Certificates</a></li>
+    <li><a href="../server-side/server-https-support.html#using-https" class="header">Using HTTPS</a></li>
+    <li><a href="../server-side/server-https-support.html#running-both-http-and-https" class="header">Running both HTTP and HTTPS</a></li>
+    <li><a href="../server-side/server-https-support.html#mutual-authentication" class="header">Mutual authentication</a></li>
+    <li><a href="../server-side/server-https-support.html#further-reading" class="header">Further reading</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#server-https-support" name="server-https-support" class="anchor"><span class="anchor-link"></span></a>Server HTTPS Support</h1>
+<p>Apache Pekko HTTP supports TLS encryption on the server-side as well as on the <a href="../client-side/client-https-support.html">client-side</a>.</p>
+<p>The central vehicle for configuring encryption is the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/HttpsConnectionContext.html" title="org.apache.pekko.http.javadsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/HttpsConnectionContext.html" title="org.apache.pekko.http.scaladsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span>, which can be created using the static method <code>ConnectionContext.httpsServer</code> which is defined like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/main/scala/org/apache/pekko/http/scaladsl/ConnectionContext.scala#L37-L40" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ *  Creates an HttpsConnectionContext for server-side use from the given SSLContext.
+ */
+def httpsServer(sslContext: SSLContext): HttpsConnectionContext = // ...</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/main/scala/org/apache/pekko/http/javadsl/ConnectionContext.scala#L30-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Creates an HttpsConnectionContext for server-side use from the given SSLContext.
+ */
+def httpsServer(sslContext: SSLContext): HttpsConnectionContext = // ...</code></pre></dd>
+</dl>
+<p>On the server-side, the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/ServerBuilder.html" title="org.apache.pekko.http.javadsl.ServerBuilder"><code>ServerBuilder</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/ServerBuilder.html" title="org.apache.pekko.http.scaladsl.ServerBuilder"><code>ServerBuilder</code></a></span> defines a method <code>enableHttps</code> with an <code>httpsContext</code> parameter, which can receive the HTTPS configuration in the form of an <code>HttpsConnectionContext</code> instance.</p>
+<p>For detailed documentation for client-side HTTPS support refer to <a href="../client-side/client-https-support.html">Client-Side HTTPS Support</a>.</p>
+<h2><a href="#obtaining-ssl-tls-certificates" name="obtaining-ssl-tls-certificates" class="anchor"><span class="anchor-link"></span></a>Obtaining SSL/TLS Certificates</h2>
+<p>In order to run an HTTPS server a certificate has to be provided, which usually is either obtained from a signing authority or created by yourself for local or staging environment purposes.</p>
+<p>Signing authorities often provide instructions on how to create a Java keystore (typically with reference to Tomcat configuration). If you want to generate your own certificates, the official Oracle documentation on how to generate a keystore using the JDK keytool utility can be found <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html">here</a>.</p>
+<p>SSL-Config provides a more targeted guide on generating certificates, so we recommend you start with the guide titled <a href="https://lightbend.github.io/ssl-config/CertificateGeneration.html">Generating X.509 Certificates</a>.</p>
+<a id="using-https"></a>
+<h2><a href="#using-https" name="using-https" class="anchor"><span class="anchor-link"></span></a>Using HTTPS</h2>
+<p>Once you have obtained the server certificate, using it is as simple as preparing an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/HttpsConnectionContext.html" title="org.apache.pekko.http.javadsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/HttpsConnectionContext.html" title="org.apache.pekko.http.scaladsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span> and passing it to <code>enableHttps</code> when binding the server.</p>
+<p>The below example shows how setting up HTTPS works. First, you create and configure an instance of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/HttpsConnectionContext.html" title="org.apache.pekko.http.javadsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/HttpsConnectionContext.html" title="org.apache.pekko.http.scaladsl.HttpsConnectionContext"><code>HttpsConnectionContext</code></a></span> :</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/HttpsServerExampleSpec.scala#L17-L24" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import java.io.InputStream
+import java.security.{ KeyStore, SecureRandom }
+
+import javax.net.ssl.{ KeyManagerFactory, SSLContext, TrustManagerFactory }
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.server.{ Directives, Route }
+import pekko.http.scaladsl.{ ConnectionContext, Http, HttpsConnectionContext }
+implicit val system = ActorSystem()
+implicit val dispatcher = system.dispatcher
+
+// Manual HTTPS configuration
+
+val password: Array[Char] = &quot;change me&quot;.toCharArray // do not store passwords in code, read them from somewhere safe!
+
+val ks: KeyStore = KeyStore.getInstance(&quot;PKCS12&quot;)
+val keystore: InputStream = getClass.getClassLoader.getResourceAsStream(&quot;server.p12&quot;)
+
+require(keystore != null, &quot;Keystore required!&quot;)
+ks.load(keystore, password)
+
+val keyManagerFactory: KeyManagerFactory = KeyManagerFactory.getInstance(&quot;SunX509&quot;)
+keyManagerFactory.init(ks, password)
+
+val tmf: TrustManagerFactory = TrustManagerFactory.getInstance(&quot;SunX509&quot;)
+tmf.init(ks)
+
+val sslContext: SSLContext = SSLContext.getInstance(&quot;TLS&quot;)
+sslContext.init(keyManagerFactory.getKeyManagers, tmf.getTrustManagers, new SecureRandom)
+val https: HttpsConnectionContext = ConnectionContext.httpsServer(sslContext)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/main/java/org/apache/pekko/http/javadsl/server/examples/simple/SimpleServerApp.java#L43-L162" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>// ** CONFIGURING ADDITIONAL SETTINGS ** //
+
+public static HttpsConnectionContext createHttpsContext(ActorSystem system) {
+    try {
+      // initialise the keystore
+      // !!! never put passwords into code !!!
+      final char[] password = new char[]{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;};
+
+      final KeyStore ks = KeyStore.getInstance(&quot;PKCS12&quot;);
+      final InputStream keystore = SimpleServerApp.class.getClassLoader().getResourceAsStream(&quot;httpsDemoKeys/keys/server.p12&quot;);
+      if (keystore == null) {
+        throw new RuntimeException(&quot;Keystore required!&quot;);
+      }
+      ks.load(keystore, password);
+
+      final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(&quot;SunX509&quot;);
+      keyManagerFactory.init(ks, password);
+
+      final TrustManagerFactory tmf = TrustManagerFactory.getInstance(&quot;SunX509&quot;);
+      tmf.init(ks);
+
+      final SSLContext sslContext = SSLContext.getInstance(&quot;TLS&quot;);
+      sslContext.init(keyManagerFactory.getKeyManagers(), tmf.getTrustManagers(), new SecureRandom());
+
+      return ConnectionContext.httpsServer(sslContext);
+
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}</code></pre></dd>
+</dl>
+<p>After that you can pass it to <code>enableHttps</code>, like displayed below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/HttpsServerExampleSpec.scala#L68-L69" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val routes: Route = get { complete(&quot;Hello world!&quot;) }
+Http().newServerAt(&quot;127.0.0.1&quot;, 8080).enableHttps(https).bind(routes)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/main/java/org/apache/pekko/http/javadsl/server/examples/simple/SimpleServerApp.java#L117-L119" target="_blank" title="Go to snippet source">source</a><code class="language-java">Http.get(system).newServerAt(&quot;localhost&quot;, 8080)
+    .enableHttps(createHttpsContext(system))
+    .bind(app.createRoute());</code></pre></dd>
+</dl>
+<h2><a href="#running-both-http-and-https" name="running-both-http-and-https" class="anchor"><span class="anchor-link"></span></a>Running both HTTP and HTTPS</h2>
+<p>If you want to run HTTP and HTTPS servers in a single application, you first create an instance of <code>HttpsConnectionContext</code> as explained above and then create two server bindings for different ports, one with https enabled and one without:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/HttpsServerExampleSpec.scala#L61-L64" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// you can run both HTTP and HTTPS in the same application as follows:
+val commonRoutes: Route = get { complete(&quot;Hello world!&quot;) }
+Http().newServerAt(&quot;127.0.0.1&quot;, 443).enableHttps(https).bind(commonRoutes)
+Http().newServerAt(&quot;127.0.0.1&quot;, 80).bind(commonRoutes)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/main/java/org/apache/pekko/http/javadsl/server/examples/simple/SimpleServerHttpHttpsApp.java#L40-L48" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Http http = Http.get(system);
+//Run HTTP server firstly
+http.newServerAt(&quot;localhost&quot;, 80).bind(route);
+
+//get configured HTTPS context
+HttpsConnectionContext httpsContext = SimpleServerApp.createHttpsContext(system);
+
+//Then run HTTPS server
+http.newServerAt(&quot;localhost&quot;, 443).enableHttps(httpsContext).bind(route);</code></pre></dd>
+</dl>
+<h2><a href="#mutual-authentication" name="mutual-authentication" class="anchor"><span class="anchor-link"></span></a>Mutual authentication</h2>
+<p>To require clients to authenticate themselves when connecting, you must set this on the <code>SSLEngine</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/HttpsServerExampleSpec.scala#L77-L86" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sslContext: SSLContext = ???
+ConnectionContext.httpsServer(() =&gt; {
+  val engine = sslContext.createSSLEngine()
+  engine.setUseClientMode(false)
+
+  engine.setNeedClientAuth(true)
+  // or: engine.setWantClientAuth(true)
+
+  engine
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpsServerExampleTest.java#L37-L45" target="_blank" title="Go to snippet source">source</a><code class="language-java">ConnectionContext.httpsServer(() -&gt; {
+        SSLEngine engine = sslContext.createSSLEngine();
+        engine.setUseClientMode(false);
+
+        engine.setNeedClientAuth(true);
+        // or: engine.setWantClientAuth(true);
+
+        return engine;
+});</code></pre></dd>
+</dl>
+<p>For further (custom) certificate checks, you can access the <code>javax.net.ssl.SSLSession</code> via the <code>sslSession</code> attribute.</p>
+<p>At this point dynamic renegotiation of the certificates to be used is not implemented. For details see <a href="https://github.com/akka/akka/issues/18351">issue #18351</a> and some preliminary work in <a href="https://github.com/akka/akka/pull/19787">PR #19787</a>.</p>
+<h2><a href="#further-reading" name="further-reading" class="anchor"><span class="anchor-link"></span></a>Further reading</h2>
+<p>The topic of properly configuring HTTPS for your web server is an always changing one, thus we recommend staying up to date with various security breach news and of course keep your JVM at the latest version possible, as the default settings are often updated by Oracle in reaction to various security updates and known issues.</p>
+<p>We also recommend having a look at the <a href="https://www.playframework.com/documentation/2.5.x/ConfiguringHttps#ssl-certificates">Play documentation about securing your app</a>, as well as the techniques described in the Play documentation about setting up a <a href="https://www.playframework.com/documentation/2.5.x/HTTPServer">reverse proxy to terminate TLS in front of your application</a> instead of terminating TLS inside the JVM, and therefore Apache Pekko HTTP, itself.</p>
+<p>Other excellent articles on the subject:</p>
+<ul>
+  <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html#CreateKeystore">Oracle Java SE 8: Creating a Keystore using JSSE</a></li>
+  <li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/certpath/CertPathProgGuide.html">Java PKI Programmer&rsquo;s Guide</a></li>
+  <li><a href="https://tersesystems.com/2014/03/20/fixing-x509-certificates/">Fixing X.509 Certificates</a></li>
+</ul>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/server-side/server-https-support.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../server-side/websocket-support.html" title="Server WebSocket Support" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Server WebSocket Support
+</span>
+</div>
+</a>
+<a href="../server-side/graceful-termination.html" title="Graceful termination" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Graceful termination
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

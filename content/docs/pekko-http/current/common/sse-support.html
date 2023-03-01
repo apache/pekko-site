@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Server-Sent Events Support · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Server-Sent Events Support
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html#server-sent-events-support" class="active page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/sse-support.html#server-sent-events-support" class="header">Server-Sent Events Support</a>
+  <ul>
+    <li><a href="../common/sse-support.html#model" class="header">Model</a></li>
+    <li><a href="../common/sse-support.html#server-side-usage-marshalling" class="header">Server-side usage: marshalling</a></li>
+    <li><a href="../common/sse-support.html#client-side-usage-unmarshalling" class="header">Client-side usage: unmarshalling</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/sse-support.html#server-sent-events-support" class="header">Server-Sent Events Support</a>
+  <ul>
+    <li><a href="../common/sse-support.html#model" class="header">Model</a></li>
+    <li><a href="../common/sse-support.html#server-side-usage-marshalling" class="header">Server-side usage: marshalling</a></li>
+    <li><a href="../common/sse-support.html#client-side-usage-unmarshalling" class="header">Client-side usage: unmarshalling</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#server-sent-events-support" name="server-sent-events-support" class="anchor"><span class="anchor-link"></span></a>Server-Sent Events Support</h1>
+<p>Server-Sent Events (SSE) is a lightweight and <a href="https://www.w3.org/TR/eventsource/">standardized</a> protocol for pushing notifications from an HTTP server to a client. In contrast to WebSocket, which offers bi-directional communication, SSE only allows for one-way communication from the server to the client. If that&rsquo;s all you need, SSE has the advantages to be much simpler, to rely on HTTP only and to offer retry semantics on broken connections by the browser.</p>
+<p>According to the SSE specification clients can request an event stream from the server via HTTP. The server responds with the media type <code>text/event-stream</code> which has the fixed character encoding UTF-8 and keeps the response open to send events to the client when available. Events are textual structures which carry fields and are terminated by an empty line, e.g.</p>
+<pre><code>data: { &quot;username&quot;: &quot;John Doe&quot; }
+event: added
+id: 42
+
+data: another event
+</code></pre>
+<p>Clients can optionally signal the last seen event to the server via the <span class="group-scala"><code>Last-Event-ID</code></span><span class="group-java"><code>LastEventId</code></span> header, e.g. after a reconnect.</p>
+<h2><a href="#model" name="model" class="anchor"><span class="anchor-link"></span></a>Model</h2>
+<p>Apache Pekko HTTP represents event streams as <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ServerSentEvent, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ServerSentEvent, _]</code></a></span> where <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/sse/ServerSentEvent.html" title="org.apache.pekko.http.javadsl.model.sse.ServerSentEvent"><code>ServerSentEvent</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/sse/ServerSentEvent.html" title="org.apache.pekko.http.scaladsl.model.sse.ServerSentEvent"><code>ServerSentEvent</code></a></span> is a <span class="group-scala">case</span> class with the following read-only properties:</p>
+<ul>
+  <li><span class="group-scala"><code>data: String</code></span><span class="group-java"><code>String data</code></span> – the actual payload, may span multiple lines</li>
+  <li><span class="group-scala"><code>eventType: Option[String]</code></span><span class="group-java"><code>Optional&lt;String&gt; type</code></span> – optional qualifier, e.g. &ldquo;added&rdquo;, &ldquo;removed&rdquo;, etc.</li>
+  <li><span class="group-scala"><code>id: Option[String]</code></span><span class="group-java"><code>Optional&lt;String&gt; id</code></span> – optional identifier</li>
+  <li><span class="group-scala"><code>retry: Option[Int]</code></span><span class="group-java"><code>OptionalInt retry</code></span> – optional reconnection delay in milliseconds</li>
+</ul>
+<p>In accordance to the SSE specification Apache Pekko HTTP also provides the <span class="group-scala"><code>Last-Event-ID</code></span><span class="group-java"><code>LastEventId</code></span> header and the <span class="group-scala"><code>text/event-stream</code></span><span class="group-java"><code>TEXT_EVENT_STREAM</code></span> media type.</p>
+<h2><a href="#server-side-usage-marshalling" name="server-side-usage-marshalling" class="anchor"><span class="anchor-link"></span></a>Server-side usage: marshalling</h2>
+<p>In order to respond to an HTTP request with an event stream, you have to <span class="group-scala">bring the implicit <code>ToResponseMarshaller[Source[ServerSentEvent, \_]]</code> defined by <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/marshalling/sse/EventStreamMarshalling.html" title="org.apache.pekko.http.javadsl.marshalling.sse.EventStreamMarshalling"><code>EventStreamMarshalling</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/marshalling/sse/EventStreamMarshalling.html" title="org.apache.pekko.http.scaladsl.marshalling.sse.EventStreamMarshalling"><code>EventStreamMarshalling</code></a></span> into the scope defining the respective route</span><span class="group-java">use the <code>EventStreamMarshalling.toEventStream</code> marshaller</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ServerSentEventsExampleSpec.scala#L23-L48" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.NotUsed
+import pekko.stream.scaladsl.Source
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.unmarshalling.Unmarshal
+import pekko.http.scaladsl.model.sse.ServerSentEvent
+import scala.concurrent.duration._
+
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter.ISO_LOCAL_TIME
+
+def route: Route = {
+  import pekko.http.scaladsl.marshalling.sse.EventStreamMarshalling._
+
+  path(&quot;events&quot;) {
+    get {
+      complete {
+        Source
+          .tick(2.seconds, 2.seconds, NotUsed)
+          .map(_ =&gt; LocalTime.now())
+          .map(time =&gt; ServerSentEvent(ISO_LOCAL_TIME.format(time)))
+          .keepAlive(1.second, () =&gt; ServerSentEvent.heartbeat)
+      }
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/java/org/apache/pekko/http/javadsl/marshalling/sse/EventStreamMarshallingTest.java#L39-L42" target="_blank" title="Go to snippet source">source</a><code class="language-java">final List&lt;ServerSentEvent&gt; events = new ArrayList&lt;&gt;();
+events.add(ServerSentEvent.create(&quot;1&quot;));
+events.add(ServerSentEvent.create(&quot;2&quot;));
+final Route route = completeOK(Source.from(events), EventStreamMarshalling.toEventStream());</code></pre></dd>
+</dl>
+<h2><a href="#client-side-usage-unmarshalling" name="client-side-usage-unmarshalling" class="anchor"><span class="anchor-link"></span></a>Client-side usage: unmarshalling</h2>
+<p>In order to unmarshal an event stream as <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ServerSentEvent, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ServerSentEvent, _]</code></a></span>, you have to <span class="group-scala">bring the implicit <code>FromEntityUnmarshaller[Source[ServerSentEvent, _]]</code> defined by <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/unmarshalling/sse/EventStreamUnmarshalling.html" title="org.apache.pekko.http.javadsl.unmarshalling.sse.EventStreamUnmarshalling"><code>EventStreamUnmarshalling</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/unmarshalling/sse/EventStreamUnmarshalling.html" title="org.apache.pekko.http.scaladsl.unmarshalling.sse.EventStreamUnmarshalling"><code>EventStreamUnmarshalling</code></a></span> into scope</span><span class="group-java">use the <code>EventStreamUnmarshalling.fromEventsStream</code> unmarshaller</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ServerSentEventsExampleSpec.scala#L52-L57" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.unmarshalling.sse.EventStreamUnmarshalling._
+
+Http()
+  .singleRequest(Get(&quot;http://localhost:8000/events&quot;))
+  .flatMap(Unmarshal(_).to[Source[ServerSentEvent, NotUsed]])
+  .foreach(_.runForeach(println))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/java/org/apache/pekko/http/javadsl/unmarshalling/sse/EventStreamUnmarshallingTest.java#L45-L50" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;ServerSentEvent&gt; unmarshalledEvents =
+        EventStreamUnmarshalling.fromEventsStream(system)
+                .unmarshal(entity, system)
+                .thenCompose(source -&gt; source.runWith(Sink.seq(), mat))
+                .toCompletableFuture()
+                .get(3000, TimeUnit.SECONDS);</code></pre></dd>
+</dl>
+<p>Notice that if you are looking for a resilient way to permanently subscribe to an event stream, Apache Pekko Connectors provides the <a href="https://doc.akka.io/docs/alpakka/current/sse.html">EventSource</a> connector which reconnects automatically with the id of the last seen event.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/common/sse-support.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../common/xml-support.html" title="XML Support" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+XML Support
+</span>
+</div>
+</a>
+<a href="../common/timeouts.html" title="Timeouts" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Timeouts
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Caching · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Caching
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html#caching" class="active page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/caching.html#caching" class="header">Caching</a>
+  <ul>
+    <li><a href="../common/caching.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../common/caching.html#basic-design" class="header">Basic design</a></li>
+    <li><a href="../common/caching.html#frequency-biased-lfu-cache" class="header">Frequency-biased LFU cache</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/caching.html#caching" class="header">Caching</a>
+  <ul>
+    <li><a href="../common/caching.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../common/caching.html#basic-design" class="header">Basic design</a></li>
+    <li><a href="../common/caching.html#frequency-biased-lfu-cache" class="header">Frequency-biased LFU cache</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#caching" name="caching" class="anchor"><span class="anchor-link"></span></a>Caching</h1>
+<p>Apache Pekko HTTP&rsquo;s caching support provides a lightweight and fast in-memory caching functionality based on futures. The primary use-case is the &ldquo;wrapping&rdquo; of an expensive operation with a caching layer that, based on a certain key of type <code>K</code>, runs the wrapped operation only once and returns the cached value for all future accesses for the same key (as long as the respective entry has not expired).</p>
+<p>Apache Pekko HTTP comes with one implementation of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/javadsl/Cache.html" title="org.apache.pekko.http.caching.javadsl.Cache"><code>Cache</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/scaladsl/Cache.html" title="org.apache.pekko.http.caching.scaladsl.Cache"><code>Cache</code></a></span> API built on <a href="https://github.com/ben-manes/caffeine/">Caffeine</a> featuring frequency-biased cache eviction semantics with support for time-based entry expiration.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Apache Pekko HTTP Caching, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoHttpVersion = "0.0.0+4308-98f0ff9c-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-http-caching" % PekkoHttpVersion</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-http-bom_${versions.ScalaBinary}:0.0.0+4308-98f0ff9c-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-http-caching_${versions.ScalaBinary}"
+}</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-http-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+4308-98f0ff9c-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-http-caching_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd></dl>
+<h2><a href="#basic-design" name="basic-design" class="anchor"><span class="anchor-link"></span></a>Basic design</h2>
+<p>The central idea of the cache API is to not store the actual values of type <code>T</code> themselves in the cache but rather the corresponding futures, i.e. instances of type <span class="group-java"><code>CompletableFuture&lt;T&gt;</code></span><span class="group-scala"><code>Future[T]</code></span>. This approach has the advantage of taking care of the thundering herds problem where many requests to a particular cache key (e.g. a resource URI) arrive before the first one could be completed. Normally (without special guarding techniques, like so-called &ldquo;cowboy&rdquo; entries) this can cause many requests to compete for system resources while trying to compute the same result thereby greatly reducing overall system performance. When you use an Apache Pekko HTTP cache the very first request that arrives for a certain cache key causes a future to be put into the cache which all later requests then &ldquo;hook into&rdquo;. As soon as the first request completes all other ones complete as well. This minimizes processing time and server load for all requests.</p>
+<p>All Apache Pekko HTTP cache implementations adheres to the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/javadsl/Cache.html" title="org.apache.pekko.http.caching.javadsl.Cache"><code>Cache</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/scaladsl/Cache.html" title="org.apache.pekko.http.caching.scaladsl.Cache"><code>Cache</code></a></span> <span class="group-java">interface</span><span class="group-scala">class</span>, which allows you to interact with the cache.</p>
+<p>Along with the cache API, the routing DSL provides several <a href="../routing-dsl/directives/caching-directives/index.html">caching directives</a> to use caching in your routes.</p>
+<h2><a href="#frequency-biased-lfu-cache" name="frequency-biased-lfu-cache" class="anchor"><span class="anchor-link"></span></a>Frequency-biased LFU cache</h2>
+<p>The frequency-biased LFU cache implementation has a defined maximum number of entries it can store. After the maximum capacity is reached the cache will evict entries that are less likely to be used again. For example, the cache may evict an entry because it hasn&rsquo;t been used recently or very often.</p>
+<p>Time-based entry expiration is enabled when time-to-live and/or time-to-idle expirations are set to a finite duration. The former provides an upper limit to the time period an entry is allowed to remain in the cache while the latter limits the maximum time an entry is kept without having been accessed, ie. either read or updated. If both values are finite the time-to-live has to be greater or equal than the time-to-idle.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Expired entries are only evicted upon next access (or by being thrown out by the capacity constraint), so they might prevent garbage collection of their values for longer than expected.</p></div>
+<p>For simple cases, configure the capacity and expiration settings in your <code>application.conf</code> file via the settings under <code>pekko.http.caching</code> and use <span class="group-java"><code>LfuCache.create()</code></span><span class="group-scala"><code>LfuCache.apply()</code></span> to create the cache. For more advanced usage you can create an <span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/LfuCache$.html" title="org.apache.pekko.http.caching.LfuCache"><code>LfuCache</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/caching/LfuCache.html" title="org.apache.pekko.http.caching.LfuCache"><code>LfuCache</code></a></span> with settings specialized for your use case:</p>
+<dl>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/directives/CachingDirectivesExamplesTest.java#L39-L42" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.http.caching.javadsl.Cache;
+import org.apache.pekko.http.caching.javadsl.CachingSettings;
+import org.apache.pekko.http.caching.javadsl.LfuCacheSettings;
+import org.apache.pekko.http.caching.LfuCache;
+import static org.apache.pekko.http.javadsl.server.directives.CachingDirectives.*;
+import java.util.concurrent.TimeUnit;
+
+// Use the request&#39;s URI as the cache&#39;s key
+final JavaPartialFunction&lt;RequestContext, Uri&gt; keyerFunction = new JavaPartialFunction&lt;RequestContext, Uri&gt;() {
+  public Uri apply(RequestContext in, boolean isCheck) {
+    return in.getRequest().getUri();
+  }
+};
+final CachingSettings defaultCachingSettings = CachingSettings.create(system());
+final LfuCacheSettings lfuCacheSettings = defaultCachingSettings.lfuCacheSettings()
+  .withInitialCapacity(25)
+  .withMaxCapacity(50)
+  .withTimeToLive(Duration.create(20, TimeUnit.SECONDS))
+  .withTimeToIdle(Duration.create(10, TimeUnit.SECONDS));
+final CachingSettings cachingSettings = defaultCachingSettings.withLfuCacheSettings(lfuCacheSettings);
+final Cache&lt;Uri, RouteResult&gt; lfuCache = LfuCache.create(cachingSettings);
+
+// Create the route
+final Route route = cache(lfuCache, keyerFunction, () -&gt; innerRoute);</code></pre></dd>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CachingDirectivesExamplesSpec.scala#L144-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.http.caching.scaladsl.Cache
+import pekko.http.caching.scaladsl.CachingSettings
+import pekko.http.caching.LfuCache
+import pekko.http.scaladsl.server.RequestContext
+import pekko.http.scaladsl.server.RouteResult
+import pekko.http.scaladsl.model.Uri
+import pekko.http.scaladsl.server.directives.CachingDirectives._
+import scala.concurrent.duration._
+
+// Use the request&#39;s URI as the cache&#39;s key
+val keyerFunction: PartialFunction[RequestContext, Uri] = {
+  case r: RequestContext =&gt; r.request.uri
+}
+val defaultCachingSettings = CachingSettings(system)
+val lfuCacheSettings =
+  defaultCachingSettings.lfuCacheSettings
+    .withInitialCapacity(25)
+    .withMaxCapacity(50)
+    .withTimeToLive(20.seconds)
+    .withTimeToIdle(10.seconds)
+val cachingSettings =
+  defaultCachingSettings.withLfuCacheSettings(lfuCacheSettings)
+val lfuCache: Cache[Uri, RouteResult] = LfuCache(cachingSettings)
+
+// Create the route
+val route = cache(lfuCache, keyerFunction)(innerRoute)</code></pre></dd>
+</dl>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/common/caching.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../common/timeouts.html" title="Timeouts" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Timeouts
+</span>
+</div>
+</a>
+<a href="../server-side/index.html" title="4. Server API" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+4. Server API
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

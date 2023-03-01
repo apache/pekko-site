@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Request-Level Client-Side API · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Request-Level Client-Side API
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html#request-level-client-side-api" class="active page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../client-side/request-level.html#request-level-client-side-api" class="header">Request-Level Client-Side API</a>
+  <ul>
+    <li><a href="../client-side/request-level.html#future-based-variant" class="header">Future-Based Variant</a></li>
+    <li><a href="../client-side/request-level.html#flow-based-variant" class="header">Flow-Based Variant</a></li>
+    <li><a href="../client-side/request-level.html#collecting-headers-from-a-server-response" class="header">Collecting headers from a server response</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../client-side/request-level.html#request-level-client-side-api" class="header">Request-Level Client-Side API</a>
+  <ul>
+    <li><a href="../client-side/request-level.html#future-based-variant" class="header">Future-Based Variant</a></li>
+    <li><a href="../client-side/request-level.html#flow-based-variant" class="header">Flow-Based Variant</a></li>
+    <li><a href="../client-side/request-level.html#collecting-headers-from-a-server-response" class="header">Collecting headers from a server response</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#request-level-client-side-api" name="request-level-client-side-api" class="anchor"><span class="anchor-link"></span></a>Request-Level Client-Side API</h1>
+<p>The request-level API is the recommended and most convenient way of using Apache Pekko HTTP&rsquo;s client-side functionality. It internally builds upon the <a href="host-level.html">Host-Level Client-Side API</a> to provide you with a simple and easy-to-use way of retrieving HTTP responses from remote servers. Depending on your preference you can pick the <a href="#future-based-variant">Future-based variant</a> or <a href="#flow-based-variant">Flow-based variant</a>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It is recommended to first read the <a href="../implications-of-streaming-http-entity.html">Implications of the streaming nature of Request/Response Entities</a> section, as it explains the underlying full-stack streaming concepts, which may be unexpected when coming from a background with non-&ldquo;streaming first&rdquo; HTTP Clients.</p></div><div class="callout note "><div class="callout-title">Note</div>
+<p>The request-level API is implemented on top of a connection pool that is shared inside the actor system. A consequence of using a pool is that long-running requests block a connection while running and starve other requests. Make sure not to use the request-level API for long-running requests like long-polling GET requests. Use the <a href="connection-level.html">Connection-Level Client-Side API</a> or an extra pool just for the long-running connection instead.</p></div>
+<h2><a href="#future-based-variant" name="future-based-variant" class="anchor"><span class="anchor-link"></span></a>Future-Based Variant</h2>
+<p>Most often, your HTTP client needs are very basic. You need the HTTP response for a certain request and don&rsquo;t want to bother with setting up a full-blown streaming infrastructure.</p>
+<p>For these cases Apache Pekko HTTP offers the <span class="group-scala"><code>Http().singleRequest(...)</code></span><span class="group-java"><code>Http.get(system).singleRequest(...)</code></span> method, which turns an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> instance into <span class="group-scala"><code>Future[HttpResponse]</code></span><span class="group-java"><code>CompletionStage&lt;HttpResponse&gt;</code></span>. Internally the request is dispatched across the (cached) host connection pool for the request&rsquo;s effective URI.</p>
+<p>The request must have either an absolute URI or a valid <code>Host</code> header, otherwise the returned future will be completed with an error.</p>
+<h3><a href="#example" name="example" class="anchor"><span class="anchor-link"></span></a>Example</h3>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientSingleRequest.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2020-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.actor.typed.ActorSystem
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+
+import scala.concurrent.Future
+import scala.util.{ Failure, Success }
+
+object HttpClientSingleRequest {
+  def main(args: Array[String]): Unit = {
+    implicit val system = ActorSystem(Behaviors.empty, &quot;SingleRequest&quot;)
+    // needed for the future flatMap/onComplete in the end
+    implicit val executionContext = system.executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = &quot;http://pekko.apache.org&quot;))
+
+    responseFuture
+      .onComplete {
+        case Success(res) =&gt; println(res)
+        case Failure(_)   =&gt; sys.error(&quot;something wrong&quot;)
+      }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L221-L225" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+
+final CompletionStage&lt;HttpResponse&gt; responseFuture =
+  Http.get(system)
+      .singleRequest(HttpRequest.create(&quot;http://pekko.apache.org&quot;));</code></pre></dd>
+</dl>
+<h3><a href="#using-the-future-based-api-in-actors" name="using-the-future-based-api-in-actors" class="anchor"><span class="anchor-link"></span></a>Using the Future-Based API in Actors</h3>
+<p>When using the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> based API from inside a classic Apache Pekko <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span>, all the usual caveats apply to how one should deal with the futures completion. For example, you should not access the actor&rsquo;s state from within the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span>&rsquo;s callbacks (such as <code>map</code>, <code>onComplete</code>, &hellip;) and, instead, you should use the <span class="group-scala"><code>pipeTo</code></span><span class="group-java"><code>pipe</code></span> pattern to pipe the result back to the actor as a message:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L331-L361" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.{ Actor, ActorLogging }
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+import pekko.util.ByteString
+
+class Myself extends Actor
+    with ActorLogging {
+
+  import pekko.pattern.pipe
+  import context.dispatcher
+
+  implicit val system = context.system
+  val http = Http(system)
+
+  override def preStart() = {
+    http.singleRequest(HttpRequest(uri = &quot;http://pekko.apache.org&quot;))
+      .pipeTo(self)
+  }
+
+  def receive = {
+    case HttpResponse(StatusCodes.OK, headers, entity, _) =&gt;
+      entity.dataBytes.runFold(ByteString(&quot;&quot;))(_ ++ _).foreach { body =&gt;
+        log.info(&quot;Got response, body: &quot; + body.utf8String)
+      }
+    case resp @ HttpResponse(code, _, _, _) =&gt;
+      log.info(&quot;Request failed, response code: &quot; + code)
+      resp.discardEntityBytes()
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L49-L247" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.AbstractActor;
+import org.apache.pekko.http.javadsl.model.HttpRequest;
+import org.apache.pekko.http.javadsl.model.HttpResponse;
+import static org.apache.pekko.pattern.PatternsCS.pipe;
+
+class SingleRequestInActorExample extends AbstractActor {
+  final Http http = Http.get(context().system());
+  final ExecutionContextExecutor dispatcher = context().dispatcher();
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+      .match(String.class, url -&gt; pipe(fetch(url), dispatcher).to(self()))
+      .build();
+  }
+
+  CompletionStage&lt;HttpResponse&gt; fetch(String url) {
+    return http.singleRequest(HttpRequest.create(url));
+  }
+}</code></pre></dd>
+</dl><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Always make sure you consume the response entity streams (of type <span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString,Unit&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString,Unit]</code></a></span></span><span class="group-java"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, Object&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, Object]</code></a></span></span>). Connect the response entity <code>Source</code> to a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span>, or call <span class="group-scala"><code>response.discardEntityBytes()</code></span><span class="group-java"><code>response.discardEntityBytes(Materializer)</code></span> if you don&rsquo;t care about the response entity. </p>
+<p>Read the <a href="../implications-of-streaming-http-entity.html">Implications of the streaming nature of Request/Response Entities</a> section for more details.</p>
+<p>If the application doesn&rsquo;t subscribe to the response entity within <code>pekko.http.host-connection-pool.response-entity-subscription-timeout</code>, the stream will fail with a <code>TimeoutException: Response entity was not subscribed after ...</code>.</p></div>
+<h2><a href="#flow-based-variant" name="flow-based-variant" class="anchor"><span class="anchor-link"></span></a>Flow-Based Variant</h2>
+<p>The Flow-based variant of the request-level client-side API is presented by the <span class="group-scala"><code>Http().superPool(...)</code></span><span class="group-java"><code>Http.get(system).superPool(...)</code></span> method. It creates a new &ldquo;super connection pool flow&rdquo;, which routes incoming requests to a (cached) host connection pool depending on their respective effective URIs.</p>
+<p>The <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> returned by <span class="group-scala"><code>Http().superPool(...)</code></span><span class="group-java"><code>Http.get(system).superPool(...)</code></span> is very similar to the one from the <a href="host-level.html">Host-Level Client-Side API</a>, so the section on <a href="host-level.html#using-a-host-connection-pool">Using a Host Connection Pool</a> also applies here.</p>
+<p>However, there is one notable difference between a &ldquo;host connection pool client flow&rdquo; for the Host-Level API and a &ldquo;super-pool flow&rdquo; from the Request-Level API:</p>
+<ul>
+  <li>In a &ldquo;host connection pool client flow&rdquo; the flow has an implicit target host context. Therefore, the requests it takes don&rsquo;t need to have absolute URIs or a valid <code>Host</code> header because the host connection pool will automatically add a <code>Host</code> header if required.</li>
+</ul>
+<p>For a &ldquo;super-pool flow&rdquo; in the Request-Level API this is not the case. All requests to a super-pool must either have an absolute URI or a valid <code>Host</code> header, because otherwise it&rsquo;d be impossible to find out which target endpoint to direct the request to.</p>
+<h2><a href="#collecting-headers-from-a-server-response" name="collecting-headers-from-a-server-response" class="anchor"><span class="anchor-link"></span></a>Collecting headers from a server response</h2>
+<p>Sometimes we would like to get only headers of specific type which are sent from a server. In order to collect headers in a type safe way Apache Pekko HTTP API provides a type for each HTTP header. Here is an example for getting all cookies set by a server (<code>Set-Cookie</code> header):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientCollectingHeaders.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2020-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model.headers.`Set-Cookie`
+import pekko.http.scaladsl.model._
+
+import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.Future
+
+class HttpClientCollectingHeaders {
+  def main(args: Array[String]): Unit = {
+    implicit val system: ActorSystem = ActorSystem()
+    implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = &quot;http://pekko.apache.org&quot;))
+
+    responseFuture.map {
+      case response @ HttpResponse(StatusCodes.OK, _, _, _) =&gt;
+        val setCookies = response.headers[`Set-Cookie`]
+        println(s&quot;Cookies set by a server: $setCookies&quot;)
+        response.discardEntityBytes()
+      case _ =&gt; sys.error(&quot;something wrong&quot;)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L306-L311" target="_blank" title="Go to snippet source">source</a><code class="language-java">final HttpResponse response = responseFromSomewhere();
+
+final Iterable&lt;SetCookie&gt; setCookies = response.getHeaders(SetCookie.class);
+
+System.out.println(&quot;Cookies set by a server: &quot; + setCookies);
+response.discardEntityBytes(system);</code></pre></dd>
+</dl>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/client-side/request-level.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../client-side/request-and-response.html" title="HttpRequest and HttpResponse" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+HttpRequest and HttpResponse
+</span>
+</div>
+</a>
+<a href="../client-side/host-level.html" title="Host-Level Client-Side API" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Host-Level Client-Side API
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

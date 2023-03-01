@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>The URI model · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+The URI model
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html#the-uri-model" class="active page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/uri-model.html#the-uri-model" class="header">The URI model</a>
+  <ul>
+    <li><a href="../common/uri-model.html#parsing-a-uri-string" class="header">Parsing a URI string</a></li>
+    <li><a href="../common/uri-model.html#obtaining-the-raw-request-uri" class="header">Obtaining the raw request URI</a></li>
+    <li><a href="../common/uri-model.html#query-string-in-uri" class="header">Query string in URI</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/uri-model.html#the-uri-model" class="header">The URI model</a>
+  <ul>
+    <li><a href="../common/uri-model.html#parsing-a-uri-string" class="header">Parsing a URI string</a></li>
+    <li><a href="../common/uri-model.html#obtaining-the-raw-request-uri" class="header">Obtaining the raw request URI</a></li>
+    <li><a href="../common/uri-model.html#query-string-in-uri" class="header">Query string in URI</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h2><a href="#the-uri-model" name="the-uri-model" class="anchor"><span class="anchor-link"></span></a>The URI model</h2>
+<p>Apache Pekko HTTP offers its own specialised <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> model class which is tuned for both performance and idiomatic usage within other types of the HTTP model. For example, an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span>&rsquo;s target URI is parsed into this type, where all character escaping and other URI specific semantics are applied.</p>
+<h3><a href="#parsing-a-uri-string" name="parsing-a-uri-string" class="anchor"><span class="anchor-link"></span></a>Parsing a URI string</h3>
+<p>We follow <a href="https://tools.ietf.org/html/rfc3986#section-1.1.2">RFC 3986</a> to implement the URI parsing rules. When you try to parse a URI string, Apache Pekko HTTP internally creates an instance of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> class, which holds the modeled URI components inside.</p>
+<p>For example, the following creates an instance of a simple valid URI:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre><code>Uri(&quot;http://localhost&quot;)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre><code>Uri.create(&quot;http://localhost&quot;);
+</code></pre></dd>
+</dl>
+<p>Below are some more examples of valid URI strings, and how you can construct a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> model class instances <span class="group-scala">,using <code>Uri.from()</code> method by passing <code>scheme</code>, <code>host</code>, <code>path</code> and <code>query</code> parameters</span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L500-L525" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Uri(&quot;ftp://ftp.is.co.za/rfc/rfc1808.txt&quot;) shouldEqual
+Uri.from(scheme = &quot;ftp&quot;, host = &quot;ftp.is.co.za&quot;, path = &quot;/rfc/rfc1808.txt&quot;)
+
+Uri(&quot;http://www.ietf.org/rfc/rfc2396.txt&quot;) shouldEqual
+Uri.from(scheme = &quot;http&quot;, host = &quot;www.ietf.org&quot;, path = &quot;/rfc/rfc2396.txt&quot;)
+
+Uri(&quot;ldap://[2001:db8::7]/c=GB?objectClass?one&quot;) shouldEqual
+Uri.from(scheme = &quot;ldap&quot;, host = &quot;[2001:db8::7]&quot;, path = &quot;/c=GB&quot;, queryString = Some(&quot;objectClass?one&quot;))
+
+Uri(&quot;mailto:John.Doe@example.com&quot;) shouldEqual
+Uri.from(scheme = &quot;mailto&quot;, path = &quot;John.Doe@example.com&quot;)
+
+Uri(&quot;news:comp.infosystems.www.servers.unix&quot;) shouldEqual
+Uri.from(scheme = &quot;news&quot;, path = &quot;comp.infosystems.www.servers.unix&quot;)
+
+Uri(&quot;tel:+1-816-555-1212&quot;) shouldEqual
+Uri.from(scheme = &quot;tel&quot;, path = &quot;+1-816-555-1212&quot;)
+
+Uri(&quot;s3:image.png&quot;) shouldEqual
+Uri.from(scheme = &quot;s3&quot;, path = &quot;image.png&quot;)
+
+Uri(&quot;telnet://192.0.2.16:80/&quot;) shouldEqual
+Uri.from(scheme = &quot;telnet&quot;, host = &quot;192.0.2.16&quot;, port = 80, path = &quot;/&quot;)
+
+Uri(&quot;urn:oasis:names:specification:docbook:dtd:xml:4.1.2&quot;) shouldEqual
+Uri.from(scheme = &quot;urn&quot;, path = &quot;oasis:names:specification:docbook:dtd:xml:4.1.2&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L29-L63" target="_blank" title="Go to snippet source">source</a><code class="language-java">Uri uri1 = Uri.create(&quot;ftp://ftp.is.co.za/rfc/rfc1808.txt&quot;);
+assertEquals(&quot;ftp&quot;, uri1.getScheme());
+assertEquals(Host.create(&quot;ftp.is.co.za&quot;), uri1.getHost());
+assertEquals(&quot;/rfc/rfc1808.txt&quot;, uri1.getPathString());
+
+Uri uri2 = Uri.create(&quot;http://www.ietf.org/rfc/rfc2396.txt&quot;);
+assertEquals(&quot;http&quot;, uri2.getScheme());
+assertEquals(Host.create(&quot;www.ietf.org&quot;), uri2.getHost());
+assertEquals(&quot;/rfc/rfc2396.txt&quot;, uri2.getPathString());
+
+Uri uri3 = Uri.create(&quot;ldap://[2001:db8::7]/c=GB?objectClass?one&quot;);
+assertEquals(&quot;ldap&quot;, uri3.getScheme());
+assertEquals(Host.create(&quot;[2001:db8::7]&quot;), uri3.getHost());
+assertEquals(&quot;objectClass?one&quot;, uri3.query().toString());
+
+Uri uri4 = Uri.create(&quot;mailto:John.Doe@example.com&quot;);
+assertEquals(&quot;mailto&quot;, uri4.getScheme());
+assertEquals(&quot;John.Doe@example.com&quot;, uri4.getPathString());
+
+Uri uri5 = Uri.create(&quot;news:comp.infosystems.www.servers.unix&quot;);
+assertEquals(&quot;news&quot;, uri5.getScheme());
+assertEquals(&quot;comp.infosystems.www.servers.unix&quot;, uri5.getPathString());
+
+Uri uri6 = Uri.create(&quot;tel:+1-816-555-1212&quot;);
+assertEquals(&quot;tel&quot;, uri6.getScheme());
+assertEquals(&quot;+1-816-555-1212&quot;, uri6.getPathString());
+
+Uri uri7 = Uri.create(&quot;telnet://192.0.2.16:80/&quot;);
+assertEquals(&quot;telnet&quot;, uri7.getScheme());
+assertEquals(Host.create(&quot;192.0.2.16&quot;), uri7.getHost());
+assertEquals(&quot;/&quot;, uri7.getPathString());
+
+Uri uri8 = Uri.create(&quot;urn:oasis:names:specification:docbook:dtd:xml:4.1.2&quot;);
+assertEquals(&quot;urn&quot;, uri8.getScheme());
+assertEquals(&quot;oasis:names:specification:docbook:dtd:xml:4.1.2&quot;, uri8.getPathString());</code></pre></dd>
+</dl>
+<p>For exact definitions of the parts of a URI, like <code>scheme</code>, <code>path</code> and <code>query</code> refer to <a href="https://tools.ietf.org/html/rfc3986#section-1.1.2">RFC 3986</a>. Here&rsquo;s a little overview:</p>
+<pre><code>  foo://example.com:8042/over/there?name=ferret#nose
+  \_/   \______________/\_________/ \_________/ \__/
+   |           |            |            |        |
+scheme     authority       path        query   fragment
+   |   _____________________|__
+  / \ /                        \
+  urn:example:animal:ferret:nose
+</code></pre>
+<p>For &ldquo;special&rdquo; characters in URI, you typically use percent encoding like below. Percent encoding is discussed in more detail in the <a href="uri-model.html#query-string-in-uri">Query String in URI</a> section.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L542-L544" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// don&#39;t double decode
+Uri(&quot;%2520&quot;).path.head shouldEqual &quot;%20&quot;
+Uri(&quot;/%2F%5C&quot;).path shouldEqual Path / &quot;&quot;&quot;/\&quot;&quot;&quot;</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L70-L73" target="_blank" title="Go to snippet source">source</a><code class="language-java">Uri uri1 = Uri.create(&quot;http://foo.com?foo=%2520&quot;);
+assertEquals(Optional.of(&quot;%20&quot;), uri1.query().get(&quot;foo&quot;));
+Uri uri2 = Uri.create(&quot;http://foo.com?foo=%2F%5C&quot;);
+assertEquals(Optional.of(&quot;/\\&quot;), uri2.query().get(&quot;foo&quot;));</code></pre></dd>
+</dl>
+<h4><a href="#invalid-uri-strings-and-illegaluriexception" name="invalid-uri-strings-and-illegaluriexception" class="anchor"><span class="anchor-link"></span></a>Invalid URI strings and IllegalUriException</h4>
+<p>When an invalid URI string is passed to <code>Uri()</code> as below, an <code>IllegalUriException</code> is thrown.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L655-L716" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// illegal scheme
+the[IllegalUriException] thrownBy Uri(&quot;foö:/a&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;ö&#39;, expected scheme-char, &#39;:&#39;, pchar, slashSegments, &#39;?&#39;, &#39;#&#39; or &#39;EOI&#39; (line 1, column 3)&quot;,
+    &quot;foö:/a\n&quot; +
+    &quot;  ^&quot;)
+}
+
+// illegal userinfo
+the[IllegalUriException] thrownBy Uri(&quot;http://user:ö@host&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;ö&#39;, expected userinfo-char, pct-encoded, &#39;@&#39; or port (line 1, column 13)&quot;,
+    &quot;http://user:ö@host\n&quot; +
+    &quot;            ^&quot;)
+}
+
+// illegal percent-encoding
+the[IllegalUriException] thrownBy Uri(&quot;http://use%2G@host&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;G&#39;, expected HEXDIG (line 1, column 13)&quot;,
+    &quot;http://use%2G@host\n&quot; +
+    &quot;            ^&quot;)
+}
+
+// illegal percent-encoding ends with %
+the[IllegalUriException] thrownBy Uri(&quot;http://www.example.com/%CE%B8%&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Unexpected end of input, expected HEXDIG (line 1, column 31)&quot;,
+    &quot;http://www.example.com/%CE%B8%\n&quot; +
+    &quot;                              ^&quot;)
+}
+
+// illegal percent-encoding in a query string
+the[IllegalUriException] thrownBy Uri(&quot;http://host?use%2G&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;G&#39;, expected HEXDIG (line 1, column 18)&quot;,
+    &quot;http://host?use%2G\n&quot; +
+    &quot;                 ^&quot;)
+}
+// illegal percent-encoding in a fragment
+the[IllegalUriException] thrownBy Uri(&quot;http://host#use%2G&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;G&#39;, expected HEXDIG (line 1, column 18)&quot;,
+    &quot;http://host#use%2G\n&quot; +
+    &quot;                 ^&quot;)
+}
+
+// illegal path
+the[IllegalUriException] thrownBy Uri(&quot;http://www.example.com/name with spaces/&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39; &#39;, expected pchar, &#39;/&#39;, &#39;?&#39;, &#39;#&#39; or &#39;EOI&#39; (line 1, column 28)&quot;,
+    &quot;http://www.example.com/name with spaces/\n&quot; +
+    &quot;                           ^&quot;)
+}
+
+// illegal path with control character
+the[IllegalUriException] thrownBy Uri(&quot;http:///with\newline&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal URI reference: Invalid input &#39;\\n&#39;, expected pchar, &#39;/&#39;, &#39;?&#39;, &#39;#&#39; or &#39;EOI&#39; (line 1, column 13)&quot;,
+    &quot;http:///with\n&quot; +
+    &quot;            ^&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L86-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test(expected = IllegalUriException.class)
+public void testIllegalScheme() {
+  Uri.create(&quot;foö:/a&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal URI reference: Invalid input &#39;ö&#39;, expected scheme-char, &#39;EOI&#39;, &#39;#&#39;, &#39;:&#39;, &#39;?&#39;, slashSegments or pchar (line 1, column 3)&quot;,
+  //  &quot;http://user:ö@host\n&quot; +
+  //  &quot;            ^&quot;
+  //)
+}
+@Test(expected = IllegalUriException.class)
+public void testIllegalUserInfo() {
+  Uri.create(&quot;http://user:ö@host&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal URI reference: Invalid input &#39;ö&#39;, expected userinfo-char, pct-encoded, &#39;@&#39; or port (line 1, column 13)&quot;,
+  //  &quot;http://use%2G@host\n&quot; +
+  //  &quot;            ^&quot;
+  //)
+}
+@Test(expected = IllegalUriException.class)
+public void testIllegalPercentEncoding() {
+  Uri.create(&quot;http://use%2G@host&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal URI reference: Invalid input &#39;G&#39;, expected HEXDIG (line 1, column 13)&quot;,
+  //  &quot;http://www.example.com/name with spaces/\n&quot; +
+  //  &quot;                           ^&quot;
+  //)
+}
+@Test(expected = IllegalUriException.class)
+public void testIllegalPath() {
+  Uri.create(&quot;http://www.example.com/name with spaces/&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal URI reference: Invalid input &#39; &#39;, expected &#39;/&#39;, &#39;EOI&#39;, &#39;#&#39;, &#39;?&#39; or pchar (line 1, column 28)&quot;,
+  //  &quot;http://www.example.com/name with spaces/\n&quot; +
+  //  &quot;                           ^&quot;
+  //)
+}
+@Test(expected = IllegalUriException.class)
+public void testIllegalPathWithControlCharacter() {
+  Uri.create(&quot;http:///with\newline&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal URI reference: Invalid input &#39;\\n&#39;, expected &#39;/&#39;, &#39;EOI&#39;, &#39;#&#39;, &#39;?&#39; or pchar (line 1, column 13)&quot;,
+  //  &quot;http:///with\n&quot; +
+  //  &quot;            ^&quot;
+  //)
+}</code></pre></dd>
+</dl>
+<h4><a href="#directives-to-extract-uri-components" name="directives-to-extract-uri-components" class="anchor"><span class="anchor-link"></span></a>Directives to extract URI components</h4>
+<p>To extract URI components with directives, see following references:</p>
+<ul>
+  <li><a href="../routing-dsl/directives/basic-directives/extractUri.html">extractUri</a></li>
+  <li><a href="../routing-dsl/directives/scheme-directives/extractScheme.html">extractScheme</a></li>
+  <li><a href="../routing-dsl/directives/scheme-directives/scheme.html">scheme</a></li>
+  <li><a href="../routing-dsl/directives/path-directives/index.html">PathDirectives</a></li>
+  <li><a href="../routing-dsl/directives/parameter-directives/index.html">ParameterDirectives</a></li>
+</ul>
+<h3><a href="#obtaining-the-raw-request-uri" name="obtaining-the-raw-request-uri" class="anchor"><span class="anchor-link"></span></a>Obtaining the raw request URI</h3>
+<p>Sometimes it may be needed to obtain the &ldquo;raw&rdquo; value of an incoming URI, without applying any escaping or parsing to it. While this use case is rare, it comes up every once in a while. It is possible to obtain the &ldquo;raw&rdquo; request URI in Apache Pekko HTTP Server side by turning on the <code>pekko.http.server.raw-request-uri-header</code> flag. When enabled, a <code>Raw-Request-URI</code> header will be added to each request. This header will hold the original raw request&rsquo;s URI that was used. For an example check the reference configuration.</p>
+<h3><a href="#query-string-in-uri" name="query-string-in-uri" class="anchor"><span class="anchor-link"></span></a>Query string in URI</h3>
+<p>Although any part of URI can have special characters, it is more common for the query string in URI to have special characters, which are typically <a href="https://en.wikipedia.org/wiki/Percent-encoding">percent encoded</a>.</p>
+<p><span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> class&rsquo;s <code>query()</code> method</span><span class="group-java">The method <code>Uri::query()</code></span> returns the query string of the URI, which is modeled in an instance of the <code>Query</code> class. When you instantiate a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> class by passing a URI string, the query string is stored in its raw string form. Then, when you call the <code>query()</code> method, the query string is parsed from the raw string.</p>
+<p>You can add query parameters with <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> class&rsquo;s <span class="group-scala"><code>withQuery()</code> method</span><span class="group-java"><code>Uri::query()</code> method</span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L810" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val uriWithQuery = uri.withQuery(Query(&quot;param1&quot; -&gt; &quot;value1&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L80" target="_blank" title="Go to snippet source">source</a><code class="language-java">Uri uri = Uri.create(&quot;http://foo.com&quot;).query(Query.create(Pair.create(&quot;foo&quot;,&quot;bar&quot;)));</code></pre></dd>
+</dl>
+<p>The below code illustrates how valid query strings are parsed. Especially, you can check how percent encoding is used and how special characters like <code>+</code> and <code>;</code> are parsed.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <code>mode</code> parameter to <code>Query()</code> and <code>Uri.query()</code> is discussed in <a href="uri-model.html#strict-and-relaxed-mode">Strict and Relaxed Mode</a>.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L332" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def strict(queryString: String): Query = Query(queryString, mode = Uri.ParsingMode.Strict)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L158-L160" target="_blank" title="Go to snippet source">source</a><code class="language-java">public Query strict(String query){
+  return Query.create(query, org.apache.pekko.http.javadsl.model.Uri.STRICT);
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L336-L359" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// query component &quot;a=b&quot; is parsed into parameter name: &quot;a&quot;, and value: &quot;b&quot;
+strict(&quot;a=b&quot;) shouldEqual (&quot;a&quot;, &quot;b&quot;) +: Query.Empty
+
+strict(&quot;&quot;) shouldEqual Query.Empty
+strict(&quot;a&quot;) shouldEqual (&quot;a&quot;, &quot;&quot;) +: Query.Empty
+strict(&quot;a=&quot;) shouldEqual (&quot;a&quot;, &quot;&quot;) +: Query.Empty
+strict(&quot;a=+&quot;) shouldEqual (&quot;a&quot;, &quot; &quot;) +: Query.Empty // &#39;+&#39; is parsed to &#39; &#39;
+strict(&quot;a=%2B&quot;) shouldEqual (&quot;a&quot;, &quot;+&quot;) +: Query.Empty
+strict(&quot;=a&quot;) shouldEqual (&quot;&quot;, &quot;a&quot;) +: Query.Empty
+strict(&quot;a&amp;&quot;) shouldEqual (&quot;a&quot;, &quot;&quot;) +: (&quot;&quot;, &quot;&quot;) +: Query.Empty
+strict(&quot;a=%62&quot;) shouldEqual (&quot;a&quot;, &quot;b&quot;) +: Query.Empty
+
+strict(&quot;a%3Db=c&quot;) shouldEqual (&quot;a=b&quot;, &quot;c&quot;) +: Query.Empty
+strict(&quot;a%26b=c&quot;) shouldEqual (&quot;a&amp;b&quot;, &quot;c&quot;) +: Query.Empty
+strict(&quot;a%2Bb=c&quot;) shouldEqual (&quot;a+b&quot;, &quot;c&quot;) +: Query.Empty
+strict(&quot;a%3Bb=c&quot;) shouldEqual (&quot;a;b&quot;, &quot;c&quot;) +: Query.Empty
+
+strict(&quot;a=b%3Dc&quot;) shouldEqual (&quot;a&quot;, &quot;b=c&quot;) +: Query.Empty
+strict(&quot;a=b%26c&quot;) shouldEqual (&quot;a&quot;, &quot;b&amp;c&quot;) +: Query.Empty
+strict(&quot;a=b%2Bc&quot;) shouldEqual (&quot;a&quot;, &quot;b+c&quot;) +: Query.Empty
+strict(&quot;a=b%3Bc&quot;) shouldEqual (&quot;a&quot;, &quot;b;c&quot;) +: Query.Empty
+
+strict(&quot;a+b=c&quot;) shouldEqual (&quot;a b&quot;, &quot;c&quot;) +: Query.Empty // &#39;+&#39; is parsed to &#39; &#39;
+strict(&quot;a=b+c&quot;) shouldEqual (&quot;a&quot;, &quot;b c&quot;) +: Query.Empty // &#39;+&#39; is parsed to &#39; &#39;</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L167-L190" target="_blank" title="Go to snippet source">source</a><code class="language-java">//query component (name: &quot;a&quot;, and value: &quot;b&quot;) is equal to parsed query string &quot;a=b&quot;
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b&quot;)), strict(&quot;a=b&quot;));
+
+assertEquals(Query.EMPTY, strict(&quot;&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;&quot;)), strict(&quot;a&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;&quot;)), strict(&quot;a=&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot; &quot;)), strict(&quot;a=+&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;+&quot;)), strict(&quot;a=%2B&quot;));
+assertEquals(Query.create(Pair.create(&quot;&quot;, &quot;a&quot;)), strict(&quot;=a&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;&quot;)).withParam(&quot;&quot;, &quot;&quot;), strict(&quot;a&amp;&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b&quot;)), strict(&quot;a=%62&quot;));
+
+assertEquals(Query.create(Pair.create(&quot;a=b&quot;, &quot;c&quot;)), strict(&quot;a%3Db=c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&amp;b&quot;, &quot;c&quot;)), strict(&quot;a%26b=c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a+b&quot;, &quot;c&quot;)), strict(&quot;a%2Bb=c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a;b&quot;, &quot;c&quot;)), strict(&quot;a%3Bb=c&quot;));
+
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b=c&quot;)), strict(&quot;a=b%3Dc&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b&amp;c&quot;)), strict(&quot;a=b%26c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b+c&quot;)), strict(&quot;a=b%2Bc&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b;c&quot;)), strict(&quot;a=b%3Bc&quot;));
+
+assertEquals(Query.create(Pair.create(&quot;a b&quot;, &quot;c&quot;)), strict(&quot;a+b=c&quot;)); //&#39;+&#39; is parsed to &#39; &#39;
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b c&quot;)), strict(&quot;a=b+c&quot;)); //&#39;+&#39; is parsed to &#39; &#39;</code></pre></dd>
+</dl>
+<p>Note that:</p>
+<pre><code>  Uri(&quot;http://localhost?a=b&quot;).query()
+</code></pre>
+<p>is equivalent to:</p>
+<pre><code>  Query(&quot;a=b&quot;)
+</code></pre>
+<p>As in the <a href="https://tools.ietf.org/html/rfc3986#section-3.4">section 3.4 of RFC 3986</a>, some special characters like &ldquo;/&rdquo; and &ldquo;?&rdquo; are allowed inside a query string, without escaping them using (&ldquo;%&rdquo;) signs.</p>
+<blockquote>
+  <p>The characters slash (&ldquo;/&rdquo;) and question mark (&ldquo;?&rdquo;) may represent data within the query component.</p>
+</blockquote>
+<p>&ldquo;/&rdquo; and &ldquo;?&rdquo; are commonly used when you have a URI whose query parameter has another URI.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L363-L367" target="_blank" title="Go to snippet source">source</a><code class="language-scala">strict(&quot;a?b=c&quot;) shouldEqual (&quot;a?b&quot;, &quot;c&quot;) +: Query.Empty
+strict(&quot;a/b=c&quot;) shouldEqual (&quot;a/b&quot;, &quot;c&quot;) +: Query.Empty
+
+strict(&quot;a=b?c&quot;) shouldEqual (&quot;a&quot;, &quot;b?c&quot;) +: Query.Empty
+strict(&quot;a=b/c&quot;) shouldEqual (&quot;a&quot;, &quot;b/c&quot;) +: Query.Empty</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L194-L198" target="_blank" title="Go to snippet source">source</a><code class="language-java">assertEquals(Query.create(Pair.create(&quot;a?b&quot;, &quot;c&quot;)), strict(&quot;a?b=c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a/b&quot;, &quot;c&quot;)), strict(&quot;a/b=c&quot;));
+
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b?c&quot;)), strict(&quot;a=b?c&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b/c&quot;)), strict(&quot;a=b/c&quot;));</code></pre></dd>
+</dl>
+<p>However, some other special characters can cause <code>IllegalUriException</code> without percent encoding as follows.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L371-L382" target="_blank" title="Go to snippet source">source</a><code class="language-scala">the[IllegalUriException] thrownBy strict(&quot;a^=b&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;^&#39;, expected &#39;+&#39;, query-char, pct-encoded, &#39;=&#39;, &#39;&amp;&#39; or &#39;EOI&#39; (line 1, column 2)&quot;,
+    &quot;a^=b\n&quot; +
+    &quot; ^&quot;)
+}
+the[IllegalUriException] thrownBy strict(&quot;a;=b&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;;&#39;, expected &#39;+&#39;, query-char, pct-encoded, &#39;=&#39;, &#39;&amp;&#39; or &#39;EOI&#39; (line 1, column 2)&quot;,
+    &quot;a;=b\n&quot; +
+    &quot; ^&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L203-L210" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test(expected = IllegalUriException.class)
+public void testStrictModeException1() {
+  strict(&quot;a^=b&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal query: Invalid input &#39;^&#39;, expected &#39;+&#39;, &#39;=&#39;, query-char, &#39;EOI&#39;, &#39;&amp;&#39; or pct-encoded (line 1, column 2)&quot;,
+  //  &quot;a^=b\n&quot; +
+  //  &quot; ^&quot;)
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L386-L399" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// double &#39;=&#39; in query string is invalid
+the[IllegalUriException] thrownBy strict(&quot;a=b=c&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;=&#39;, expected &#39;+&#39;, query-char, pct-encoded, &#39;&amp;&#39; or &#39;EOI&#39; (line 1, column 4)&quot;,
+    &quot;a=b=c\n&quot; +
+    &quot;   ^&quot;)
+}
+// following &#39;%&#39;, it should be percent encoding (HEXDIG), but &quot;%b=&quot; is not a valid percent encoding
+the[IllegalUriException] thrownBy strict(&quot;a%b=c&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;=&#39;, expected HEXDIG (line 1, column 4)&quot;,
+    &quot;a%b=c\n&quot; +
+    &quot;   ^&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L214-L221" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test(expected = IllegalUriException.class)
+public void testStrictModeException2() {
+  strict(&quot;a;=b&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal query: Invalid input &#39;;&#39;, expected &#39;+&#39;, &#39;=&#39;, query-char, &#39;EOI&#39;, &#39;&amp;&#39; or pct-encoded (line 1, column 2)&quot;,
+  //  &quot;a;=b\n&quot; +
+  //  &quot; ^&quot;)
+}</code></pre></dd>
+</dl>
+<h4><a href="#strict-and-relaxed-mode" name="strict-and-relaxed-mode" class="anchor"><span class="anchor-link"></span></a>Strict and Relaxed Mode</h4>
+<p>The <code>Uri.query()</code> method and <code>Query()</code> take a parameter <code>mode</code>, which is either <code>Uri.ParsingMode.Strict</code> or <code>Uri.ParsingMode.Relaxed</code>. Switching the mode gives different behavior on parsing some special characters in URI.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L404" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def relaxed(queryString: String): Query = Query(queryString, mode = Uri.ParsingMode.Relaxed)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L249-L251" target="_blank" title="Go to snippet source">source</a><code class="language-java">public Query relaxed(String query){
+  return Query.create(query,  org.apache.pekko.http.javadsl.model.Uri.RELAXED);
+}</code></pre></dd>
+</dl>
+<p>The below two cases threw <code>IllegalUriException</code> when you specified the <code>Strict</code> mode,</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L371-L382" target="_blank" title="Go to snippet source">source</a><code class="language-scala">the[IllegalUriException] thrownBy strict(&quot;a^=b&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;^&#39;, expected &#39;+&#39;, query-char, pct-encoded, &#39;=&#39;, &#39;&amp;&#39; or &#39;EOI&#39; (line 1, column 2)&quot;,
+    &quot;a^=b\n&quot; +
+    &quot; ^&quot;)
+}
+the[IllegalUriException] thrownBy strict(&quot;a;=b&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;;&#39;, expected &#39;+&#39;, query-char, pct-encoded, &#39;=&#39;, &#39;&amp;&#39; or &#39;EOI&#39; (line 1, column 2)&quot;,
+    &quot;a;=b\n&quot; +
+    &quot; ^&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L203-L210" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test(expected = IllegalUriException.class)
+public void testStrictModeException1() {
+  strict(&quot;a^=b&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal query: Invalid input &#39;^&#39;, expected &#39;+&#39;, &#39;=&#39;, query-char, &#39;EOI&#39;, &#39;&amp;&#39; or pct-encoded (line 1, column 2)&quot;,
+  //  &quot;a^=b\n&quot; +
+  //  &quot; ^&quot;)
+}
+@Test(expected = IllegalUriException.class)
+public void testStrictModeException2() {
+  strict(&quot;a;=b&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal query: Invalid input &#39;;&#39;, expected &#39;+&#39;, &#39;=&#39;, query-char, &#39;EOI&#39;, &#39;&amp;&#39; or pct-encoded (line 1, column 2)&quot;,
+  //  &quot;a;=b\n&quot; +
+  //  &quot; ^&quot;)
+}</code></pre></dd>
+</dl>
+<p>but the <code>Relaxed</code> mode parses them as they are.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L438-L440" target="_blank" title="Go to snippet source">source</a><code class="language-scala">relaxed(&quot;a^=b&quot;) shouldEqual (&quot;a^&quot;, &quot;b&quot;) +: Query.Empty
+relaxed(&quot;a;=b&quot;) shouldEqual (&quot;a;&quot;, &quot;b&quot;) +: Query.Empty
+relaxed(&quot;a=b=c&quot;) shouldEqual (&quot;a&quot;, &quot;b=c&quot;) +: Query.Empty</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L289-L291" target="_blank" title="Go to snippet source">source</a><code class="language-java">assertEquals(Query.create(Pair.create(&quot;a^&quot;, &quot;b&quot;)), relaxed(&quot;a^=b&quot;));
+assertEquals(Query.create(Pair.create(&quot;a;&quot;, &quot;b&quot;)), relaxed(&quot;a;=b&quot;));
+assertEquals(Query.create(Pair.create(&quot;a&quot;, &quot;b=c&quot;)), relaxed(&quot;a=b=c&quot;));</code></pre></dd>
+</dl>
+<p>However, even with the <code>Relaxed</code> mode, there are still invalid special characters which require percent encoding.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/scaladsl/model/UriSpec.scala#L444-L451" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// following &#39;%&#39;, it should be percent encoding (HEXDIG), but &quot;%b=&quot; is not a valid percent encoding
+// still invalid even in relaxed mode
+the[IllegalUriException] thrownBy relaxed(&quot;a%b=c&quot;) shouldBe {
+  IllegalUriException(
+    &quot;Illegal query: Invalid input &#39;=&#39;, expected HEXDIG (line 1, column 4)&quot;,
+    &quot;a%b=c\n&quot; +
+    &quot;   ^&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/java/org/apache/pekko/http/javadsl/model/UriTest.java#L296-L305" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test(expected = IllegalUriException.class)
+public void testRelaxedModeException1() {
+  //following &#39;%&#39;, it should be percent encoding (HEXDIG), but &quot;%b=&quot; is not a valid percent encoding
+  //still invalid even in relaxed mode
+  relaxed(&quot;a%b=c&quot;);
+  //IllegalUriException(
+  //  &quot;Illegal query: Invalid input &#39;=&#39;, expected &#39;+&#39;, query-char, &#39;EOI&#39;, &#39;&amp;&#39; or pct-encoded (line 1, column 4)&quot;,
+  //  &quot;a%b=c\n&quot; +
+  //  &quot;   ^&quot;)
+}</code></pre></dd>
+</dl>
+<p>Other than specifying the <code>mode</code> in the parameters, like when using directives, you can specify the <code>mode</code> in your configuration as follows.</p>
+<pre><code>    # Sets the strictness mode for parsing request target URIs.
+    # The following values are defined:
+    #
+    # `strict`: RFC3986-compliant URIs are required,
+    #     a 400 response is triggered on violations
+    #
+    # `relaxed`: all visible 7-Bit ASCII chars are allowed
+    #
+    uri-parsing-mode = strict
+</code></pre>
+<p>To access the raw, unparsed representation of the query part of a URI use the <code>rawQueryString</code> member of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span> class.</p>
+<h4><a href="#directives-to-extract-query-parameters" name="directives-to-extract-query-parameters" class="anchor"><span class="anchor-link"></span></a>Directives to extract query parameters</h4>
+<p>If you want to use directives to extract query parameters, see below pages.</p>
+<ul>
+  <li><a href="../routing-dsl/directives/parameter-directives/parameters.html">parameters</a></li>
+  <li><a href="../routing-dsl/directives/parameter-directives/parameter.html">parameter</a></li>
+</ul>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/common/uri-model.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../common/http-model.html" title="HTTP Model" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+HTTP Model
+</span>
+</div>
+</a>
+<a href="../common/marshalling.html" title="Marshalling" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Marshalling
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

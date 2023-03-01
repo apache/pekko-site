@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Client-Side WebSocket Support · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Client-Side WebSocket Support
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html#client-side-websocket-support" class="active page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../client-side/websocket-support.html#client-side-websocket-support" class="header">Client-Side WebSocket Support</a>
+  <ul>
+    <li><a href="../client-side/websocket-support.html#message" class="header">Message</a></li>
+    <li><a href="../client-side/websocket-support.html#singlewebsocketrequest" class="header">singleWebSocketRequest</a></li>
+    <li><a href="../client-side/websocket-support.html#websocketclientflow" class="header">webSocketClientFlow</a></li>
+    <li><a href="../client-side/websocket-support.html#websocketclientlayer" class="header">webSocketClientLayer</a></li>
+    <li><a href="../client-side/websocket-support.html#half-closed-websockets" class="header">Half-Closed WebSockets</a></li>
+    <li><a href="../client-side/websocket-support.html#automatic-keep-alive-ping-support" class="header">Automatic keep-alive Ping support</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../client-side/websocket-support.html#client-side-websocket-support" class="header">Client-Side WebSocket Support</a>
+  <ul>
+    <li><a href="../client-side/websocket-support.html#message" class="header">Message</a></li>
+    <li><a href="../client-side/websocket-support.html#singlewebsocketrequest" class="header">singleWebSocketRequest</a></li>
+    <li><a href="../client-side/websocket-support.html#websocketclientflow" class="header">webSocketClientFlow</a></li>
+    <li><a href="../client-side/websocket-support.html#websocketclientlayer" class="header">webSocketClientLayer</a></li>
+    <li><a href="../client-side/websocket-support.html#half-closed-websockets" class="header">Half-Closed WebSockets</a></li>
+    <li><a href="../client-side/websocket-support.html#automatic-keep-alive-ping-support" class="header">Automatic keep-alive Ping support</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#client-side-websocket-support" name="client-side-websocket-support" class="anchor"><span class="anchor-link"></span></a>Client-Side WebSocket Support</h1>
+<p>Client-side WebSocket support is available through <span class="group-scala"><code>Http().singleWebSocketRequest</code></span><span class="group-java"><code>Http.get(system).singleWebSocketRequest</code></span>, <span class="group-scala"><code>Http().webSocketClientFlow</code></span><span class="group-java"><code>Http.get(system).webSocketClientFlow</code></span> and <span class="group-scala"><code>Http().webSocketClientLayer</code></span><span class="group-java"><code>Http.get(system).webSocketClientLayer</code></span>.</p>
+<p>A WebSocket consists of two streams of messages, incoming messages (a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span>) and outgoing messages (a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>) where either may be signalled first; or even be the only direction in which messages flow during the lifetime of the connection. Therefore a WebSocket connection is modelled as either something you connect a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;Message, Message, Mat&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[Message, Message, Mat]</code></a></span> to or a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;Message, Message, Mat&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[Message, Message, Mat]</code></a></span> that you connect a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;Message, Mat&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[Message, Mat]</code></a></span> and a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink&lt;Message, Mat&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink[Message, Mat]</code></a></span> to.</p>
+<p>A WebSocket request starts with a regular HTTP request which contains an <code>Upgrade</code> header (and possibly other regular HTTP request properties), so in addition to the flow of messages there also is an initial response from the server, this is modelled with <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/ws/WebSocketUpgradeResponse.html" title="org.apache.pekko.http.javadsl.model.ws.WebSocketUpgradeResponse"><code>WebSocketUpgradeResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/ws/WebSocketUpgradeResponse.html" title="org.apache.pekko.http.scaladsl.model.ws.WebSocketUpgradeResponse"><code>WebSocketUpgradeResponse</code></a></span>.</p>
+<p>The methods of the WebSocket client API handle the upgrade to WebSocket on connection success and materializes the connected WebSocket stream. If the connection fails, for example with a <code>404 NotFound</code> error, this regular HTTP result can be found in <code>WebSocketUpgradeResponse.response</code></p><div class="callout note "><div class="callout-title">Note</div>
+<p>Make sure to read and understand the section about <a href="#half-closed-client-websockets">Half-Closed WebSockets</a> as the behavior when using WebSockets for one-way communication may not be what you would expect.</p></div>
+<h2><a href="#message" name="message" class="anchor"><span class="anchor-link"></span></a>Message</h2>
+<p>Messages sent and received over a WebSocket can be either <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/ws/TextMessage.html" title="org.apache.pekko.http.javadsl.model.ws.TextMessage"><code>TextMessage</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/ws/TextMessage.html" title="org.apache.pekko.http.scaladsl.model.ws.TextMessage"><code>TextMessage</code></a></span> s or <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/ws/BinaryMessage.html" title="org.apache.pekko.http.javadsl.model.ws.BinaryMessage"><code>BinaryMessage</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/ws/BinaryMessage.html" title="org.apache.pekko.http.scaladsl.model.ws.BinaryMessage"><code>BinaryMessage</code></a></span> s and each of those has two subtypes <code>Strict</code> (all data in one chunk) or <code>Streamed</code>. In typical applications messages will be <code>Strict</code> as WebSockets are usually deployed to communicate using small messages not stream data, the protocol does however allow this (by not marking the first fragment as final, as described in <a href="https://tools.ietf.org/html/rfc6455#section-5.2">RFC 6455 section 5.2</a>).</p>
+<p>The strict text is available from <span class="group-scala"><code>TextMessage.Strict</code></span><span class="group-java"><code>TextMessage.getStrictText</code></span> and strict binary data from <span class="group-scala"><code>BinaryMessage.Strict</code></span><span class="group-java"><code>BinaryMessage.getStrictData</code></span>.</p>
+<p>For streamed messages <span class="group-scala"><code>BinaryMessage.Streamed</code></span><span class="group-java"><code>BinaryMessage.getStreamedData</code></span> and <span class="group-scala"><code>TextMessage.Streamed</code></span><span class="group-java"><code>TextMessage.getStreamedText</code></span> will be used. In these cases the data is provided as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, _]</code></a></span> for binary and <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;String, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[String, _]</code></a></span> for text messages.</p>
+<h2><a href="#singlewebsocketrequest" name="singlewebsocketrequest" class="anchor"><span class="anchor-link"></span></a>singleWebSocketRequest</h2>
+<p><code>singleWebSocketRequest</code> takes a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/ws/WebSocketRequest.html" title="org.apache.pekko.http.javadsl.model.ws.WebSocketRequest"><code>WebSocketRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/ws/WebSocketRequest.html" title="org.apache.pekko.http.scaladsl.model.ws.WebSocketRequest"><code>WebSocketRequest</code></a></span> and a flow it will connect to the source and sink of the WebSocket connection. It will trigger the request right away and returns a tuple containing the <span class="group-scala"><code>Future[WebSocketUpgradeResponse]</code></span><span class="group-java"><code>CompletionStage&lt;WebSocketUpgradeResponse&gt;</code></span> and the materialized value from the flow passed to the method.</p>
+<p>The future will succeed when the WebSocket connection has been established or the server returned a regular HTTP response, or fail if the connection fails with an exception.</p>
+<p>Simple example sending a message and printing any incoming message:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/SingleWebSocketRequest.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2020-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.{ Done, NotUsed }
+import pekko.http.scaladsl.Http
+import pekko.stream.scaladsl._
+import pekko.http.scaladsl.model._
+import pekko.http.scaladsl.model.ws._
+
+import scala.concurrent.Future
+
+object SingleWebSocketRequest {
+  def main(args: Array[String]): Unit = {
+    implicit val system = ActorSystem()
+    import system.dispatcher
+
+    // print each incoming strict text message
+    val printSink: Sink[Message, Future[Done]] =
+      Sink.foreach {
+        case message: TextMessage.Strict =&gt;
+          println(message.text)
+        case _ =&gt;
+        // ignore other message types
+      }
+
+    val helloSource: Source[Message, NotUsed] =
+      Source.single(TextMessage(&quot;hello world!&quot;))
+
+    // the Future[Done] is the materialized value of Sink.foreach
+    // and it is completed when the stream completes
+    val flow: Flow[Message, Message, Future[Done]] =
+      Flow.fromSinkAndSourceMat(printSink, helloSource)(Keep.left)
+
+    // upgradeResponse is a Future[WebSocketUpgradeResponse] that
+    // completes or fails when the connection succeeds or fails
+    // and closed is a Future[Done] representing the stream completion from above
+    val (upgradeResponse, closed) =
+      Http().singleWebSocketRequest(WebSocketRequest(&quot;ws://echo.websocket.org&quot;), flow)
+
+    val connected = upgradeResponse.map { upgrade =&gt;
+      // just like a regular http request we can access response status which is available via upgrade.response.status
+      // status code 101 (Switching Protocols) indicates that server support WebSockets
+      if (upgrade.response.status == StatusCodes.SwitchingProtocols) {
+        Done
+      } else {
+        throw new RuntimeException(s&quot;Connection failed: ${upgrade.response.status}&quot;)
+      }
+    }
+
+    // in a real application you would not side effect here
+    // and handle errors more carefully
+    connected.onComplete(println)
+    closed.foreach(_ =&gt; println(&quot;closed&quot;))
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L49-L96" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+Http http = Http.get(system);
+
+// print each incoming text message
+// would throw exception on non strict or binary message
+final Sink&lt;Message, CompletionStage&lt;Done&gt;&gt; printSink =
+  Sink.foreach((message) -&gt;
+    System.out.println(&quot;Got message: &quot; + message.asTextMessage().getStrictText())
+  );
+
+// send this as a message over the WebSocket
+final Source&lt;Message, NotUsed&gt; helloSource =
+  Source.single(TextMessage.create(&quot;hello world&quot;));
+
+// the CompletionStage&lt;Done&gt; is the materialized value of Sink.foreach
+// and it is completed when the stream completes
+final Flow&lt;Message, Message, CompletionStage&lt;Done&gt;&gt; flow =
+  Flow.fromSinkAndSourceMat(printSink, helloSource, Keep.left());
+
+final Pair&lt;CompletionStage&lt;WebSocketUpgradeResponse&gt;, CompletionStage&lt;Done&gt;&gt; pair =
+  http.singleWebSocketRequest(
+    WebSocketRequest.create(&quot;ws://echo.websocket.org&quot;),
+    flow,
+    materializer
+  );
+
+// The first value in the pair is a CompletionStage&lt;WebSocketUpgradeResponse&gt; that
+// completes when the WebSocket request has connected successfully (or failed)
+final CompletionStage&lt;Done&gt; connected = pair.first().thenApply(upgrade -&gt; {
+  // just like a regular http request we can access response status which is available via upgrade.response.status
+  // status code 101 (Switching Protocols) indicates that server support WebSockets
+  if (upgrade.response().status().equals(StatusCodes.SWITCHING_PROTOCOLS)) {
+    return Done.getInstance();
+  } else {
+    throw new RuntimeException(&quot;Connection failed: &quot; + upgrade.response().status());
+  }
+});
+
+// the second value is the completion of the sink from above
+// in other words, it completes when the WebSocket disconnects
+final CompletionStage&lt;Done&gt; closed = pair.second();
+
+// in a real application you would not side effect here
+// and handle errors more carefully
+connected.thenAccept(done -&gt; System.out.println(&quot;Connected&quot;));
+closed.thenAccept(done -&gt; System.out.println(&quot;Connection closed&quot;));
+</code></pre></dd>
+</dl>
+<p>The websocket request may also include additional headers, like in this example, HTTP Basic Auth:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/WebSocketClientExampleSpec.scala#L123-L129" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val (upgradeResponse, _) =
+  Http().singleWebSocketRequest(
+    WebSocketRequest(
+      &quot;ws://example.com:8080/some/path&quot;,
+      extraHeaders = Seq(Authorization(
+        BasicHttpCredentials(&quot;johan&quot;, &quot;correcthorsebatterystaple&quot;)))),
+    flow)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L189-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">http.singleWebSocketRequest(
+  WebSocketRequest.create(&quot;ws://example.com:8080/some/path&quot;)
+    .addHeader(Authorization.basic(&quot;johan&quot;, &quot;correcthorsebatterystaple&quot;)),
+  flow,
+  materializer);</code></pre></dd>
+</dl>
+<h2><a href="#websocketclientflow" name="websocketclientflow" class="anchor"><span class="anchor-link"></span></a>webSocketClientFlow</h2>
+<p><code>webSocketClientFlow</code> takes a request, and returns a <span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;Message, Message, Future&lt;WebSocketUpgradeResponse&gt;&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[Message, Message, Future[WebSocketUpgradeResponse]]</code></a></span></span><span class="group-java"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow&lt;Message, Message, CompletionStage&lt;WebSocketUpgradeResponse&gt;&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow[Message, Message, CompletionStage[WebSocketUpgradeResponse]]</code></a></span></span>.</p>
+<p>The future that is materialized from the flow will succeed when the WebSocket connection has been established or the server returned a regular HTTP response, or fail if the connection fails with an exception.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> that is returned by this method can only be materialized once. For each request a new flow must be acquired by calling the method again.</p></div>
+<p>Simple example sending a message and printing any incoming message:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/WebSocketClientFlow.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2020-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.Done
+import pekko.http.scaladsl.Http
+import pekko.stream.scaladsl._
+import pekko.http.scaladsl.model._
+import pekko.http.scaladsl.model.ws._
+
+import scala.concurrent.Future
+
+object WebSocketClientFlow {
+  def main(args: Array[String]): Unit = {
+    implicit val system = ActorSystem()
+    import system.dispatcher
+
+    // Future[Done] is the materialized value of Sink.foreach,
+    // emitted when the stream completes
+    val incoming: Sink[Message, Future[Done]] =
+      Sink.foreach[Message] {
+        case message: TextMessage.Strict =&gt;
+          println(message.text)
+        case _ =&gt;
+        // ignore other message types
+      }
+
+    // send this as a message over the WebSocket
+    val outgoing = Source.single(TextMessage(&quot;hello world!&quot;))
+
+    // flow to use (note: not re-usable!)
+    val webSocketFlow = Http().webSocketClientFlow(WebSocketRequest(&quot;ws://echo.websocket.org&quot;))
+
+    // the materialized value is a tuple with
+    // upgradeResponse is a Future[WebSocketUpgradeResponse] that
+    // completes or fails when the connection succeeds or fails
+    // and closed is a Future[Done] with the stream completion from the incoming sink
+    val (upgradeResponse, closed) =
+      outgoing
+        .viaMat(webSocketFlow)(Keep.right) // keep the materialized Future[WebSocketUpgradeResponse]
+        .toMat(incoming)(Keep.both) // also keep the Future[Done]
+        .run()
+
+    // just like a regular http request we can access response status which is available via upgrade.response.status
+    // status code 101 (Switching Protocols) indicates that server support WebSockets
+    val connected = upgradeResponse.flatMap { upgrade =&gt;
+      if (upgrade.response.status == StatusCodes.SwitchingProtocols) {
+        Future.successful(Done)
+      } else {
+        throw new RuntimeException(s&quot;Connection failed: ${upgrade.response.status}&quot;)
+      }
+    }
+
+    // in a real application you would not side effect here
+    connected.onComplete(println)
+    closed.foreach(_ =&gt; println(&quot;closed&quot;))
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L200-L249" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem system = ActorSystem.create();
+Materializer materializer = ActorMaterializer.create(system);
+Http http = Http.get(system);
+
+// print each incoming text message
+// would throw exception on non strict or binary message
+Sink&lt;Message, CompletionStage&lt;Done&gt;&gt; printSink =
+  Sink.foreach((message) -&gt;
+      System.out.println(&quot;Got message: &quot; + message.asTextMessage().getStrictText())
+  );
+
+// send this as a message over the WebSocket
+Source&lt;Message, NotUsed&gt; helloSource =
+  Source.single(TextMessage.create(&quot;hello world&quot;));
+
+
+Flow&lt;Message, Message, CompletionStage&lt;WebSocketUpgradeResponse&gt;&gt; webSocketFlow =
+  http.webSocketClientFlow(WebSocketRequest.create(&quot;ws://echo.websocket.org&quot;));
+
+
+Pair&lt;CompletionStage&lt;WebSocketUpgradeResponse&gt;, CompletionStage&lt;Done&gt;&gt; pair =
+  helloSource.viaMat(webSocketFlow, Keep.right())
+    .toMat(printSink, Keep.both())
+    .run(materializer);
+
+
+// The first value in the pair is a CompletionStage&lt;WebSocketUpgradeResponse&gt; that
+// completes when the WebSocket request has connected successfully (or failed)
+CompletionStage&lt;WebSocketUpgradeResponse&gt; upgradeCompletion = pair.first();
+
+// the second value is the completion of the sink from above
+// in other words, it completes when the WebSocket disconnects
+CompletionStage&lt;Done&gt; closed = pair.second();
+
+CompletionStage&lt;Done&gt; connected = upgradeCompletion.thenApply(upgrade-&gt;
+{
+  // just like a regular http request we can access response status which is available via upgrade.response.status
+  // status code 101 (Switching Protocols) indicates that server support WebSockets
+  if (upgrade.response().status().equals(StatusCodes.SWITCHING_PROTOCOLS)) {
+    return Done.getInstance();
+  } else {
+    throw new RuntimeException((&quot;Connection failed: &quot; + upgrade.response().status()));
+  }
+});
+
+// in a real application you would not side effect here
+// and handle errors more carefully
+connected.thenAccept(done -&gt; System.out.println(&quot;Connected&quot;));
+closed.thenAccept(done -&gt; System.out.println(&quot;Connection closed&quot;));
+</code></pre></dd>
+</dl>
+<h2><a href="#websocketclientlayer" name="websocketclientlayer" class="anchor"><span class="anchor-link"></span></a>webSocketClientLayer</h2>
+<p>Just like the <a href="connection-level.html#http-client-layer">Stand-Alone HTTP Layer Usage</a> for regular HTTP requests, the WebSocket layer can be used fully detached from the underlying TCP interface. The same scenarios as described for regular HTTP requests apply here.</p>
+<p>The returned layer forms a <span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/BidiFlow.html" title="org.apache.pekko.stream.javadsl.BidiFlow"><code>BidiFlow&lt;Message, SslTlsOutbound, SslTlsInbound, Message, Future&lt;WebSocketUpgradeResponse&gt;&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/BidiFlow.html" title="org.apache.pekko.stream.scaladsl.BidiFlow"><code>BidiFlow[Message, SslTlsOutbound, SslTlsInbound, Message, Future[WebSocketUpgradeResponse]]</code></a></span></span><span class="group-java"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/BidiFlow.html" title="org.apache.pekko.stream.javadsl.BidiFlow"><code>BidiFlow&lt;Message, SslTlsOutbound, SslTlsInbound, Message, CompletionStage&lt;WebSocketUpgradeResponse&gt;&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/BidiFlow.html" title="org.apache.pekko.stream.scaladsl.BidiFlow"><code>BidiFlow[Message, SslTlsOutbound, SslTlsInbound, Message, CompletionStage[WebSocketUpgradeResponse]]</code></a></span></span>.</p>
+<a id="half-closed-client-websockets"></a>
+<h2><a href="#half-closed-websockets" name="half-closed-websockets" class="anchor"><span class="anchor-link"></span></a>Half-Closed WebSockets</h2>
+<p>The Apache Pekko HTTP WebSocket API does not support half-closed connections which means that if either stream completes the entire connection is closed (after a &ldquo;Closing Handshake&rdquo; has been exchanged or a timeout of 3 seconds has passed). This may lead to unexpected behavior, for example if we are trying to only consume messages coming from the server, like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/WebSocketClientExampleSpec.scala#L33-L44" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>// we may expect to be able to to just tail
+// the server websocket output like this
+val flow: Flow[Message, Message, NotUsed] =
+  Flow.fromSinkAndSource(
+    Sink.foreach(println),
+    Source.empty)
+
+Http().singleWebSocketRequest(
+  WebSocketRequest(&quot;ws://example.com:8080/some/path&quot;),
+  flow)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L108-L120" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>// we may expect to be able to to just tail
+// the server websocket output like this
+final Flow&lt;Message, Message, NotUsed&gt; flow =
+  Flow.fromSinkAndSource(
+    Sink.foreach(System.out::println),
+    Source.empty());
+
+http.singleWebSocketRequest(
+  WebSocketRequest.create(&quot;ws://example.com:8080/some/path&quot;),
+  flow,
+  materializer);
+</code></pre></dd>
+</dl>
+<p>This will in fact quickly close the connection because of the <span class="group-scala"><code>Source.empty</code></span><span class="group-java"><code>Source.empty()</code></span> being completed immediately when the stream is materialized. To solve this you can make sure to not complete the outgoing source by using for example <span class="group-scala"><code>Source.maybe</code></span><span class="group-java"><code>Source.maybe()</code></span> like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/WebSocketClientExampleSpec.scala#L59-L73" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>// using Source.maybe materializes into a promise
+// which will allow us to complete the source later
+val flow: Flow[Message, Message, Promise[Option[Message]]] =
+  Flow.fromSinkAndSourceMat(
+    Sink.foreach[Message](println),
+    Source.maybe[Message])(Keep.right)
+
+val (upgradeResponse, promise) =
+  Http().singleWebSocketRequest(
+    WebSocketRequest(&quot;ws://example.com:8080/some/path&quot;),
+    flow)
+
+// at some later time we want to disconnect
+promise.success(None)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L130-L146" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>// using Source.maybe materializes into a completable future
+// which will allow us to complete the source later
+final Flow&lt;Message, Message, CompletableFuture&lt;Optional&lt;Message&gt;&gt;&gt; flow =
+  Flow.fromSinkAndSourceMat(
+    Sink.foreach(System.out::println),
+    Source.maybe(),
+    Keep.right());
+
+final Pair&lt;CompletionStage&lt;WebSocketUpgradeResponse&gt;, CompletableFuture&lt;Optional&lt;Message&gt;&gt;&gt; pair =
+  http.singleWebSocketRequest(
+    WebSocketRequest.create(&quot;ws://example.com:8080/some/path&quot;),
+    flow,
+    materializer);
+
+// at some later time we want to disconnect
+pair.second().complete(Optional.empty());</code></pre></dd>
+</dl>
+<p>This will keep the outgoing source from completing, but without emitting any elements until the <span class="group-scala"><code>Promise</code></span><span class="group-java"><code>CompletableFuture</code></span> is manually completed which makes the <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> complete and the connection to close.</p>
+<p>The same problem holds true if emitting a finite number of elements, as soon as the last element is reached the <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> will close and cause the connection to close. To avoid that you can concatenate <span class="group-scala"><code>Source.maybe</code></span><span class="group-java"><code>Source.maybe()</code></span> to the finite stream:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/WebSocketClientExampleSpec.scala#L88-L102" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>// using emit &quot;one&quot; and &quot;two&quot; and then keep the connection open
+val flow: Flow[Message, Message, Promise[Option[Message]]] =
+  Flow.fromSinkAndSourceMat(
+    Sink.foreach[Message](println),
+    Source(List(TextMessage(&quot;one&quot;), TextMessage(&quot;two&quot;)))
+      .concatMat(Source.maybe[Message])(Keep.right))(Keep.right)
+
+val (upgradeResponse, promise) =
+  Http().singleWebSocketRequest(
+    WebSocketRequest(&quot;ws://example.com:8080/some/path&quot;),
+    flow)
+
+// at some later time we want to disconnect
+promise.success(None)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/WebSocketClientExampleTest.java#L156-L175" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>// emit &quot;one&quot; and then &quot;two&quot; and then keep the source from completing
+final Source&lt;Message, CompletableFuture&lt;Optional&lt;Message&gt;&gt;&gt; source =
+  Source.from(Arrays.&lt;Message&gt;asList(TextMessage.create(&quot;one&quot;), TextMessage.create(&quot;two&quot;)))
+    .concatMat(Source.maybe(), Keep.right());
+
+final Flow&lt;Message, Message, CompletableFuture&lt;Optional&lt;Message&gt;&gt;&gt; flow =
+  Flow.fromSinkAndSourceMat(
+    Sink.foreach(System.out::println),
+    source,
+    Keep.right());
+
+final Pair&lt;CompletionStage&lt;WebSocketUpgradeResponse&gt;, CompletableFuture&lt;Optional&lt;Message&gt;&gt;&gt; pair =
+  http.singleWebSocketRequest(
+    WebSocketRequest.create(&quot;ws://example.com:8080/some/path&quot;),
+    flow,
+    materializer);
+
+// at some later time we want to disconnect
+pair.second().complete(Optional.empty());</code></pre></dd>
+</dl>
+<p>Scenarios that exist with the two streams in a WebSocket and possible ways to deal with it:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Scenario </th>
+      <th>Possible solution </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Two-way communication </td>
+      <td><code>Flow.fromSinkAndSource</code>, or <code>Flow.map</code> for a request-response protocol </td>
+    </tr>
+    <tr>
+      <td>Infinite incoming stream, no outgoing </td>
+      <td><span class="group-scala"><code>Flow.fromSinkAndSource(someSink, Source.maybe)</code></span><span class="group-java"><code>Flow.fromSinkAndSource(someSink, Source.maybe())</code></span> </td>
+    </tr>
+    <tr>
+      <td>Infinite outgoing stream, no incoming </td>
+      <td><span class="group-scala"><code>Flow.fromSinkAndSource(Sink.ignore, yourSource)</code></span><span class="group-java"><code>Flow.fromSinkAndSource(Sink.ignore(), yourSource)</code></span></td>
+    </tr>
+  </tbody>
+</table>
+<a id="keep-alive-ping"></a>
+<h2><a href="#automatic-keep-alive-ping-support" name="automatic-keep-alive-ping-support" class="anchor"><span class="anchor-link"></span></a>Automatic keep-alive Ping support</h2>
+<p>Similar to the <a href="../server-side/websocket-support.html#keep-alive-ping">server-side kee-alive Ping support</a>, it is possible to configure the client-side to perform automatic keep-alive using Ping (or Pong) frames.</p>
+<p>This is supported in a transparent way via configuration by setting the: <code>pekko.http.client.websocket.periodic-keep-alive-max-idle = 1 second</code> to a specified max idle timeout. The keep-alive triggers when no other messages are in-flight during the such configured period. Apache Pekko HTTP will then automatically send a <a href="https://tools.ietf.org/html/rfc6455#section-5.5.2"><code>Ping</code> frame</a> for each of such idle intervals.</p>
+<p>By default, the automatic keep-alive feature is disabled.</p>
+<h3><a href="#custom-keep-alive-data-payloads" name="custom-keep-alive-data-payloads" class="anchor"><span class="anchor-link"></span></a>Custom keep-alive data payloads</h3>
+<p>By default, pings do not carry any payload, as it is often enough to simply push <em>any</em> frame over the connection to ensure the connection stays healthy (or detect if it was severed), however you may configure them to carry a custom payload, to do this you can provide a function that will be asked to emit the payload for each of the ping messages generated:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/WebSocketExampleSpec.scala#L146-L164" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val defaultSettings = ClientConnectionSettings(system)
+
+val pingCounter = new AtomicInteger()
+val customWebsocketSettings =
+  defaultSettings.websocketSettings
+    .withPeriodicKeepAliveData(() =&gt; ByteString(s&quot;debug-${pingCounter.incrementAndGet()}&quot;))
+
+val customSettings =
+  defaultSettings.withWebsocketSettings(customWebsocketSettings)
+
+val request = WebSocketRequest(&quot;ws://127.0.0.1&quot;)
+
+Http().singleWebSocketRequest(
+  request,
+  Flow[Message],
+  Http().defaultClientHttpsContext,
+  None,
+  customSettings,
+  system.log)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/WebSocketCoreExample.java#L159-L180" target="_blank" title="Go to snippet source">source</a><code class="language-java">ClientConnectionSettings defaultSettings = ClientConnectionSettings.create(system);
+
+AtomicInteger pingCounter = new AtomicInteger();
+
+WebSocketSettings customWebsocketSettings = defaultSettings.getWebsocketSettings()
+    .withPeriodicKeepAliveData(() -&gt;
+        ByteString.fromString(String.format(&quot;debug-%d&quot;, pingCounter.incrementAndGet()))
+    );
+
+ClientConnectionSettings customSettings =
+    defaultSettings.withWebsocketSettings(customWebsocketSettings);
+
+Http http = Http.get(system);
+http.singleWebSocketRequest(
+    WebSocketRequest.create(&quot;ws://127.0.0.1&quot;),
+    clientFlow,
+    ConnectionContext.noEncryption(),
+    Optional.empty(),
+    customSettings,
+    system.log(),
+    materializer
+);</code></pre></dd>
+</dl>
+<h3><a href="#uni-directional-pong-keep-alive" name="uni-directional-pong-keep-alive" class="anchor"><span class="anchor-link"></span></a>Uni-directional Pong keep-alive</h3>
+<p>A Ping response will always be replied to by the client-side with an appropriate <code>Pong</code> reply, carrying the same payload. It is also possible to configure the keep-alive mechanism to send <code>Pong</code> frames instead of <code>Ping</code> frames, which enables an <a href="https://tools.ietf.org/html/rfc6455#section-5.5.3">uni-directional heartbeat</a> mechanism (in which case the client side will <em>not</em> reply to such heartbeat). You can configure this mode by setting: <code>pekko.http.client.websocket.periodic-keep-alive-mode = pong</code>.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/client-side/websocket-support.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../client-side/client-transport.html" title="Pluggable Client Transports / HTTP(S) proxy Support" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Pluggable Client Transports / HTTP(S) proxy Support
+</span>
+</div>
+</a>
+<a href="../client-side/http2.html" title="Client-Side HTTP/2 (Preview)" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Client-Side HTTP/2 (Preview)
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

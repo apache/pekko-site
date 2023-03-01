@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../../assets/images/pekko_favicon.png">
+<title>Custom Directives · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../../lib/prettify/prettify.css">
+<script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Custom Directives
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../routing-dsl/directives/custom-directives.html#custom-directives" class="header">Custom Directives</a>
+  <ul>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#configuration-labeling" class="header">Configuration Labeling</a></li>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#transforming-directives" class="header group-scala">Transforming Directives</a></li>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#directives-from-scratch" class="header group-scala">Directives from Scratch</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../routing-dsl/directives/custom-directives.html#custom-directives" class="header">Custom Directives</a>
+  <ul>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#configuration-labeling" class="header">Configuration Labeling</a></li>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#transforming-directives" class="header group-scala">Transforming Directives</a></li>
+    <li><a href="../../routing-dsl/directives/custom-directives.html#directives-from-scratch" class="header group-scala">Directives from Scratch</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#custom-directives" name="custom-directives" class="anchor"><span class="anchor-link"></span></a>Custom Directives</h1>
+<p>Part of the power of pekko-http directives comes from the ease with which it’s possible to define custom directives at differing levels of abstraction.</p>
+<p>There are essentially three ways of creating custom directives:</p>
+<ol>
+  <li>By introducing new “labels” for configurations of existing directives</li>
+  <li>By transforming existing directives</li>
+  <li>By writing a directive “from scratch”</li>
+</ol>
+<h2><a href="#configuration-labeling" name="configuration-labeling" class="anchor"><span class="anchor-link"></span></a>Configuration Labeling</h2>
+<p>The easiest way to create a custom directive is to simply assign a new name for a certain configuration of one or more existing directives. In fact, most of the predefined pekko-http directives can be considered named configurations of more low-level directives.</p>
+<p>The basic technique is explained in the chapter about Composing Directives, where, for example, a new directive <code>getOrPut</code> is defined like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L27-L38" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val getOrPut = get | put
+
+// tests:
+val route = getOrPut { complete(&quot;ok&quot;) }
+
+Get(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;ok&quot;
+}
+
+Put(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;ok&quot;
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/directives/CustomDirectivesExamplesTest.java#L31-L50" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.http.javadsl.server.Directives.get;
+import static org.apache.pekko.http.javadsl.server.Directives.put;
+import static org.apache.pekko.http.javadsl.server.Directives.complete;
+
+public Route getOrPut(Supplier&lt;Route&gt; inner) {
+  return get(inner).orElse(put(inner));
+}
+Route route = getOrPut(() -&gt; complete(&quot;ok&quot;));</code></pre></dd>
+</dl><div class="group-java">
+<p>Multiple directives can be nested to produce a single directive out of multiple like this:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/directives/CustomDirectivesExamplesTest.java#L37-L112" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.http.javadsl.server.Directives.headerValueByName;
+
+// the composed custom directive
+/**
+ * @param authenticate A function returns a set of roles for the credentials of a user
+ * @param inner Inner route to execute if the provided credentials has the given role
+ *              if not, the request is completed with a
+ */
+public Route headerBasedAuth(Function&lt;MyCredentials, Set&lt;MyRole&gt;&gt; authenticate, MyRole requiredRole, Supplier&lt;Route&gt; inner) {
+  return headerValueByName(&quot;X-My-User-Id&quot;, (userId) -&gt; {
+    return headerValueByName(&quot;X-My-User-Secret&quot;, (secret) -&gt; {
+      Set&lt;MyRole&gt; userRoles = authenticate.apply(new MyCredentials(userId, secret));
+      if (userRoles.contains(requiredRole)) {
+        return inner.get();
+      } else {
+        return complete(StatusCodes.FORBIDDEN, &quot;Role &quot; + requiredRole + &quot; required for access&quot;);
+      }
+    });
+  });
+}
+import static org.apache.pekko.http.javadsl.server.Directives.path;
+
+// a function for authentication
+Function&lt;MyCredentials, Set&lt;MyRole&gt;&gt; authLogic =
+  (credentials) -&gt; {
+    if (credentials.userId.equals(&quot;admin&quot;) &amp;&amp; credentials.safeSecretVerification(&quot;secret&quot;))
+      return new HashSet&lt;&gt;(Arrays.asList(MyRole.USER, MyRole.ADMIN));
+    else
+      return Collections.emptySet();
+  };
+
+// and then using the custom route
+Route route = get(() -&gt;
+  path(&quot;admin&quot;, () -&gt;
+    headerBasedAuth(authLogic, MyRole.ADMIN, () -&gt; complete(StatusCodes.OK, &quot;admin stuff&quot;))
+  )
+);</code></pre></div>
+<p>Another example is the <a href="method-directives/index.html">MethodDirectives</a> which are simply instances of a preconfigured <a href="method-directives/method.html">method</a> directive. The low-level directives that most often form the basis of higher-level “named configuration” directives are grouped together in the <a href="basic-directives/index.html">BasicDirectives</a> trait.</p><div class="group-scala">
+<h2><a href="#transforming-directives" name="transforming-directives" class="anchor"><span class="anchor-link"></span></a>Transforming Directives</h2>
+<p>The second option for creating new directives is to transform an existing one using one of the “transformation methods”, which are defined on the <a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/Directive.html" title="org.apache.pekko.http.scaladsl.server.Directive"><code>Directive</code></a> class, the base class of all “regular” directives.</p>
+<p>Apart from the combinator operators (<code>|</code> and <code>&amp;</code>) and the case-class extractor (<code>as[T]</code>) the following transformations are also defined on all <code>Directive</code> instances:</p>
+<blockquote>
+  <ul>
+    <li><a href="#map-tmap">map/tmap</a></li>
+    <li><a href="#flatmap-tflatmap">flatMap/tflatMap</a></li>
+    <li><a href="#require-trequire">require/trequire</a></li>
+    <li><a href="#recover-recoverpf">recover/recoverPF</a></li>
+  </ul>
+</blockquote>
+<a id="map-tmap"></a>
+<h3><a href="#map-and-tmap" name="map-and-tmap" class="anchor"><span class="anchor-link"></span></a>map and tmap</h3>
+<p>If the Directive is a single-value <code>Directive</code>, the <code>map</code> method allows for simple transformations:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L44-L53" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val textParam: Directive1[String] =
+  parameter(&quot;text&quot;.as[String])
+
+val lengthDirective: Directive1[Int] =
+  textParam.map(text =&gt; text.length)
+
+// tests:
+Get(&quot;/?text=abcdefg&quot;) ~&gt; lengthDirective(x =&gt; complete(x.toString)) ~&gt; check {
+  responseAs[String] shouldEqual &quot;7&quot;
+}</code></pre>
+<p>One example of a predefined directive relying on <code>map</code> is the <a href="https://github.com/apache/incubator-pekko-http/tree/main/http/src/main/scala/org/apache/pekko/http/scaladsl/server/directives/HeaderDirectives.scala#L117-L120">optionalHeaderValue</a> directive.</p>
+<p>The tmap modifier has this signature (somewhat simplified):</p>
+<pre class="prettyprint"><code class="language-scala">def tmap[R](f: L =&gt; R): Directive[Out]
+</code></pre>
+<p>It can be used to transform the <code>Tuple</code> of extractions into another <code>Tuple</code>. The number and/or types of the extractions can be changed arbitrarily. For example if <code>R</code> is <code>Tuple2[A, B]</code> then the result will be a <code>Directive[(A, B)]</code>. Here is a somewhat contrived example:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L59-L70" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val twoIntParameters: Directive[(Int, Int)] =
+  parameters(&quot;a&quot;.as[Int], &quot;b&quot;.as[Int])
+
+val myDirective: Directive1[String] =
+  twoIntParameters.tmap {
+    case (a, b) =&gt; (a + b).toString
+  }
+
+// tests:
+Get(&quot;/?a=2&amp;b=5&quot;) ~&gt; myDirective(x =&gt; complete(x)) ~&gt; check {
+  responseAs[String] shouldEqual &quot;7&quot;
+}</code></pre>
+<a id="flatmap-tflatmap"></a>
+<h3><a href="#flatmap-and-tflatmap" name="flatmap-and-tflatmap" class="anchor"><span class="anchor-link"></span></a>flatMap and tflatMap</h3>
+<p>With map and tmap you can transform the values a directive extracts but you cannot change the “extracting” nature of the directive. For example, if you have a directive extracting an <code>Int</code> you can use map to turn it into a directive that extracts that <code>Int</code> and doubles it, but you cannot transform it into a directive, that doubles all positive <code>Int</code> values and rejects all others.</p>
+<p>In order to do the latter you need <code>flatMap</code> or <code>tflatMap</code>. The <code>tflatMap</code> modifier has this signature:</p>
+<pre class="prettyprint"><code class="language-scala">def tflatMap[R: Tuple](f: L =&gt; Directive[R]): Directive[R]
+</code></pre>
+<p>The given function produces a new directive depending on the Tuple of extractions of the underlying one. As in the case of <a href="#map-tmap">map/tmap</a> there is also a single-value variant called <code>flatMap</code>, which simplifies the operation for Directives only extracting one single value.</p>
+<p>Here is the (contrived) example from above, which doubles positive Int values and rejects all others:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L96-L110" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val intParameter: Directive1[Int] = parameter(&quot;a&quot;.as[Int])
+
+val myDirective: Directive1[Int] =
+  intParameter.flatMap {
+    case a if a &gt; 0 =&gt; provide(2 * a)
+    case _          =&gt; reject
+  }
+
+// tests:
+Get(&quot;/?a=21&quot;) ~&gt; myDirective(i =&gt; complete(i.toString)) ~&gt; check {
+  responseAs[String] shouldEqual &quot;42&quot;
+}
+Get(&quot;/?a=-18&quot;) ~&gt; myDirective(i =&gt; complete(i.toString)) ~&gt; check {
+  handled shouldEqual false
+}</code></pre>
+<p>A common pattern that relies on flatMap is to first extract a value from the RequestContext with the extract directive and then flatMap with some kind of filtering logic. For example, this is the implementation of the method directive:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http/src/main/scala/org/apache/pekko/http/scaladsl/server/directives/MethodDirectives.scala#L93-L97" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def method(httpMethod: HttpMethod): Directive0 =
+  extractMethod.flatMap[Unit] {
+    case `httpMethod` =&gt; pass
+    case _            =&gt; reject(MethodRejection(httpMethod))
+  } &amp; cancelRejections(classOf[MethodRejection])</code></pre>
+<p>The explicit type parameter <code>[Unit]</code> on the flatMap is needed in this case because the result of the flatMap is directly concatenated with the <code>cancelAllRejections</code> directive, thereby preventing “outside-in” inference of the type parameter value.</p>
+<a id="require-trequire"></a>
+<h3><a href="#require-and-trequire" name="require-and-trequire" class="anchor"><span class="anchor-link"></span></a>require and trequire</h3>
+<p>The require modifier transforms a single-extraction directive into a directive without extractions, which filters the requests according the a predicate function. All requests, for which the predicate is false are rejected, all others pass unchanged.</p>
+<p>The signature of require is this:</p>
+<pre class="prettyprint"><code class="language-scala">def require(predicate: T =&gt; Boolean, rejections: Rejection*): Directive0
+</code></pre>
+<p>One example of a predefined directive relying on require is the first overload of the host directive:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http/src/main/scala/org/apache/pekko/http/scaladsl/server/directives/HostDirectives.scala#L43-L48" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/**
+ * Rejects all requests for whose host name the given predicate function returns false.
+ *
+ * @group host
+ */
+def host(predicate: String =&gt; Boolean): Directive0 = extractHost.require(predicate)</code></pre>
+<p>You can only call require on single-extraction directives. The trequire modifier is the more general variant, which takes a predicate of type <code>Tuple =&gt; Boolean</code>. It can therefore also be used on directives with several extractions.</p>
+<a id="recover-recoverpf"></a>
+<h3><a href="#recover-and-recoverpf" name="recover-and-recoverpf" class="anchor"><span class="anchor-link"></span></a>recover and recoverPF</h3>
+<p>The <code>recover</code> modifier allows you “catch” rejections produced by the underlying directive and, instead of rejecting, produce an alternative directive with the same type(s) of extractions.</p>
+<p>The signature of recover is this:</p>
+<pre class="prettyprint"><code class="language-scala">def recover[R &gt;: L: Tuple](recovery: Seq[Rejection] =&gt; Directive[R]): Directive[R] =
+</code></pre>
+<p>In many cases the very similar <code>recoverPF</code> modifier might be little bit easier to use since it doesn’t require the handling of all rejections:</p>
+<pre class="prettyprint"><code class="language-scala">def recoverPF[R &gt;: L: Tuple](
+  recovery: PartialFunction[Seq[Rejection], Directive[R]]): Directive[R]
+</code></pre>
+<p>One example of a predefined directive relying <code>recoverPF</code> is the <code>optionalHeaderValue</code> directive:</p>
+<pre class="prettyprint"><code class="language-scala">def optionalHeaderValue[T](f: HttpHeader </code></pre>
+<h3><a href="#collect-and-tcollect" name="collect-and-tcollect" class="anchor"><span class="anchor-link"></span></a>collect and tcollect</h3>
+<p>With collect and tcollect you can filter and map in one go, it mimics the collect known from the regular Scala collections.</p>
+<p>Here is an example, first via map and filter and finally using collect:</p>
+<pre><code>parameter(&quot;a&quot;.as[Int]).filter(x =&gt; x != 0, MissingQueryParamRejection(&quot;a&quot;)).map(x =&gt; 42 / x)
+
+parameter(&quot;a&quot;.as[Int]).collect({ case x if x != 0 =&gt; 42 / x }, MissingQueryParamRejection(&quot;a&quot;))
+</code></pre>
+<h2><a href="#directives-from-scratch" name="directives-from-scratch" class="anchor"><span class="anchor-link"></span></a>Directives from Scratch</h2>
+<p>The third option for creating custom directives is to do it “from scratch”, either by using <code>Directive.apply</code> or by subclassing <code>Directive</code> class directly. The <code>Directive</code> is defined like this (leaving away operators and modifiers):</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http/src/main/scala/org/apache/pekko/http/scaladsl/server/Directive.scala#L30-L156" target="_blank" title="Go to snippet source">source</a><code class="language-scala">abstract class Directive[L](implicit val ev: Tuple[L]) {
+
+  /**
+   * Calls the inner route with a tuple of extracted values of type `L`.
+   *
+   * `tapply` is short for &quot;tuple-apply&quot;. Usually, you will use the regular `apply` method instead,
+   * which is added by an implicit conversion (see `Directive.addDirectiveApply`).
+   */
+  def tapply(f: L =&gt; Route): Route
+}</code></pre>
+<p>It only has one abstract member that you need to implement, the <code>tapply</code> method, which creates the Route the directives presents to the outside from its inner Route building function (taking the extractions as parameters).</p>
+<p>Extractions are kept as a Tuple. Here are a few examples:</p>
+<p>A <code>Directive[Unit]</code> extracts nothing (like the get directive). Because this type is used quite frequently pekko-http defines a type alias for it:</p>
+<pre class="prettyprint"><code class="language-scala">type Directive0 = Directive[Unit]
+</code></pre>
+<p>A <code>Directive[(String)]</code> extracts one String value (like the hostName directive). The type alias for it is:</p>
+<pre class="prettyprint"><code class="language-scala">type Directive1[T] = Directive[Tuple1[T]]
+</code></pre>
+<p>A <code>Directive[(String, Int)]</code> extracts a <code>String</code> value and an <code>Int</code> value (like a <code>parameters(&#39;a.as[String], &#39;b.as[Int])</code> directive). Such a directive can be defined to extract the hostname and port of a request:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L116-L129" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner =&gt; ctx =&gt;
+  val authority = ctx.request.uri.authority
+  inner((authority.host.address(), authority.port))(ctx)
+}
+
+// test
+val route = hostnameAndPort {
+  (hostname, port) =&gt; complete(s&quot;The hostname is $hostname and the port is $port&quot;)
+}
+
+Get() ~&gt; Host(&quot;pekko.apache.org&quot;, 8080) ~&gt; route ~&gt; check {
+  status shouldEqual OK
+  responseAs[String] shouldEqual &quot;The hostname is pekko.apache.org and the port is 8080&quot;
+}</code></pre>
+<p>Beside using <code>Directive.apply</code>, you can also extending <code>Directive</code> directly(This is actually uncommon and the first is preferable for common use cases):</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomDirectivesExamplesSpec.scala#L135-L150" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object hostnameAndPort extends Directive[(String, Int)] {
+  override def tapply(f: ((String, Int)) =&gt; Route): Route = { ctx =&gt;
+    val authority = ctx.request.uri.authority
+    f((authority.host.address(), authority.port))(ctx)
+  }
+}
+
+// test
+val route = hostnameAndPort {
+  (hostname, port) =&gt; complete(s&quot;The hostname is $hostname and the port is $port&quot;)
+}
+
+Get() ~&gt; Host(&quot;pekko.apache.org&quot;, 8080) ~&gt; route ~&gt; check {
+  status shouldEqual OK
+  responseAs[String] shouldEqual &quot;The hostname is pekko.apache.org and the port is 8080&quot;
+}</code></pre>
+<p>Keeping extractions as <code>Tuples</code> has a lot of advantages, mainly great flexibility while upholding full type safety and “inferability”. However, the number of times where you’ll really have to fall back to defining a directive from scratch should be very small. In fact, if you find yourself in a position where a “from scratch” directive is your only option, we’d like to hear about it, so we can provide a higher-level “something” for other users.</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/routing-dsl/directives/custom-directives.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../../routing-dsl/directives/timeout-directives/withRequestTimeoutResponse.html" title="withRequestTimeoutResponse" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+withRequestTimeoutResponse
+</span>
+</div>
+</a>
+<a href="../../routing-dsl/rejections.html" title="Rejections" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Rejections
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../../assets/javascripts/application.583bbe55.js"></script>
+<script src="../../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../../."}})</script>
+<script type="text/javascript" src="../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

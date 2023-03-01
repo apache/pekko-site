@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Exception Handling · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Exception Handling
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../routing-dsl/exception-handling.html#exception-handling" class="header">Exception Handling</a>
+  <ul>
+    <li><a href="../routing-dsl/exception-handling.html#default-exception-handler" class="header">Default Exception Handler</a></li>
+    <li><a href="../routing-dsl/exception-handling.html#including-sensitive-data-in-exceptions" class="header">Including sensitive data in exceptions</a></li>
+    <li><a href="../routing-dsl/exception-handling.html#respond-with-headers-and-exception-handler" class="header">Respond with headers and Exception Handler</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../routing-dsl/exception-handling.html#exception-handling" class="header">Exception Handling</a>
+  <ul>
+    <li><a href="../routing-dsl/exception-handling.html#default-exception-handler" class="header">Default Exception Handler</a></li>
+    <li><a href="../routing-dsl/exception-handling.html#including-sensitive-data-in-exceptions" class="header">Including sensitive data in exceptions</a></li>
+    <li><a href="../routing-dsl/exception-handling.html#respond-with-headers-and-exception-handler" class="header">Respond with headers and Exception Handler</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#exception-handling" name="exception-handling" class="anchor"><span class="anchor-link"></span></a>Exception Handling</h1>
+<p>Exceptions thrown during route execution bubble up through the route structure to the next enclosing <a href="directives/execution-directives/handleExceptions.html">handleExceptions</a> directive or the top of your route structure.</p>
+<p>Similarly to the way that <a href="rejections.html">Rejections</a> are handled the <a href="directives/execution-directives/handleExceptions.html">handleExceptions</a> directive delegates the actual job of converting an exception to its argument, an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala">, which is defined like this:</span><span class="group-java">.</span></p><div class="group-scala">
+<pre class="prettyprint"><code class="language-scala">trait ExceptionHandler extends PartialFunction[Throwable, Route]
+</code></pre></div>
+<p>Since an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span> is a partial function, it can choose which exceptions it would like to handle and which not. Unhandled exceptions will simply continue to bubble up in the route structure. At the root of the route tree any still unhandled exception will be dealt with by the top-level handler which always handles <em>all</em> exceptions.</p>
+<p><code>Route.seal</code> internally wraps its argument route with the <a href="directives/execution-directives/handleExceptions.html">handleExceptions</a> directive in order to &ldquo;catch&rdquo; and handle any exception.</p>
+<p>So, if you&rsquo;d like to customize the way certain exceptions are handled you need to write a custom <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span>. Once you have defined your custom <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span> you have two options for &ldquo;activating&rdquo; it:</p>
+<ol>
+  <li><span class="group-scala">Bring it into implicit scope at the top-level.</span><span class="group-java">Pass it to the <code>seal()</code> method of the <a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/Route.html" title="org.apache.pekko.http.javadsl.server.Route"><code>Route</code></a></span></li>
+  <li>Supply it as argument to the <a href="directives/execution-directives/handleExceptions.html">handleExceptions</a> directive.</li>
+</ol>
+<p>In the first case your handler will be &ldquo;sealed&rdquo; (which means that it will receive the default handler as a fallback for all cases your handler doesn&rsquo;t handle itself) and used for all exceptions that are not handled within the route structure itself. Here you can see an example of it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/ExceptionHandlerExamplesSpec.scala#L95-L118" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.http.scaladsl.model.HttpResponse
+import pekko.http.scaladsl.model.StatusCodes._
+import pekko.http.scaladsl.server._
+import Directives._
+
+object SealedRouteWithCustomExceptionHandler {
+
+  implicit def myExceptionHandler: ExceptionHandler =
+    ExceptionHandler {
+      case _: ArithmeticException =&gt;
+        extractUri { uri =&gt;
+          println(s&quot;Request to $uri could not be handled normally&quot;)
+          complete(HttpResponse(InternalServerError, entity = &quot;Bad numbers, bad result!!!&quot;))
+        }
+    }
+
+  val route: Route = Route.seal(
+    path(&quot;divide&quot;) {
+      complete((1 / 0).toString) //Will throw ArithmeticException
+    }
+  ) // this one takes `myExceptionHandler` implicitly
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ExceptionHandlerInSealExample.java#L17-L40" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.http.javadsl.model.StatusCodes;
+import org.apache.pekko.http.javadsl.server.AllDirectives;
+import org.apache.pekko.http.javadsl.server.ExceptionHandler;
+import org.apache.pekko.http.javadsl.server.PathMatchers;
+import org.apache.pekko.http.javadsl.server.RejectionHandler;
+import org.apache.pekko.http.javadsl.server.Route;
+
+import static org.apache.pekko.http.javadsl.server.PathMatchers.integerSegment;
+
+public class ExceptionHandlerInSealExample extends AllDirectives {
+
+  public Route createRoute() {
+    final ExceptionHandler divByZeroHandler = ExceptionHandler.newBuilder()
+      .match(ArithmeticException.class, x -&gt;
+        complete(StatusCodes.BAD_REQUEST, &quot;You&#39;ve got your arithmetic wrong, fool!&quot;))
+      .build();
+
+    final RejectionHandler defaultHandler = RejectionHandler.defaultHandler();
+
+    return path(PathMatchers.segment(&quot;divide&quot;).slash(integerSegment()).slash(integerSegment()), (a, b) -&gt;
+      complete(&quot;The result is &quot; + (a / b))
+    ).seal(defaultHandler, divByZeroHandler);
+  }
+}</code></pre></dd>
+</dl>
+<p>The second case allows you to restrict the applicability of your handler to certain branches of your route structure.</p>
+<p>Here is an example for wiring up a custom handler via <a href="directives/execution-directives/handleExceptions.html">handleExceptions</a>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/ExceptionHandlerExamplesSpec.scala#L26-L54" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+import StatusCodes._
+import pekko.http.scaladsl.server._
+import Directives._
+
+val myExceptionHandler = ExceptionHandler {
+  case _: ArithmeticException =&gt;
+    extractUri { uri =&gt;
+      println(s&quot;Request to $uri could not be handled normally&quot;)
+      complete(HttpResponse(InternalServerError, entity = &quot;Bad numbers, bad result!!!&quot;))
+    }
+}
+
+object MyApp extends App {
+
+  implicit val system = ActorSystem()
+
+  val route: Route =
+    handleExceptions(myExceptionHandler) {
+      // ... some route structure
+    }
+
+  Http().newServerAt(&quot;localhost&quot;, 8080).bind(route)
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ExceptionHandlerExample.java#L17-L52" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.http.javadsl.Http;
+import org.apache.pekko.http.javadsl.ServerBinding;
+import org.apache.pekko.http.javadsl.model.StatusCodes;
+import org.apache.pekko.http.javadsl.server.AllDirectives;
+import org.apache.pekko.http.javadsl.server.ExceptionHandler;
+import org.apache.pekko.http.javadsl.server.PathMatchers;
+import org.apache.pekko.http.javadsl.server.Route;
+
+import java.util.concurrent.CompletionStage;
+
+import static org.apache.pekko.http.javadsl.server.PathMatchers.integerSegment;
+
+public class ExceptionHandlerExample extends AllDirectives {
+  public static void main(String[] args) {
+    final ActorSystem system = ActorSystem.create();
+    final Http http = Http.get(system);
+
+    final ExceptionHandlerExample app = new ExceptionHandlerExample();
+
+    final CompletionStage&lt;ServerBinding&gt; binding = http.newServerAt(&quot;localhost&quot;, 8080).bind(app.createRoute());
+  }
+
+
+  public Route createRoute() {
+    final ExceptionHandler divByZeroHandler = ExceptionHandler.newBuilder()
+      .match(ArithmeticException.class, x -&gt;
+        complete(StatusCodes.BAD_REQUEST, &quot;You&#39;ve got your arithmetic wrong, fool!&quot;))
+      .build();
+
+    return path(PathMatchers.segment(&quot;divide&quot;).slash(integerSegment()).slash(integerSegment()), (a, b) -&gt;
+      handleExceptions(divByZeroHandler, () -&gt; complete(&quot;The result is &quot; + (a / b)))
+    );
+  }
+}</code></pre></dd>
+</dl><div class="group-scala">
+<p>And this is how to do it implicitly:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/ExceptionHandlerExamplesSpec.scala#L61-L88" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+import StatusCodes._
+import pekko.http.scaladsl.server._
+import Directives._
+
+implicit def myExceptionHandler: ExceptionHandler =
+  ExceptionHandler {
+    case _: ArithmeticException =&gt;
+      extractUri { uri =&gt;
+        println(s&quot;Request to $uri could not be handled normally&quot;)
+        complete(HttpResponse(InternalServerError, entity = &quot;Bad numbers, bad result!!!&quot;))
+      }
+  }
+
+object MyApp extends App {
+
+  implicit val system = ActorSystem()
+
+  val route: Route =
+  // ... some route structure
+
+  Http().newServerAt(&quot;localhost&quot;, 8080).bind(route)
+}
+</code></pre></div>
+<h2><a href="#default-exception-handler" name="default-exception-handler" class="anchor"><span class="anchor-link"></span></a>Default Exception Handler</h2>
+<p>A default <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span> is used if no custom instance is provided.</p>
+<p>It will handle every <code>NonFatal</code> throwable, write its stack trace and complete the request with <code>InternalServerError</code> <code>(500)</code> status code.</p>
+<p>The message body will contain a string obtained via <code>Throwable#getMessage</code> call on the exception caught.</p>
+<p>In case <code>getMessage</code> returns <code>null</code> (which is true for e.g. <code>NullPointerException</code> instances), the class name and a remark about the message being null are included in the response body.</p>
+<p>Note that <code>IllegalRequestException</code>s&rsquo; stack traces are not logged, since instances of this class normally contain enough information to provide a useful error message.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Users are strongly encouraged not to rely on using the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span> as a means of handling errors. By errors, we mean things that are an expected part of normal operations: for example, issues discovered during input validation. The <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span> is meant to be a means of handling failures. See <a href="https://www.reactivemanifesto.org/glossary#Failure">Failure vs Error</a> in the glossary of the <a href="https://www.reactivemanifesto.org">Reactive Manifesto</a>.</p>
+<p>Distinguishing between errors and failures (i.e. thrown <code>Exceptions</code> handled via the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/server/ExceptionHandler.html" title="org.apache.pekko.http.javadsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/server/ExceptionHandler.html" title="org.apache.pekko.http.scaladsl.server.ExceptionHandler"><code>ExceptionHandler</code></a></span>) provides a much better mental model but also leads to performance improvements.</p>
+<p>This is because exceptions are known to have a negative performance impact for cases when the depth of the call stack is significant (stack trace construction cost) and when the handler is located far from the place of the throwable instantiation (stack unwinding costs).</p>
+<p>In a typical Apache Pekko application both these conditions are frequently true, so as a rule of thumb, you should try to minimize the number of <code>Throwable</code> instances reaching the exception handler.</p>
+<p>To understand the performance implications of (mis-)using exceptions, have a read at this excellent post by A. Shipilёv: <a href="https://shipilev.net/blog/2014/exceptional-performance/">The Exceptional Performance of Lil&rsquo; Exception</a>.</p></div><div class="callout note "><div class="callout-title">Note</div>
+<p>Please note that the default <code>ExceptionHandler</code> will also discard the entity bytes automatically. If you want to change this behavior, please refer to <a href="exception-handling.html#exception-handling">the section above</a>; however, might cause connections to stall if the entity is not properly rejected or cancelled on the client side.</p></div>
+<h2><a href="#including-sensitive-data-in-exceptions" name="including-sensitive-data-in-exceptions" class="anchor"><span class="anchor-link"></span></a>Including sensitive data in exceptions</h2>
+<p>To prevent certain types of attack, it is not recommended to include arbitrary invalid user input in the response. However, sometimes it can be useful to include it in the exception and logging for diagnostic reasons. In such cases, you can use exceptions that extend <code>ExceptionWithErrorInfo</code>, such as <code>IllegalHeaderException</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/ExceptionHandlerExamplesSpec.scala#L214-L224" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.model.IllegalHeaderException
+
+val route = get {
+  throw IllegalHeaderException(&quot;Value of header Foo was illegal&quot;, &quot;Found illegal value \&quot;&lt;script&gt;alert(&#39;evil_xss_or_xsrf_reflection&#39;)&lt;/script&gt;\&quot;&quot;)
+}
+
+// Test:
+Get(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] should include(&quot;header Foo was illegal&quot;)
+  responseAs[String] shouldNot include(&quot;evil_xss_or_xsrf_reflection&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/RespondWithHeaderHandlerExampleTest.java#L47-L59" target="_blank" title="Go to snippet source">source</a><code class="language-java">TestRoute route = testRoute(
+  get(() -&gt; {
+      throw new IllegalHeaderException(new ErrorInfo(
+        &quot;Value of header Foo was illegal&quot;,
+        &quot;Found illegal value \&quot;&lt;script&gt;alert(&#39;evil_xss_or_xsrf_reflection&#39;)&lt;/script&gt;\&quot;&quot;));
+  })
+);
+
+String response = route
+  .run(HttpRequest.GET(&quot;/&quot;))
+  .entityString();
+assertTrue(response.contains(&quot;header Foo was illegal&quot;));
+assertTrue(!response.contains(&quot;evil_xss_or_xsrf_reflection&quot;));</code></pre></dd>
+</dl>
+<h2><a href="#respond-with-headers-and-exception-handler" name="respond-with-headers-and-exception-handler" class="anchor"><span class="anchor-link"></span></a>Respond with headers and Exception Handler</h2>
+<p>If you wrap an ExceptionHandler inside a different directive, then that directive will still apply. Example below shows that wrapping an ExceptionHandler inside a respondWithHeader directive will still add the header to the response. </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/ExceptionHandlerExamplesSpec.scala#L125-L169" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.model.HttpResponse
+import pekko.http.scaladsl.model.StatusCodes._
+import pekko.http.scaladsl.model.headers.RawHeader
+import pekko.http.scaladsl.server._
+import Directives._
+import pekko.http.scaladsl.Http
+import RespondWithHeaderExceptionHandler.route
+
+
+object RespondWithHeaderExceptionHandler {
+  def myExceptionHandler: ExceptionHandler =
+    ExceptionHandler {
+      case _: ArithmeticException =&gt;
+        extractUri { uri =&gt;
+          println(s&quot;Request to $uri could not be handled normally&quot;)
+          complete(HttpResponse(InternalServerError, entity = &quot;Bad numbers, bad result!!!&quot;))
+        }
+    }
+
+  val greetingRoutes: Route = path(&quot;greetings&quot;) {
+    complete(&quot;Hello!&quot;)
+  }
+
+  val divideRoutes: Route = path(&quot;divide&quot;) {
+    complete((1 / 0).toString) //Will throw ArithmeticException
+  }
+
+  val route: Route =
+    respondWithHeader(RawHeader(&quot;X-Outer-Header&quot;, &quot;outer&quot;)) { // will apply, since it gets the response from the handler
+      handleExceptions(myExceptionHandler) {
+        greetingRoutes ~ divideRoutes ~ respondWithHeader(RawHeader(&quot;X-Inner-Header&quot;, &quot;inner&quot;)) {
+          throw new Exception(&quot;Boom!&quot;) //Will cause Internal server error,
+          // only ArithmeticExceptions are handled by myExceptionHandler.
+        }
+      }
+    }
+}
+
+object MyApp extends App {
+  implicit val system = ActorSystem()
+
+  Http().newServerAt(&quot;localhost&quot;, 8080).bind(route)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/RespondWithHeaderHandlerExampleTest.java#L17-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.http.javadsl.Http;
+import org.apache.pekko.http.javadsl.ServerBinding;
+import org.apache.pekko.http.javadsl.model.HttpRequest;
+import org.apache.pekko.http.javadsl.model.StatusCodes;
+import org.apache.pekko.http.javadsl.model.headers.RawHeader;
+import org.apache.pekko.http.javadsl.server.AllDirectives;
+import org.apache.pekko.http.javadsl.server.ExceptionHandler;
+import org.apache.pekko.http.javadsl.server.Route;
+import org.apache.pekko.http.javadsl.testkit.JUnitRouteTest;
+import org.apache.pekko.http.javadsl.testkit.TestRoute;
+import org.apache.pekko.http.scaladsl.model.ErrorInfo;
+import org.apache.pekko.http.scaladsl.model.IllegalHeaderException;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.concurrent.CompletionStage;
+
+import static junit.framework.TestCase.assertTrue;
+
+class RespondWithHeaderHandlerExample extends AllDirectives {
+    public static void main(String[] args) throws IOException {
+        final ActorSystem system = ActorSystem.create();
+        final Http http = Http.get(system);
+
+        final RespondWithHeaderHandlerExample app = new RespondWithHeaderHandlerExample();
+
+        final CompletionStage&lt;ServerBinding&gt; binding = http.newServerAt(&quot;localhost&quot;, 8080).bind(app.createRoute());
+    }
+
+    public Route createRoute() {
+        final ExceptionHandler divByZeroHandler = ExceptionHandler.newBuilder()
+                .match(ArithmeticException.class, x -&gt;
+                        complete(StatusCodes.BAD_REQUEST, &quot;Error! You tried to divide with zero!&quot;))
+                .build();
+
+        return respondWithHeader(RawHeader.create(&quot;X-Outer-Header&quot;, &quot;outer&quot;), () -&gt; //will apply for handled exceptions
+                handleExceptions(divByZeroHandler, () -&gt; concat(
+                        path(&quot;greetings&quot;, () -&gt; complete(&quot;Hello!&quot;)),
+                        path(&quot;divide&quot;, () -&gt; complete(&quot;Dividing with zero: &quot; + (1 / 0))),
+                        respondWithHeader(RawHeader.create(&quot;X-Inner-Header&quot;, &quot;inner&quot;), () -&gt; {
+                            // Will cause Internal server error,
+                            // only ArithmeticExceptions are handled by divByZeroHandler.
+                            throw new RuntimeException(&quot;Boom!&quot;);
+                        })
+                ))
+        );
+    }
+}</code></pre></dd>
+</dl>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/routing-dsl/exception-handling.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../routing-dsl/rejections.html" title="Rejections" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Rejections
+</span>
+</div>
+</a>
+<a href="../routing-dsl/case-class-extraction.html" title="Case Class Extraction" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Case Class Extraction
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

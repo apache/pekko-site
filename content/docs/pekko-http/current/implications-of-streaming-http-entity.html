@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Implications of the streaming nature of Request/Response Entities · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+Implications of the streaming nature of Request/Response Entities
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="configuration.html" class="page">Configuration</a></li>
+    <li><a href="migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="common/http-model.html" class="page">HTTP Model</a></li>
+    <li><a href="common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="technologies.html#json" class="header">JSON</a></li>
+    <li><a href="technologies.html#xml" class="header">XML</a></li>
+    <li><a href="technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="implications-of-streaming-http-entity.html#implications-of-the-streaming-nature-of-request-response-entities" class="active page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="reference.html#directives" class="header">Directives</a></li>
+    <li><a href="reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="implications-of-streaming-http-entity.html#implications-of-the-streaming-nature-of-request-response-entities" class="header">Implications of the streaming nature of Request/Response Entities</a>
+  <ul>
+    <li><a href="implications-of-streaming-http-entity.html#client-side-handling-of-streaming-http-entities" class="header">Client-Side handling of streaming HTTP Entities</a></li>
+    <li><a href="implications-of-streaming-http-entity.html#server-side-handling-of-streaming-http-entities" class="header">Server-Side handling of streaming HTTP Entities</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="implications-of-streaming-http-entity.html#implications-of-the-streaming-nature-of-request-response-entities" class="header">Implications of the streaming nature of Request/Response Entities</a>
+  <ul>
+    <li><a href="implications-of-streaming-http-entity.html#client-side-handling-of-streaming-http-entities" class="header">Client-Side handling of streaming HTTP Entities</a></li>
+    <li><a href="implications-of-streaming-http-entity.html#server-side-handling-of-streaming-http-entities" class="header">Server-Side handling of streaming HTTP Entities</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#implications-of-the-streaming-nature-of-request-response-entities" name="implications-of-the-streaming-nature-of-request-response-entities" class="anchor"><span class="anchor-link"></span></a>Implications of the streaming nature of Request/Response Entities</h1>
+<p>Apache Pekko HTTP is streaming <em>all the way through</em>, which means that the back-pressure mechanisms enabled by Apache Pekko Streams are exposed through all layers–from the TCP layer, through the HTTP server, all the way up to the user-facing <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> and their <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> APIs.</p>
+<p>This has surprising implications if you are used to non-streaming / not-reactive HTTP clients. Specifically it means that: &ldquo;<em>lack of consumption of the HTTP Entity, is signaled as back-pressure to the other side of the connection</em>&rdquo;. This is a feature, as it allows one only to consume the entity, and back-pressure servers/clients from overwhelming our application, possibly causing unnecessary buffering of the entity in memory.</p>
+<p>Put another way: Streaming <em>all the way through</em> is a feature of Apache Pekko HTTP that allows consuming entities (and pulling them through the network) in a streaming fashion, and only <em>on demand</em> when the client is ready to consume the bytes. Therefore, you have to explicitly consume or discard the entity. </p>
+<p>On a client, for example, if the application doesn&rsquo;t subscribe to the response entity within <code>pekko.http.host-connection-pool.response-entity-subscription-timeout</code>, the stream will fail with a <code>TimeoutException: Response entity was not subscribed after ...</code>.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Consuming (or discarding) the Entity of a request is mandatory! If <em>accidentally</em> left neither consumed or discarded Apache Pekko HTTP will assume the incoming data should remain back-pressured, and will stall the incoming data via TCP back-pressure mechanisms. A client should consume the Entity regardless of the status of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span>.</p></div>
+<h2><a href="#client-side-handling-of-streaming-http-entities" name="client-side-handling-of-streaming-http-entities" class="anchor"><span class="anchor-link"></span></a>Client-Side handling of streaming HTTP Entities</h2>
+<h3><a href="#consuming-the-http-response-entity-client-" name="consuming-the-http-response-entity-client-" class="anchor"><span class="anchor-link"></span></a>Consuming the HTTP Response Entity (Client)</h3>
+<p>There are two use-cases to consume the entity of a response:</p>
+<ol>
+  <li>process the bytes as the response arrives from the network buffer</li>
+  <li>load all the bytes in memory first, and process them afterwards</li>
+</ol>
+<p>The most common use-case, and recommended, of course, is consuming the response entity as a stream, which can be done via running the underlying <code>dataBytes</code> Source.</p>
+<p>It is encouraged to use various streaming techniques to utilise the underlying infrastructure to its fullest, for example by framing the incoming chunks, parsing them line-by-line and then connecting the flow into another destination Sink, such as a File or other Apache Pekko Streams connector:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L33-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import java.io.File
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.model._
+import pekko.stream.scaladsl.{ FileIO, Framing }
+import pekko.util.ByteString
+
+implicit val system = ActorSystem()
+
+val response: HttpResponse = ???
+
+response.entity.dataBytes
+  .via(Framing.delimiter(ByteString(&quot;\n&quot;), maximumFrameLength = 256))
+  .map(transformEachLine)
+  .runWith(FileIO.toPath(new File(&quot;/tmp/example.out&quot;).toPath))
+
+def transformEachLine(line: ByteString): ByteString = ???
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L39-L78" target="_blank" title="Go to snippet source">source</a><code class="language-java">import java.io.File;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import org.apache.pekko.stream.javadsl.Framing;
+import org.apache.pekko.http.javadsl.model.*;
+import scala.concurrent.duration.FiniteDuration;
+
+final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+final HttpResponse response = responseFromSomewhere();
+
+final Function&lt;ByteString, ByteString&gt; transformEachLine = line -&gt; line /* some transformation here */;
+
+final int maximumFrameLength = 256;
+
+response.entity().getDataBytes()
+  .via(Framing.delimiter(ByteString.fromString(&quot;\n&quot;), maximumFrameLength, FramingTruncation.ALLOW))
+  .map(transformEachLine::apply)
+  .runWith(FileIO.toPath(new File(&quot;/tmp/example.out&quot;).toPath()), system);</code></pre></dd>
+</dl>
+<p>However, sometimes the need may arise to consume the entire entity as <code>Strict</code> entity (which means that it is completely loaded into memory). Apache Pekko HTTP provides a special <span class="group-scala"><code>toStrict(timeout)</code></span><span class="group-java"><code>toStrict(timeout, materializer)</code></span> method which can be used to eagerly consume the entity and make it available in memory. Once in memory, data can be consumed as a <code>ByteString</code> or as a <code>Source</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L57-L87" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.Future
+import scala.concurrent.duration._
+
+import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.model._
+import pekko.util.ByteString
+
+implicit val system = ActorSystem()
+implicit val dispatcher = system.dispatcher
+
+case class ExamplePerson(name: String)
+def parse(line: ByteString): ExamplePerson = ???
+
+val response: HttpResponse = ???
+
+// toStrict to enforce all data be loaded into memory from the connection
+val strictEntity: Future[HttpEntity.Strict] = response.entity.toStrict(3.seconds)
+
+// You can now use the `data` directly...
+val person1: Future[ExamplePerson] = strictEntity.map(e =&gt; parse(e.data))
+
+// Though it is also still possible to use the streaming API to consume dataBytes,
+// even though now they&#39;re in memory:
+val person2: Future[ExamplePerson] =
+  strictEntity.flatMap { e =&gt;
+    e.dataBytes
+      .runFold(ByteString.empty) { case (acc, b) =&gt; acc ++ b }
+      .map(parse)
+  }
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L85-L115" target="_blank" title="Go to snippet source">source</a><code class="language-java">final class ExamplePerson {
+  final String name;
+  public ExamplePerson(String name) { this.name = name; }
+}
+
+public ExamplePerson parse(ByteString line) {
+  return new ExamplePerson(line.utf8String());
+}
+
+final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+final HttpResponse response = responseFromSomewhere();
+
+// toStrict to enforce all data be loaded into memory from the connection
+final CompletionStage&lt;HttpEntity.Strict&gt; strictEntity = response.entity()
+    .toStrict(FiniteDuration.create(3, TimeUnit.SECONDS).toMillis(), system);
+
+// You can now use `getData` to get the data directly...
+final CompletionStage&lt;ExamplePerson&gt; person1 =
+  strictEntity.thenApply(strict -&gt; parse(strict.getData()));
+
+// Though it is also still possible to use the streaming API to consume dataBytes,
+// even though now they&#39;re in memory:
+final CompletionStage&lt;ExamplePerson&gt; person2 =
+  strictEntity
+    .thenCompose(strict -&gt;
+      strict.getDataBytes()
+        .runFold(emptyByteString(), (acc, b) -&gt; acc.concat(b), system)
+        .thenApply(this::parse)
+    );</code></pre></dd>
+</dl>
+<h3><a href="#integrating-with-apache-pekko-streams" name="integrating-with-apache-pekko-streams" class="anchor"><span class="anchor-link"></span></a>Integrating with Apache Pekko Streams</h3>
+<p>In some cases, it is necessary to process the results of a series of Apache Pekko HTTP calls as Apache Pekko Streams. In order to ensure that the HTTP Response Entity is consumed in a timely manner, the Apache Pekko HTTP stream for each request must be executed and completely consumed, then sent along for further processing.</p>
+<p>Failing to account for this behavior can result in seemingly non-deterministic failures due to complex interactions between http and stream buffering. This manifests as errors such as the following:</p>
+<pre><code>Response entity was not subscribed after 1 second. Make sure to read the response `entity` body or call `entity.discardBytes()` on it -- in case you deal with `HttpResponse`, use the shortcut `response.discardEntityBytes()`.
+</code></pre>
+<p>This error indicates that the http response has been available for too long without being consumed. It can be partially worked around by increasing the subscription timeout, but you will still run the risk of running into network level timeouts and could still exceed the timeout under load so it&rsquo;s best to resolve the issue properly such as in the examples below: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L93-L135" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.Future
+
+import org.apache.pekko
+import pekko.NotUsed
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.Http
+import pekko.http.scaladsl.model._
+import pekko.util.ByteString
+import pekko.stream.scaladsl.{ Flow, Sink, Source }
+
+implicit val system = ActorSystem()
+implicit val dispatcher = system.dispatcher
+
+case class ExamplePerson(name: String)
+
+def parse(line: ByteString): Option[ExamplePerson] =
+  line.utf8String.split(&quot; &quot;).headOption.map(ExamplePerson)
+
+val requests: Source[HttpRequest, NotUsed] = Source
+  .fromIterator(() =&gt;
+    Range(0, 10).map(i =&gt; HttpRequest(uri = Uri(s&quot;https://localhost/people/$i&quot;))).iterator)
+
+val processorFlow: Flow[Option[ExamplePerson], Int, NotUsed] =
+  Flow[Option[ExamplePerson]].map(_.map(_.name.length).getOrElse(0))
+
+// Run and completely consume a single akka http request
+def runRequest(req: HttpRequest): Future[Option[ExamplePerson]] =
+  Http()
+    .singleRequest(req)
+    .flatMap { response =&gt;
+      response.entity.dataBytes
+        .runReduce(_ ++ _)
+        .map(parse)
+    }
+
+// Run each akka http flow to completion, then continue processing. You&#39;ll want to tune the `parallelism`
+// parameter to mapAsync -- higher values will create more cpu and memory load which may or may not positively
+// impact performance.
+requests
+  .mapAsync(2)(runRequest)
+  .via(processorFlow)
+  .runWith(Sink.ignore)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L121-L154" target="_blank" title="Go to snippet source">source</a><code class="language-java">final class ExamplePerson {
+  final String name;
+  public ExamplePerson(String name) { this.name = name; }
+}
+
+public ExamplePerson parse(ByteString line) {
+  return new ExamplePerson(line.utf8String());
+}
+
+final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+// run a single request, consuming it completely in a single stream
+public CompletionStage&lt;ExamplePerson&gt; runRequest(HttpRequest request) {
+  return Http.get(system)
+    .singleRequest(request)
+    .thenCompose(response -&gt;
+      response.entity().getDataBytes()
+        .runReduce((a, b) -&gt; a.concat(b), system)
+        .thenApply(this::parse)
+    );
+}
+
+final List&lt;HttpRequest&gt; requests = new ArrayList&lt;&gt;();
+
+final Flow&lt;ExamplePerson, Integer, NotUsed&gt; exampleProcessingFlow = Flow
+        .fromFunction(person -&gt; person.toString().length());
+
+final CompletionStage&lt;Done&gt; stream = Source
+        .from(requests)
+        .mapAsync(1, this::runRequest)
+        .via(exampleProcessingFlow)
+        .runWith(Sink.ignore(), system);
+</code></pre></dd>
+</dl>
+<h3><a href="#discarding-the-http-response-entity-client-" name="discarding-the-http-response-entity-client-" class="anchor"><span class="anchor-link"></span></a>Discarding the HTTP Response Entity (Client)</h3>
+<p>Sometimes when calling HTTP services we do not care about their response payload (e.g. all we care about is the response code), yet as explained above entity still has to be consumed in some way, otherwise we&rsquo;ll be exerting back-pressure on the underlying TCP connection.</p>
+<p>The <code>discardEntityBytes</code> convenience method serves the purpose of easily discarding the entity if it has no purpose for us. It does so by piping the incoming bytes directly into an <code>Sink.ignore</code>.</p>
+<p>The two snippets below are equivalent, and work the same way on the server-side for incoming HTTP Requests:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L141-L153" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.model.HttpMessage.DiscardedEntity
+import pekko.http.scaladsl.model._
+
+implicit val system = ActorSystem()
+implicit val dispatcher = system.dispatcher
+
+val response1: HttpResponse = ??? // obtained from an HTTP call (see examples below)
+
+val discarded: DiscardedEntity = response1.discardEntityBytes()
+discarded.future.onComplete { done =&gt; println(&quot;Entity discarded completely!&quot;) }
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L160-L169" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+final HttpResponse response = responseFromSomewhere();
+
+final HttpMessage.DiscardedEntity discarded = response.discardEntityBytes(system);
+
+discarded.completionStage().whenComplete((done, ex) -&gt; {
+  System.out.println(&quot;Entity discarded completely!&quot;);
+});</code></pre></dd>
+</dl>
+<p>Or the equivalent low-level code achieving the same result:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpClientExampleSpec.scala#L168-L171" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val response1: HttpResponse = ??? // obtained from an HTTP call (see examples below)
+
+val discardingComplete: Future[Done] = response1.entity.dataBytes.runWith(Sink.ignore)
+discardingComplete.onComplete(done =&gt; println(&quot;Entity discarded completely!&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpClientExampleDocTest.java#L176-L185" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+final HttpResponse response = responseFromSomewhere();
+
+final CompletionStage&lt;Done&gt; discardingComplete = response.entity().getDataBytes().runWith(Sink.ignore(), system);
+
+discardingComplete.whenComplete((done, ex) -&gt; {
+  System.out.println(&quot;Entity discarded completely!&quot;);
+});</code></pre></dd>
+</dl>
+<h2><a href="#server-side-handling-of-streaming-http-entities" name="server-side-handling-of-streaming-http-entities" class="anchor"><span class="anchor-link"></span></a>Server-Side handling of streaming HTTP Entities</h2>
+<p>HTTP Entities of a request are directly linked to Streams fed by the underlying TCP connection. Thus, if request entities remain not consumed, the server will back-pressure the connection, expecting the user-code to eventually decide what to do with the incoming data.</p>
+<p>The most common use-case is to consume the request entity using directives such as <code>BasicDirectives.extractDataBytes</code>. Some directives force an implicit <code>toStrict</code> operation, such as <span class="group-scala"><code>entity(as[String])</code></span><span class="group-java"><code>entity(exampleUnmarshaller, example -&gt; {})</code></span>.</p>
+<h3><a href="#consuming-the-http-request-entity-server-" name="consuming-the-http-request-entity-server-" class="anchor"><span class="anchor-link"></span></a>Consuming the HTTP Request Entity (Server)</h3>
+<p>The simplest way of consuming the incoming request entity is to transform it into an actual domain object, for example by using the <a href="routing-dsl/directives/marshalling-directives/entity.html">entity</a> directive:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L323-L346" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.server.Directives._
+import pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import spray.json.DefaultJsonProtocol._
+
+implicit val system = ActorSystem()
+// needed for the future flatMap/onComplete in the end
+implicit val executionContext = system.dispatcher
+
+final case class Bid(userId: String, bid: Int)
+
+// these are from spray-json
+implicit val bidFormat = jsonFormat2(Bid)
+
+val route =
+  path(&quot;bid&quot;) {
+    put {
+      entity(as[Bid]) { bid =&gt;
+        // incoming entity is fully consumed and converted into a Bid
+        complete(&quot;The bid was: &quot; + bid)
+      }
+    }
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L233-L256" target="_blank" title="Go to snippet source">source</a><code class="language-java">class Bid {
+  final String userId;
+  final int bid;
+
+  Bid(String userId, int bid) {
+    this.userId = userId;
+    this.bid = bid;
+  }
+}
+
+final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+final ActorMaterializer materializer = ActorMaterializer.create(system);
+
+final Unmarshaller&lt;HttpEntity, Bid&gt; asBid = Jackson.unmarshaller(Bid.class);
+
+final Route s = path(&quot;bid&quot;, () -&gt;
+  put(() -&gt;
+    entity(asBid, bid -&gt;
+      // incoming entity is fully consumed and converted into a Bid
+      complete(&quot;The bid was: &quot; + bid)
+    )
+  )
+);</code></pre></dd>
+</dl>
+<p>You can also access the raw <code>dataBytes</code> and run the underlying stream. For example, you could pipe the raw <code>dataBytes</code> into a FileIO <code>Sink</code>. The FileIO <code>Sink</code> signals completion via a <span class="group-scala"><code>Future[IoResult]</code></span><span class="group-java"><code>CompletionStage&lt;IoResult&gt;</code></span> once all the data has been written into the file:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L352-L374" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.stream.scaladsl.FileIO
+import pekko.http.scaladsl.server.Directives._
+import java.io.File
+
+implicit val system = ActorSystem()
+// needed for the future flatMap/onComplete in the end
+implicit val executionContext = system.dispatcher
+
+val route =
+  (put &amp; path(&quot;lines&quot;)) {
+    withoutSizeLimit {
+      extractDataBytes { bytes =&gt;
+        val finishedWriting = bytes.runWith(FileIO.toPath(new File(&quot;/tmp/example.out&quot;).toPath))
+
+        // we only want to respond once the incoming data has been handled:
+        onComplete(finishedWriting) { ioResult =&gt;
+          complete(&quot;Finished writing data: &quot; + ioResult)
+        }
+      }
+    }
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L262-L280" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+final ActorMaterializer materializer = ActorMaterializer.create(system);
+
+final Route s =
+  put(() -&gt;
+    path(&quot;lines&quot;, () -&gt;
+      withoutSizeLimit(() -&gt;
+        extractDataBytes(bytes -&gt; {
+          final CompletionStage&lt;IOResult&gt; res = bytes.runWith(FileIO.toPath(new File(&quot;/tmp/example.out&quot;).toPath()), materializer);
+
+          return onComplete(() -&gt; res, ioResult -&gt;
+            // we only want to respond once the incoming data has been handled:
+            complete(&quot;Finished writing data :&quot; + ioResult));
+        })
+      )
+    )
+  );
+</code></pre></dd>
+</dl>
+<h3><a href="#discarding-the-http-request-entity-server-" name="discarding-the-http-request-entity-server-" class="anchor"><span class="anchor-link"></span></a>Discarding the HTTP Request Entity (Server)</h3>
+<p>You may want to discard the uploaded entity. For example, depending on some validation (e.g. &ldquo;is user authorized to upload files?&rdquo;).</p>
+<p>Please note that &ldquo;discarding the HTTP Request Entity&rdquo; means that the entire upload will proceed, even though you are not interested in the data being streamed to the server. This is useful if you are simply not interested in the entity. </p>
+<p>In order to discard the <code>dataBytes</code> explicitly you can invoke the <code>discardEntityBytes</code> bytes of the incoming <code>HttpRequest</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L380-L401" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.http.scaladsl.server.Directives._
+import pekko.http.scaladsl.model.HttpRequest
+
+implicit val system = ActorSystem()
+// needed for the future flatMap/onComplete in the end
+implicit val executionContext = system.dispatcher
+
+val route =
+  (put &amp; path(&quot;lines&quot;)) {
+    withoutSizeLimit {
+      extractRequest { r: HttpRequest =&gt;
+        val finishedWriting = r.discardEntityBytes().future
+
+        // we only want to respond once the incoming data has been handled:
+        onComplete(finishedWriting) { done =&gt;
+          complete(&quot;Drained all data from connection... (&quot; + done + &quot;)&quot;)
+        }
+      }
+    }
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L286-L302" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+
+final Route s =
+  put(() -&gt;
+    path(&quot;lines&quot;, () -&gt;
+      withoutSizeLimit(() -&gt;
+        extractRequest(r -&gt; {
+          final CompletionStage&lt;Done&gt; res = r.discardEntityBytes(system).completionStage();
+
+          return onComplete(() -&gt; res, done -&gt;
+            // we only want to respond once the incoming data has been handled:
+            complete(&quot;Finished writing data :&quot; + done));
+        })
+      )
+    )
+  );</code></pre></dd>
+</dl>
+<p>A related concept is <em>cancelling</em> the incoming <span class="group-scala"><code>entity.dataBytes</code></span><span class="group-java"><code>entity.getDataBytes()</code></span> stream. Cancellation results in Apache Pekko HTTP <em>abruptly closing the connection from the Client</em>. This may be useful when you detect that the given user should not be allowed to make any uploads at all, and you want to drop the connection (instead of reading and ignoring the incoming data). This can be done by attaching the incoming <span class="group-scala"><code>entity.dataBytes</code></span><span class="group-java"><code>entity.getDataBytes()</code></span> to a <code>Sink.cancelled()</code> which will cancel the entity stream, which in turn will cause the underlying connection to be shut-down by the server – effectively hard-aborting the incoming request:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpServerExampleSpec.scala#L407-L432" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.stream.scaladsl.Sink
+import pekko.http.scaladsl.server.Directives._
+import pekko.http.scaladsl.model.headers.Connection
+
+implicit val system = ActorSystem()
+// needed for the future flatMap/onComplete in the end
+implicit val executionContext = system.dispatcher
+
+val route =
+  (put &amp; path(&quot;lines&quot;)) {
+    withoutSizeLimit {
+      extractDataBytes { data =&gt;
+        // Closing connections, method 1 (eager):
+        // we deem this request as illegal, and close the connection right away:
+        data.runWith(Sink.cancelled) // &quot;brutally&quot; closes the connection
+
+        // Closing connections, method 2 (graceful):
+        // consider draining connection and replying with `Connection: Close` header
+        // if you want the client to close after this request/reply cycle instead:
+        respondWithHeader(Connection(&quot;close&quot;))
+        complete(StatusCodes.Forbidden -&gt; &quot;Not allowed!&quot;)
+      }
+    }
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/HttpServerExampleDocTest.java#L308-L330" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem system = ActorSystem.create();
+final ExecutionContextExecutor dispatcher = system.dispatcher();
+final ActorMaterializer materializer = ActorMaterializer.create(system);
+
+final Route s =
+  put(() -&gt;
+    path(&quot;lines&quot;, () -&gt;
+      withoutSizeLimit(() -&gt;
+        extractDataBytes(bytes -&gt; {
+          // Closing connections, method 1 (eager):
+          // we deem this request as illegal, and close the connection right away:
+          bytes.runWith(Sink.cancelled(), materializer);  // &quot;brutally&quot; closes the connection
+
+          // Closing connections, method 2 (graceful):
+          // consider draining connection and replying with `Connection: Close` header
+          // if you want the client to close after this request/reply cycle instead:
+          return respondWithHeader(Connection.create(&quot;close&quot;), () -&gt;
+            complete(StatusCodes.FORBIDDEN, &quot;Not allowed!&quot;)
+          );
+        })
+      )
+    )
+  );</code></pre></dd>
+</dl>
+<p>See also the <a href="server-side/low-level-api.html#http-closing-connection-low-level">Closing a connection</a> section for an in-depth explanation on closing connection.</p>
+<h3><a href="#pending-automatic-discarding-of-not-used-entities" name="pending-automatic-discarding-of-not-used-entities" class="anchor"><span class="anchor-link"></span></a>Pending: Automatic discarding of not used entities</h3>
+<p>Under certain conditions it is possible to detect an entity is very unlikely to be used by the user for a given request, and issue warnings or discard the entity automatically. This advanced feature has not been implemented yet, see the below note and issues for further discussion and ideas.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>An advanced feature code named &ldquo;auto draining&rdquo; has been discussed and proposed for Apache Pekko HTTP, and we&rsquo;re hoping to implement or help the community implement it.</p>
+<p>You can read more about it in <a href="https://github.com/akka/akka-http/issues/183">issue #183</a> as well as <a href="https://github.com/akka/akka-http/issues/117">issue #117</a> ; as always, contributions are very welcome!</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/implications-of-streaming-http-entity.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="handling-blocking-operations-in-pekko-http-routes.html" title="Handling blocking operations in Apache Pekko HTTP" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Handling blocking operations in Apache Pekko HTTP
+</span>
+</div>
+</a>
+<a href="contributing.html" title="9. Contributing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+9. Contributing
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

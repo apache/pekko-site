@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko Http: Modern, fast, asynchronous, streaming-first HTTP server and client.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>HTTP Model · Apache Pekko HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko HTTP
+</span>
+<span class="md-header-nav__topic">
+HTTP Model
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko HTTP">
+Apache Pekko HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko-http"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko-http
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security.html" class="page">! Security Announcements !</a>
+  <ul>
+    <li><a href="../security.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security.html#references" class="header">References</a></li>
+  </ul></li>
+  <li><a href="../release-notes/index.html" class="page">0. Release Notes</a></li>
+  <li><a href="../introduction.html" class="page">1. Introduction</a>
+  <ul>
+    <li><a href="../introduction.html#philosophy" class="header">Philosophy</a></li>
+    <li><a href="../introduction.html#using-apache-pekko-http" class="header">Using Apache Pekko HTTP</a></li>
+    <li><a href="../introduction.html#routing-dsl-for-http-servers" class="header">Routing DSL for HTTP servers</a></li>
+    <li><a href="../introduction.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../introduction.html#streaming" class="header">Streaming</a></li>
+    <li><a href="../introduction.html#low-level-http-server-apis" class="header">Low-level HTTP server APIs</a></li>
+    <li><a href="../introduction.html#http-client-api" class="header">HTTP Client API</a></li>
+    <li><a href="../introduction.html#the-modules-that-make-up-apache-pekko-http" class="header">The modules that make up Apache Pekko HTTP</a></li>
+  </ul></li>
+  <li><a href="../usage.html" class="page">2. Usage</a>
+  <ul>
+    <li><a href="../configuration.html" class="page">Configuration</a></li>
+    <li><a href="../migration-guide/index.html" class="page">Migration Guides</a></li>
+    <li><a href="../compatibility-guidelines.html" class="page">Compatibility Guidelines</a></li>
+  </ul></li>
+  <li><a href="../common/index.html" class="page">3. Data Types &amp; Abstractions</a>
+  <ul>
+    <li><a href="../common/http-model.html#http-model" class="active page">HTTP Model</a></li>
+    <li><a href="../common/uri-model.html" class="page">The URI model</a></li>
+    <li><a href="../common/marshalling.html" class="page">Marshalling</a></li>
+    <li><a href="../common/unmarshalling.html" class="page">Unmarshalling</a></li>
+    <li><a href="../common/encoding.html" class="page">Encoding / Decoding</a></li>
+    <li><a href="../common/json-support.html" class="page">JSON Support</a></li>
+    <li><a href="../common/xml-support.html" class="page">XML Support</a></li>
+    <li><a href="../common/sse-support.html" class="page">Server-Sent Events Support</a></li>
+    <li><a href="../common/timeouts.html" class="page">Timeouts</a></li>
+    <li><a href="../common/caching.html" class="page">Caching</a></li>
+  </ul></li>
+  <li><a href="../server-side/index.html" class="page">4. Server API</a>
+  <ul>
+    <li><a href="../routing-dsl/index.html" class="page">Routing DSL</a></li>
+    <li><a href="../server-side/low-level-api.html" class="page">Core Server API</a></li>
+    <li><a href="../server-side/websocket-support.html" class="page">Server WebSocket Support</a></li>
+    <li><a href="../server-side/server-https-support.html" class="page">Server HTTPS Support</a></li>
+    <li><a href="../server-side/graceful-termination.html" class="page">Graceful termination</a></li>
+    <li><a href="../server-side/http2.html" class="page">Server-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../client-side/index.html" class="page">5. Client API</a>
+  <ul>
+    <li><a href="../client-side/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../client-side/request-and-response.html" class="page">HttpRequest and HttpResponse</a></li>
+    <li><a href="../client-side/request-level.html" class="page">Request-Level Client-Side API</a></li>
+    <li><a href="../client-side/host-level.html" class="page">Host-Level Client-Side API</a></li>
+    <li><a href="../client-side/connection-level.html" class="page">Connection-Level Client-Side API</a></li>
+    <li><a href="../client-side/pool-overflow.html" class="page">Pool overflow and the max-open-requests setting</a></li>
+    <li><a href="../client-side/client-https-support.html" class="page">Client-Side HTTPS Support</a></li>
+    <li><a href="../client-side/client-transport.html" class="page">Pluggable Client Transports / HTTP(S) proxy Support</a></li>
+    <li><a href="../client-side/websocket-support.html" class="page">Client-Side WebSocket Support</a></li>
+    <li><a href="../client-side/http2.html" class="page">Client-Side HTTP/2 (Preview)</a></li>
+  </ul></li>
+  <li><a href="../extensions.html" class="page">6. Extensions</a></li>
+  <li><a href="../technologies.html" class="page">7. Supported Technologies</a>
+  <ul>
+    <li><a href="../technologies.html#http" class="header">HTTP</a></li>
+    <li><a href="../technologies.html#https" class="header">HTTPS</a></li>
+    <li><a href="../technologies.html#websocket" class="header">WebSocket</a></li>
+    <li><a href="../technologies.html#http-2" class="header">HTTP/2</a></li>
+    <li><a href="../technologies.html#dns" class="header">DNS</a></li>
+    <li><a href="../technologies.html#multipart" class="header">Multipart</a></li>
+    <li><a href="../technologies.html#server-sent-events-sse-" class="header">Server-sent Events (SSE)</a></li>
+    <li><a href="../technologies.html#json" class="header">JSON</a></li>
+    <li><a href="../technologies.html#xml" class="header">XML</a></li>
+    <li><a href="../technologies.html#gzip-and-deflate-content-encoding" class="header">Gzip and Deflate Content-Encoding</a></li>
+  </ul></li>
+  <li><a href="../tipsandtricks.html" class="page">8. Tips And Tricks</a>
+  <ul>
+    <li><a href="../troubleshooting/index.html" class="page">Troubleshooting</a></li>
+    <li><a href="../handling-blocking-operations-in-pekko-http-routes.html" class="page">Handling blocking operations in Apache Pekko HTTP</a></li>
+    <li><a href="../implications-of-streaming-http-entity.html" class="page">Implications of the streaming nature of Request/Response Entities</a></li>
+  </ul></li>
+  <li><a href="../contributing.html" class="page">9. Contributing</a>
+  <ul>
+    <li><a href="../contributing.html#welcome-" class="header">Welcome!</a></li>
+    <li><a href="../contributing.html#snapshots" class="header">Snapshots</a></li>
+  </ul></li>
+  <li><a href="../reference.html" class="page">10. Reference</a>
+  <ul>
+    <li><a href="../reference.html#api-documentation" class="header">API Documentation</a></li>
+    <li><a href="../reference.html#directives" class="header">Directives</a></li>
+    <li><a href="../reference.html#books" class="header">Books</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/http-model.html#http-model" class="header">HTTP Model</a>
+  <ul>
+    <li><a href="../common/http-model.html#overview" class="header">Overview</a></li>
+    <li><a href="../common/http-model.html#httprequest" class="header">HttpRequest</a></li>
+    <li><a href="../common/http-model.html#httpresponse" class="header">HttpResponse</a></li>
+    <li><a href="../common/http-model.html#httpentity" class="header">HttpEntity</a></li>
+    <li><a href="../common/http-model.html#header-model" class="header">Header Model</a></li>
+    <li><a href="../common/http-model.html#http-headers" class="header">HTTP Headers</a></li>
+    <li><a href="../common/http-model.html#custom-headers" class="header">Custom Headers</a></li>
+    <li><a href="../common/http-model.html#attributes" class="header">Attributes</a></li>
+    <li><a href="../common/http-model.html#parsing-rendering" class="header">Parsing / Rendering</a></li>
+    <li><a href="../common/http-model.html#registering-custom-media-types" class="header">Registering Custom Media Types</a></li>
+    <li><a href="../common/http-model.html#registering-custom-status-codes" class="header">Registering Custom Status Codes</a></li>
+    <li><a href="../common/http-model.html#registering-custom-http-method" class="header">Registering Custom HTTP Method</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+4308-98f0ff9c*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/http-model.html#http-model" class="header">HTTP Model</a>
+  <ul>
+    <li><a href="../common/http-model.html#overview" class="header">Overview</a></li>
+    <li><a href="../common/http-model.html#httprequest" class="header">HttpRequest</a></li>
+    <li><a href="../common/http-model.html#httpresponse" class="header">HttpResponse</a></li>
+    <li><a href="../common/http-model.html#httpentity" class="header">HttpEntity</a></li>
+    <li><a href="../common/http-model.html#header-model" class="header">Header Model</a></li>
+    <li><a href="../common/http-model.html#http-headers" class="header">HTTP Headers</a></li>
+    <li><a href="../common/http-model.html#custom-headers" class="header">Custom Headers</a></li>
+    <li><a href="../common/http-model.html#attributes" class="header">Attributes</a></li>
+    <li><a href="../common/http-model.html#parsing-rendering" class="header">Parsing / Rendering</a></li>
+    <li><a href="../common/http-model.html#registering-custom-media-types" class="header">Registering Custom Media Types</a></li>
+    <li><a href="../common/http-model.html#registering-custom-status-codes" class="header">Registering Custom Status Codes</a></li>
+    <li><a href="../common/http-model.html#registering-custom-http-method" class="header">Registering Custom HTTP Method</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#http-model" name="http-model" class="anchor"><span class="anchor-link"></span></a>HTTP Model</h1>
+<p>Apache Pekko HTTP model contains a deeply structured, fully immutable, case-class based model of all the major HTTP data structures, like HTTP requests, responses and common headers. It lives in the <em>pekko-http-core</em> module and forms the basis for most of Apache Pekko HTTP&rsquo;s APIs.</p>
+<h2><a href="#overview" name="overview" class="anchor"><span class="anchor-link"></span></a>Overview</h2>
+<p>Since pekko-http-core provides the central HTTP data structures you will find the following import in quite a few places around the code base (and probably your own code as well):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L18" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.model._</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L21-L25" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.http.javadsl.model.*;
+import org.apache.pekko.http.javadsl.model.headers.*;
+
+import java.util.Optional;
+</code></pre></dd>
+</dl>
+<p>This brings all of the most relevant types in scope, mainly:</p>
+<ul>
+  <li><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span>, the central message model</li>
+  <li><code>headers</code>, the package containing all the predefined HTTP header models and supporting types</li>
+  <li>Supporting types like <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span>, <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpMethods.html" title="org.apache.pekko.http.javadsl.model.HttpMethods"><code>HttpMethods</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpMethods$.html" title="org.apache.pekko.http.scaladsl.model.HttpMethods"><code>HttpMethods</code></a></span>, <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/MediaTypes.html" title="org.apache.pekko.http.javadsl.model.MediaTypes"><code>MediaTypes</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/MediaTypes$.html" title="org.apache.pekko.http.scaladsl.model.MediaTypes"><code>MediaTypes</code></a></span>, <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/StatusCodes.html" title="org.apache.pekko.http.javadsl.model.StatusCodes"><code>StatusCodes</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/StatusCodes$.html" title="org.apache.pekko.http.scaladsl.model.StatusCodes"><code>StatusCodes</code></a></span>, etc.</li>
+</ul>
+<p>A common pattern is that the model of a certain entity is represented by an immutable type (class or trait), while the actual instances of the entity defined by the HTTP spec live in an accompanying object carrying the name of the type plus a trailing plural &lsquo;s&rsquo;.</p>
+<p>For example:</p>
+<ul>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpMethod.html" title="org.apache.pekko.http.javadsl.model.HttpMethod"><code>HttpMethod</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpMethod.html" title="org.apache.pekko.http.scaladsl.model.HttpMethod"><code>HttpMethod</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpMethods.html" title="org.apache.pekko.http.javadsl.model.HttpMethods"><code>HttpMethods</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpMethods$.html" title="org.apache.pekko.http.scaladsl.model.HttpMethods"><code>HttpMethods</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpCharset.html" title="org.apache.pekko.http.javadsl.model.HttpCharset"><code>HttpCharset</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpCharset.html" title="org.apache.pekko.http.scaladsl.model.HttpCharset"><code>HttpCharset</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpCharsets.html" title="org.apache.pekko.http.javadsl.model.HttpCharsets"><code>HttpCharsets</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpCharsets$.html" title="org.apache.pekko.http.scaladsl.model.HttpCharsets"><code>HttpCharsets</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/HttpEncoding.html" title="org.apache.pekko.http.javadsl.model.headers.HttpEncoding"><code>HttpEncoding</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/HttpEncoding.html" title="org.apache.pekko.http.scaladsl.model.headers.HttpEncoding"><code>HttpEncoding</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/HttpEncodings.html" title="org.apache.pekko.http.javadsl.model.headers.HttpEncodings"><code>HttpEncodings</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/HttpEncodings$.html" title="org.apache.pekko.http.scaladsl.model.headers.HttpEncodings"><code>HttpEncodings</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpProtocol.html" title="org.apache.pekko.http.javadsl.model.HttpProtocol"><code>HttpProtocol</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpProtocol.html" title="org.apache.pekko.http.scaladsl.model.HttpProtocol"><code>HttpProtocol</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpProtocols.html" title="org.apache.pekko.http.javadsl.model.HttpProtocols"><code>HttpProtocols</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpProtocols$.html" title="org.apache.pekko.http.scaladsl.model.HttpProtocols"><code>HttpProtocols</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/MediaType.html" title="org.apache.pekko.http.javadsl.model.MediaType"><code>MediaType</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/MediaType.html" title="org.apache.pekko.http.scaladsl.model.MediaType"><code>MediaType</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/MediaTypes.html" title="org.apache.pekko.http.javadsl.model.MediaTypes"><code>MediaTypes</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/MediaTypes$.html" title="org.apache.pekko.http.scaladsl.model.MediaTypes"><code>MediaTypes</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+  <li>Defined <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/StatusCode.html" title="org.apache.pekko.http.javadsl.model.StatusCode"><code>StatusCode</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/StatusCode.html" title="org.apache.pekko.http.scaladsl.model.StatusCode"><code>StatusCode</code></a></span> instances <span class="group-scala">live in</span><span class="group-java">are defined as static fields of</span> the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/StatusCodes.html" title="org.apache.pekko.http.javadsl.model.StatusCodes"><code>StatusCodes</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/StatusCodes$.html" title="org.apache.pekko.http.scaladsl.model.StatusCodes"><code>StatusCodes</code></a></span> <span class="group-scala">object</span><span class="group-java">class</span>.</li>
+</ul>
+<h2><a href="#httprequest" name="httprequest" class="anchor"><span class="anchor-link"></span></a>HttpRequest</h2>
+<p><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> are the basic <span class="group-scala">case</span><span class="group-java">immutable</span> classes representing HTTP messages.</p>
+<p>An <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> consists of</p>
+<ul>
+  <li>a method (GET, POST, etc.)</li>
+  <li>a URI (see <a href="uri-model.html">URI model</a> for more information)</li>
+  <li>a seq of headers</li>
+  <li>an entity (body data)</li>
+  <li>a protocol</li>
+</ul>
+<p>Here are some examples how to construct an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L18" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.model._
+import HttpMethods._
+
+// construct a simple GET request to `homeUri`
+val homeUri = Uri(&quot;/abc&quot;)
+HttpRequest(GET, uri = homeUri)
+
+// construct simple GET request to &quot;/index&quot; (implicit string to Uri conversion)
+HttpRequest(GET, uri = &quot;/index&quot;)
+
+// construct simple POST request containing entity
+val data = ByteString(&quot;abc&quot;)
+HttpRequest(POST, uri = &quot;/receive&quot;, entity = data)
+
+// customize every detail of HTTP request
+import HttpProtocols._
+import MediaTypes._
+import HttpCharsets._
+val userData = ByteString(&quot;abc&quot;)
+val authorization = headers.Authorization(BasicHttpCredentials(&quot;user&quot;, &quot;pass&quot;))
+HttpRequest(
+  PUT,
+  uri = &quot;/user&quot;,
+  entity = HttpEntity(`text/plain`.withCharset(`UTF-8`), userData),
+  headers = List(authorization),
+  protocol = `HTTP/1.0`)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L21-L25" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.http.javadsl.model.*;
+import org.apache.pekko.http.javadsl.model.headers.*;
+
+import java.util.Optional;
+
+// construct a simple GET request to `homeUri`
+Uri homeUri = Uri.create(&quot;/home&quot;);
+HttpRequest request1 = HttpRequest.create().withUri(homeUri);
+
+// construct simple GET request to &quot;/index&quot; using helper methods
+HttpRequest request2 = HttpRequest.GET(&quot;/index&quot;);
+
+// construct simple POST request containing entity
+ByteString data = ByteString.fromString(&quot;abc&quot;);
+HttpRequest postRequest1 = HttpRequest.POST(&quot;/receive&quot;).withEntity(data);
+
+// customize every detail of HTTP request
+//import HttpProtocols.*
+//import MediaTypes.*
+Authorization authorization = Authorization.basic(&quot;user&quot;, &quot;pass&quot;);
+HttpRequest complexRequest =
+    HttpRequest.PUT(&quot;/user&quot;)
+        .withEntity(HttpEntities.create(ContentTypes.TEXT_PLAIN_UTF8, &quot;abc&quot;))
+        .addHeader(authorization)
+        .withProtocol(HttpProtocols.HTTP_1_0);</code></pre></dd>
+</dl><div class="group-scala">
+<p>All parameters of <code>HttpRequest.apply</code> have default values set, so <code>headers</code> for example don&rsquo;t need to be specified if there are none. Many of the parameters types (like <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/Uri.html" title="org.apache.pekko.http.javadsl.model.Uri"><code>Uri</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/Uri.html" title="org.apache.pekko.http.scaladsl.model.Uri"><code>Uri</code></a></span>) define implicit conversions for common use cases to simplify the creation of request and response instances.</p></div><div class="group-java">
+<p>In its basic form <code>HttpRequest.create</code> creates an empty default GET request without headers which can then be transformed using one of the <code>withX</code> methods, <code>addHeader</code>, or <code>addHeaders</code>. Each of those will create a new immutable instance, so instances can be shared freely. There exist some overloads for <code>HttpRequest.create</code> that simplify creating requests for common cases. Also, to aid readability, there are predefined alternatives for <code>create</code> named after HTTP methods to create a request with a given method and URI directly.</p></div><div class="callout note "><div class="callout-title">String representation</div>
+<p>There are certain environments where it is easy to inadvertently print, write or log entries built out of string representations of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> instances. On the other hand, it is not uncommon for HTTP headers and entities to contain <em>Personal Identifying Information (PII)</em> or <em>Sensitive Personal Information (SPI)</em> . </p>
+<p>To avoid accidentally leaking such information, these fields are omitted from <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpRequest.html" title="org.apache.pekko.http.javadsl.model.HttpRequest"><code>HttpRequest</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpRequest.html" title="org.apache.pekko.http.scaladsl.model.HttpRequest"><code>HttpRequest</code></a></span> <code>toString</code> output. </p>
+<p>If needed, it is possible to define a custom string representation including all fields as shown in the following example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpRequestDetailedStringExampleSpec.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.http.scaladsl.model.{ HttpEntity, HttpRequest }
+import pekko.http.scaladsl.model.headers.{ Authorization, BasicHttpCredentials }
+import pekko.testkit.PekkoSpec
+
+import scala.collection.immutable
+
+class HttpRequestDetailedStringExampleSpec extends PekkoSpec {
+
+  // Custom string representation which includes headers
+  def toDetailedString(request: HttpRequest): String = {
+    import request._
+    s&quot;&quot;&quot;HttpRequest(${_1},${_2},${_3},${_4},${_5})&quot;&quot;&quot;
+  }
+
+  &quot;Include headers in custom string representation&quot; in {
+
+    // An HTTP header containing Personal Identifying Information
+    val piiHeader = Authorization(BasicHttpCredentials(&quot;user&quot;, &quot;password&quot;))
+
+    // An HTTP entity containing Personal Identifying Information
+    val piiBody: HttpEntity.Strict =
+      &quot;This body contains information about [user]&quot;
+
+    val httpRequestWithHeadersAndBody =
+      HttpRequest(entity = piiBody, headers = immutable.Seq(piiHeader))
+
+    // Our custom string representation includes body and headers string representations...
+    assert(
+      toDetailedString(httpRequestWithHeadersAndBody)
+        .contains(piiHeader.toString))
+    assert(
+      toDetailedString(httpRequestWithHeadersAndBody).contains(piiBody.toString))
+
+    // ... while default `toString` doesn&#39;t.
+    assert(!s&quot;$httpRequestWithHeadersAndBody&quot;.contains(piiHeader.unsafeToString))
+    assert(!s&quot;$httpRequestWithHeadersAndBody&quot;.contains(piiBody.data.utf8String))
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpRequestDetailedStringExampleTest.java" target="_blank" title="Go to snippet source">source</a><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.javadsl;
+
+import org.apache.pekko.http.javadsl.model.*;
+import org.apache.pekko.http.javadsl.model.headers.Authorization;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+import java.util.Arrays;
+
+public class HttpRequestDetailedStringExampleTest {
+
+    // Custom string representation which includes headers
+    public String toDetailedString(HttpRequest request) {
+
+        HttpMethod method = request.method();
+        Uri uri = request.getUri();
+        Iterable&lt;HttpHeader&gt; headers = request.getHeaders();
+        RequestEntity entity = request.entity();
+        HttpProtocol protocol = request.protocol();
+
+        return String.format(&quot;HttpRequest(%s, %s, %s, %s, %s)&quot;, method, uri, headers, entity, protocol);
+    }
+
+    @Test
+    public void headersInCustomStringRepresentation() {
+
+        // An HTTP header containing Personal Identifying Information
+        Authorization piiHeader = Authorization.basic(&quot;user&quot;, &quot;password&quot;);
+
+        // An HTTP entity containing Personal Identifying Information
+        HttpEntity.Strict piiBody = HttpEntities.create(&quot;This body contains information about [user]&quot;);
+
+        HttpRequest httpRequestWithHeadersAndBody = HttpRequest.create()
+                .withEntity(piiBody)
+                .withHeaders(Arrays.asList(piiHeader));
+
+        // Our custom string representation includes body and headers string representations...
+        assertTrue(toDetailedString(httpRequestWithHeadersAndBody).contains(piiHeader.toString()));
+        assertTrue(toDetailedString(httpRequestWithHeadersAndBody).contains(piiBody.toString()));
+
+        // ... while default `toString` doesn&#39;t.
+        assertFalse(httpRequestWithHeadersAndBody.toString().contains(piiHeader.unsafeToString()));
+        assertFalse(httpRequestWithHeadersAndBody.toString().contains(piiBody.getData().utf8String()));
+
+    }
+
+}</code></pre></dd>
+</dl></div>
+<a id="synthetic-headers"></a>
+<h3><a href="#synthetic-headers" name="synthetic-headers" class="anchor"><span class="anchor-link"></span></a>Synthetic Headers</h3>
+<p>In some cases it may be necessary to deviate from fully RFC-Compliant behavior. For instance, Amazon S3 treats the <code>+</code> character in the path part of the URL as a space, even though the RFC specifies that this behavior should be limited exclusively to the query portion of the URI.</p>
+<p>In order to work around these types of edge cases, Apache Pekko HTTP provides for the ability to provide extra, non-standard information to the request via synthetic headers. These headers are not passed to the client but are instead consumed by the request engine and used to override default behavior.</p>
+<p>For instance, in order to provide a raw request URI, bypassing the default URL normalization, you could do the following:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L131-L132" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.model.headers.`Raw-Request-URI`
+val req = HttpRequest(uri = &quot;/ignored&quot;, headers = List(`Raw-Request-URI`(&quot;/a/b%2Bc&quot;)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L139-L140" target="_blank" title="Go to snippet source">source</a><code class="language-java">// imports org.apache.pekko.http.javadsl.model.headers.RawRequestURI
+HttpRequest.create(&quot;/ignored&quot;).addHeader(RawRequestURI.create(&quot;/a/b%2Bc&quot;));</code></pre></dd>
+</dl>
+<h2><a href="#httpresponse" name="httpresponse" class="anchor"><span class="anchor-link"></span></a>HttpResponse</h2>
+<p>An <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> consists of</p>
+<ul>
+  <li>a status code</li>
+  <li>a <span class="group-scala"><code>Seq</code></span><span class="group-java">list</span> of headers</li>
+  <li>an entity (body data)</li>
+  <li>a protocol</li>
+</ul>
+<p>Here are some examples how to construct an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L58-L72" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import StatusCodes._
+
+// simple OK response without data created using the integer status code
+HttpResponse(200)
+
+// 404 response created using the named StatusCode constant
+HttpResponse(NotFound)
+
+// 404 response with a body explaining the error
+HttpResponse(404, entity = &quot;Unfortunately, the resource couldn&#39;t be found.&quot;)
+
+// A redirecting response containing an extra header
+val locationHeader = headers.Location(&quot;http://example.com/other&quot;)
+HttpResponse(Found, headers = List(locationHeader))
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L59-L76" target="_blank" title="Go to snippet source">source</a><code class="language-java">// simple OK response without data created using the integer status code
+HttpResponse ok = HttpResponse.create().withStatus(200);
+
+// 404 response created using the named StatusCode constant
+HttpResponse notFound = HttpResponse.create().withStatus(StatusCodes.NOT_FOUND);
+
+// 404 response with a body explaining the error
+HttpResponse notFoundCustom =
+    HttpResponse.create()
+        .withStatus(404)
+        .withEntity(&quot;Unfortunately, the resource couldn&#39;t be found.&quot;);
+
+// A redirecting response containing an extra header
+Location locationHeader = Location.create(&quot;http://example.com/other&quot;);
+HttpResponse redirectResponse =
+    HttpResponse.create()
+        .withStatus(StatusCodes.FOUND)
+        .addHeader(locationHeader);</code></pre></dd>
+</dl>
+<p>In addition to the simple <span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> constructors</span><span class="group-java"><code>HttpEntities.create</code> methods</span> which create an entity from a fixed <code>String</code> or <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span> as shown here the Apache Pekko HTTP model defines a number of subclasses of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> which allow body data to be specified as a stream of bytes. <span class="group-java">All of these types can be created using the method on <code>HttpEntites</code>.</span></p><div class="callout note "><div class="callout-title">String representation</div>
+<p>There are certain environments where it is easy to inadvertently print, write or log entries built out of string representations of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> instances. On the other hand, it is not uncommon for HTTP headers and entities to contain <em>Personal Identifying Information (PII)</em> or <em>Sensitive Personal Information (SPI)</em> . </p>
+<p>To avoid accidentally leaking such information, these fields are omitted from <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpResponse.html" title="org.apache.pekko.http.javadsl.model.HttpResponse"><code>HttpResponse</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpResponse.html" title="org.apache.pekko.http.scaladsl.model.HttpResponse"><code>HttpResponse</code></a></span> <code>toString</code> output. </p>
+<p>If needed, it is possible to define a custom string representation including all fields as shown in the following example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/HttpResponseDetailedStringExampleSpec.scala" target="_blank" title="Go to snippet source">source</a><code class="language-scala">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.scaladsl
+
+import org.apache.pekko
+import pekko.http.scaladsl.model.{ HttpEntity, HttpResponse }
+import pekko.http.scaladsl.model.headers.{ Authorization, BasicHttpCredentials }
+import pekko.testkit.PekkoSpec
+
+import scala.collection.immutable
+
+class HttpResponseDetailedStringExampleSpec extends PekkoSpec {
+
+  // Custom string representation which includes headers
+  def toDetailedString(response: HttpResponse): String = {
+    import response._
+    s&quot;&quot;&quot;HttpResponse(${_1},${_2},${_3},${_4})&quot;&quot;&quot;
+  }
+
+  &quot;Include headers in custom string representation&quot; in {
+
+    // An HTTP header containing Personal Identifying Information
+    val piiHeader = Authorization(BasicHttpCredentials(&quot;user&quot;, &quot;password&quot;))
+
+    // An HTTP entity containing Personal Identifying Information
+    val piiBody: HttpEntity.Strict =
+      &quot;This body contains information about [user]&quot;
+
+    val httpResponseWithHeadersAndBody =
+      HttpResponse(entity = piiBody, headers = immutable.Seq(piiHeader))
+
+    // Our custom string representation includes body and headers string representations...
+    assert(
+      toDetailedString(httpResponseWithHeadersAndBody)
+        .contains(piiHeader.toString))
+    assert(
+      toDetailedString(httpResponseWithHeadersAndBody)
+        .contains(piiBody.toString))
+
+    // ... while default `toString` doesn&#39;t.
+    assert(!s&quot;$httpResponseWithHeadersAndBody&quot;.contains(piiHeader.unsafeToString))
+    assert(!s&quot;$httpResponseWithHeadersAndBody&quot;.contains(piiBody.data.utf8String))
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/HttpResponseDetailedStringExampleTest.java" target="_blank" title="Go to snippet source">source</a><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * license agreements; and to You under the Apache License, version 2.0:
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * This file is part of the Apache Pekko project, derived from Akka.
+ */
+
+/*
+ * Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt;
+ */
+
+package docs.http.javadsl;
+
+import org.apache.pekko.http.javadsl.model.*;
+import org.apache.pekko.http.javadsl.model.headers.Authorization;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class HttpResponseDetailedStringExampleTest {
+
+    // Custom string representation which includes headers
+    public String toDetailedString(HttpResponse response) {
+
+        StatusCode status = response.status();
+        Iterable&lt;HttpHeader&gt; headers = response.getHeaders();
+        HttpEntity entity = response.entity();
+        HttpProtocol protocol = response.protocol();
+
+
+        return String.format(&quot;HttpResponse(%s, %s, %s, %s)&quot;, status, headers, entity, protocol);
+    }
+
+    @Test
+    public void headersInCustomStringRepresentation() {
+
+        // An HTTP header containing Personal Identifying Information
+        Authorization piiHeader = Authorization.basic(&quot;user&quot;, &quot;password&quot;);
+
+        // An HTTP entity containing Personal Identifying Information
+        HttpEntity.Strict piiBody = HttpEntities.create(&quot;This body contains information about [user]&quot;);
+
+        HttpResponse httpResponseWithHeadersAndBody = HttpResponse.create()
+                .withEntity(piiBody)
+                .withHeaders(Arrays.asList(piiHeader));
+
+        // Our custom string representation includes body and headers string representations...
+        assertTrue(toDetailedString(httpResponseWithHeadersAndBody).contains(piiHeader.toString()));
+        assertTrue(toDetailedString(httpResponseWithHeadersAndBody).contains(piiBody.toString()));
+
+        // ... while default `toString` doesn&#39;t.
+        assertFalse(httpResponseWithHeadersAndBody.toString().contains(piiHeader.unsafeToString()));
+        assertFalse(httpResponseWithHeadersAndBody.toString().contains(piiBody.getData().utf8String()));
+
+    }
+
+}</code></pre></dd>
+</dl></div>
+<a id="httpentity"></a>
+<h2><a href="#httpentity" name="httpentity" class="anchor"><span class="anchor-link"></span></a>HttpEntity</h2>
+<p>An <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> carries the data bytes of a message together with its Content-Type and, if known, its Content-Length. In Apache Pekko HTTP, there are five different kinds of entities which model the various ways that message content can be received or sent:</p>
+<dl>
+  <dt><span class="group-scala">HttpEntity.Strict</span><span class="group-java">HttpEntityStrict</span>
+  </dt>
+  <dd>The simplest entity, which is used when all the entity are already available in memory. It wraps a plain <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span> and represents a standard, unchunked entity with a known <code>Content-Length</code>.</dd>
+  <dt><span class="group-scala">HttpEntity.Default</span><span class="group-java">HttpEntityDefault</span>
+  </dt>
+  <dd>The general, unchunked HTTP/1.1 message entity. It has a known length and presents its data as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, _]</code></a></span> which can be only materialized once. It is an error if the provided source doesn&rsquo;t produce exactly as many bytes as specified. The distinction of <span class="group-scala"><code>Strict</code></span><span class="group-java"><code>HttpEntityStrict</code></span> and <span class="group-scala"><code>Default</code></span><span class="group-java"><code>HttpEntityDefault</code></span> is an API-only one. On the wire, both kinds of entities look the same.</dd>
+  <dt><span class="group-scala">HttpEntity.Chunked</span><span class="group-java">HttpEntityChunked</span>
+  </dt>
+  <dd>The model for HTTP/1.1 <a href="https://tools.ietf.org/html/rfc7230#section-4.1">chunked content</a> (i.e. sent with <code>Transfer-Encoding: chunked</code>). The content length is unknown and the individual chunks are presented as a <span class="group-scala"><code>Source[HttpEntity.ChunkStreamPart]</code></span><span class="group-java"><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ChunkStreamPart, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ChunkStreamPart, ?]</code></a></span></span>. A <code>ChunkStreamPart</code> is either a non-empty <span class="group-scala"><code>Chunk</code></span><span class="group-java">chunk</span> or <span class="group-scala">a <code>LastChunk</code></span><span class="group-java">the empty last chunk</span> containing optional trailer headers. The stream consists of zero or more <span class="group-scala"><code>Chunked</code></span><span class="group-java">non-empty chunks</span> parts and can be terminated by an optional <span class="group-scala"><code>LastChunk</code> part</span><span class="group-java">last chunk</span>.</dd>
+  <dt><span class="group-scala">HttpEntity.CloseDelimited</span><span class="group-java">HttpEntityCloseDelimited</span>
+  </dt>
+  <dd>An unchunked entity of unknown length that is implicitly delimited by closing the connection (<code>Connection: close</code>). The content data are presented as a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, _]</code></a></span>. Since the connection must be closed after sending an entity of this type it can only be used on the server-side for sending a response. Also, the main purpose of <code>CloseDelimited</code> entities is compatibility with HTTP/1.0 peers, which do not support chunked transfer encoding. If you are building a new application and are not constrained by legacy requirements you shouldn&rsquo;t rely on <code>CloseDelimited</code> entities, since implicit terminate-by-connection-close is not a robust way of signaling response end, especially in the presence of proxies. Additionally this type of entity prevents connection reuse which can seriously degrade performance. Use <span class="group-scala"><code>HttpEntity.Chunked</code></span><span class="group-java"><code>HttpEntityChunked</code></span> instead!</dd>
+  <dt><span class="group-scala">HttpEntity.IndefiniteLength</span><span class="group-java">HttpEntityIndefiniteLength</span>
+  </dt>
+  <dd>A streaming entity of unspecified length for use in a <code>Multipart.BodyPart</code>.</dd>
+</dl>
+<p>Entity types <span class="group-scala"><code>Strict</code></span><span class="group-java"><code>HttpEntityStrict</code></span>, <span class="group-scala"><code>Default</code></span><span class="group-java"><code>HttpEntityDefault</code></span>, and <span class="group-scala"><code>Chunked</code></span><span class="group-java"><code>HttpEntityChunked</code></span> are a subtype of <span class="group-scala"><code>HttpEntity.Regular</code></span><span class="group-java"><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/RequestEntity.html" title="org.apache.pekko.http.javadsl.model.RequestEntity"><code>RequestEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/RequestEntity.html" title="org.apache.pekko.http.scaladsl.model.RequestEntity"><code>RequestEntity</code></a></span></span> which allows to use them for requests and responses. In contrast, <span class="group-scala"><code>HttpEntity.CloseDelimited</code></span><span class="group-java"><code>HttpEntityCloseDelimited</code></span> can only be used for responses.</p>
+<p>Streaming entity types (i.e. all but <span class="group-scala"><code>Strict</code></span><span class="group-java"><code>HttpEntityStrict</code></span>) cannot be shared or serialized. To create a strict, shareable copy of an entity or message use <code>HttpEntity.toStrict</code> or <code>HttpMessage.toStrict</code> which returns a <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> of the object with the body data collected into a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span>.</p>
+<p>The <span class="group-scala"><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> companion object</span><span class="group-java">class <code>HttpEntities</code></span> contains <span class="group-scala">several helper constructors</span><span class="group-java">static methods</span> to create entities from common types easily.</p>
+<p>You can <span class="group-scala">pattern match over</span><span class="group-java">use</span> the <span class="group-scala">subtypes</span><span class="group-java"><code>isX</code> methods</span> of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> <span class="group-java">to find out of which subclass an entity is</span> if you want to provide special handling for each of the subtypes. However, in many cases a recipient of an <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> doesn&rsquo;t care about of which subtype an entity is (and how data is transported exactly on the HTTP layer). Therefore, the general method <span class="group-scala"><code>HttpEntity.dataBytes</code></span><span class="group-java"><code>HttpEntity.getDataBytes()</code></span> is provided which returns a <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source&lt;ByteString, ?&gt;</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source[ByteString, _]</code></a></span> that allows access to the data of an entity regardless of its concrete subtype.</p><div class="callout note "><div class="callout-title">When to use which subtype?</div>
+<ul>
+  <li>Use <span class="group-scala"><code>Strict</code></span><span class="group-java"><code>HttpEntityStrict</code></span> if the amount of data is &ldquo;small&rdquo; and already available in memory (e.g. as a <code>String</code> or <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/util/ByteString.html" title="org.apache.pekko.util.ByteString"><code>ByteString</code></a></span>)</li>
+  <li>Use <span class="group-scala"><code>Default</code></span><span class="group-java"><code>HttpEntityDefault</code></span> if the data is generated by a streaming data source and the size of the data is known</li>
+  <li>Use <span class="group-scala"><code>Chunked</code></span><span class="group-java"><code>HttpEntityChunked</code></span> for an entity of unknown length</li>
+  <li>Use <span class="group-scala"><code>CloseDelimited</code></span><span class="group-java"><code>HttpEntityCloseDelimited</code></span> for a response as a legacy alternative to <span class="group-scala"><code>Chunked</code></span><span class="group-java"><code>HttpEntityChunked</code></span> if the client doesn&rsquo;t support chunked transfer encoding. Otherwise use <span class="group-scala"><code>Chunked</code></span><span class="group-java"><code>HttpEntityChunked</code></span>!</li>
+  <li>In a <code>Multipart.BodyPart</code> use <span class="group-scala"><code>IndefiniteLength</code></span><span class="group-java"><code>HttpEntityIndefiniteLength</code></span> for content of unknown length.</li>
+</ul></div><div class="callout warning "><div class="callout-title">Caution</div>
+<p>When you receive a non-strict message from a connection then additional data are only read from the network when you request them by consuming the entity data stream. This means that, if you <em>don&rsquo;t</em> consume the entity stream then the connection will effectively be stalled. In particular no subsequent message (request or response) will be read from the connection as the entity of the current message &ldquo;blocks&rdquo; the stream. Therefore you must make sure that you always consume the entity data, even in the case that you are not actually interested in it!</p></div>
+<h3><a href="#limiting-message-entity-length" name="limiting-message-entity-length" class="anchor"><span class="anchor-link"></span></a>Limiting message entity length</h3>
+<p>All message entities that Apache Pekko HTTP reads from the network automatically get a length verification check attached to them. This check makes sure that the total entity size is less than or equal to the configured <code>max-content-length</code> <a id="^1" href="#1">[1]</a>, which is an important defense against certain Denial-of-Service attacks. However, a single global limit for all requests (or responses) is often too inflexible for applications that need to allow large limits for <em>some</em> requests (or responses) but want to clamp down on all messages not belonging into that group.</p>
+<p>In order to give you maximum flexibility in defining entity size limits according to your needs the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span> features a <code>withSizeLimit</code> method, which lets you adjust the globally configured maximum size for this particular entity, be it to increase or decrease any previously set value. This means that your application will receive all requests (or responses) from the HTTP layer, even the ones whose <code>Content-Length</code> exceeds the configured limit (because you might want to increase the limit yourself). Only when the actual data stream <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/0.0/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> contained in the entity is materialized will the boundary checks be actually applied. In case the length verification fails the respective stream will be terminated with an <code>EntityStreamSizeException</code> either directly at materialization time (if the <code>Content-Length</code> is known) or whenever more data bytes than allowed have been read.</p>
+<p>When called on <code>Strict</code> entities the <code>withSizeLimit</code> method will return the entity itself if the length is within the bound, otherwise a <code>Default</code> entity with a single element data stream. This allows for potential refinement of the entity size limit at a later point (before materialization of the data stream).</p>
+<p>By default all message entities produced by the HTTP layer automatically carry the limit that is defined in the application&rsquo;s <code>max-content-length</code> config setting. If the entity is transformed in a way that changes the content-length and then another limit is applied then this new limit will be evaluated against the new content-length. If the entity is transformed in a way that changes the content-length and no new limit is applied then the previous limit will be applied against the previous content-length. Generally this behavior should be in line with your expectations.</p>
+<blockquote>
+  <p><a id="1" href="#^1">[1]</a> <em>pekko.http.parsing.max-content-length</em> (applying to server- as well as client-side), <em>pekko.http.server.parsing.max-content-length</em> (server-side only), <em>pekko.http.client.parsing.max-content-length</em> (client-side only) or <em>pekko.http.host-connection-pool.client.parsing.max-content-length</em> (only host-connection-pools)</p>
+</blockquote>
+<h3><a href="#special-processing-for-head-requests" name="special-processing-for-head-requests" class="anchor"><span class="anchor-link"></span></a>Special processing for HEAD requests</h3>
+<p><a href="https://tools.ietf.org/html/rfc7230#section-3.3.3">RFC 7230</a> defines very clear rules for the entity length of HTTP messages.</p>
+<p>Especially this rule requires special treatment in Apache Pekko HTTP:</p>
+<blockquote>
+  <p>Any response to a HEAD request and any response with a 1xx (Informational), 204 (No Content), or 304 (Not Modified) status code is always terminated by the first empty line after the header fields, regardless of the header fields present in the message, and thus cannot contain a message body.</p>
+</blockquote>
+<p>Responses to HEAD requests introduce the complexity that <em>Content-Length</em> or <em>Transfer-Encoding</em> headers can be present but the entity is empty. This is modeled by allowing <span class="group-scala"><em>HttpEntity.Default</em></span><span class="group-java"><em>HttpEntityDefault</em></span> and <span class="group-scala"><em>HttpEntity.Chunked</em></span><span class="group-java"><em>HttpEntityChunked</em></span> to be used for HEAD responses with an empty data stream.</p>
+<p>Also, when a HEAD response has an <span class="group-scala"><em>HttpEntity.CloseDelimited</em></span><span class="group-java"><em>HttpEntityCloseDelimited</em></span> entity the Apache Pekko HTTP implementation will <em>not</em> close the connection after the response has been sent. This allows the sending of HEAD responses without <em>Content-Length</em> header across persistent HTTP connections.</p>
+<a id="header-model"></a>
+<h2><a href="#header-model" name="header-model" class="anchor"><span class="anchor-link"></span></a>Header Model</h2>
+<p>Apache Pekko HTTP contains a rich model of the most common HTTP headers. Parsing and rendering is done automatically so that applications don&rsquo;t need to care for the actual syntax of headers. Headers not modelled explicitly are represented as a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/RawHeader.html" title="org.apache.pekko.http.javadsl.model.headers.RawHeader"><code>RawHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/RawHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.RawHeader"><code>RawHeader</code></a></span>, which is essentially a String/String name/value pair.</p>
+<p>See these examples of how to deal with headers:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L78-L93" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.model.headers._
+
+// create a ``Location`` header
+val loc = Location(&quot;http://example.com/other&quot;)
+
+// create an ``Authorization`` header with HTTP Basic authentication data
+val auth = Authorization(BasicHttpCredentials(&quot;joe&quot;, &quot;josepp&quot;))
+
+// custom type
+case class User(name: String, pass: String)
+
+// a method that extracts basic HTTP credentials from a request
+def credentialsOfRequest(req: HttpRequest): Option[User] =
+  for {
+    Authorization(BasicHttpCredentials(user, pass)) &lt;- req.header[Authorization]
+  } yield User(user, pass)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L83-L100" target="_blank" title="Go to snippet source">source</a><code class="language-java">        // create a ``Location`` header
+        Location locationHeader = Location.create(&quot;http://example.com/other&quot;);
+
+        // create an ``Authorization`` header with HTTP Basic authentication data
+        Authorization authorization = Authorization.basic(&quot;user&quot;, &quot;pass&quot;);
+
+    // a method that extracts basic HTTP credentials from a request
+	private Optional&lt;BasicHttpCredentials&gt; getCredentialsOfRequest(HttpRequest request) {
+        Optional&lt;Authorization&gt; auth = request.getHeader(Authorization.class);
+        if (auth.isPresent() &amp;&amp; auth.get().credentials() instanceof BasicHttpCredentials)
+            return Optional.of((BasicHttpCredentials) auth.get().credentials());
+        else
+            return Optional.empty();
+    }</code></pre></dd>
+</dl>
+<h2><a href="#http-headers" name="http-headers" class="anchor"><span class="anchor-link"></span></a>HTTP Headers</h2>
+<p>When the Apache Pekko HTTP server receives an HTTP request it tries to parse all its headers into their respective model classes. Independently of whether this succeeds or not, the HTTP layer will always pass on all received headers to the application. Unknown headers as well as ones with invalid syntax (according to the header parser) will be made available as <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/RawHeader.html" title="org.apache.pekko.http.javadsl.model.headers.RawHeader"><code>RawHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/RawHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.RawHeader"><code>RawHeader</code></a></span> instances. For the ones exhibiting parsing errors a warning message is logged depending on the value of the <code>illegal-header-warnings</code> config setting.</p>
+<p>Some headers have special status in HTTP and are therefore treated differently from &ldquo;regular&rdquo; headers:</p>
+<dl>
+  <dt>Content-Type
+  </dt>
+  <dd>The Content-Type of an HTTP message is modeled as the <code>contentType</code> field of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpEntity.html" title="org.apache.pekko.http.javadsl.model.HttpEntity"><code>HttpEntity</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpEntity.html" title="org.apache.pekko.http.scaladsl.model.HttpEntity"><code>HttpEntity</code></a></span>. The <code>Content-Type</code> header therefore doesn&rsquo;t appear in the <code>headers</code> sequence of a message. Also, a <code>Content-Type</code> header instance that is explicitly added to the <code>headers</code> of a request or response will not be rendered onto the wire and trigger a warning being logged instead!</dd>
+  <dt>Transfer-Encoding
+  </dt>
+  <dd>Messages with <code>Transfer-Encoding: chunked</code> are represented <span class="group-scala">via the <code>HttpEntity.Chunked</code></span><span class="group-java">as a <code>HttpEntityChunked</code></span> entity. As such chunked messages that do not have another deeper nested transfer encoding will not have a <code>Transfer-Encoding</code> header in their <code>headers</code> <span class="group-scala">sequence</span><span class="group-java">list</span>. Similarly, a <code>Transfer-Encoding</code> header instance that is explicitly added to the <code>headers</code> of a request or response will not be rendered onto the wire and trigger a warning being logged instead!</dd>
+  <dt>Content-Length
+  </dt>
+  <dd>The content length of a message is modelled via its <a href="#httpentity">HttpEntity</a>. As such no <code>Content-Length</code> header will ever be part of a message&rsquo;s <code>header</code> sequence. Similarly, a <code>Content-Length</code> header instance that is explicitly added to the <code>headers</code> of a request or response will not be rendered onto the wire and trigger a warning being logged instead!</dd>
+  <dt>Server</dt>
+  <dd>A <code>Server</code> header is usually added automatically to any response and its value can be configured via the <code>pekko.http.server.server-header</code> setting. Additionally an application can override the configured header with a custom one by adding it to the response&rsquo;s <code>header</code> sequence.</dd>
+  <dt>User-Agent
+  </dt>
+  <dd>A <code>User-Agent</code> header is usually added automatically to any request and its value can be configured via the <code>pekko.http.client.user-agent-header</code> setting. Additionally an application can override the configured header with a custom one by adding it to the request&rsquo;s <code>header</code> sequence.</dd>
+  <dt>Date</dt>
+  <dd>The <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/Date.html" title="org.apache.pekko.http.javadsl.model.headers.Date"><code>Date</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/Date.html" title="org.apache.pekko.http.scaladsl.model.headers.Date"><code>Date</code></a></span> response header is added automatically but can be overridden by supplying it manually.</dd>
+  <dt>Connection</dt>
+  <dd>On the server-side Apache Pekko HTTP watches for explicitly added <code>Connection: close</code> response headers and as such honors the potential wish of the application to close the connection after the respective response has been sent out. The actual logic for determining whether to close the connection is quite involved. It takes into account the request&rsquo;s method, protocol and potential <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/Connection.html" title="org.apache.pekko.http.javadsl.model.headers.Connection"><code>Connection</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/Connection.html" title="org.apache.pekko.http.scaladsl.model.headers.Connection"><code>Connection</code></a></span> header as well as the response&rsquo;s protocol, entity and potential <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/Connection.html" title="org.apache.pekko.http.javadsl.model.headers.Connection"><code>Connection</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/Connection.html" title="org.apache.pekko.http.scaladsl.model.headers.Connection"><code>Connection</code></a></span> header. See <a href="https://github.com/apache/incubator-pekko-http/tree/main/http-core/src/test/scala/org/apache/pekko/http/impl/engine/rendering/ResponseRendererSpec.scala#L560-L661">this test</a> for a full table of what happens when.</dd>
+  <dt>Strict-Transport-Security
+  </dt>
+  <dd>HTTP Strict Transport Security (HSTS) is a web security policy mechanism which is communicated by the <code>Strict-Transport-Security</code> header. The most important security vulnerability that HSTS can fix is SSL-stripping man-in-the-middle attacks. The SSL-stripping attack works by transparently converting a secure HTTPS connection into a plain HTTP connection. The user can see that the connection is insecure, but crucially there is no way of knowing whether the connection should be secure. HSTS addresses this problem by informing the browser that connections to the site should always use TLS/SSL. See also <a href="https://tools.ietf.org/html/rfc6797">RFC 6797</a>.</dd>
+</dl>
+<a id="custom-headers"></a>
+<h2><a href="#custom-headers" name="custom-headers" class="anchor"><span class="anchor-link"></span></a>Custom Headers</h2>
+<p>Sometimes you may need to model a custom header type which is not part of HTTP and still be able to use it as convenient as is possible with the built-in types.</p>
+<p>Because of the number of ways one may interact with headers (i.e. try to <span class="group-scala">match</span><span class="group-java">convert</span> a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span> <span class="group-scala">against</span><span class="group-java">to</span> a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/RawHeader.html" title="org.apache.pekko.http.javadsl.model.headers.RawHeader"><code>RawHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/RawHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.RawHeader"><code>RawHeader</code></a></span> or the other way around etc), a helper <span class="group-scala">trait</span><span class="group-java">classes</span> for custom Header types <span class="group-scala">and their companions classes </span>are provided by Apache Pekko HTTP. Thanks to extending <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span> instead of the plain <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span> <span class="group-scala">such header can be matched</span><span class="group-java">the following methods are at your disposal</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/scala/org/apache/pekko/http/scaladsl/server/ModeledCustomHeaderSpec.scala#L25-L34" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final class ApiTokenHeader(token: String) extends ModeledCustomHeader[ApiTokenHeader] {
+  override def renderInRequests = true
+  override def renderInResponses = true
+  override val companion = ApiTokenHeader
+  override def value: String = token
+}
+object ApiTokenHeader extends ModeledCustomHeaderCompanion[ApiTokenHeader] {
+  override val name = &quot;apiKey&quot;
+  override def parse(value: String) = Try(new ApiTokenHeader(value))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/CustomHeaderExampleTest.java#L41-L68" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class ApiTokenHeader extends ModeledCustomHeader {
+
+  ApiTokenHeader(String name, String value) {
+    super(name, value);
+  }
+
+  public boolean renderInResponses() {
+    return false;
+  }
+
+  public boolean renderInRequests() {
+    return false;
+  }
+
+}
+
+static class ApiTokenHeaderFactory extends ModeledCustomHeaderFactory&lt;ApiTokenHeader&gt; {
+
+  public String name() {
+    return &quot;apiKey&quot;;
+  }
+
+  @Override
+  public ApiTokenHeader parse(String value) {
+    return new ApiTokenHeader(name(), value);
+  }
+
+}</code></pre></dd>
+</dl>
+<p>Which allows this <span class="group-scala">CustomHeader</span><span class="group-java">modeled custom header</span> to be used in the following scenarios:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/scala/org/apache/pekko/http/scaladsl/server/ModeledCustomHeaderSpec.scala#L59-L83" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val ApiTokenHeader(t1) = ApiTokenHeader(&quot;token&quot;)
+t1 should ===(&quot;token&quot;)
+
+val RawHeader(k2, v2) = ApiTokenHeader(&quot;token&quot;)
+k2 should ===(&quot;apiKey&quot;)
+v2 should ===(&quot;token&quot;)
+
+// will match, header keys are case insensitive
+val ApiTokenHeader(v3) = RawHeader(&quot;APIKEY&quot;, &quot;token&quot;)
+v3 should ===(&quot;token&quot;)
+
+intercept[MatchError] {
+  // won&#39;t match, different header name
+  val ApiTokenHeader(v4) = DifferentHeader(&quot;token&quot;)
+}
+
+intercept[MatchError] {
+  // won&#39;t match, different header name
+  val RawHeader(&quot;something&quot;, v5) = DifferentHeader(&quot;token&quot;)
+}
+
+intercept[MatchError] {
+  // won&#39;t match, different header name
+  val ApiTokenHeader(v6) = RawHeader(&quot;different&quot;, &quot;token&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/CustomHeaderExampleTest.java#L74-L98" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ApiTokenHeaderFactory apiTokenHeaderFactory = new ApiTokenHeaderFactory();
+final ApiTokenHeader token = apiTokenHeaderFactory.create(&quot;token&quot;);
+assertEquals(&quot;token&quot;, token.value());
+
+final HttpHeader header = apiTokenHeaderFactory.create(&quot;token&quot;);
+assertEquals(&quot;apiKey&quot;, header.name());
+assertEquals(&quot;token&quot;, header.value());
+
+final Optional&lt;ApiTokenHeader&gt; fromRaw = apiTokenHeaderFactory
+  .from(RawHeader.create(&quot;apiKey&quot;, &quot;token&quot;));
+assertTrue(&quot;Expected a header&quot;, fromRaw.isPresent());
+assertEquals(&quot;apiKey&quot;, fromRaw.get().name());
+assertEquals(&quot;token&quot;, fromRaw.get().value());
+
+// will match, header keys are case insensitive
+final Optional&lt;ApiTokenHeader&gt; fromRawUpper = apiTokenHeaderFactory
+  .from(RawHeader.create(&quot;APIKEY&quot;, &quot;token&quot;));
+assertTrue(&quot;Expected a header&quot;, fromRawUpper.isPresent());
+assertEquals(&quot;apiKey&quot;, fromRawUpper.get().name());
+assertEquals(&quot;token&quot;, fromRawUpper.get().value());
+
+// won&#39;t match, different header name
+final Optional&lt;ApiTokenHeader&gt; wrong = apiTokenHeaderFactory
+  .from(RawHeader.create(&quot;different&quot;, &quot;token&quot;));
+assertFalse(wrong.isPresent());</code></pre></dd>
+</dl>
+<p>Including usage within the header directives like in the following <a href="../routing-dsl/directives/header-directives/headerValuePF.html">headerValuePF</a> example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/scala/org/apache/pekko/http/scaladsl/server/ModeledCustomHeaderSpec.scala#L96-L118" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def extractFromCustomHeader = headerValuePF {
+  case t @ ApiTokenHeader(token) =&gt; s&quot;extracted&gt; $t&quot;
+  case raw: RawHeader            =&gt; s&quot;raw&gt; $raw&quot;
+}
+
+val routes = extractFromCustomHeader { s =&gt;
+  complete(s)
+}
+
+Get().withHeaders(RawHeader(&quot;apiKey&quot;, &quot;TheKey&quot;)) ~&gt; routes ~&gt; check {
+  status should ===(StatusCodes.OK)
+  responseAs[String] should ===(&quot;extracted&gt; apiKey: TheKey&quot;)
+}
+
+Get().withHeaders(RawHeader(&quot;somethingElse&quot;, &quot;TheKey&quot;)) ~&gt; routes ~&gt; check {
+  status should ===(StatusCodes.OK)
+  responseAs[String] should ===(&quot;raw&gt; somethingElse: TheKey&quot;)
+}
+
+Get().withHeaders(ApiTokenHeader(&quot;TheKey&quot;)) ~&gt; routes ~&gt; check {
+  status should ===(StatusCodes.OK)
+  responseAs[String] should ===(&quot;extracted&gt; apiKey: TheKey&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/CustomHeaderExampleTest.java#L33-L134" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.http.javadsl.server.Directives;
+
+import static org.apache.pekko.http.javadsl.server.Directives.headerValuePF;
+
+final ApiTokenHeaderFactory apiTokenHeaderFactory = new ApiTokenHeaderFactory();
+final PartialFunction&lt;HttpHeader, String&gt; extractFromCustomHeader =
+  new JavaPartialFunction&lt;HttpHeader, String&gt;() {
+
+    @Override
+    public String apply(HttpHeader header, boolean isCheck) throws Exception {
+      if (isCheck)
+        return null;
+      return apiTokenHeaderFactory.from(header)
+        .map(apiTokenHeader -&gt; &quot;extracted&gt; &quot; + apiTokenHeader)
+        .orElseGet(() -&gt; &quot;raw&gt; &quot; + header);
+    }
+  };
+
+final Route route = headerValuePF(extractFromCustomHeader, Directives::complete);
+
+testRoute(route)
+  .run(HttpRequest.GET(&quot;/&quot;).addHeader(RawHeader.create(&quot;apiKey&quot;, &quot;TheKey&quot;)))
+  .assertStatusCode(StatusCodes.OK)
+  .assertEntity(&quot;extracted&gt; apiKey: TheKey&quot;);
+
+testRoute(route)
+  .run(HttpRequest.GET(&quot;/&quot;).addHeader(RawHeader.create(&quot;somethingElse&quot;, &quot;TheKey&quot;)))
+  .assertStatusCode(StatusCodes.OK)
+  .assertEntity(&quot;raw&gt; somethingElse: TheKey&quot;);
+
+testRoute(route)
+  .run(HttpRequest.GET(&quot;/&quot;).addHeader(apiTokenHeaderFactory.create(&quot;TheKey&quot;)))
+  .assertStatusCode(StatusCodes.OK)
+  .assertEntity(&quot;extracted&gt; apiKey: TheKey&quot;);</code></pre></dd>
+</dl><div class="callout note group-scala"><div class="callout-title">Note</div>
+<p>When defining custom headers, it is better to extend <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span> instead of its parent <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span>. Custom headers that extend <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span> automatically comply with the pattern matching semantics that usually apply to built-in types (such as matching a custom header against a <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/RawHeader.html" title="org.apache.pekko.http.javadsl.model.headers.RawHeader"><code>RawHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/RawHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.RawHeader"><code>RawHeader</code></a></span> in routing layers of Apache Pekko HTTP applications).</p></div><div class="callout note group-java"><div class="callout-title">Note</div>
+<p>Implement <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/ModeledCustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.ModeledCustomHeader"><code>ModeledCustomHeader</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/ModeledCustomHeaderFactory.html" title="org.apache.pekko.http.javadsl.model.headers.ModeledCustomHeaderFactory"><code>ModeledCustomHeaderFactory</code></a></span> instead of <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.javadsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/headers/CustomHeader.html" title="org.apache.pekko.http.scaladsl.model.headers.CustomHeader"><code>CustomHeader</code></a></span> to be able to use the convenience methods that allow parsing the custom user-defined header from <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpHeader.html" title="org.apache.pekko.http.javadsl.model.HttpHeader"><code>HttpHeader</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpHeader.html" title="org.apache.pekko.http.scaladsl.model.HttpHeader"><code>HttpHeader</code></a></span>.</p></div>
+<h2><a href="#attributes" name="attributes" class="anchor"><span class="anchor-link"></span></a>Attributes</h2>
+<p>Sometimes it can be useful to keep track of some information associated with a request without explicitly closing over it. Such information can be attached to a request or response though message attributes:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/ModelSpec.scala#L104-L124" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class User(name: String)
+object User {
+  val attributeKey = AttributeKey[User](&quot;user&quot;)
+}
+
+def determineUser(req: HttpRequest): HttpRequest = {
+  val user = // ... somehow determine the user for this request
+
+  // Add the attribute
+  req.addAttribute(User.attributeKey, user)
+}
+
+// Retrieve the attribute
+val user: Option[User] = requestWithAttribute.attribute(User.attributeKey)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/ModelDocTest.java#L105-L131" target="_blank" title="Go to snippet source">source</a><code class="language-java">class User {
+    final String name;
+    public User(String name) {
+        this.name = name;
+    }
+
+    public static final AttributeKey&lt;User&gt; attributeKey = AttributeKey.create(&quot;user&quot;, User.class);
+}
+
+public HttpRequest determineUser(HttpRequest request) {
+    User user = //... somehow determine the user for this request
+
+    // Add the attribute
+    return request.addAttribute(User.attributeKey, user);
+}
+
+// Retrieve the attribute
+Optional&lt;User&gt; user = requestWithAttribute.getAttribute(User.attributeKey);</code></pre></dd>
+</dl>
+<p>Message attributes are only to be used within in your application, they are not present on the wire.</p>
+<h2><a href="#parsing-rendering" name="parsing-rendering" class="anchor"><span class="anchor-link"></span></a>Parsing / Rendering</h2>
+<p>Parsing and rendering of HTTP data structures is heavily optimized and for most types there&rsquo;s currently no public API provided to parse (or render to) Strings or byte arrays.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Various parsing and rendering settings are available to tweak in the configuration under <code>pekko.http.client[.parsing]</code>, <code>pekko.http.server[.parsing]</code> and <code>pekko.http.host-connection-pool[.client.parsing]</code>, with defaults for all of these being defined in the <code>pekko.http.parsing</code> configuration section.</p>
+<p>For example, if you want to change a parsing setting for all components, you can set the <code>pekko.http.parsing.illegal-header-warnings = off</code> value. However this setting can be still overridden by the more specific sections, like for example <code>pekko.http.server.parsing.illegal-header-warnings = on</code>.</p>
+<p>In this case both <code>client</code> and <code>host-connection-pool</code> APIs will see the setting <code>off</code>, however the server will see <code>on</code>.</p>
+<p>In the case of <code>pekko.http.host-connection-pool.client</code> settings, they default to settings set in <code>pekko.http.client</code>, and can override them if needed. This is useful, since both <code>client</code> and <code>host-connection-pool</code> APIs, such as the Client API <span class="group-scala"><code>Http().outgoingConnection</code></span><span class="group-java"><code>Http.get(sys).outgoingConnection</code></span> or the Host Connection Pool APIs <span class="group-scala"><code>Http().singleRequest</code></span><span class="group-java"><code>Http.get(sys).singleRequest</code></span> or <span class="group-scala"><code>Http().superPool</code></span><span class="group-java"><code>Http.get(sys).superPool</code></span>, usually need the same settings, however the <code>server</code> most likely has a very different set of settings.</p></div>
+<a id="registeringcustommediatypes"></a>
+<h2><a href="#registering-custom-media-types" name="registering-custom-media-types" class="anchor"><span class="anchor-link"></span></a>Registering Custom Media Types</h2>
+<p>Apache Pekko HTTP <span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/MediaTypes$.html" title="org.apache.pekko.http.scaladsl.model.MediaTypes"><code>predefines</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/MediaTypes.html" title="org.apache.pekko.http.javadsl.model.MediaTypes"><code>predefines</code></a></span> most commonly encountered media types and emits them in their well-typed form while parsing http messages. Sometimes you may want to define a custom media type and inform the parser infrastructure about how to handle these custom media types, e.g. that <code>application/custom</code> is to be treated as <code>NonBinary</code> with <code>WithFixedCharset</code>. To achieve this you need to register the custom media type in the server&rsquo;s settings by configuring <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/settings/ParserSettings.html" title="org.apache.pekko.http.javadsl.settings.ParserSettings"><code>ParserSettings</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/settings/ParserSettings.html" title="org.apache.pekko.http.scaladsl.settings.ParserSettings"><code>ParserSettings</code></a></span> like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/scala/org/apache/pekko/http/scaladsl/CustomMediaTypesSpec.scala#L51-L69" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>// similarly in Java: `org.apache.pekko.http.javadsl.settings.[...]`
+import org.apache.pekko
+import pekko.http.scaladsl.settings.ParserSettings
+import pekko.http.scaladsl.settings.ServerSettings
+
+// define custom media type:
+val utf8 = HttpCharsets.`UTF-8`
+val `application/custom`: WithFixedCharset =
+  MediaType.customWithFixedCharset(&quot;application&quot;, &quot;custom&quot;, utf8)
+
+// add custom media type to parser settings:
+val parserSettings = ParserSettings.forServer(system).withCustomMediaTypes(`application/custom`)
+val serverSettings = ServerSettings(system).withParserSettings(parserSettings)
+
+val routes = extractRequest { r =&gt;
+  complete(r.entity.contentType.toString + &quot; = &quot; + r.entity.contentType.getClass)
+}
+val binding = Http().newServerAt(&quot;localhost&quot;, 0).withSettings(serverSettings).bind(routes)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/CustomMediaTypesExampleTest.java#L40-L77" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.http.javadsl.server.Directives.complete;
+import static org.apache.pekko.http.javadsl.server.Directives.extractRequest;
+
+// Define custom media type:
+final MediaType.WithFixedCharset applicationCustom =
+  MediaTypes.customWithFixedCharset(&quot;application&quot;, &quot;custom&quot;, // The new Media Type name
+    HttpCharsets.UTF_8, // The charset used
+    new HashMap&lt;&gt;(), // Empty parameters
+    false); // No arbitrary subtypes are allowed
+
+// Add custom media type to parser settings:
+final ParserSettings parserSettings = ParserSettings.forServer(system)
+  .withCustomMediaTypes(applicationCustom);
+final ServerSettings serverSettings = ServerSettings.create(system)
+  .withParserSettings(parserSettings);
+
+final Route route = extractRequest(req -&gt;
+  complete(req.entity().getContentType().toString() + &quot; = &quot;
+    + req.entity().getContentType().getClass())
+);
+
+final CompletionStage&lt;ServerBinding&gt; binding =
+  Http.get(system)
+    .newServerAt(host, 0)
+    .withSettings(serverSettings)
+    .bind(route);
+</code></pre></dd>
+</dl>
+<p>You may also want to read about MediaType <a href="https://en.wikipedia.org/wiki/Media_type#Registration_trees">Registration trees</a>, in order to register your vendor specific media types in the right style / place.</p>
+<a id="registeringcustomstatuscodes"></a>
+<h2><a href="#registering-custom-status-codes" name="registering-custom-status-codes" class="anchor"><span class="anchor-link"></span></a>Registering Custom Status Codes</h2>
+<p>Similarly to media types, Apache Pekko HTTP <span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/StatusCodes$.html" title="org.apache.pekko.http.scaladsl.model.StatusCodes"><code>predefines</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/StatusCodes.html" title="org.apache.pekko.http.javadsl.model.StatusCodes"><code>predefines</code></a></span> well-known status codes, however sometimes you may need to use a custom one (or are forced to use an API which returns custom status codes). Similarly to the media types registration, you can register custom status codes by configuring <span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/settings/ParserSettings.html" title="org.apache.pekko.http.javadsl.settings.ParserSettings"><code>ParserSettings</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/settings/ParserSettings.html" title="org.apache.pekko.http.scaladsl.settings.ParserSettings"><code>ParserSettings</code></a></span> like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/http-tests/src/test/scala/org/apache/pekko/http/scaladsl/CustomStatusCodesSpec.scala#L30-L54" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// similarly in Java: `org.apache.pekko.http.javadsl.settings.[...]`
+import org.apache.pekko.http.scaladsl.settings.{ ParserSettings, ServerSettings }
+
+// define custom status code:
+val LeetCode = StatusCodes.custom(777, &quot;LeetCode&quot;, &quot;Some reason&quot;, isSuccess = true, allowsEntity = false)
+
+// add custom method to parser settings:
+val parserSettings = ParserSettings.forServer(system).withCustomStatusCodes(LeetCode)
+val serverSettings = ServerSettings(system).withParserSettings(parserSettings)
+
+val clientConSettings = ClientConnectionSettings(system).withParserSettings(parserSettings)
+val clientSettings = ConnectionPoolSettings(system).withConnectionSettings(clientConSettings)
+
+val routes =
+  complete(HttpResponse(status = LeetCode))
+
+// use serverSettings in server:
+val binding = Http().newServerAt(&quot;127.0.0.1&quot;, 0).withSettings(serverSettings).bind(routes).futureValue
+
+// use clientSettings in client:
+val request = HttpRequest(uri = s&quot;http://127.0.0.1:${binding.localAddress.getPort}/&quot;)
+val response = Http().singleRequest(request, settings = clientSettings)
+
+// futureValue is a ScalaTest helper:
+response.futureValue.status should ===(LeetCode)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/CustomStatusCodesExampleTest.java#L42-L99" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.http.javadsl.server.Directives.complete;
+import static org.apache.pekko.http.javadsl.server.Directives.extractRequest;
+
+// Define custom status code:
+final StatusCode leetCode = StatusCodes.custom(777, // Our custom status code
+  &quot;LeetCode&quot;, // Our custom reason
+  &quot;Some reason&quot;, // Our custom default message
+  true, // It should be considered a success response
+  false);// Does not allow entities
+
+// Add custom method to parser settings:
+final ParserSettings parserSettings = ParserSettings.forServer(system)
+  .withCustomStatusCodes(leetCode);
+final ServerSettings serverSettings = ServerSettings.create(system)
+  .withParserSettings(parserSettings);
+
+final ClientConnectionSettings clientConSettings = ClientConnectionSettings.create(system)
+  .withParserSettings(parserSettings);
+final ConnectionPoolSettings clientSettings = ConnectionPoolSettings.create(system)
+  .withConnectionSettings(clientConSettings);
+
+final Route route = extractRequest(req -&gt;
+  complete(HttpResponse.create().withStatus(leetCode))
+);
+
+// Use serverSettings in server:
+final CompletionStage&lt;ServerBinding&gt; binding = Http.get(system)
+  .newServerAt(host, 0)
+  .withSettings(serverSettings)
+  .bind(route);
+
+final ServerBinding serverBinding = binding.toCompletableFuture().get();
+
+final int port = serverBinding.localAddress().getPort();
+
+// Use clientSettings in client:
+final HttpResponse response = Http.get(system)
+  .singleRequest(HttpRequest
+    .GET(&quot;http://&quot; + host + &quot;:&quot; + port + &quot;/&quot;),
+    ConnectionContext.https(SSLContext.getDefault()),
+    clientSettings,
+    system.log())
+  .toCompletableFuture()
+  .get();
+
+// Check we get the right code back
+assertEquals(leetCode, response.status());</code></pre></dd>
+</dl>
+<a id="registeringcustommethod"></a>
+<h2><a href="#registering-custom-http-method" name="registering-custom-http-method" class="anchor"><span class="anchor-link"></span></a>Registering Custom HTTP Method</h2>
+<p>Apache Pekko HTTP also allows you to define custom HTTP methods, other than the well-known methods <span class="group-scala"><a href="https://pekko.apache.org/japi/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/scaladsl/model/HttpMethods$.html" title="org.apache.pekko.http.scaladsl.model.HttpMethods"><code>predefined</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko-http/0.0.0+4308-98f0ff9c-SNAPSHOT/org/apache/pekko/http/javadsl/model/HttpMethods.html" title="org.apache.pekko.http.javadsl.model.HttpMethods"><code>predefined</code></a></span> in Apache Pekko HTTP. To use a custom HTTP method, you need to define it, and then add it to parser settings like below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/scala/docs/http/scaladsl/server/directives/CustomHttpMethodSpec.scala#L36-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.http.scaladsl.settings.{ ParserSettings, ServerSettings }
+
+// define custom method type:
+val BOLT = HttpMethod.custom(&quot;BOLT&quot;, safe = false,
+  idempotent = true, requestEntityAcceptance = Expected)
+
+// add custom method to parser settings:
+val parserSettings = ParserSettings.forServer(system).withCustomMethods(BOLT)
+val serverSettings = ServerSettings(system).withParserSettings(parserSettings)
+
+val routes = extractMethod { method =&gt;
+  complete(s&quot;This is a ${method.name} method request.&quot;)
+}
+val binding = Http().newServerAt(host, port).withSettings(serverSettings).bind(routes)
+
+val request = HttpRequest(BOLT, s&quot;http://$host:$port/&quot;, protocol = `HTTP/1.1`)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/test/java/docs/http/javadsl/server/directives/CustomHttpMethodExamplesTest.java#L41-L84" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.http.javadsl.server.Directives.complete;
+import static org.apache.pekko.http.javadsl.server.Directives.extractMethod;
+
+
+// define custom method type:
+HttpMethod BOLT =
+  HttpMethods.custom(&quot;BOLT&quot;, false, true, Expected);
+
+// add custom method to parser settings:
+final ParserSettings parserSettings =
+  ParserSettings.forServer(system).withCustomMethods(BOLT);
+final ServerSettings serverSettings =
+  ServerSettings.create(system).withParserSettings(parserSettings);
+
+final Route routes = concat(
+  extractMethod( method -&gt;
+    complete( &quot;This is a &quot; + method.name() + &quot; request.&quot;)
+  )
+);
+final Http http = Http.get(system);
+final CompletionStage&lt;ServerBinding&gt; binding =
+  http.newServerAt(host, port)
+      .withSettings(serverSettings)
+      .logTo(loggingAdapter)
+      .bind(routes);
+
+HttpRequest request = HttpRequest.create()
+  .withUri(&quot;http://&quot; + host + &quot;:&quot; + Integer.toString(port))
+  .withMethod(BOLT)
+  .withProtocol(HTTP_1_1);
+
+CompletionStage&lt;HttpResponse&gt; response = http.singleRequest(request);</code></pre></dd>
+</dl>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko-http/tree/main/docs/src/main/paradox/common/http-model.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+4308-98f0ff9c*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../common/index.html" title="3. Data Types & Abstractions" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+3. Data Types & Abstractions
+</span>
+</div>
+</a>
+<a href="../common/uri-model.html" title="The URI model" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+The URI model
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>
