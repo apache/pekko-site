@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>StreamRefs - Reactive Streams over the network · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+StreamRefs - Reactive Streams over the network
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html#streamrefs-reactive-streams-over-the-network" class="active page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-refs.html#streamrefs-reactive-streams-over-the-network" class="header">StreamRefs - Reactive Streams over the network</a>
+  <ul>
+    <li><a href="../stream/stream-refs.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-refs.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-refs.html#stream-references" class="header">Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#bulk-stream-references" class="header">Bulk Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#serialization-of-sourceref-and-sinkref" class="header">Serialization of SourceRef and SinkRef</a></li>
+    <li><a href="../stream/stream-refs.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-refs.html#streamrefs-reactive-streams-over-the-network" class="header">StreamRefs - Reactive Streams over the network</a>
+  <ul>
+    <li><a href="../stream/stream-refs.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-refs.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-refs.html#stream-references" class="header">Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#bulk-stream-references" class="header">Bulk Stream References</a></li>
+    <li><a href="../stream/stream-refs.html#serialization-of-sourceref-and-sinkref" class="header">Serialization of SourceRef and SinkRef</a></li>
+    <li><a href="../stream/stream-refs.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#streamrefs-reactive-streams-over-the-network" name="streamrefs-reactive-streams-over-the-network" class="anchor"><span class="anchor-link"></span></a>StreamRefs - Reactive Streams over the network</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Pekko Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2><div class="callout warning "><div class="callout-title">Warning</div>
+<p>This module is currently marked as <a href="../common/may-change.html">may change</a> in the sense  of being the subject of final development. This means that the API or semantics can  change without warning or deprecation period, and it is not recommended to use  this module in production just yet.</p></div>
+<p>Stream references, or &ldquo;stream refs&rdquo; for short, allow running Pekko Streams across multiple nodes within a Pekko Cluster. </p>
+<p>Unlike heavier &ldquo;streaming data processing&rdquo; frameworks, Pekko Streams are neither &ldquo;deployed&rdquo; nor automatically distributed. Pekko stream refs are, as the name implies, references to existing parts of a stream, and can be used to create a distributed processing framework or to introduce such capabilities in specific parts of your application.</p>
+<p>Stream refs are trivial to use in existing clustered Pekko applications and require no additional configuration or setup. They automatically maintain flow-control / back-pressure over the network and employ Pekko&rsquo;s failure detection mechanisms to fail-fast (&ldquo;let it crash!&rdquo;) in the case of failures of remote nodes. They can be seen as an implementation of the <a href="https://www.michaelpollmeier.com/akka-work-pulling-pattern">Work Pulling Pattern</a>, which one would otherwise implement manually.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>A useful way to think about stream refs is:  &ldquo;like an <code>ActorRef</code>, but for Pekko Streams&rsquo;s <code>Source</code> and <code>Sink</code>&rdquo;.</p>
+<p>Stream refs refer to an already existing, possibly remote, <code>Sink</code> or <code>Source</code>.  This is not to be mistaken with deploying streams remotely, which this feature is not intended for.</p></div><div class="callout warning "><div class="callout-title">IMPORTANT</div>
+<p>Use stream refs with Pekko Cluster. The <a href="../typed/cluster-concepts.html#quarantined">failure detector can cause quarantining</a> if plain Pekko remoting is used.</p></div>
+<h2><a href="#stream-references" name="stream-references" class="anchor"><span class="anchor-link"></span></a>Stream References</h2>
+<p>The prime use case for stream refs is to replace raw actor or HTTP messaging in systems that expect long-running streams of data between two entities. Often they can be used to effectively achieve point-to-point streaming without the need to set up additional message brokers or similar secondary clusters.</p>
+<p>Stream refs are well-suited for any system in which you need to send messages between nodes in a flow-controlled fashion. Typical examples include sending work requests to worker nodes as fast as possible, but not faster than the worker nodes can process them, or sending data elements that the downstream may be slow at processing. It is recommended to mix and introduce stream refs in actor-messaging-based systems, where the actor messaging is used to orchestrate and prepare such message flows, and later the stream refs are used to do the flow-controlled message transfer. </p>
+<p>Stream refs are not persistent. However, it is simple to build a resumable stream by introducing such a protocol in the actor messaging layer. Stream refs are absolutely expected to be sent over Pekko remoting to other nodes within a cluster using Pekko Cluster, and therefore complement, instead of compete, with plain Actor messaging. Actors would usually be used to establish the stream via some initial message saying, &ldquo;I want to offer you many log elements (the stream ref),&rdquo; or conversely, &ldquo;if you need to send me much data, here is the stream ref you can use to do so&rdquo;.</p>
+<p>Since the two sides (&ldquo;local&rdquo; and &ldquo;remote&rdquo;) of each reference may be confusing to refer to as &ldquo;remote&rdquo; and &ldquo;local&rdquo; &ndash; since either side can be seen as &ldquo;local&rdquo; or &ldquo;remote&rdquo; depending how we look at it &ndash; we propose using the terminology &ldquo;origin&rdquo; and &ldquo;target&rdquo;, which is defined by where the stream ref was created. For <code>SourceRef</code>s, the &ldquo;origin&rdquo; is the side which has the data that it is going to stream out. For <code>SinkRef</code>s, the &ldquo;origin&rdquo; side is the actor system that is ready to receive the data and has allocated the ref. Those two may be seen as duals of each other. However, to explain patterns about sharing references, we found this wording to be rather useful.</p>
+<h3><a href="#source-refs-offering-streaming-data-to-a-remote-system" name="source-refs-offering-streaming-data-to-a-remote-system" class="anchor"><span class="anchor-link"></span></a>Source Refs - offering streaming data to a remote system</h3>
+<p>A <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/SourceRef.html" title="pekko.stream.SourceRef"><code>`SourceRef`</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/SourceRef.html" title="pekko.stream.SourceRef"><code>`SourceRef`</code></a></span> can be offered to a remote actor system in order for it to consume some source of data that we have prepared locally. </p>
+<p>In order to share a <code>Source</code> with a remote endpoint you need to materialize it by running it into the <code>Sink.sourceRef</code>. That <code>Sink</code> materializes the <code>SourceRef</code> that you can then send to other nodes.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L26-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream.SourceRef
+import pekko.pattern.pipe
+
+case class RequestLogs(streamId: Int)
+case class LogsOffer(streamId: Int, sourceRef: SourceRef[String])
+
+class DataSource extends Actor {
+
+  def receive = {
+    case RequestLogs(streamId) =&gt;
+      // obtain the source you want to offer:
+      val source: Source[String, NotUsed] = streamLogs(streamId)
+
+      // materialize the SourceRef:
+      val ref: SourceRef[String] = source.runWith(StreamRefs.sourceRef())
+
+      // wrap the SourceRef in some domain message, such that the sender knows what source it is
+      val reply = LogsOffer(streamId, ref)
+
+      // reply to sender
+      sender() ! reply
+  }
+
+  def streamLogs(streamId: Long): Source[String, NotUsed] = ???
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L41-L73" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class RequestLogs {
+  public final long streamId;
+
+  public RequestLogs(long streamId) {
+    this.streamId = streamId;
+  }
+}
+
+static class LogsOffer {
+  final SourceRef&lt;String&gt; sourceRef;
+
+  public LogsOffer(SourceRef&lt;String&gt; sourceRef) {
+    this.sourceRef = sourceRef;
+  }
+}
+
+static class DataSource extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(RequestLogs.class, this::handleRequestLogs).build();
+  }
+
+  private void handleRequestLogs(RequestLogs requestLogs) {
+    Source&lt;String, NotUsed&gt; logs = streamLogs(requestLogs.streamId);
+    SourceRef&lt;String&gt; logsRef = logs.runWith(StreamRefs.sourceRef(), mat);
+
+    getSender().tell(new LogsOffer(logsRef), getSelf());
+  }
+
+  private Source&lt;String, NotUsed&gt; streamLogs(long streamId) {
+    return Source.repeat(&quot;[INFO] some interesting logs here (for id: &quot; + streamId + &quot;)&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<p>The origin actor which creates and owns the <code>Source</code> could also perform some validation or additional setup when preparing the <code>Source</code>. Once it has handed out the <code>SourceRef</code>, the remote side can run it like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L55-L64" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sourceActor = system.actorOf(Props[DataSource](), &quot;dataSource&quot;)
+
+sourceActor ! RequestLogs(1337)
+val offer = expectMsgType[LogsOffer]
+
+// implicitly converted to a Source:
+offer.sourceRef.runWith(Sink.foreach(println))
+// alternatively explicitly obtain Source from SourceRef:
+// offer.sourceRef.source.runWith(Sink.foreach(println))
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L81-L87" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef sourceActor = system.actorOf(Props.create(DataSource.class), &quot;dataSource&quot;);
+
+sourceActor.tell(new RequestLogs(1337), getTestActor());
+LogsOffer offer = expectMsgClass(LogsOffer.class);
+
+offer.sourceRef.getSource().runWith(Sink.foreach(log -&gt; System.out.println(log)), mat);
+</code></pre></dd>
+</dl>
+<p>The process of preparing and running a <code>SourceRef</code>-powered distributed stream is shown by the animation below:</p>
+<p><img src="../images/source-ref-animation.gif" alt="SourceRef usage animation" /></p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>A <code>SourceRef</code> is <em>by design</em> &ldquo;single-shot&rdquo;; i.e., it may only be materialized once.  This is in order to not complicate the mental model of what materialization means.</p>
+<p>Multicast can be mimicked by starting a <code>BroadcastHub</code> operator once, then attaching multiple new streams to it, each  emitting a new stream ref. This way, materialization of the <code>BroadcastHub</code>s Source creates a unique single-shot  stream ref, however they can all be powered using a single <code>Source</code> &ndash; located before the <code>BroadcastHub</code> operator.</p></div>
+<h3><a href="#sink-refs-offering-to-receive-streaming-data-from-a-remote-system" name="sink-refs-offering-to-receive-streaming-data-from-a-remote-system" class="anchor"><span class="anchor-link"></span></a>Sink Refs - offering to receive streaming data from a remote system</h3>
+<p>The dual of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/SinkRef.html" title="pekko.stream.SinkRef"><code>`SourceRef`</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/SinkRef.html" title="pekko.stream.SinkRef"><code>`SourceRef`</code></a></span>s.</p>
+<p>They can be used to offer the other side the capability to send to the <em>origin</em> side data in a streaming, flow-controlled fashion. The origin here allocates a <code>Sink</code>, which could be as simple as a <code>Sink.foreach</code> or as advanced as a complex <code>Sink</code> which streams the incoming data into various other systems (e.g., any of the Pekko connectors-provided <code>Sink</code>s).</p><div class="callout note "><div class="callout-title">Note</div>
+<p>To form a good mental model of <code>SinkRef</code>s, you can think of them as being similar to &ldquo;passive mode&rdquo; in FTP.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L70-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.SinkRef
+
+case class PrepareUpload(id: String)
+case class MeasurementsSinkReady(id: String, sinkRef: SinkRef[String])
+
+class DataReceiver extends Actor {
+
+  def receive = {
+    case PrepareUpload(nodeId) =&gt;
+      // obtain the source you want to offer:
+      val sink: Sink[String, NotUsed] = logsSinkFor(nodeId)
+
+      // materialize the SinkRef (the remote is like a source of data for us):
+      val ref: SinkRef[String] = StreamRefs.sinkRef[String]().to(sink).run()
+
+      // wrap the SinkRef in some domain message, such that the sender knows what source it is
+      val reply = MeasurementsSinkReady(nodeId, ref)
+
+      // reply to sender
+      sender() ! reply
+  }
+
+  def logsSinkFor(nodeId: String): Sink[String, NotUsed] = ???
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L94-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class PrepareUpload {
+  final String id;
+
+  public PrepareUpload(String id) {
+    this.id = id;
+  }
+}
+
+static class MeasurementsSinkReady {
+  final String id;
+  final SinkRef&lt;String&gt; sinkRef;
+
+  public MeasurementsSinkReady(String id, SinkRef&lt;String&gt; ref) {
+    this.id = id;
+    this.sinkRef = ref;
+  }
+}
+
+static class DataReceiver extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            PrepareUpload.class,
+            prepare -&gt; {
+              Sink&lt;String, NotUsed&gt; sink = logsSinkFor(prepare.id);
+              SinkRef&lt;String&gt; sinkRef = StreamRefs.&lt;String&gt;sinkRef().to(sink).run(mat);
+
+              getSender().tell(new MeasurementsSinkReady(prepare.id, sinkRef), getSelf());
+            })
+        .build();
+  }
+
+  private Sink&lt;String, NotUsed&gt; logsSinkFor(String id) {
+    return Sink.&lt;String&gt;ignore().mapMaterializedValue(done -&gt; NotUsed.getInstance());
+  }
+}</code></pre></dd>
+</dl>
+<p>Using the offered <code>SinkRef</code> to send data to the origin of the <code>Sink</code> is also simple, as we can treat the <code>SinkRef</code> as any other <code>Sink</code> and directly <code>runWith</code> or <code>run</code> with it.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L100-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val receiver = system.actorOf(Props[DataReceiver](), &quot;receiver&quot;)
+
+receiver ! PrepareUpload(&quot;system-42-tmp&quot;)
+val ready = expectMsgType[MeasurementsSinkReady]
+
+// stream local metrics to Sink&#39;s origin:
+localMetrics().runWith(ready.sinkRef)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L138-L143" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef receiver = system.actorOf(Props.create(DataReceiver.class), &quot;dataReceiver&quot;);
+
+receiver.tell(new PrepareUpload(&quot;system-42-tmp&quot;), getTestActor());
+MeasurementsSinkReady ready = expectMsgClass(MeasurementsSinkReady.class);
+
+Source.repeat(&quot;hello&quot;).runWith(ready.sinkRef.getSink(), mat);</code></pre></dd>
+</dl>
+<p>The process of preparing and running a <code>SinkRef</code>-powered distributed stream is shown by the animation below:</p>
+<p><img src="../images/sink-ref-animation.gif" alt="SourceRef usage animation" /></p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>A <code>SinkRef</code> is <em>by design</em> &ldquo;single-shot&rdquo;; i.e., it may only be materialized once.  This is in order to not complicate the mental model of what materialization means.</p>
+<p>If you have a use case for building a fan-in operation that accepts writes from multiple remote nodes,  you can build your <code>Sink</code> and prepend it with a <code>MergeHub</code> operator, each time materializing a new <code>SinkRef</code>  targeting that <code>MergeHub</code>. This has the added benefit of giving you full control of how to merge these streams  (i.e., by using &ldquo;merge preferred&rdquo; or any other variation of the fan-in operators).</p></div>
+<h3><a href="#delivery-guarantees" name="delivery-guarantees" class="anchor"><span class="anchor-link"></span></a>Delivery guarantees</h3>
+<p>Stream refs utilise normal actor messaging for their transport, and therefore provide the same level of basic delivery guarantees. Stream refs do extend the semantics somewhat, through demand re-delivery and sequence fault detection. In other words:</p>
+<ul>
+  <li>messages are sent over actor remoting
+    <ul>
+      <li>which relies on TCP (classic remoting or Artery TCP) or Aeron UDP for basic redelivery mechanisms</li>
+    </ul>
+  </li>
+  <li>messages are guaranteed to to be in-order</li>
+  <li>messages can be lost, however:
+    <ul>
+      <li>a <em>dropped demand signal</em> will be re-delivered automatically (similar to system messages)</li>
+      <li>a <em>dropped element signal</em> will cause the stream to <em>fail</em></li>
+    </ul>
+  </li>
+</ul>
+<h2><a href="#bulk-stream-references" name="bulk-stream-references" class="anchor"><span class="anchor-link"></span></a>Bulk Stream References</h2><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Bulk stream references are not implemented yet.  See ticket <a href="https://github.com/akka/akka/issues/24276">Bulk Transfer Stream Refs #24276</a> to track progress or signal demand for this feature. </p></div>
+<p>Bulk stream refs can be used to create simple side-channels to transfer humongous amounts of data such as huge log files, messages or even media, with as much ease as if it was a trivial local stream.</p>
+<h2><a href="#serialization-of-sourceref-and-sinkref" name="serialization-of-sourceref-and-sinkref" class="anchor"><span class="anchor-link"></span></a>Serialization of SourceRef and SinkRef</h2>
+<p>StreamRefs require serialization, since the whole point is to send them between nodes of a cluster. A built in serializer is provided when <code>SourceRef</code> and <code>SinkRef</code> are sent directly as messages however the recommended use is to wrap them into your own actor message classes. </p>
+<p>When <a href="../serialization-jackson.html">Pekko Jackson</a> is used, serialization of wrapped <code>SourceRef</code> and <code>SinkRef</code> will work out of the box.</p>
+<p>If you are using some other form of serialization you will need to use the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/StreamRefResolver.html" title="org.apache.pekko.stream.StreamRefResolver"><code>StreamRefResolver</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/StreamRefResolver.html" title="org.apache.pekko.stream.StreamRefResolver"><code>StreamRefResolver</code></a></span> extension from your serializer to get the <code>SourceRef</code> and <code>SinkRef</code>. The extension provides the methods <code>toSerializationFormat(sink or source)</code> to transform from refs to string and <code>resolve{Sink,Source}Ref(String)</code> to resolve refs from strings.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<h3><a href="#stream-reference-subscription-timeouts" name="stream-reference-subscription-timeouts" class="anchor"><span class="anchor-link"></span></a>Stream reference subscription timeouts</h3>
+<p>All stream references have a subscription timeout, which is intended to prevent resource leaks in case a remote node requests the allocation of many streams but never actually runs them. In order to prevent this, each stream reference has a default timeout (of 30 seconds), after which the origin will abort the stream offer if the target has not materialized the stream ref. After the timeout has triggered, materialization of the target side will fail, pointing out that the origin is missing.</p>
+<p>Since these timeouts are often very different based on the kind of stream offered, and there can be many different kinds of them in the same application, it is possible to not only configure this setting globally (<code>pekko.stream.materializer.stream-ref.subscription-timeout</code>), but also via attributes:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/FlowStreamRefsDocSpec.scala#L112-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// configure the timeout for source
+import scala.concurrent.duration._
+import org.apache.pekko.stream.StreamRefAttributes
+
+// configuring Sink.sourceRef (notice that we apply the attributes to the Sink!):
+Source
+  .repeat(&quot;hello&quot;)
+  .runWith(StreamRefs.sourceRef().addAttributes(StreamRefAttributes.subscriptionTimeout(5.seconds)))
+
+// configuring SinkRef.source:
+StreamRefs
+  .sinkRef()
+  .addAttributes(StreamRefAttributes.subscriptionTimeout(5.seconds))
+  .runWith(Sink.ignore) // not very interesting Sink, just an example</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/FlowStreamRefsDocTest.java#L154-L165" target="_blank" title="Go to snippet source">source</a><code class="language-java">FiniteDuration timeout = FiniteDuration.create(5, TimeUnit.SECONDS);
+Attributes timeoutAttributes = StreamRefAttributes.subscriptionTimeout(timeout);
+
+// configuring Sink.sourceRef (notice that we apply the attributes to the Sink!):
+Source.repeat(&quot;hello&quot;)
+    .runWith(StreamRefs.&lt;String&gt;sourceRef().addAttributes(timeoutAttributes), mat);
+
+// configuring SinkRef.source:
+StreamRefs.&lt;String&gt;sinkRef()
+    .addAttributes(timeoutAttributes)
+    .runWith(Sink.&lt;String&gt;ignore(), mat); // not very interesting sink, just an example
+</code></pre></dd>
+</dl>
+<h3><a href="#general-configuration" name="general-configuration" class="anchor"><span class="anchor-link"></span></a>General configuration</h3>
+<p>Other settings can be set globally in your <code>application.conf</code>, by overriding any of the following values in the <code>pekko.stream.materializer.stream-ref.*</code> keyspace:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/stream/src/main/resources/reference.conf#L129-L161" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># configure defaults for SourceRef and SinkRef
+stream-ref {
+  # Buffer of a SinkRef that is used to batch Request elements from the other side of the stream ref
+  #
+  # The buffer will be attempted to be filled eagerly even while the local stage did not request elements,
+  # because the delay of requesting over network boundaries is much higher.
+  buffer-capacity = 32
+
+  # Demand is signalled by sending a cumulative demand message (&quot;requesting messages until the n-th sequence number)
+  # Using a cumulative demand model allows us to re-deliver the demand message in case of message loss (which should
+  # be very rare in any case, yet possible -- mostly under connection break-down and re-establishment).
+  #
+  # The semantics of handling and updating the demand however are in-line with what Reactive Streams dictates.
+  #
+  # In normal operation, demand is signalled in response to arriving elements, however if no new elements arrive
+  # within `demand-redelivery-interval` a re-delivery of the demand will be triggered, assuming that it may have gotten lost.
+  demand-redelivery-interval = 1 second
+
+  # Subscription timeout, during which the &quot;remote side&quot; MUST subscribe (materialize) the handed out stream ref.
+  # This timeout does not have to be very low in normal situations, since the remote side may also need to
+  # prepare things before it is ready to materialize the reference. However the timeout is needed to avoid leaking
+  # in-active streams which are never subscribed to.
+  subscription-timeout = 30 seconds
+
+  # In order to guard the receiving end of a stream ref from never terminating (since awaiting a Completion or Failed
+  # message) after / before a Terminated is seen, a special timeout is applied once Terminated is received by it.
+  # This allows us to terminate stream refs that have been targeted to other nodes which are Downed, and as such the
+  # other side of the stream ref would never send the &quot;final&quot; terminal message.
+  #
+  # The timeout specifically means the time between the Terminated signal being received and when the local SourceRef
+  # determines to fail itself, assuming there was message loss or a complete partition of the completion signal.
+  final-termination-signal-deadline = 2 seconds
+}</code></pre>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/stream/stream-refs.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../stream/stream-io.html" title="Working with streaming IO" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Working with streaming IO
+</span>
+</div>
+</a>
+<a href="../stream/stream-parallelism.html" title="Pipelining and Parallelism" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Pipelining and Parallelism
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

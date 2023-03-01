@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic Cluster Sharding · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic Cluster Sharding
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="cluster-sharding.html#classic-cluster-sharding" class="header">Classic Cluster Sharding</a>
+  <ul>
+    <li><a href="cluster-sharding.html#module-info" class="header">Module info</a></li>
+    <li><a href="cluster-sharding.html#introduction" class="header">Introduction</a></li>
+    <li><a href="cluster-sharding.html#basic-example" class="header">Basic example</a></li>
+    <li><a href="cluster-sharding.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="cluster-sharding.html#sharding-state-store-mode" class="header">Sharding State Store Mode</a></li>
+    <li><a href="cluster-sharding.html#proxy-only-mode" class="header">Proxy Only Mode</a></li>
+    <li><a href="cluster-sharding.html#passivation" class="header">Passivation</a></li>
+    <li><a href="cluster-sharding.html#remembering-entities" class="header">Remembering Entities</a></li>
+    <li><a href="cluster-sharding.html#supervision" class="header">Supervision</a></li>
+    <li><a href="cluster-sharding.html#graceful-shutdown" class="header">Graceful Shutdown</a></li>
+    <li><a href="cluster-sharding.html#removal-of-internal-cluster-sharding-data" class="header">Removal of Internal Cluster Sharding Data</a></li>
+    <li><a href="cluster-sharding.html#inspecting-cluster-sharding-state" class="header">Inspecting cluster sharding state</a></li>
+    <li><a href="cluster-sharding.html#lease" class="header">Lease</a></li>
+    <li><a href="cluster-sharding.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="cluster-sharding.html#classic-cluster-sharding" class="header">Classic Cluster Sharding</a>
+  <ul>
+    <li><a href="cluster-sharding.html#module-info" class="header">Module info</a></li>
+    <li><a href="cluster-sharding.html#introduction" class="header">Introduction</a></li>
+    <li><a href="cluster-sharding.html#basic-example" class="header">Basic example</a></li>
+    <li><a href="cluster-sharding.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="cluster-sharding.html#sharding-state-store-mode" class="header">Sharding State Store Mode</a></li>
+    <li><a href="cluster-sharding.html#proxy-only-mode" class="header">Proxy Only Mode</a></li>
+    <li><a href="cluster-sharding.html#passivation" class="header">Passivation</a></li>
+    <li><a href="cluster-sharding.html#remembering-entities" class="header">Remembering Entities</a></li>
+    <li><a href="cluster-sharding.html#supervision" class="header">Supervision</a></li>
+    <li><a href="cluster-sharding.html#graceful-shutdown" class="header">Graceful Shutdown</a></li>
+    <li><a href="cluster-sharding.html#removal-of-internal-cluster-sharding-data" class="header">Removal of Internal Cluster Sharding Data</a></li>
+    <li><a href="cluster-sharding.html#inspecting-cluster-sharding-state" class="header">Inspecting cluster sharding state</a></li>
+    <li><a href="cluster-sharding.html#lease" class="header">Lease</a></li>
+    <li><a href="cluster-sharding.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-cluster-sharding" name="classic-cluster-sharding" class="anchor"><span class="anchor-link"></span></a>Classic Cluster Sharding</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the full documentation of this feature and for new projects see <a href="typed/cluster-sharding.html">Cluster Sharding</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Cluster Sharding, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-sharding" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-sharding_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-sharding_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster Sharding (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-sharding</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.sharding</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/sharding/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/sharding/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>For an introduction to Sharding concepts see <a href="typed/cluster-sharding.html">Cluster Sharding</a>.</p>
+
+<h2><a href="#basic-example" name="basic-example" class="anchor"><span class="anchor-link"></span></a>Basic example</h2>
+
+<p>This is what an entity actor may look like:</p>
+
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L39-L79" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case object Increment
+case object Decrement
+final case class Get(counterId: Long)
+final case class EntityEnvelope(id: Long, payload: Any)
+
+case object Stop
+final case class CounterChanged(delta: Int)
+
+class Counter extends PersistentActor {
+  import ShardRegion.Passivate
+
+  context.setReceiveTimeout(120.seconds)
+
+  // self.path.name is the entity identifier (utf-8 URL-encoded)
+  override def persistenceId: String = &quot;Counter-&quot; + self.path.name
+
+  var count = 0
+
+  def updateState(event: CounterChanged): Unit =
+    count += event.delta
+
+  override def receiveRecover: Receive = {
+    case evt: CounterChanged =&gt; updateState(evt)
+  }
+
+  override def receiveCommand: Receive = {
+    case Increment      =&gt; persist(CounterChanged(+1))(updateState)
+    case Decrement      =&gt; persist(CounterChanged(-1))(updateState)
+    case Get(_)         =&gt; sender() ! count
+    case ReceiveTimeout =&gt; context.parent ! Passivate(stopMessage = Stop)
+    case Stop           =&gt; context.stop(self)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L164-L246" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Counter extends AbstractPersistentActor {
+
+  public enum CounterOp {
+    INCREMENT,
+    DECREMENT
+  }
+
+  public static class Get {
+    public final long counterId;
+
+    public Get(long counterId) {
+      this.counterId = counterId;
+    }
+  }
+
+  public static class EntityEnvelope {
+    public final long id;
+    public final Object payload;
+
+    public EntityEnvelope(long id, Object payload) {
+      this.id = id;
+      this.payload = payload;
+    }
+  }
+
+  public static class CounterChanged {
+    public final int delta;
+
+    public CounterChanged(int delta) {
+      this.delta = delta;
+    }
+  }
+
+  int count = 0;
+
+  // getSelf().path().name() is the entity identifier (utf-8 URL-encoded)
+  @Override
+  public String persistenceId() {
+    return &quot;Counter-&quot; + getSelf().path().name();
+  }
+
+  @Override
+  public void preStart() throws Exception {
+    super.preStart();
+    getContext().setReceiveTimeout(Duration.ofSeconds(120));
+  }
+
+  void updateState(CounterChanged event) {
+    count += event.delta;
+  }
+
+  @Override
+  public Receive createReceiveRecover() {
+    return receiveBuilder().match(CounterChanged.class, this::updateState).build();
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(Get.class, this::receiveGet)
+        .matchEquals(CounterOp.INCREMENT, msg -&gt; receiveIncrement())
+        .matchEquals(CounterOp.DECREMENT, msg -&gt; receiveDecrement())
+        .matchEquals(ReceiveTimeout.getInstance(), msg -&gt; passivate())
+        .build();
+  }
+
+  private void receiveGet(Get msg) {
+    getSender().tell(count, getSelf());
+  }
+
+  private void receiveIncrement() {
+    persist(new CounterChanged(+1), this::updateState);
+  }
+
+  private void receiveDecrement() {
+    persist(new CounterChanged(-1), this::updateState);
+  }
+
+  private void passivate() {
+    getContext().getParent().tell(new ShardRegion.Passivate(PoisonPill.getInstance()), getSelf());
+  }
+}
+</code></pre></dd>
+</dl>
+<p>The above actor uses Event Sourcing and the support provided in <span class="group-scala"><code>PersistentActor</code></span> <span class="group-java"><code>AbstractPersistentActor</code></span> to store its state. It does not have to be a persistent actor, but in case of failure or migration of entities between nodes it must be able to recover its state if it is valuable.</p>
+<p>Note how the <code>persistenceId</code> is defined. The name of the actor is the entity identifier (utf-8 URL-encoded). You may define it another way, but it must be unique.</p>
+<p>When using the sharding extension you are first, typically at system startup on each node in the cluster, supposed to register the supported entity types with the <code>ClusterSharding.start</code> method. <code>ClusterSharding.start</code> gives you the reference which you can pass along. Please note that <code>ClusterSharding.start</code> will start a <code>ShardRegion</code> in <a href="cluster-sharding.html#proxy-only-mode">proxy only mode</a> when there is no match between the roles of the current cluster node and the role specified in <code>ClusterShardingSettings</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L687-L692" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val counterRegion: ActorRef = ClusterSharding(system).start(
+  typeName = &quot;Counter&quot;,
+  entityProps = Props[Counter](),
+  settings = ClusterShardingSettings(system),
+  extractEntityId = extractEntityId,
+  extractShardId = extractShardId)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L34-L93" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.japi.Option;
+import org.apache.pekko.cluster.sharding.ClusterSharding;
+import org.apache.pekko.cluster.sharding.ClusterShardingSettings;
+
+Option&lt;String&gt; roleOption = Option.none();
+ClusterShardingSettings settings = ClusterShardingSettings.create(system);
+ActorRef startedCounterRegion =
+    ClusterSharding.get(system)
+        .start(&quot;Counter&quot;, Props.create(Counter.class), settings, messageExtractor);</code></pre></dd>
+</dl>
+<p>The <span class="group-scala"><code>extractEntityId</code> and <code>extractShardId</code> are two</span> <span class="group-java"><code>messageExtractor</code> defines</span> application specific <span class="group-scala">functions</span> <span class="group-java">methods</span> to extract the entity identifier and the shard identifier from incoming messages.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L197-L211" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val extractEntityId: ShardRegion.ExtractEntityId = {
+  case EntityEnvelope(id, payload) =&gt; (id.toString, payload)
+  case msg @ Get(id)               =&gt; (id.toString, msg)
+}
+
+val numberOfShards = 100
+
+val extractShardId: ShardRegion.ExtractShardId = {
+  case EntityEnvelope(id, _)       =&gt; (id % numberOfShards).toString
+  case Get(id)                     =&gt; (id % numberOfShards).toString
+  case ShardRegion.StartEntity(id) =&gt;
+    // StartEntity is used by remembering entities feature
+    (id.toLong % numberOfShards).toString
+  case _ =&gt; throw new IllegalArgumentException()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L29-L85" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.sharding.ShardRegion;
+
+ShardRegion.MessageExtractor messageExtractor =
+    new ShardRegion.MessageExtractor() {
+
+      @Override
+      public String entityId(Object message) {
+        if (message instanceof Counter.EntityEnvelope)
+          return String.valueOf(((Counter.EntityEnvelope) message).id);
+        else if (message instanceof Counter.Get)
+          return String.valueOf(((Counter.Get) message).counterId);
+        else return null;
+      }
+
+      @Override
+      public Object entityMessage(Object message) {
+        if (message instanceof Counter.EntityEnvelope)
+          return ((Counter.EntityEnvelope) message).payload;
+        else return message;
+      }
+
+      @Override
+      public String shardId(Object message) {
+        int numberOfShards = 100;
+        if (message instanceof Counter.EntityEnvelope) {
+          long id = ((Counter.EntityEnvelope) message).id;
+          return String.valueOf(id % numberOfShards);
+        } else if (message instanceof Counter.Get) {
+          long id = ((Counter.Get) message).counterId;
+          return String.valueOf(id % numberOfShards);
+        } else {
+          return null;
+        }
+      }
+    };</code></pre></dd>
+</dl>
+<p>This example illustrates two different ways to define the entity identifier in the messages:</p>
+<ul>
+  <li>The <code>Get</code> message includes the identifier itself.</li>
+  <li>The <code>EntityEnvelope</code> holds the identifier, and the actual message that is sent to the entity actor is wrapped in the envelope.</li>
+</ul>
+<p>Note how these two messages types are handled in the <span class="group-scala"><code>extractEntityId</code> function</span> <span class="group-java"><code>entityId</code> and <code>entityMessage</code> methods</span> shown above. The message sent to the entity actor is <span class="group-scala">the second part of the tuple returned by the <code>extractEntityId</code></span> <span class="group-java">what <code>entityMessage</code> returns</span> and that makes it possible to unwrap envelopes if needed.</p>
+<p>A shard is a group of entities that will be managed together. The grouping is defined by the <code>extractShardId</code> function shown above. For a specific entity identifier the shard identifier must always be the same. Otherwise the entity actor might accidentally be started in several places at the same time.</p>
+<p>Creating a good sharding algorithm is an interesting challenge in itself. Try to produce a uniform distribution, i.e. same amount of entities in each shard. As a rule of thumb, the number of shards should be a factor ten greater than the planned maximum number of cluster nodes. Fewer shards than number of nodes will result in that some nodes will not host any shards. Too many shards will result in less efficient management of the shards, e.g. rebalancing overhead, and increased latency because the coordinator is involved in the routing of the first message for each shard. The sharding algorithm must be the same on all nodes in a running cluster. It can be changed after stopping all nodes in the cluster.</p>
+<p>A simple sharding algorithm that works fine in most cases is to take the absolute value of the <code>hashCode</code> of the entity identifier modulo number of shards. As a convenience this is provided by the <code>ShardRegion.HashCodeMessageExtractor</code>.</p>
+<p>Messages to the entities are always sent via the local <code>ShardRegion</code>. The <code>ShardRegion</code> actor reference for a named entity type is returned by <code>ClusterSharding.start</code> and it can also be retrieved with <code>ClusterSharding.shardRegion</code>. The <code>ShardRegion</code> will lookup the location of the shard for the entity if it does not already know its location. It will delegate the message to the right node and it will create the entity actor on demand, i.e. when the first message for a specific entity is delivered.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L715-L721" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val counterRegion: ActorRef = ClusterSharding(system).shardRegion(&quot;Counter&quot;)
+counterRegion ! Get(123)
+expectMsg(0)
+
+counterRegion ! EntityEnvelope(123, Increment)
+counterRegion ! Get(123)
+expectMsg(1)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L97-L101" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef counterRegion = ClusterSharding.get(system).shardRegion(&quot;Counter&quot;);
+counterRegion.tell(new Counter.Get(123), getSelf());
+
+counterRegion.tell(new Counter.EntityEnvelope(123, Counter.CounterOp.INCREMENT), getSelf());
+counterRegion.tell(new Counter.Get(123), getSelf());</code></pre></dd>
+</dl>
+<h2><a href="#how-it-works" name="how-it-works" class="anchor"><span class="anchor-link"></span></a>How it works</h2>
+<p>See <a href="typed/cluster-sharding-concepts.html">Cluster Sharding concepts</a> in the documentation of the new APIs.</p>
+<a id="cluster-sharding-mode"></a>
+<h2><a href="#sharding-state-store-mode" name="sharding-state-store-mode" class="anchor"><span class="anchor-link"></span></a>Sharding State Store Mode</h2>
+<p>There are two cluster sharding states managed:</p>
+<ol>
+  <li><a href="typed/cluster-sharding-concepts.html#shardcoordinator-state">ShardCoordinator State</a> - the <code>Shard</code> locations</li>
+  <li><a href="cluster-sharding.html#remembering-entities">Remembering Entities</a> - the entities in each <code>Shard</code>, which is optional, and disabled by default</li>
+</ol>
+<p>For these, there are currently two modes which define how these states are stored:</p>
+<ul>
+  <li><a href="cluster-sharding.html#distributed-data-mode">Distributed Data Mode</a> - uses Pekko <a href="distributed-data.html">Distributed Data</a> (CRDTs) (the default)</li>
+  <li><a href="cluster-sharding.html#persistence-mode">Persistence Mode</a> - (deprecated) uses Pekko <a href="persistence.html">Persistence</a> (Event Sourcing)</li>
+</ul><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Persistence for state store mode is deprecated. It is recommended to migrate to <code>ddata</code> for the coordinator state and if using replicated entities migrate to <code>eventsourced</code> for the replicated entities state.</p>
+<p>The data written by the deprecated <code>persistence</code> state store mode for remembered entities can be read by the new remember entities <code>eventsourced</code> mode.</p>
+<p>Once you&rsquo;ve migrated you can not go back to <code>persistence</code> mode.</p></div>
+<p>Changing the mode requires <a href="additional/rolling-updates.html#cluster-sharding-configuration-change">a full cluster restart</a>.</p>
+<h3><a href="#distributed-data-mode" name="distributed-data-mode" class="anchor"><span class="anchor-link"></span></a>Distributed Data Mode</h3>
+<p>The state of the <code>ShardCoordinator</code> is replicated across the cluster but is not durable, not stored to disk. The <code>ShardCoordinator</code> state replication is handled by <a href="distributed-data.html">Distributed Data</a> with <code>WriteMajority</code>/<code>ReadMajority</code> consistency. When all nodes in the cluster have been stopped, the state is no longer needed and dropped.</p>
+<p>See <a href="typed/cluster-sharding.html#distributed-data-mode">Distributed Data mode</a> in the documentation of the new APIs.</p>
+<h3><a href="#persistence-mode" name="persistence-mode" class="anchor"><span class="anchor-link"></span></a>Persistence Mode</h3>
+<p>See <a href="typed/cluster-sharding.html#persistence-mode">Persistence Mode</a> in the documentation of the new APIs.</p>
+<h2><a href="#proxy-only-mode" name="proxy-only-mode" class="anchor"><span class="anchor-link"></span></a>Proxy Only Mode</h2>
+<p>The <code>ShardRegion</code> actor can also be started in proxy only mode, i.e. it will not host any entities itself, but knows how to delegate messages to the right location. A <code>ShardRegion</code> is started in proxy only mode with the <code>ClusterSharding.startProxy</code> method. Also a <code>ShardRegion</code> is started in proxy only mode when there is no match between the roles of the current cluster node and the role specified in <code>ClusterShardingSettings</code> passed to the <code>ClusterSharding.start</code> method.</p>
+<h2><a href="#passivation" name="passivation" class="anchor"><span class="anchor-link"></span></a>Passivation</h2>
+<p>If the state of the entities are persistent you may stop entities that are not used to reduce memory consumption. This is done by the application specific implementation of the entity actors for example by defining receive timeout (<code>context.setReceiveTimeout</code>). If a message is already enqueued to the entity when it stops itself the enqueued message in the mailbox will be dropped. To support graceful passivation without losing such messages the entity actor can send <code>ShardRegion.Passivate</code> to its parent <code>Shard</code>. The specified wrapped message in <code>Passivate</code> will be sent back to the entity, which is then supposed to stop itself. Incoming messages will be buffered by the <code>Shard</code> between reception of <code>Passivate</code> and termination of the entity. Such buffered messages are thereafter delivered to a new incarnation of the entity.</p>
+<p>See <a href="typed/cluster-sharding.html#automatic-passivation">Automatic Passivation</a> in the documentation of the new APIs.</p>
+<a id="cluster-sharding-remembering"></a>
+<h2><a href="#remembering-entities" name="remembering-entities" class="anchor"><span class="anchor-link"></span></a>Remembering Entities</h2>
+<p>See <a href="typed/cluster-sharding.html#remembering-entities">Remembering Entities</a> in the documentation of the new APIs, including behavior when enabled and disabled.</p>
+<p>Note that the state of the entities themselves will not be restored unless they have been made persistent, for example with <a href="persistence.html">Event Sourcing</a>.</p>
+<p>To make the list of entities in each <code>Shard</code> persistent (durable), set the <code>rememberEntities</code> flag to true in <code>ClusterShardingSettings</code> when calling <code>ClusterSharding.start</code> and make sure the <code>shardIdExtractor</code> handles <code>Shard.StartEntity(EntityId)</code> which implies that a <code>ShardId</code> must be possible to extract from the <code>EntityId</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L216-L223" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val extractShardId: ShardRegion.ExtractShardId = {
+  case EntityEnvelope(id, _)       =&gt; (id % numberOfShards).toString
+  case Get(id)                     =&gt; (id % numberOfShards).toString
+  case ShardRegion.StartEntity(id) =&gt;
+    // StartEntity is used by remembering entities feature
+    (id.toLong % numberOfShards).toString
+  case _ =&gt; throw new IllegalArgumentException()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L142-L157" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public String shardId(Object message) {
+  int numberOfShards = 100;
+  if (message instanceof Counter.EntityEnvelope) {
+    long id = ((Counter.EntityEnvelope) message).id;
+    return String.valueOf(id % numberOfShards);
+  } else if (message instanceof Counter.Get) {
+    long id = ((Counter.Get) message).counterId;
+    return String.valueOf(id % numberOfShards);
+  } else if (message instanceof ShardRegion.StartEntity) {
+    long id = Long.valueOf(((ShardRegion.StartEntity) message).entityId());
+    return String.valueOf(id % numberOfShards);
+  } else {
+    return null;
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#supervision" name="supervision" class="anchor"><span class="anchor-link"></span></a>Supervision</h2>
+<p>If you need to use another <code>supervisorStrategy</code> for the entity actors than the default (restarting) strategy you need to create an intermediate parent actor that defines the <code>supervisorStrategy</code> to the child entity actor.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L106-L119" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class CounterSupervisor extends Actor {
+  val counter = context.actorOf(Props[Counter](), &quot;theCounter&quot;)
+
+  override val supervisorStrategy = OneForOneStrategy() {
+    case _: IllegalArgumentException     =&gt; SupervisorStrategy.Resume
+    case _: ActorInitializationException =&gt; SupervisorStrategy.Stop
+    case _: DeathPactException           =&gt; SupervisorStrategy.Stop
+    case _: Exception                    =&gt; SupervisorStrategy.Restart
+  }
+
+  def receive = {
+    case msg =&gt; counter.forward(msg)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L250-L274" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class CounterSupervisor extends AbstractActor {
+
+  private final ActorRef counter =
+      getContext().actorOf(Props.create(Counter.class), &quot;theCounter&quot;);
+
+  private static final SupervisorStrategy strategy =
+      new OneForOneStrategy(
+          DeciderBuilder.match(IllegalArgumentException.class, e -&gt; SupervisorStrategy.resume())
+              .match(ActorInitializationException.class, e -&gt; SupervisorStrategy.stop())
+              .match(Exception.class, e -&gt; SupervisorStrategy.restart())
+              .matchAny(o -&gt; SupervisorStrategy.escalate())
+              .build());
+
+  @Override
+  public SupervisorStrategy supervisorStrategy() {
+    return strategy;
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(Object.class, msg -&gt; counter.forward(msg, getContext()))
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>You start such a supervisor in the same way as if it was the entity actor.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding/src/multi-jvm/scala/org/apache/pekko/cluster/sharding/ClusterShardingSpec.scala#L704-L709" target="_blank" title="Go to snippet source">source</a><code class="language-scala">ClusterSharding(system).start(
+  typeName = &quot;SupervisedCounter&quot;,
+  entityProps = Props[CounterSupervisor](),
+  settings = ClusterShardingSettings(system),
+  extractEntityId = extractEntityId,
+  extractShardId = extractShardId)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/sharding/ClusterShardingTest.java#L105-L107" target="_blank" title="Go to snippet source">source</a><code class="language-java">ClusterSharding.get(system)
+    .start(
+        &quot;SupervisedCounter&quot;, Props.create(CounterSupervisor.class), settings, messageExtractor);</code></pre></dd>
+</dl>
+<p>Note that stopped entities will be started again when a new message is targeted to the entity.</p>
+<p>If &lsquo;on stop&rsquo; backoff supervision strategy is used, a final termination message must be set and used for passivation, see <a href="fault-tolerance.html#sharding">Backoff supervisor and sharding</a></p>
+<h2><a href="#graceful-shutdown" name="graceful-shutdown" class="anchor"><span class="anchor-link"></span></a>Graceful Shutdown</h2>
+<p>You can send the <span class="group-scala"><code>ShardRegion.GracefulShutdown</code></span> <span class="group-java"><code>ShardRegion.gracefulShutdownInstance</code></span> message to the <code>ShardRegion</code> actor to hand off all shards that are hosted by that <code>ShardRegion</code> and then the <code>ShardRegion</code> actor will be stopped. You can <code>watch</code> the <code>ShardRegion</code> actor to know when it is completed. During this period other regions will buffer messages for those shards in the same way as when a rebalance is triggered by the coordinator. When the shards have been stopped the coordinator will allocate these shards elsewhere.</p>
+<p>This is performed automatically by the <a href="coordinated-shutdown.html">Coordinated Shutdown</a> and is therefore part of the graceful leaving process of a cluster member.</p>
+<a id="removeinternalclustershardingdata"></a>
+<h2><a href="#removal-of-internal-cluster-sharding-data" name="removal-of-internal-cluster-sharding-data" class="anchor"><span class="anchor-link"></span></a>Removal of Internal Cluster Sharding Data</h2>
+<p>See <a href="typed/cluster-sharding.html#removal-of-internal-cluster-sharding-data">removal of Internal Cluster Sharding Data</a> in the documentation of the new APIs.</p>
+<h2><a href="#inspecting-cluster-sharding-state" name="inspecting-cluster-sharding-state" class="anchor"><span class="anchor-link"></span></a>Inspecting cluster sharding state</h2>
+<p>Two requests to inspect the cluster state are available:</p>
+<p><span class="group-scala"><code>ShardRegion.GetShardRegionState</code></span> <span class="group-java"><code>ShardRegion.getShardRegionStateInstance</code></span> which will return a <span class="group-scala"><code>ShardRegion.CurrentShardRegionState</code></span> <span class="group-java"><code>ShardRegion.ShardRegionState</code></span> that contains the identifiers of the shards running in a Region and what entities are alive for each of them. </p>
+<p><code>ShardRegion.GetClusterShardingStats</code> which will query all the regions in the cluster and return a <code>ShardRegion.ClusterShardingStats</code> containing the identifiers of the shards running in each region and a count of entities that are alive in each shard. </p>
+<p>If any shard queries failed, for example due to timeout if a shard was too busy to reply within the configured <code>pekko.cluster.sharding.shard-region-query-timeout</code>, <code>ShardRegion.CurrentShardRegionState</code> and <code>ShardRegion.ClusterShardingStats</code> will also include the set of shard identifiers by region that failed.</p>
+<p>The type names of all started shards can be acquired via <span class="group-scala"><code>ClusterSharding.shardTypeNames</code></span> <span class="group-java"><code>ClusterSharding.getShardTypeNames</code></span>.</p>
+<p>The purpose of these messages is testing and monitoring, they are not provided to give access to directly sending messages to the individual entities.</p>
+<h2><a href="#lease" name="lease" class="anchor"><span class="anchor-link"></span></a>Lease</h2>
+<p>A lease can be used as an additional safety measure to ensure a shard does not run on two nodes. See <a href="typed/cluster-sharding.html#lease">Lease</a> in the documentation of the new APIs.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p><code>ClusterShardingSettings</code> is a parameter to the <code>start</code> method of the <code>ClusterSharding</code> extension, i.e. each each entity type can be configured with different settings if needed.</p>
+<p>See <a href="typed/cluster-sharding.html#configuration">configuration</a> for more information.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/cluster-sharding.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="cluster-client.html" title="Classic Cluster Client" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Cluster Client
+</span>
+</div>
+</a>
+<a href="cluster-metrics.html" title="Classic Cluster Metrics Extension" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Cluster Metrics Extension
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

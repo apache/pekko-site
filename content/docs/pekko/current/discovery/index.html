@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Service discovery with Apache Pekko using DNS, Kubernetes, AWS, Consul or Marathon.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Service discovery with Apache Pekko using DNS, Kubernetes, AWS, Consul or Marathon.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Discovery · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Discovery
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html#discovery" class="active page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../discovery/index.html#discovery" class="header">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../discovery/index.html#discovery" class="header">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#discovery" name="discovery" class="anchor"><span class="anchor-link"></span></a>Discovery</h1>
+<p>The Pekko Discovery API enables <strong>service discovery</strong> to be provided by different technologies. It allows to delegate endpoint lookup so that services can be configured depending on the environment by other means than configuration files. </p>
+<p>Implementations provided by the Pekko Discovery module are </p>
+<ul>
+  <li><a href="index.html#discovery-method-configuration">Configuration</a> (HOCON)</li>
+  <li><a href="index.html#discovery-method-dns">DNS</a> (SRV records)</li>
+  <li><a href="index.html#discovery-method-aggregate-multiple-discovery-methods">Aggregate</a> multiple discovery methods</li>
+</ul>
+<p>In addition, the <a href="https://pekko.apache.org/docs/pekko-management/current/">Pekko Management</a> toolbox contains Pekko Discovery implementations for</p>
+<ul>
+  <li><a href="https://pekko.apache.org/docs/pekko-management/current/discovery/kubernetes.html">Kubernetes API</a></li>
+  <li><a href="https://pekko.apache.org/docs/pekko-management/current/discovery/aws.html#discovery-method-aws-api-ec2-tag-based-discovery">AWS API: EC2 Tag-Based Discovery</a></li>
+  <li><a href="https://pekko.apache.org/docs/pekko-management/current/discovery/aws.html#discovery-method-aws-api-ecs-discovery">AWS API: ECS Discovery</a></li>
+  <li><a href="https://pekko.apache.org/docs/pekko-management/current/discovery/consul.html">Consul</a></li>
+  <li><a href="https://pekko.apache.org/docs/pekko-management/current/discovery/marathon.html">Marathon API</a></li>
+</ul>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-discovery" % PekkoVersion</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-discovery_${versions.ScalaBinary}"
+}</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-discovery_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Discovery</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-discovery</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.discovery</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/discovery/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/discovery/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#how-it-works" name="how-it-works" class="anchor"><span class="anchor-link"></span></a>How it works</h2>
+
+<p>Loading the extension:</p>
+
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/scala/doc/org/apache/pekko/discovery/CompileOnlySpec.scala#L25-L28" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.discovery.Discovery
+
+val system = ActorSystem()
+val serviceDiscovery = Discovery(system).discovery</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/java/jdoc/org/apache/pekko/discovery/CompileOnlyTest.java#L27-L28" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorSystem as = ActorSystem.create();
+ServiceDiscovery serviceDiscovery = Discovery.get(as).discovery();</code></pre></dd>
+</dl>
+<p>A <code>Lookup</code> contains a mandatory <code>serviceName</code> and an optional <code>portName</code> and <code>protocol</code>. How these are interpreted is discovery method dependent e.g.DNS does an A/AAAA record query if any of the fields are missing and an SRV query for a full look up:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/scala/doc/org/apache/pekko/discovery/CompileOnlySpec.scala#L32-L36" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.discovery.Lookup
+
+serviceDiscovery.lookup(Lookup(&quot;pekko.io&quot;), 1.second)
+// Convenience for a Lookup with only a serviceName
+serviceDiscovery.lookup(&quot;pekko.io&quot;, 1.second)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/java/jdoc/org/apache/pekko/discovery/CompileOnlyTest.java#L32-L34" target="_blank" title="Go to snippet source">source</a><code class="language-java">serviceDiscovery.lookup(Lookup.create(&quot;pekko.io&quot;), Duration.ofSeconds(1));
+// convenience for a Lookup with only a serviceName
+serviceDiscovery.lookup(&quot;pekko.io&quot;, Duration.ofSeconds(1));</code></pre></dd>
+</dl>
+<p><code>portName</code> and <code>protocol</code> are optional and their meaning is interpreted by the method.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/scala/doc/org/apache/pekko/discovery/CompileOnlySpec.scala#L40-L45" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.discovery.Lookup
+import pekko.discovery.ServiceDiscovery.Resolved
+
+val lookup: Future[Resolved] =
+  serviceDiscovery.lookup(Lookup(&quot;pekko.io&quot;).withPortName(&quot;remoting&quot;).withProtocol(&quot;tcp&quot;), 1.second)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/discovery/src/test/java/jdoc/org/apache/pekko/discovery/CompileOnlyTest.java#L38-L41" target="_blank" title="Go to snippet source">source</a><code class="language-java">CompletionStage&lt;ServiceDiscovery.Resolved&gt; lookup =
+    serviceDiscovery.lookup(
+        Lookup.create(&quot;pekko.io&quot;).withPortName(&quot;remoting&quot;).withProtocol(&quot;tcp&quot;),
+        Duration.ofSeconds(1));</code></pre></dd>
+</dl>
+<p>Port can be used when a service opens multiple ports e.g. a HTTP port and a Pekko remoting port.</p>
+<h2><a href="#discovery-method-dns" name="discovery-method-dns" class="anchor"><span class="anchor-link"></span></a>Discovery Method: DNS</h2><div class="callout note "><div class="callout-title">Async DNS</div>
+<p>Pekko Discovery with DNS does always use the <a href="../io-dns.html">Pekko-native &ldquo;async-dns&rdquo; implementation</a> (it is independent of the <code>pekko.io.dns.resolver</code> setting).</p></div>
+<p>DNS discovery maps <code>Lookup</code> queries as follows:</p>
+<ul>
+  <li><code>serviceName</code>, <code>portName</code> and <code>protocol</code> set: SRV query in the form: <code>_port._protocol.name</code> Where the <code>_</code>s are added.</li>
+  <li>Any query missing any of the fields is mapped to a A/AAAA query for the <code>serviceName</code></li>
+</ul>
+<p>The mapping between Pekko service discovery terminology and SRV terminology:</p>
+<ul>
+  <li>SRV service = port</li>
+  <li>SRV name = serviceName</li>
+  <li>SRV protocol = protocol</li>
+</ul>
+<p>Configure <code>pekko-dns</code> to be used as the discovery implementation in your <code>application.conf</code>:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/discovery/DnsDiscoveryDocSpec.scala#L25-L29" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko {
+  discovery {
+    method = pekko-dns
+  }
+}</code></pre>
+<p>From there on, you can use the generic API that hides the fact which discovery method is being used by calling:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/discovery/DnsDiscoveryDocSpec.scala#L39-L45" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.discovery.Discovery
+import pekko.discovery.ServiceDiscovery
+
+val discovery: ServiceDiscovery = Discovery(system).discovery
+// ...
+val result: Future[ServiceDiscovery.Resolved] = discovery.lookup(&quot;pekko.io&quot;, resolveTimeout = 3.seconds)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/discovery/DnsDiscoveryDocTest.java#L18-L56" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.discovery.Discovery;
+import org.apache.pekko.discovery.ServiceDiscovery;
+
+ServiceDiscovery discovery = Discovery.get(system).discovery();
+// ...
+CompletionStage&lt;ServiceDiscovery.Resolved&gt; result =
+    discovery.lookup(&quot;foo&quot;, Duration.ofSeconds(3));</code></pre></dd>
+</dl>
+<h3><a href="#dns-records-used" name="dns-records-used" class="anchor"><span class="anchor-link"></span></a>DNS records used</h3>
+<p>DNS discovery will use either A/AAAA records or SRV records depending on whether a <code>Simple</code> or <code>Full</code> lookup is issued. The advantage of SRV records is that they can include a port.</p>
+<h4><a href="#srv-records" name="srv-records" class="anchor"><span class="anchor-link"></span></a>SRV records</h4>
+<p>Lookups with all the fields set become SRV queries. For example:</p>
+<pre><code>dig srv _service._tcp.pekko.test
+
+; &lt;&lt;&gt;&gt; DiG 9.11.3-RedHat-9.11.3-6.fc28 &lt;&lt;&gt;&gt; srv service.tcp.pekko.test
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 60023
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 1, ADDITIONAL: 5
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+; COOKIE: 5ab8dd4622e632f6190f54de5b28bb8fb1b930a5333c3862 (good)
+;; QUESTION SECTION:
+;service.tcp.pekko.test.         IN      SRV
+
+;; ANSWER SECTION:
+_service._tcp.pekko.test.  86400   IN      SRV     10 60 5060 a-single.pekko.test.
+_service._tcp.pekko.test.  86400   IN      SRV     10 40 5070 a-double.pekko.test.
+
+</code></pre>
+<p>In this case <code>service.tcp.pekko.test</code> resolves to <code>a-single.pekko.test</code> on port <code>5060</code> and <code>a-double.pekko.test</code> on port <code>5070</code>. Currently discovery does not support the weightings.</p>
+<h4><a href="#a-aaaa-records" name="a-aaaa-records" class="anchor"><span class="anchor-link"></span></a>A/AAAA records</h4>
+<p>Lookups with any fields missing become A/AAAA record queries. For example:</p>
+<pre><code>dig a-double.pekko.test
+
+; &lt;&lt;&gt;&gt; DiG 9.11.3-RedHat-9.11.3-6.fc28 &lt;&lt;&gt;&gt; a-double.pekko.test
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 11983
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+; COOKIE: 16e9815d9ca2514d2f3879265b28bad05ff7b4a82721edd0 (good)
+;; QUESTION SECTION:
+;a-double.pekko.test.            IN      A
+
+;; ANSWER SECTION:
+a-double.pekko.test.     86400   IN      A       192.168.1.21
+a-double.pekko.test.     86400   IN      A       192.168.1.22
+
+</code></pre>
+<p>In this case <code>a-double.pekko.test</code> would resolve to <code>192.168.1.21</code> and <code>192.168.1.22</code>.</p>
+<h2><a href="#discovery-method-configuration" name="discovery-method-configuration" class="anchor"><span class="anchor-link"></span></a>Discovery Method: Configuration</h2>
+<p>Configuration currently ignores all fields apart from service name.</p>
+<p>For simple use cases configuration can be used for service discovery. The advantage of using Pekko Discovery with configuration rather than your own configuration values is that applications can be migrated to a more sophisticated discovery method without any code changes.</p>
+<p>Configure it to be used as discovery method in your <code>application.conf</code></p>
+<pre><code>pekko {
+  discovery.method = config
+}
+</code></pre>
+<p>By default the services discoverable are defined in <code>pekko.discovery.config.services</code> and have the following format:</p>
+<pre><code>pekko.discovery.config.services = {
+  service1 = {
+    endpoints = [
+      {
+        host = &quot;cat&quot;
+        port = 1233
+      },
+      {
+        host = &quot;dog&quot;
+        port = 1234
+      }
+    ]
+  },
+  service2 = {
+    endpoints = []
+  }
+}
+</code></pre>
+<p>Where the above block defines two services, <code>service1</code> and <code>service2</code>. Each service can have multiple endpoints.</p>
+<h2><a href="#discovery-method-aggregate-multiple-discovery-methods" name="discovery-method-aggregate-multiple-discovery-methods" class="anchor"><span class="anchor-link"></span></a>Discovery Method: Aggregate multiple discovery methods</h2>
+<p>Aggregate discovery allows multiple discovery methods to be aggregated e.g. try and resolve via DNS and fall back to configuration.</p>
+<p>To use aggregate discovery add its dependency as well as all of the discovery that you want to aggregate.</p>
+<p>Configure <code>aggregate</code> as <code>pekko.discovery.method</code> and which discovery methods are tried and in which order.</p>
+<pre><code>pekko {
+  discovery {
+    method = aggregate
+    aggregate {
+      discovery-methods = [&quot;pekko-dns&quot;, &quot;config&quot;]
+    }
+    config {
+      services {
+        service1 {
+          endpoints = [
+            {
+              host = &quot;host1&quot;
+              port = 1233
+            },
+            {
+              host = &quot;host2&quot;
+              port = 1234
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+</code></pre>
+<p>The above configuration will result in <code>pekko-dns</code> first being checked and if it fails or returns no targets for the given service name then <code>config</code> is queried which i configured with one service called <code>service1</code> which two hosts <code>host1</code> and <code>host2</code>.</p>
+<h2><a href="#migrating-from-pekko-management-discovery-before-1-0-0-" name="migrating-from-pekko-management-discovery-before-1-0-0-" class="anchor"><span class="anchor-link"></span></a>Migrating from Pekko Management Discovery (before 1.0.0)</h2>
+<p>Pekko Discovery started out as a submodule of Pekko Management, before 1.0.0 of Pekko Management. Pekko Discovery is not compatible with those versions of Pekko Management Discovery.</p>
+<p>At least version <code>1.0.0</code> of any Pekko Management module should be used if also using Pekko Discovery.</p>
+<p>Migration steps:</p>
+<ul>
+  <li>Any custom discovery method should now implement <code>org.apache.pekko.discovery.ServiceDiscovery</code></li>
+  <li><code>discovery-method</code> now has to be a configuration location under <code>pekko.discovery</code> with at minimum a property <code>class</code> specifying the fully qualified name of the implementation of <code>org.apache.pekko.discovery.ServiceDiscovery</code>.  Previous versions allowed this to be a class name or a fully qualified config location e.g. <code>pekko.discovery.kubernetes-api</code> rather than just <code>kubernetes-api</code></li>
+</ul>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/discovery/index.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../stream/operators/Source/zipWithN.html" title="Source.zipWithN" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Source.zipWithN
+</span>
+</div>
+</a>
+<a href="../index-utilities.html" title="Utilities" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Utilities
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

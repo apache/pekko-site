@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Cluster Singleton · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Cluster Singleton
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html#cluster-singleton" class="active page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/cluster-singleton.html#cluster-singleton" class="header">Cluster Singleton</a>
+  <ul>
+    <li><a href="../typed/cluster-singleton.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/cluster-singleton.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/cluster-singleton.html#potential-problems-to-be-aware-of" class="header">Potential problems to be aware of</a></li>
+    <li><a href="../typed/cluster-singleton.html#example" class="header">Example</a></li>
+    <li><a href="../typed/cluster-singleton.html#supervision" class="header">Supervision</a></li>
+    <li><a href="../typed/cluster-singleton.html#application-specific-stop-message" class="header">Application specific stop message</a></li>
+    <li><a href="../typed/cluster-singleton.html#lease" class="header">Lease</a></li>
+    <li><a href="../typed/cluster-singleton.html#accessing-singleton-of-another-data-centre" class="header">Accessing singleton of another data centre</a></li>
+    <li><a href="../typed/cluster-singleton.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/cluster-singleton.html#cluster-singleton" class="header">Cluster Singleton</a>
+  <ul>
+    <li><a href="../typed/cluster-singleton.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/cluster-singleton.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/cluster-singleton.html#potential-problems-to-be-aware-of" class="header">Potential problems to be aware of</a></li>
+    <li><a href="../typed/cluster-singleton.html#example" class="header">Example</a></li>
+    <li><a href="../typed/cluster-singleton.html#supervision" class="header">Supervision</a></li>
+    <li><a href="../typed/cluster-singleton.html#application-specific-stop-message" class="header">Application specific stop message</a></li>
+    <li><a href="../typed/cluster-singleton.html#lease" class="header">Lease</a></li>
+    <li><a href="../typed/cluster-singleton.html#accessing-singleton-of-another-data-centre" class="header">Accessing singleton of another data centre</a></li>
+    <li><a href="../typed/cluster-singleton.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#cluster-singleton" name="cluster-singleton" class="anchor"><span class="anchor-link"></span></a>Cluster Singleton</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../cluster-singleton.html">Classic Cluster Singleton</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Cluster Singleton, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster (typed)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-typed</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.typed</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/typed/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/typed/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>For some use cases it is convenient and sometimes also mandatory to ensure that you have exactly one actor of a certain type running somewhere in the cluster.</p>
+
+<p>Some examples:</p>
+
+<ul>
+  <li>single point of responsibility for certain cluster-wide consistent decisions, or coordination of actions across the cluster system</li>
+  <li>single entry point to an external system</li>
+  <li>single master, many workers</li>
+  <li>centralized naming service, or routing logic</li>
+</ul>
+<p>Using a singleton should not be the first design choice. It has several drawbacks, such as single-point of bottleneck. Single-point of failure is also a relevant concern, but for some cases this feature takes care of that by making sure that another singleton instance will eventually be started.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Make sure to not use a Cluster downing strategy that may split the cluster into several separate clusters in case of network problems or system overload (long GC pauses), since that will result in in <em>multiple Singletons</em> being started, one in each separate cluster! See <a href="cluster.html#downing">Downing</a>.</p></div>
+<h3><a href="#singleton-manager" name="singleton-manager" class="anchor"><span class="anchor-link"></span></a>Singleton manager</h3>
+<p>The cluster singleton pattern manages one singleton actor instance among all cluster nodes or a group of nodes tagged with a specific role. The singleton manager is an actor that is supposed to be started with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init[M](singleton:org.apache.pekko.cluster.typed.SingletonActor[M]):org.apache.pekko.actor.typed.ActorRef[M]" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init(org.apache.pekko.cluster.typed.SingletonActor)" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span> as early as possible on all nodes, or all nodes with specified role, in the cluster. </p>
+<p>The actual singleton actor is</p>
+<ul>
+  <li>Started on the oldest node by creating a child actor from supplied <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span>. It makes sure that at most one singleton instance is running at any point in time.</li>
+  <li>Always running on the oldest member with specified role.</li>
+</ul>
+<p>The oldest member is determined by <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/Member.html#isOlderThan(other:org.apache.pekko.cluster.Member):Boolean" title="org.apache.pekko.cluster.Member"><code>cluster.Member#isOlderThan</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/Member.html#isOlderThan(org.apache.pekko.cluster.Member)" title="org.apache.pekko.cluster.Member"><code>cluster.Member#isOlderThan</code></a></span> This can change when removing that member from the cluster. Be aware that there is a short time period when there is no active singleton during the hand-over process.</p>
+<p>When the oldest node is <a href="cluster.html#leaving">Leaving</a> the cluster there is an exchange from the oldest and the new oldest before a new singleton is started up.</p>
+<p>The cluster <a href="cluster.html#failure-detector">failure detector</a> will notice when oldest node becomes unreachable due to things like JVM crash, hard shut down, or network failure. After <a href="cluster.html#downing">Downing</a> and removing that node the a new oldest node will take over and a new singleton actor is created. For these failure scenarios there will not be a graceful hand-over, but more than one active singletons is prevented by all reasonable means. Some corner cases are eventually resolved by configurable timeouts. Additional safety can be added by using a <a href="cluster-singleton.html#lease">Lease</a>. </p>
+<h3><a href="#singleton-proxy" name="singleton-proxy" class="anchor"><span class="anchor-link"></span></a>Singleton proxy</h3>
+<p>To communicate with a given named singleton in the cluster you can access it though a proxy <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>. When calling <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init[M](singleton:org.apache.pekko.cluster.typed.SingletonActor[M]):org.apache.pekko.actor.typed.ActorRef[M]" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init(org.apache.pekko.cluster.typed.SingletonActor)" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span> for a given <code>singletonName</code> on a node an <code>ActorRef</code> is returned. It is to this <code>ActorRef</code> that you can send messages to the singleton instance, independent of which node the singleton instance is active. <code>ClusterSingleton.init</code> can be called multiple times, if there already is a singleton manager running on this node, no additional manager is started, and if there is one running an <code>ActorRef</code> to the proxy is returned.</p>
+<p>The proxy will route all messages to the current instance of the singleton, and keep track of the oldest node in the cluster and discover the singleton&rsquo;s <code>ActorRef</code>. There might be periods of time during which the singleton is unavailable, e.g., when a node leaves the cluster. In these cases, the proxy will buffer the messages sent to the singleton and then deliver them when the singleton is finally available. If the buffer is full the proxy will drop old messages when new messages are sent via the proxy. The size of the buffer is configurable and it can be disabled by using a buffer size of 0.</p>
+<p>It&rsquo;s worth noting that messages can always be lost because of the distributed nature of these actors. As always, additional logic should be implemented in the singleton (acknowledgement) and in the client (retry) actors to ensure at-least-once message delivery.</p>
+<p>The singleton instance will not run on members with status <a href="cluster-membership.html#weaklyup-members">WeaklyUp</a>.</p>
+<h2><a href="#potential-problems-to-be-aware-of" name="potential-problems-to-be-aware-of" class="anchor"><span class="anchor-link"></span></a>Potential problems to be aware of</h2>
+<p>This pattern may seem to be very tempting to use at first, but it has several drawbacks, some of them are listed below:</p>
+<ul>
+  <li>The cluster singleton may quickly become a <em>performance bottleneck</em>.</li>
+  <li>You can not rely on the cluster singleton to be <em>non-stop</em> available — e.g. when the node on which the singleton  has been running dies, it will take a few seconds for this to be noticed and the singleton be migrated to another node.</li>
+  <li>If many singletons are used be aware of that all will run on the oldest node (or oldest with configured role).  <a href="cluster-sharding.html">Cluster Sharding</a> combined with keeping the &ldquo;singleton&rdquo; entities alive can be a better  alternative.</li>
+</ul><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Make sure to not use a Cluster downing strategy that may split the cluster into several separate clusters in case of network problems or system overload (long GC pauses), since that will result in in <em>multiple Singletons</em> being started, one in each separate cluster! See <a href="cluster.html#downing">Downing</a>.</p></div>
+<h2><a href="#example" name="example" class="anchor"><span class="anchor-link"></span></a>Example</h2>
+<p>Any <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> can be run as a singleton. E.g. a basic counter:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/typed/SingletonCompileOnlySpec.scala#L28-L50" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Counter {
+  sealed trait Command
+  case object Increment extends Command
+  final case class GetValue(replyTo: ActorRef[Int]) extends Command
+  case object GoodByeCounter extends Command
+
+  def apply(): Behavior[Command] = {
+    def updated(value: Int): Behavior[Command] = {
+      Behaviors.receiveMessage[Command] {
+        case Increment =&gt;
+          updated(value + 1)
+        case GetValue(replyTo) =&gt;
+          replyTo ! value
+          Behaviors.same
+        case GoodByeCounter =&gt;
+          // Possible async action then stop
+          Behaviors.stopped
+      }
+    }
+
+    updated(0)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/typed/SingletonCompileOnlyTest.java#L34-L87" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Counter extends AbstractBehavior&lt;Counter.Command&gt; {
+
+  public interface Command {}
+
+  public enum Increment implements Command {
+    INSTANCE
+  }
+
+  public static class GetValue implements Command {
+    private final ActorRef&lt;Integer&gt; replyTo;
+
+    public GetValue(ActorRef&lt;Integer&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public enum GoodByeCounter implements Command {
+    INSTANCE
+  }
+
+  public static Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(Counter::new);
+  }
+
+  private int value = 0;
+
+  private Counter(ActorContext&lt;Command&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Increment.class, msg -&gt; onIncrement())
+        .onMessage(GetValue.class, this::onGetValue)
+        .onMessage(GoodByeCounter.class, msg -&gt; onGoodByCounter())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onIncrement() {
+    value++;
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGetValue(GetValue msg) {
+    msg.replyTo.tell(value);
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGoodByCounter() {
+    // Possible async action then stop
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>Then on every node in the cluster, or every node with a given role, use the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton$.html" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton$.html" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton</code></a></span> extension to spawn the singleton. An instance will per data centre of the cluster:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/typed/SingletonCompileOnlySpec.scala#L54-L63" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.typed.ClusterSingleton
+import pekko.cluster.typed.SingletonActor
+
+val singletonManager = ClusterSingleton(system)
+// Start if needed and provide a proxy to a named singleton
+val proxy: ActorRef[Counter.Command] = singletonManager.init(
+  SingletonActor(Behaviors.supervise(Counter()).onFailure[Exception](SupervisorStrategy.restart), &quot;GlobalCounter&quot;))
+
+proxy ! Counter.Increment</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/typed/SingletonCompileOnlyTest.java#L25-L28" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.cluster.typed.ClusterSingleton;
+import org.apache.pekko.cluster.typed.ClusterSingletonSettings;
+import org.apache.pekko.cluster.typed.SingletonActor;
+
+ClusterSingleton singleton = ClusterSingleton.get(system);
+// Start if needed and provide a proxy to a named singleton
+ActorRef&lt;Counter.Command&gt; proxy =
+    singleton.init(SingletonActor.of(Counter.create(), &quot;GlobalCounter&quot;));
+
+proxy.tell(Counter.Increment.INSTANCE);</code></pre></dd>
+</dl>
+<h2><a href="#supervision" name="supervision" class="anchor"><span class="anchor-link"></span></a>Supervision</h2>
+<p>The default <a href="fault-tolerance.html">supervision strategy</a> when an exception is thrown is for an actor to be stopped. The above example overrides this to <code>restart</code> to ensure it is always running. Another option would be to restart with a backoff: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/typed/SingletonCompileOnlySpec.scala#L72-L77" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val proxyBackOff: ActorRef[Counter.Command] = singletonManager.init(
+  SingletonActor(
+    Behaviors
+      .supervise(Counter())
+      .onFailure[Exception](SupervisorStrategy.restartWithBackoff(1.second, 10.seconds, 0.2)),
+    &quot;GlobalCounter&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/typed/SingletonCompileOnlyTest.java#L118-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java">ClusterSingleton singleton = ClusterSingleton.get(system);
+ActorRef&lt;Counter.Command&gt; proxy =
+    singleton.init(
+        SingletonActor.of(
+            Behaviors.supervise(Counter.create())
+                .onFailure(
+                    SupervisorStrategy.restartWithBackoff(
+                        Duration.ofSeconds(1), Duration.ofSeconds(10), 0.2)),
+            &quot;GlobalCounter&quot;));</code></pre></dd>
+</dl>
+<p>Be aware that this means there will be times when the singleton won&rsquo;t be running as restart is delayed. See <a href="fault-tolerance.html">Fault Tolerance</a> for a full list of supervision options.</p>
+<h2><a href="#application-specific-stop-message" name="application-specific-stop-message" class="anchor"><span class="anchor-link"></span></a>Application specific stop message</h2>
+<p>An application specific <code>stopMessage</code> can be used to close the resources before actually stopping the singleton actor. This <code>stopMessage</code> is sent to the singleton actor to tell it to finish its work, close resources, and stop. The hand-over to the new oldest node is completed when the singleton actor is terminated. If the shutdown logic does not include any asynchronous actions it can be executed in the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/PostStop$.html" title="org.apache.pekko.actor.typed.PostStop"><code>PostStop</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/PostStop$.html" title="org.apache.pekko.actor.typed.PostStop"><code>PostStop</code></a></span> signal handler.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/typed/SingletonCompileOnlySpec.scala#L67-L68" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val singletonActor = SingletonActor(Counter(), &quot;GlobalCounter&quot;).withStopMessage(Counter.GoodByeCounter)
+singletonManager.init(singletonActor)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/typed/SingletonCompileOnlyTest.java#L108-L111" target="_blank" title="Go to snippet source">source</a><code class="language-java">SingletonActor&lt;Counter.Command&gt; counterSingleton =
+    SingletonActor.of(Counter.create(), &quot;GlobalCounter&quot;)
+        .withStopMessage(Counter.GoodByeCounter.INSTANCE);
+ActorRef&lt;Counter.Command&gt; proxy = singleton.init(counterSingleton);</code></pre></dd>
+</dl>
+<h2><a href="#lease" name="lease" class="anchor"><span class="anchor-link"></span></a>Lease</h2>
+<p>A <a href="../coordination.html">lease</a> can be used as an additional safety measure to ensure that two singletons don&rsquo;t run at the same time. Reasons for how this can happen:</p>
+<ul>
+  <li>Network partitions without an appropriate downing provider</li>
+  <li>Mistakes in the deployment process leading to two separate Pekko Clusters</li>
+  <li>Timing issues between removing members from the Cluster on one side of a network partition and shutting them down on the other side</li>
+</ul>
+<p>A lease can be a final backup that means that the singleton actor won&rsquo;t be created unless the lease can be acquired. </p>
+<p>To use a lease for singleton set <code>pekko.cluster.singleton.use-lease</code> to the configuration location of the lease to use. A lease with with the name <code>&lt;actor system name&gt;-singleton-&lt;singleton actor path&gt;</code> is used and the owner is set to the <span class="group-scala"><code>Cluster(system).selfAddress.hostPort</code></span><span class="group-java"><code>Cluster.get(system).selfAddress().hostPort()</code></span>.</p>
+<p>If the cluster singleton manager can&rsquo;t acquire the lease it will keep retrying while it is the oldest node in the cluster. If the lease is lost then the singleton actor will be terminated then the lease will be re-tried.</p>
+<h2><a href="#accessing-singleton-of-another-data-centre" name="accessing-singleton-of-another-data-centre" class="anchor"><span class="anchor-link"></span></a>Accessing singleton of another data centre</h2>
+<p>TODO <a href="https://github.com/apache/incubator-pekko/issues/27705">#27705</a></p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>The following configuration properties are read by the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonManagerSettings.html" title="org.apache.pekko.cluster.singleton.ClusterSingletonManagerSettings"><code>ClusterSingletonManagerSettings</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonManagerSettings.html" title="org.apache.pekko.cluster.singleton.ClusterSingletonManagerSettings"><code>ClusterSingletonManagerSettings</code></a></span> when created with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> parameter. It is also possible to amend the <code>ClusterSingletonManagerSettings</code> or create it from another config section with the same layout as below. <code>ClusterSingletonManagerSettings</code> is a parameter to the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonManager$.html#props(singletonProps:org.apache.pekko.actor.Props,terminationMessage:Any,settings:org.apache.pekko.cluster.singleton.ClusterSingletonManagerSettings):org.apache.pekko.actor.Props" title="org.apache.pekko.cluster.singleton.ClusterSingletonManager"><code>ClusterSingletonManager.props</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonManager$.html#props(org.apache.pekko.actor.Props,java.lang.Object,org.apache.pekko.cluster.singleton.ClusterSingletonManagerSettings)" title="org.apache.pekko.cluster.singleton.ClusterSingletonManager"><code>ClusterSingletonManager.props</code></a></span> factory method, i.e. each singleton can be configured with different settings if needed.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/main/resources/reference.conf#L156-L192" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.singleton {
+  # The actor name of the child singleton actor.
+  singleton-name = &quot;singleton&quot;
+  
+  # Singleton among the nodes tagged with specified role.
+  # If the role is not specified it&#39;s a singleton among all nodes in the cluster.
+  role = &quot;&quot;
+  
+  # When a node is becoming oldest it sends hand-over request to previous oldest, 
+  # that might be leaving the cluster. This is retried with this interval until 
+  # the previous oldest confirms that the hand over has started or the previous 
+  # oldest member is removed from the cluster (+ pekko.cluster.down-removal-margin).
+  hand-over-retry-interval = 1s
+  
+  # The number of retries are derived from hand-over-retry-interval and
+  # pekko.cluster.down-removal-margin (or ClusterSingletonManagerSettings.removalMargin),
+  # but it will never be less than this property.
+  # After the hand over retries and it&#39;s still not able to exchange the hand over messages
+  # with the previous oldest it will restart itself by throwing ClusterSingletonManagerIsStuck,
+  # to start from a clean state. After that it will still not start the singleton instance
+  # until the previous oldest node has been removed from the cluster.
+  # On the other side, on the previous oldest node, the same number of retries - 3 are used
+  # and after that the singleton instance is stopped.
+  # For large clusters it might be necessary to increase this to avoid too early timeouts while
+  # gossip dissemination of the Leaving to Exiting phase occurs. For normal leaving scenarios
+  # it will not be a quicker hand over by reducing this value, but in extreme failure scenarios
+  # the recovery might be faster.
+  min-number-of-hand-over-retries = 15
+
+  # Config path of the lease to be taken before creating the singleton actor
+  # if the lease is lost then the actor is restarted and it will need to re-acquire the lease
+  # the default is no lease
+  use-lease = &quot;&quot;
+
+  # The interval between retries for acquiring the lease
+  lease-retry-interval = 5s
+}</code></pre>
+<p>The following configuration properties are read by the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingletonSettings.html" title="org.apache.pekko.cluster.typed.ClusterSingletonSettings"><code>ClusterSingletonSettings</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingletonSettings.html" title="org.apache.pekko.cluster.typed.ClusterSingletonSettings"><code>ClusterSingletonSettings</code></a></span> when created with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> parameter. <code>ClusterSingletonSettings</code> is an optional parameter in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init[M](singleton:org.apache.pekko.cluster.typed.SingletonActor[M]):org.apache.pekko.actor.typed.ActorRef[M]" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/typed/ClusterSingleton.html#init(org.apache.pekko.cluster.typed.SingletonActor)" title="org.apache.pekko.cluster.typed.ClusterSingleton"><code>ClusterSingleton.init</code></a></span>. It is also possible to amend the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonProxySettings.html" title="org.apache.pekko.cluster.singleton.ClusterSingletonProxySettings"><code>ClusterSingletonProxySettings</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/singleton/ClusterSingletonProxySettings.html" title="org.apache.pekko.cluster.singleton.ClusterSingletonProxySettings"><code>ClusterSingletonProxySettings</code></a></span> or create it from another config section with the same layout as below.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/main/resources/reference.conf#L196-L217" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.singleton-proxy {
+  # The actor name of the singleton actor that is started by the ClusterSingletonManager
+  singleton-name = ${pekko.cluster.singleton.singleton-name}
+  
+  # The role of the cluster nodes where the singleton can be deployed.
+  # Corresponding to the role used by the `ClusterSingletonManager`. If the role is not
+  # specified it&#39;s a singleton among all nodes in the cluster, and the `ClusterSingletonManager`
+  # must then also be configured in same way.
+  role = &quot;&quot;
+  
+  # Interval at which the proxy will try to resolve the singleton instance.
+  singleton-identification-interval = 1s
+  
+  # If the location of the singleton is unknown the proxy will buffer this
+  # number of messages and deliver them when the singleton is identified. 
+  # When the buffer is full old messages will be dropped when new messages are
+  # sent via the proxy.
+  # Use 0 to disable buffering, i.e. messages will be dropped immediately if
+  # the location of the singleton is unknown.
+  # Maximum allowed buffer size is 10000.
+  buffer-size = 1000 
+}</code></pre>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/cluster-singleton.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/distributed-data.html" title="Distributed Data" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Distributed Data
+</span>
+</div>
+</a>
+<a href="../typed/cluster-sharding.html" title="Cluster Sharding" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Cluster Sharding
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

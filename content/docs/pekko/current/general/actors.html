@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="What is an Actor and sending messages between independent units of computation in Apache Pekko.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="What is an Actor and sending messages between independent units of computation in Apache Pekko.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>What is an Actor? · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+What is an Actor?
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html#what-is-an-actor-" class="active page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../general/actors.html#what-is-an-actor-" class="header">What is an Actor?</a>
+  <ul>
+    <li><a href="../general/actors.html#actor-reference" class="header">Actor Reference</a></li>
+    <li><a href="../general/actors.html#state" class="header">State</a></li>
+    <li><a href="../general/actors.html#behavior" class="header">Behavior</a></li>
+    <li><a href="../general/actors.html#mailbox" class="header">Mailbox</a></li>
+    <li><a href="../general/actors.html#child-actors" class="header">Child Actors</a></li>
+    <li><a href="../general/actors.html#supervisor-strategy" class="header">Supervisor Strategy</a></li>
+    <li><a href="../general/actors.html#when-an-actor-terminates" class="header">When an Actor Terminates</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../general/actors.html#what-is-an-actor-" class="header">What is an Actor?</a>
+  <ul>
+    <li><a href="../general/actors.html#actor-reference" class="header">Actor Reference</a></li>
+    <li><a href="../general/actors.html#state" class="header">State</a></li>
+    <li><a href="../general/actors.html#behavior" class="header">Behavior</a></li>
+    <li><a href="../general/actors.html#mailbox" class="header">Mailbox</a></li>
+    <li><a href="../general/actors.html#child-actors" class="header">Child Actors</a></li>
+    <li><a href="../general/actors.html#supervisor-strategy" class="header">Supervisor Strategy</a></li>
+    <li><a href="../general/actors.html#when-an-actor-terminates" class="header">When an Actor Terminates</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#what-is-an-actor-" name="what-is-an-actor-" class="anchor"><span class="anchor-link"></span></a>What is an Actor?</h1>
+<p>The previous section about <a href="actor-systems.html">Actor Systems</a> explained how actors form hierarchies and are the smallest unit when building an application. This section looks at one such actor in isolation, explaining the concepts you encounter while implementing it. For a more in depth reference with all the details, please refer to <a href="../typed/actors.html">Introduction to Actors</a>.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a> as defined by Hewitt, Bishop and Steiger in 1973 is a computational model that expresses exactly what it means for computation to be distributed. The processing units—Actors—can only communicate by exchanging messages and upon reception of a message an Actor can do the following three fundamental actions:</p>
+<ol>
+  <li>send a finite number of messages to Actors it knows</li>
+  <li>create a finite number of new Actors</li>
+  <li>designate the behavior to be applied to the next message</li>
+</ol>
+<p>An actor is a container for <a href="actors.html#state">State</a>, <a href="actors.html#behavior">Behavior</a>, a <a href="actors.html#mailbox">Mailbox</a>, <a href="actors.html#child-actors">Child Actors</a> and a <a href="actors.html#supervisor-strategy">Supervisor Strategy</a>. All of this is encapsulated behind an <a href="actors.html#actor-reference">Actor Reference</a>. One noteworthy aspect is that actors have an explicit lifecycle, they are not automatically destroyed when no longer referenced; after having created one, it is your responsibility to make sure that it will eventually be terminated as well—which also gives you control over how resources are released <a href="actors.html#when-an-actor-terminates">When an Actor Terminates</a>.</p>
+<h2><a href="#actor-reference" name="actor-reference" class="anchor"><span class="anchor-link"></span></a>Actor Reference</h2>
+<p>As detailed below, an actor object needs to be shielded from the outside in order to benefit from the actor model. Therefore, actors are represented to the outside using actor references, which are objects that can be passed around freely and without restriction. This split into inner and outer object enables transparency for all the desired operations: restarting an actor without needing to update references elsewhere, placing the actual actor object on remote hosts, sending messages to actors independent of where they are running. But the most important aspect is that it is not possible to look inside an actor and get hold of its state from the outside, unless the actor unwisely publishes this information itself.</p>
+<p>Actor references are parameterized and only messages that are of the specified type can be sent to them.</p>
+<h2><a href="#state" name="state" class="anchor"><span class="anchor-link"></span></a>State</h2>
+<p>Actor objects will typically contain some variables which reflect possible states the actor may be in. This can be an explicit state machine, or it could be a counter, set of listeners, pending requests, etc. These data are what make an actor valuable, and they must be protected from corruption by other actors. The good news is that Pekko actors conceptually each have their own light-weight thread, which is completely shielded from the rest of the system. This means that instead of having to synchronize access using locks you can write your actor code without worrying about concurrency at all.</p>
+<p>Behind the scenes Pekko will run sets of actors on sets of real threads, where typically many actors share one thread, and subsequent invocations of one actor may end up being processed on different threads. Pekko ensures that this implementation detail does not affect the single-threadedness of handling the actor’s state.</p>
+<p>Because the internal state is vital to an actor’s operations, having inconsistent state is fatal. Thus, when the actor fails and is restarted by its supervisor, the state will be created from scratch, like upon first creating the actor. This is to enable the ability of self-healing of the system.</p>
+<p>Optionally, an actor&rsquo;s state can be automatically recovered to the state before a restart by persisting received messages and replaying them after restart (see <a href="../typed/persistence.html">Event Sourcing</a>).</p>
+<h2><a href="#behavior" name="behavior" class="anchor"><span class="anchor-link"></span></a>Behavior</h2>
+<p>Every time a message is processed, it is matched against the current behavior of the actor. Behavior means a function which defines the actions to be taken in reaction to the message at that point in time, say forward a request if the client is authorized, deny it otherwise. This behavior may change over time, e.g. because different clients obtain authorization over time, or because the actor may go into an “out-of-service” mode and later come back. These changes are achieved by either encoding them in state variables which are read from the behavior logic, or the function itself may be swapped out at runtime, by returning a different behavior to be used for next message. However, the initial behavior defined during construction of the actor object is special in the sense that a restart of the actor will reset its behavior to this initial one.</p>
+<p>Messages can be sent to an <a href="actors.html#actor-reference">actor Reference</a> and behind this façade there is a behavior that receives the message and acts upon it. The binding between Actor reference and behavior can change over time, but that is not visible on the outside.</p>
+<p>Actor references are parameterized and only messages that are of the specified type can be sent to them. The association between an actor reference and its type parameter must be made when the actor reference (and its Actor) is created. For this purpose each behavior is also parameterized with the type of messages it is able to process. Since the behavior can change behind the actor reference façade, designating the next behavior is a constrained operation: the successor must handle the same type of messages as its predecessor. This is necessary in order to not invalidate the actor references that refer to this Actor.</p>
+<p>What this enables is that whenever a message is sent to an Actor we can statically ensure that the type of the message is one that the Actor declares to handle—we can avoid the mistake of sending completely pointless messages. What we cannot statically ensure, though, is that the behavior behind the actor reference will be in a given state when our message is received. The fundamental reason is that the association between actor reference and behavior is a dynamic runtime property, the compiler cannot know it while it translates the source code.</p>
+<p>This is the same as for normal Java objects with internal variables: when compiling the program we cannot know what their value will be, and if the result of a method call depends on those variables then the outcome is uncertain to a degree—we can only be certain that the returned value is of a given type.</p>
+<p>The reply message type of an Actor command is described by the type of the actor reference for the reply-to that is contained within the message. This allows a conversation to be described in terms of its types: the reply will be of type A, but it might also contain an address of type B, which then allows the other Actor to continue the conversation by sending a message of type B to this new actor reference. While we cannot statically express the “current” state of an Actor, we can express the current state of a protocol between two Actors, since that is just given by the last message type that was received or sent.</p>
+<h2><a href="#mailbox" name="mailbox" class="anchor"><span class="anchor-link"></span></a>Mailbox</h2>
+<p>An actor’s purpose is the processing of messages, and these messages were sent to the actor from other actors (or from outside the actor system). The piece which connects sender and receiver is the actor’s mailbox: each actor has exactly one mailbox to which all senders enqueue their messages. Enqueuing happens in the time-order of send operations, which means that messages sent from different actors may not have a defined order at runtime due to the apparent randomness of distributing actors across threads. Sending multiple messages to the same target from the same actor, on the other hand, will enqueue them in the same order.</p>
+<p>There are different mailbox implementations to choose from, the default being a FIFO: the order of the messages processed by the actor matches the order in which they were enqueued. This is usually a good default, but applications may need to prioritize some messages over others. In this case, a priority mailbox will enqueue not always at the end but at a position as given by the message priority, which might even be at the front. While using such a queue, the order of messages processed will naturally be defined by the queue’s algorithm and in general not be FIFO.</p>
+<p>An important feature in which Pekko differs from some other actor model implementations is that the current behavior must always handle the next dequeued message, there is no scanning the mailbox for the next matching one. Failure to handle a message will typically be treated as a failure, unless this behavior is overridden.</p>
+<h2><a href="#child-actors" name="child-actors" class="anchor"><span class="anchor-link"></span></a>Child Actors</h2>
+<p>Each actor is potentially a parent: if it creates children for delegating sub-tasks, it will automatically supervise them. The list of children is maintained within the actor’s context and the actor has access to it. Modifications to the list are done by spawning or stopping children and these actions are reflected immediately. The actual creation and termination actions happen behind the scenes in an asynchronous way, so they do not “block” their parent.</p>
+<h2><a href="#supervisor-strategy" name="supervisor-strategy" class="anchor"><span class="anchor-link"></span></a>Supervisor Strategy</h2>
+<p>The final piece of an actor is its strategy for handling unexpected exceptions - failures. Fault handling is then done transparently by Pekko, applying one of the strategies described in <a href="../typed/fault-tolerance.html">Fault Tolerance</a> for each failure.</p>
+<h2><a href="#when-an-actor-terminates" name="when-an-actor-terminates" class="anchor"><span class="anchor-link"></span></a>When an Actor Terminates</h2>
+<p>Once an actor terminates, i.e. fails in a way which is not handled by a restart, stops itself or is stopped by its supervisor, it will free up its resources, draining all remaining messages from its mailbox into the system’s “dead letter mailbox” which will forward them to the EventStream as DeadLetters. The mailbox is then replaced within the actor reference with a system mailbox, redirecting all new messages to the EventStream as DeadLetters. This is done on a best effort basis, though, so do not rely on it in order to construct “guaranteed delivery”.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/general/actors.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../general/actor-systems.html" title="Actor Systems" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Actor Systems
+</span>
+</div>
+</a>
+<a href="../general/supervision.html" title="Supervision and Monitoring" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Supervision and Monitoring
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

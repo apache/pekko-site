@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Circuit Breaker · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Circuit Breaker
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html#circuit-breaker" class="active page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/circuitbreaker.html#circuit-breaker" class="header">Circuit Breaker</a>
+  <ul>
+    <li><a href="../common/circuitbreaker.html#why-are-they-used-" class="header">Why are they used?</a></li>
+    <li><a href="../common/circuitbreaker.html#what-do-they-do-" class="header">What do they do?</a></li>
+    <li><a href="../common/circuitbreaker.html#examples" class="header">Examples</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/circuitbreaker.html#circuit-breaker" class="header">Circuit Breaker</a>
+  <ul>
+    <li><a href="../common/circuitbreaker.html#why-are-they-used-" class="header">Why are they used?</a></li>
+    <li><a href="../common/circuitbreaker.html#what-do-they-do-" class="header">What do they do?</a></li>
+    <li><a href="../common/circuitbreaker.html#examples" class="header">Examples</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#circuit-breaker" name="circuit-breaker" class="anchor"><span class="anchor-link"></span></a>Circuit Breaker</h1>
+<h2><a href="#why-are-they-used-" name="why-are-they-used-" class="anchor"><span class="anchor-link"></span></a>Why are they used?</h2>
+<p>A circuit breaker is used to provide stability and prevent cascading failures in distributed systems. These should be used in conjunction with judicious timeouts at the interfaces between remote systems to prevent the failure of a single component from bringing down all components.</p>
+<p>As an example, we have a web application interacting with a remote third party web service.<br/>Let&rsquo;s say the third party has oversold their capacity and their database melts down under load.<br/>Assume that the database fails in such a way that it takes a very long time to hand back an error to the third party web service. This in turn makes calls fail after a long period of time. Back to our web application, the users have noticed that their form submissions take much longer seeming to hang. Well the users do what they know to do which is use the refresh button, adding more requests to their already running requests. This eventually causes the failure of the web application due to resource exhaustion. This will affect all users, even those who are not using functionality dependent on this third party web service.</p>
+<p>Introducing circuit breakers on the web service call would cause the requests to begin to fail-fast, letting the user know that something is wrong and that they need not refresh their request. This also confines the failure behavior to only those users that are using functionality dependent on the third party, other users are no longer affected as there is no resource exhaustion. Circuit breakers can also allow savvy developers to mark portions of the site that use the functionality unavailable, or perhaps show some cached content as appropriate while the breaker is open.</p>
+<p>The Apache Pekko library provides an implementation of a circuit breaker called <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> which has the behavior described below.</p>
+<h2><a href="#what-do-they-do-" name="what-do-they-do-" class="anchor"><span class="anchor-link"></span></a>What do they do?</h2>
+<ul>
+  <li>
+    <p>During normal operation, a circuit breaker is in the <em>Closed</em> state:</p>
+    <ul>
+      <li>Exceptions or calls exceeding the configured <em>callTimeout</em> increment a failure counter</li>
+      <li>Successes reset the failure count to zero</li>
+      <li>When the failure counter reaches a <em>maxFailures</em> count, the breaker is tripped into <em>Open</em> state</li>
+    </ul>
+  </li>
+  <li>
+    <p>While in <em>Open</em> state:</p>
+    <ul>
+      <li>All calls fail-fast with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreakerOpenException.html" title="org.apache.pekko.pattern.CircuitBreakerOpenException"><code>CircuitBreakerOpenException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreakerOpenException.html" title="org.apache.pekko.pattern.CircuitBreakerOpenException"><code>CircuitBreakerOpenException</code></a></span></li>
+      <li>After the configured <em>resetTimeout</em>, the circuit breaker enters a <em>Half-Open</em> state</li>
+    </ul>
+  </li>
+  <li>
+    <p>In <em>Half-Open</em> state:</p>
+    <ul>
+      <li>The first call attempted is allowed through without failing fast</li>
+      <li>All other calls fail-fast with an exception just as in <em>Open</em> state</li>
+      <li>If the first call succeeds, the breaker is reset back to <em>Closed</em> state and the <em>resetTimeout</em> is reset</li>
+      <li>If the first call fails, the breaker is tripped again into the <em>Open</em> state (as for exponential backoff circuit breaker, the <em>resetTimeout</em> is multiplied by the exponential backoff factor)</li>
+    </ul>
+  </li>
+  <li>
+    <p>State transition listeners:</p>
+    <ul>
+      <li>Callbacks can be provided for every state entry via <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onOpen(callback:=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onOpen</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnOpenListener(java.lang.Runnable)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onOpen</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onClose(callback:=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onClose</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnCloseListener(java.lang.Runnable)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onClose</code></a></span>, and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onHalfOpen(callback:=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onHalfOpen</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnHalfOpenListener(java.lang.Runnable)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onHalfOpen</code></a></span></li>
+      <li>These are executed in the <a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/ExecutionContext.html" title="scala.concurrent.ExecutionContext"><code>ExecutionContext</code></a> provided.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Calls result listeners:</p>
+    <ul>
+      <li>Callbacks can be used eg. to collect statistics about all invocations or to react on specific call results like success, failures or timeouts.</li>
+      <li>Supported callbacks are: <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onCallSuccess(callback:Long=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallSuccess</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnCallSuccessListener(java.util.function.Consumer)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallSuccess</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onCallFailure(callback:Long=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallFailure</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnCallFailureListener(java.util.function.Consumer)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallFailure</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onCallTimeout(callback:Long=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallTimeout</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnCallTimeoutListener(java.util.function.Consumer)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallTimeout</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#onCallBreakerOpen(callback:=%3EUnit):org.apache.pekko.pattern.CircuitBreaker" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallBreakerOpen</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#addOnCallBreakerOpenListener(java.lang.Runnable)" title="org.apache.pekko.pattern.CircuitBreaker"><code>onCallBreakerOpen</code></a></span>.</li>
+      <li>These are executed in the <a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/ExecutionContext.html" title="scala.concurrent.ExecutionContext"><code>ExecutionContext</code></a> provided.</li>
+    </ul>
+  </li>
+</ul>
+<p><img src="../images/circuit-breaker-states.png" alt="circuit-breaker-states.png" /></p>
+<h2><a href="#examples" name="examples" class="anchor"><span class="anchor-link"></span></a>Examples</h2>
+<h3><a href="#initialization" name="initialization" class="anchor"><span class="anchor-link"></span></a>Initialization</h3>
+<p>Here&rsquo;s how a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> would be configured for:</p>
+<ul>
+  <li>5 maximum failures</li>
+  <li>a call timeout of 10 seconds</li>
+  <li>a reset timeout of 1 minute</li>
+</ul>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/circuitbreaker/CircuitBreakerDocSpec.scala#L17-L25" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration._
+import org.apache.pekko
+import pekko.pattern.CircuitBreaker
+import pekko.pattern.pipe
+import pekko.actor.{ Actor, ActorLogging, ActorRef }
+
+import scala.concurrent.Future
+import scala.util.{ Failure, Success, Try }
+
+class DangerousActor extends Actor with ActorLogging {
+  import context.dispatcher
+
+  val breaker =
+    new CircuitBreaker(context.system.scheduler, maxFailures = 5, callTimeout = 10.seconds, resetTimeout = 1.minute)
+      .onOpen(notifyMeOnOpen())
+
+  def notifyMeOnOpen(): Unit =
+    log.warning(&quot;My CircuitBreaker is now open, and will not close for one minute&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/circuitbreaker/DangerousJavaActor.java#L17-L27" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.AbstractActor;
+import org.apache.pekko.event.LoggingAdapter;
+import java.time.Duration;
+import org.apache.pekko.pattern.CircuitBreaker;
+import org.apache.pekko.event.Logging;
+
+import static org.apache.pekko.pattern.Patterns.pipe;
+
+import java.util.concurrent.CompletableFuture;
+
+public class DangerousJavaActor extends AbstractActor {
+
+  private final CircuitBreaker breaker;
+  private final LoggingAdapter log = Logging.getLogger(getContext().system(), this);
+
+  public DangerousJavaActor() {
+    this.breaker =
+        new CircuitBreaker(
+                getContext().getDispatcher(),
+                getContext().getSystem().getScheduler(),
+                5,
+                Duration.ofSeconds(10),
+                Duration.ofMinutes(1))
+            .addOnOpenListener(this::notifyMeOnOpen);
+  }
+
+  public void notifyMeOnOpen() {
+    log.warning(&quot;My CircuitBreaker is now open, and will not close for one minute&quot;);
+  }</code></pre></dd>
+</dl>
+<h3><a href="#future-synchronous-based-api" name="future-synchronous-based-api" class="anchor"><span class="anchor-link"></span></a>Future &amp; Synchronous based API</h3>
+<p>Once a circuit breaker actor has been initialized, interacting with that actor is done by either using the Future based API or the synchronous API. Both of these APIs are considered <code>Call Protection</code> because whether synchronously or asynchronously, the purpose of the circuit breaker is to protect your system from cascading failures while making a call to another service. In the future based API, we use the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#withCircuitBreaker[T](body:=%3Escala.concurrent.Future[T]):scala.concurrent.Future[T]" title="pekko.pattern.CircuitBreaker"><code>withCircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#callWithCircuitBreakerCS(java.util.concurrent.Callable)" title="pekko.pattern.CircuitBreaker"><code>callWithCircuitBreakerCS</code></a></span> which takes an asynchronous method (some method wrapped in a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionState</code></a></span>), for instance a call to retrieve data from a database, and we pipe the result back to the sender. If for some reason the database in this example isn&rsquo;t responding, or there is another issue, the circuit breaker will open and stop trying to hit the database again and again until the timeout is over.</p>
+<p>The Synchronous API would also wrap your call with the circuit breaker logic, however, it uses the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#withSyncCircuitBreaker[T](body:=%3ET):T" title="pekko.pattern.CircuitBreaker"><code>withSyncCircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#callWithSyncCircuitBreaker(java.util.concurrent.Callable)" title="pekko.pattern.CircuitBreaker"><code>callWithSyncCircuitBreaker</code></a></span> and receives a method that is not wrapped in a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionState</code></a></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/circuitbreaker/CircuitBreakerDocSpec.scala#L43-L50" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def dangerousCall: String = &quot;This really isn&#39;t that dangerous of a call after all&quot;
+
+def receive = {
+  case &quot;is my middle name&quot; =&gt;
+    breaker.withCircuitBreaker(Future(dangerousCall)).pipeTo(sender())
+  case &quot;block for me&quot; =&gt;
+    sender() ! breaker.withSyncCircuitBreaker(dangerousCall)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/circuitbreaker/DangerousJavaActor.java#L53-L76" target="_blank" title="Go to snippet source">source</a><code class="language-java">public String dangerousCall() {
+  return &quot;This really isn&#39;t that dangerous of a call after all&quot;;
+}
+
+@Override
+public Receive createReceive() {
+  return receiveBuilder()
+      .match(
+          String.class,
+          &quot;is my middle name&quot;::equals,
+          m -&gt;
+              pipe(
+                      breaker.callWithCircuitBreakerCS(
+                          () -&gt; CompletableFuture.supplyAsync(this::dangerousCall)),
+                      getContext().getDispatcher())
+                  .to(sender()))
+      .match(
+          String.class,
+          &quot;block for me&quot;::equals,
+          m -&gt; {
+            sender().tell(breaker.callWithSyncCircuitBreaker(this::dangerousCall), self());
+          })
+      .build();
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>Using the <span class="group-scala"><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker$.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker$.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span>&rsquo;s companion object <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/CircuitBreaker$.html#apply(scheduler:org.apache.pekko.actor.Scheduler,maxFailures:Int,callTimeout:scala.concurrent.duration.FiniteDuration,resetTimeout:scala.concurrent.duration.FiniteDuration):org.apache.pekko.pattern.CircuitBreaker" title="pekko.pattern.CircuitBreaker"><code>apply</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#create(org.apache.pekko.actor.Scheduler,int,java.time.Duration,java.time.Duration)" title="pekko.pattern.CircuitBreaker"><code>CircuitBreaker.create</code></a></span> method will return a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> where callbacks are executed in the caller&rsquo;s thread. This can be useful if the asynchronous <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionState</code></a></span> behavior is unnecessary, for example invoking a synchronous-only API.</p></div>
+<h3><a href="#control-failure-count-explicitly" name="control-failure-count-explicitly" class="anchor"><span class="anchor-link"></span></a>Control failure count explicitly</h3>
+<p>By default, the circuit breaker treats <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Exception.html" title="java.lang.Exception"><code>Exception</code></a> as failure in synchronized API, or failed <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionState</code></a></span> as failure in future based API. On failure, the failure count will increment. If the failure count reaches the <em>maxFailures</em>, the circuit breaker will be opened. However, some applications may require certain exceptions to not increase the failure count. In other cases one may want to increase the failure count even if the call succeeded. Pekko circuit breaker provides a way to achieve such use cases: <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#withCircuitBreaker[T](body:=%3Escala.concurrent.Future[T],defineFailureFn:scala.util.Try[T]=%3EBoolean):scala.concurrent.Future[T]" title="pekko.pattern.CircuitBreaker"><code>withCircuitBreaker</code></a> and <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#withSyncCircuitBreaker[T](body:=%3ET,defineFailureFn:scala.util.Try[T]=%3EBoolean):T" title="pekko.pattern.CircuitBreaker"><code>withSyncCircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#callWithCircuitBreaker(java.util.concurrent.Callable,java.util.function.BiFunction)" title="pekko.pattern.CircuitBreaker"><code>callWithCircuitBreaker</code></a>, <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#callWithSyncCircuitBreaker(java.util.concurrent.Callable,java.util.function.BiFunction)" title="pekko.pattern.CircuitBreaker"><code>callWithSyncCircuitBreaker</code></a> and <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/CircuitBreaker.html#callWithCircuitBreakerCS(java.util.concurrent.Callable,java.util.function.BiFunction)" title="pekko.pattern.CircuitBreaker"><code>callWithCircuitBreakerCS</code></a></span>.</p>
+<p>All methods above accept an argument <code>defineFailureFn</code></p>
+<p>Type of <code>defineFailureFn</code>: <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/util/Try.html" title="scala.util.Try"><code>Try[T]</code></a> =&gt; <a href="http://www.scala-lang.org/api/2.13.8/scala/Boolean.html" title="scala.Boolean"><code>Boolean</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/BiFunction.html" title="java.util.function.BiFunction"><code>BiFunction</code></a>[<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" title="java.util.Optional"><code>Optional[T]</code></a>, <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" title="java.util.Optional"><code>Optional</code></a>[<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html" title="java.lang.Throwable"><code>Throwable</code></a>], <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Boolean.html" title="java.lang.Boolean"><code>Boolean</code></a>]</span></p>
+<p><span class="group-scala">This is a function which takes in a <a href="http://www.scala-lang.org/api/2.13.8/scala/util/Try.html" title="scala.util.Try"><code>Try[T]</code></a> and returns a <a href="http://www.scala-lang.org/api/2.13.8/scala/Boolean.html" title="scala.Boolean"><code>Boolean</code></a>. The <a href="http://www.scala-lang.org/api/2.13.8/scala/util/Try.html" title="scala.util.Try"><code>Try[T]</code></a> correspond to the <a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future[T]</code></a> of the protected call.</span> <span class="group-java">The response of a protected call is modelled using <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" title="java.util.Optional"><code>Optional[T]</code></a> for a successful return value and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html" title="java.util.Optional"><code>Optional</code></a>[<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html" title="java.lang.Throwable"><code>Throwable</code></a>] for exceptions.</span> This function should return <code>true</code> if the call should increase failure count, else false.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/circuitbreaker/CircuitBreakerDocSpec.scala#L88-L99" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def luckyNumber(): Future[Int] = {
+  val evenNumberAsFailure: Try[Int] =&gt; Boolean = {
+    case Success(n) =&gt; n % 2 == 0
+    case Failure(_) =&gt; true
+  }
+
+  val breaker =
+    new CircuitBreaker(context.system.scheduler, maxFailures = 5, callTimeout = 10.seconds, resetTimeout = 1.minute)
+
+  // this call will return 8888 and increase failure count at the same time
+  breaker.withCircuitBreaker(Future(8888), evenNumberAsFailure)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/circuitbreaker/EvenNoFailureJavaExample.java#L25-L44" target="_blank" title="Go to snippet source">source</a><code class="language-java">private final CircuitBreaker breaker;
+
+public EvenNoFailureJavaExample() {
+  this.breaker =
+      new CircuitBreaker(
+          getContext().getDispatcher(),
+          getContext().getSystem().getScheduler(),
+          5,
+          Duration.ofSeconds(10),
+          Duration.ofMinutes(1));
+}
+
+public int luckyNumber() {
+  BiFunction&lt;Optional&lt;Integer&gt;, Optional&lt;Throwable&gt;, Boolean&gt; evenNoAsFailure =
+      (result, err) -&gt; (result.isPresent() &amp;&amp; result.get() % 2 == 0);
+
+  // this will return 8888 and increase failure count at the same time
+  return this.breaker.callWithSyncCircuitBreaker(() -&gt; 8888, evenNoAsFailure);
+}
+</code></pre></dd>
+</dl>
+<h3><a href="#low-level-api" name="low-level-api" class="anchor"><span class="anchor-link"></span></a>Low level API</h3>
+<p>The low-level API allows you to describe the behavior of the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> in detail, including deciding what to return to the calling <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Actor.html" title="org.apache.pekko.actor.Actor"><code>Actor</code></a></span> in case of success or failure. This is especially useful when expecting the remote call to send a reply. <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> doesn&rsquo;t support <code>Tell Protection</code> (protecting against calls that expect a reply) natively at the moment. Thus you need to use the low-level power-user APIs, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed()" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail()" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span> methods, as well as <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isClosed:Boolean" title="org.apache.pekko.pattern.CircuitBreaker"><code>isClosed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isClosed()" title="org.apache.pekko.pattern.CircuitBreaker"><code>isClosed</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isOpen:Boolean" title="org.apache.pekko.pattern.CircuitBreaker"><code>isOpen</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isOpen()" title="org.apache.pekko.pattern.CircuitBreaker"><code>isOpen</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isHalfOpen:Boolean" title="org.apache.pekko.pattern.CircuitBreaker"><code>isHalfOpen</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isHalfOpen()" title="org.apache.pekko.pattern.CircuitBreaker"><code>isHalfOpen</code></a></span> to implement it.</p>
+<p>As can be seen in the examples below, a <code>Tell Protection</code> pattern could be implemented by using the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed()" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail()" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span> methods, which would count towards the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> counts. In the example, a call is made to the remote service if the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isClosed:Boolean" title="org.apache.pekko.pattern.CircuitBreaker"><code>breaker.isClosed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#isClosed()" title="org.apache.pekko.pattern.CircuitBreaker"><code>breaker.isClosed</code></a></span>. Once a response is received, the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#succeed()" title="org.apache.pekko.pattern.CircuitBreaker"><code>succeed</code></a></span> method is invoked, which tells the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html" title="org.apache.pekko.pattern.CircuitBreaker"><code>CircuitBreaker</code></a></span> to keep the breaker closed. On the other hand, if an error or timeout is received we trigger a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail():Unit" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/CircuitBreaker.html#fail()" title="org.apache.pekko.pattern.CircuitBreaker"><code>fail</code></a></span>, and the breaker accrues this failure towards its count for opening the breaker.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The below example doesn&rsquo;t make a remote call when the state is <em>HalfOpen</em>. Using the power-user APIs, it is your responsibility to judge when to make remote calls in <em>HalfOpen</em>.</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/circuitbreaker/CircuitBreakerDocSpec.scala#L66-L81" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.ReceiveTimeout
+
+def receive = {
+  case &quot;call&quot; if breaker.isClosed =&gt; {
+    recipient ! &quot;message&quot;
+  }
+  case &quot;response&quot; =&gt; {
+    breaker.succeed()
+  }
+  case err: Throwable =&gt; {
+    breaker.fail()
+  }
+  case ReceiveTimeout =&gt; {
+    breaker.fail()
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/circuitbreaker/TellPatternJavaActor.java#L47-L58" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Receive createReceive() {
+  return receiveBuilder()
+      .match(
+          String.class,
+          payload -&gt; &quot;call&quot;.equals(payload) &amp;&amp; breaker.isClosed(),
+          payload -&gt; target.tell(&quot;message&quot;, self()))
+      .matchEquals(&quot;response&quot;, payload -&gt; breaker.succeed())
+      .match(Throwable.class, t -&gt; breaker.fail())
+      .match(ReceiveTimeout.class, t -&gt; breaker.fail())
+      .build();
+}</code></pre></dd>
+</dl>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/common/circuitbreaker.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/logging.html" title="Logging" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Logging
+</span>
+</div>
+</a>
+<a href="../futures.html" title="Futures patterns" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Futures patterns
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

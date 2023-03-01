@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Query side to Apache Pekko Persistence allowing for building CQRS applications.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Query side to Apache Pekko Persistence allowing for building CQRS applications.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Apache Persistence Query · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Apache Persistence Query
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html#apache-persistence-query" class="active page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="persistence-query.html#apache-persistence-query" class="header">Apache Persistence Query</a>
+  <ul>
+    <li><a href="persistence-query.html#dependency" class="header">Dependency</a></li>
+    <li><a href="persistence-query.html#introduction" class="header">Introduction</a></li>
+    <li><a href="persistence-query.html#design-overview" class="header">Design overview</a></li>
+    <li><a href="persistence-query.html#read-journals" class="header">Read Journals</a></li>
+    <li><a href="persistence-query.html#performance-and-denormalization" class="header">Performance and denormalization</a></li>
+    <li><a href="persistence-query.html#query-plugins" class="header">Query plugins</a></li>
+    <li><a href="persistence-query.html#scaling-out" class="header">Scaling out</a></li>
+    <li><a href="persistence-query.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="persistence-query.html#apache-persistence-query" class="header">Apache Persistence Query</a>
+  <ul>
+    <li><a href="persistence-query.html#dependency" class="header">Dependency</a></li>
+    <li><a href="persistence-query.html#introduction" class="header">Introduction</a></li>
+    <li><a href="persistence-query.html#design-overview" class="header">Design overview</a></li>
+    <li><a href="persistence-query.html#read-journals" class="header">Read Journals</a></li>
+    <li><a href="persistence-query.html#performance-and-denormalization" class="header">Performance and denormalization</a></li>
+    <li><a href="persistence-query.html#query-plugins" class="header">Query plugins</a></li>
+    <li><a href="persistence-query.html#scaling-out" class="header">Scaling out</a></li>
+    <li><a href="persistence-query.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#apache-persistence-query" name="apache-persistence-query" class="anchor"><span class="anchor-link"></span></a>Apache Persistence Query</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Persistence Query, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-persistence-query" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-query_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence-query_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>This will also add dependency on the <a href="persistence.html">Pekko Persistence</a> module.</p>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Pekko persistence query complements <a href="typed/persistence.html">Event Sourcing</a> by providing a universal asynchronous stream based query interface that various journal plugins can implement in order to expose their query capabilities.</p>
+<p>The most typical use case of persistence query is implementing the so-called query side (also known as &ldquo;read side&rdquo;) in the popular CQRS architecture pattern - in which the writing side of the application (e.g. implemented using Pekko persistence) is completely separated from the &ldquo;query side&rdquo;. Pekko Persistence Query itself is <em>not</em> directly the query side of an application, however it can help to migrate data from the write side to the query side database. In very simple scenarios Persistence Query may be powerful enough to fulfill the query needs of your app, however we highly recommend (in the spirit of CQRS) of splitting up the write/read sides into separate datastores as the need arises.</p>
+<p>For a similar implementation of query interface to <a href="typed/durable-state/persistence.html">Durable State Behaviors</a> please refer to <a href="durable-state/persistence-query.html">Persistence Query using Durable State</a>.</p>
+<p>The <a href="https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/">Microservices with Pekko tutorial</a> explains how to implement an Event Sourced CQRS application with Pekko Persistence and Pekko Projections.</p>
+<h2><a href="#design-overview" name="design-overview" class="anchor"><span class="anchor-link"></span></a>Design overview</h2>
+<p>Pekko persistence query is purposely designed to be a very loosely specified API. This is in order to keep the provided APIs general enough for each journal implementation to be able to expose its best features, e.g. a SQL journal can use complex SQL queries or if a journal is able to subscribe to a live event stream this should also be possible to expose the same API - a typed stream of events.</p>
+<p><strong>Each read journal must explicitly document which types of queries it supports.</strong> Refer to your journal&rsquo;s plugins documentation for details on which queries and semantics it supports.</p>
+<p>While Pekko Persistence Query does not provide actual implementations of ReadJournals, it defines a number of pre-defined query types for the most common query scenarios, that most journals are likely to implement (however they are not required to).</p>
+<h2><a href="#read-journals" name="read-journals" class="anchor"><span class="anchor-link"></span></a>Read Journals</h2>
+<p>In order to issue queries one has to first obtain an instance of a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/ReadJournal.html" title="org.apache.pekko.persistence.query.javadsl.ReadJournal"><code>ReadJournal</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/ReadJournal.html" title="org.apache.pekko.persistence.query.scaladsl.ReadJournal"><code>ReadJournal</code></a></span>. Read journals are implemented as <a href="https://akka.io/community/#plugins-to-akka-persistence-query">Community plugins</a>, each targeting a specific datastore (for example Cassandra or JDBC databases). For example, given a library that provides a <code>pekko.persistence.query.my-read-journal</code> obtaining the related journal is as simple as:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L199-L210" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// obtain read journal by plugin id
+val readJournal =
+  PersistenceQuery(system).readJournalFor[MyScaladslReadJournal](&quot;pekko.persistence.query.my-read-journal&quot;)
+
+// issue query to journal
+val source: Source[EventEnvelope, NotUsed] =
+  readJournal.eventsByPersistenceId(&quot;user-1337&quot;, 0, Long.MaxValue)
+
+// materialize stream, consuming events
+source.runForeach { event =&gt;
+  println(&quot;Event: &quot; + event)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L215-L226" target="_blank" title="Go to snippet source">source</a><code class="language-java">// obtain read journal by plugin id
+final MyJavadslReadJournal readJournal =
+    PersistenceQuery.get(system)
+        .getReadJournalFor(
+            MyJavadslReadJournal.class, &quot;pekko.persistence.query.my-read-journal&quot;);
+
+// issue query to journal
+Source&lt;EventEnvelope, NotUsed&gt; source =
+    readJournal.eventsByPersistenceId(&quot;user-1337&quot;, 0, Long.MAX_VALUE);
+
+// materialize stream, consuming events
+source.runForeach(event -&gt; System.out.println(&quot;Event: &quot; + event), system);</code></pre></dd>
+</dl>
+<p>Journal implementers are encouraged to put this identifier in a variable known to the user, such that one can access it via <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/query/PersistenceQuery.html#readJournalFor[T%253C:org.apache.pekko.persistence.query.scaladsl.ReadJournal](readJournalPluginId:String):T" title="pekko.persistence.query.PersistenceQuery"><code>readJournalFor[NoopJournal](NoopJournal.identifier)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/query/PersistenceQuery.html#getReadJournalFor(java.lang.Class,java.lang.String)" title="pekko.persistence.query.PersistenceQuery"><code>getJournalFor(NoopJournal.class, NoopJournal.identifier)</code></a></span>, however this is not enforced.</p>
+<p>Read journal implementations are available as <a href="https://akka.io/community/#plugins-to-akka-persistence-query">Community plugins</a>.</p>
+<h3><a href="#predefined-queries" name="predefined-queries" class="anchor"><span class="anchor-link"></span></a>Predefined queries</h3>
+<p>Pekko persistence query comes with a number of query interfaces built in and suggests Journal implementors to implement them according to the semantics described below. It is important to notice that while these query types are very common a journal is not obliged to implement all of them - for example because in a given journal such query would be significantly inefficient.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Refer to the documentation of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/ReadJournal.html" title="org.apache.pekko.persistence.query.javadsl.ReadJournal"><code>ReadJournal</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/ReadJournal.html" title="org.apache.pekko.persistence.query.scaladsl.ReadJournal"><code>ReadJournal</code></a></span> plugin you are using for a specific list of supported query types. For example, Journal plugins should document their stream completion strategies.</p></div>
+<p>The predefined queries are:</p>
+<h4><a href="#persistenceidsquery-and-currentpersistenceidsquery" name="persistenceidsquery-and-currentpersistenceidsquery" class="anchor"><span class="anchor-link"></span></a>PersistenceIdsQuery and CurrentPersistenceIdsQuery</h4>
+<p><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/PersistenceIdsQuery.html" title="org.apache.pekko.persistence.query.javadsl.PersistenceIdsQuery"><code>persistenceIds</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/PersistenceIdsQuery.html" title="org.apache.pekko.persistence.query.scaladsl.PersistenceIdsQuery"><code>persistenceIds</code></a></span> which is designed to allow users to subscribe to a stream of all persistent ids in the system. By default this stream should be assumed to be a &ldquo;live&rdquo; stream, which means that the journal should keep emitting new persistence ids as they come into the system:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L214" target="_blank" title="Go to snippet source">source</a><code class="language-scala">readJournal.persistenceIds()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L237" target="_blank" title="Go to snippet source">source</a><code class="language-java">readJournal.persistenceIds();</code></pre></dd>
+</dl>
+<p>If your usage does not require a live stream, you can use the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/CurrentPersistenceIdsQuery.html" title="org.apache.pekko.persistence.query.javadsl.CurrentPersistenceIdsQuery"><code>currentPersistenceIds</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/CurrentPersistenceIdsQuery.html" title="org.apache.pekko.persistence.query.scaladsl.CurrentPersistenceIdsQuery"><code>currentPersistenceIds</code></a></span> query:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L218" target="_blank" title="Go to snippet source">source</a><code class="language-scala">readJournal.currentPersistenceIds()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L250" target="_blank" title="Go to snippet source">source</a><code class="language-java">readJournal.currentPersistenceIds();</code></pre></dd>
+</dl>
+<h4><a href="#eventsbypersistenceidquery-and-currenteventsbypersistenceidquery" name="eventsbypersistenceidquery-and-currenteventsbypersistenceidquery" class="anchor"><span class="anchor-link"></span></a>EventsByPersistenceIdQuery and CurrentEventsByPersistenceIdQuery</h4>
+<p><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/EventsByPersistenceIdQuery.html" title="org.apache.pekko.persistence.query.javadsl.EventsByPersistenceIdQuery"><code>eventsByPersistenceId</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/EventsByPersistenceIdQuery.html" title="org.apache.pekko.persistence.query.scaladsl.EventsByPersistenceIdQuery"><code>eventsByPersistenceId</code></a></span> is a query equivalent to replaying an <a href="typed/persistence.html#event-sourcing-concepts">event sourced actor</a>, however, since it is a stream it is possible to keep it alive and watch for additional incoming events persisted by the persistent actor identified by the given <code>persistenceId</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L242-L243" target="_blank" title="Go to snippet source">source</a><code class="language-scala">readJournal.eventsByPersistenceId(&quot;user-us-1337&quot;, fromSequenceNr = 0L, toSequenceNr = Long.MaxValue)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L263" target="_blank" title="Go to snippet source">source</a><code class="language-java">readJournal.eventsByPersistenceId(&quot;user-us-1337&quot;, 0L, Long.MAX_VALUE);</code></pre></dd>
+</dl>
+<p>Most journals will have to revert to polling in order to achieve this, which can typically be configured with a <code>refresh-interval</code> configuration property.</p>
+<p>If your usage does not require a live stream, you can use the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/CurrentEventsByPersistenceIdQuery.html" title="org.apache.pekko.persistence.query.javadsl.CurrentEventsByPersistenceIdQuery"><code>currentEventsByPersistenceId</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/CurrentEventsByPersistenceIdQuery.html" title="org.apache.pekko.persistence.query.scaladsl.CurrentEventsByPersistenceIdQuery"><code>currentEventsByPersistenceId</code></a></span> query.</p>
+<h4><a href="#eventsbytag-and-currenteventsbytag" name="eventsbytag-and-currenteventsbytag" class="anchor"><span class="anchor-link"></span></a>EventsByTag and CurrentEventsByTag</h4>
+<p><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.javadsl.EventsByTagQuery"><code>eventsByTag</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.scaladsl.EventsByTagQuery"><code>eventsByTag</code></a></span> allows querying events regardless of which <code>persistenceId</code> they are associated with. This query is hard to implement in some journals or may need some additional preparation of the used data store to be executed efficiently. The goal of this query is to allow querying for all events which are &ldquo;tagged&rdquo; with a specific tag. That includes the use case to query all domain events of an Aggregate Root type. Please refer to your read journal plugin&rsquo;s documentation to find out if and how it is supported.</p>
+<p>Some journals may support <a href="typed/persistence.html#tagging">tagging of events</a> or <a href="persistence.html#event-adapters">Event Adapters</a> that wraps the events in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/journal/Tagged.html" title="org.apache.pekko.persistence.journal.Tagged"><code>persistence.journal.Tagged</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/journal/Tagged.html" title="org.apache.pekko.persistence.journal.Tagged"><code>persistence.journal.Tagged</code></a></span> with the given <code>tags</code>. The journal may support other ways of doing tagging - again, how exactly this is implemented depends on the used journal. Here is an example of such a tagging with an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L165-L182" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val NumberOfEntityGroups = 10
+
+def tagEvent(entityId: String, event: Event): Set[String] = {
+  val entityGroup = s&quot;group-${math.abs(entityId.hashCode % NumberOfEntityGroups)}&quot;
+  event match {
+    case _: OrderCompleted =&gt; Set(entityGroup, &quot;order-completed&quot;)
+    case _                 =&gt; Set(entityGroup)
+  }
+}
+
+def apply(entityId: String): Behavior[Command] = {
+  EventSourcedBehavior[Command, Event, State](
+    persistenceId = PersistenceId(&quot;ShoppingCart&quot;, entityId),
+    emptyState = State(),
+    commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+    eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+    .withTagger(event =&gt; tagEvent(entityId, event))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L460-L471" target="_blank" title="Go to snippet source">source</a><code class="language-java">private final String entityId;
+
+public static final int NUMBER_OF_ENTITY_GROUPS = 10;
+
+@Override
+public Set&lt;String&gt; tagsFor(Event event) {
+  String entityGroup = &quot;group-&quot; + Math.abs(entityId.hashCode() % NUMBER_OF_ENTITY_GROUPS);
+  Set&lt;String&gt; tags = new HashSet&lt;&gt;();
+  tags.add(entityGroup);
+  if (event instanceof OrderCompleted) tags.add(&quot;order-completed&quot;);
+  return tags;
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>A very important thing to keep in mind when using queries spanning multiple persistenceIds, such as <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.javadsl.EventsByTagQuery"><code>EventsByTag</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.scaladsl.EventsByTagQuery"><code>EventsByTag</code></a></span> is that the order of events at which the events appear in the stream rarely is guaranteed (or stable between materializations).</p>
+<p>Journals <em>may</em> choose to opt for strict ordering of the events, and should then document explicitly what kind of ordering guarantee they provide - for example &ldquo;<em>ordered by timestamp ascending, independently of persistenceId</em>&rdquo; is easy to achieve on relational databases, yet may be hard to implement efficiently on plain key-value datastores.</p></div>
+<p>In the example below we query all events which have been tagged (we assume this was performed by the write-side using <a href="typed/persistence.html#tagging">tagging of events</a> or <a href="persistence.html#event-adapters">Event Adapters</a>, or that the journal is smart enough that it can figure out what we mean by this tag - for example if the journal stored the events as json it may try to find those with the field <code>tag</code> set to this value etc.).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L224-L238" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// assuming journal is able to work with numeric offsets we can:
+
+val completedOrders: Source[EventEnvelope, NotUsed] =
+  readJournal.eventsByTag(&quot;order-completed&quot;, Offset.noOffset)
+
+// find first 10 completed orders:
+val firstCompleted: Future[Vector[OrderCompleted]] =
+  completedOrders
+    .map(_.event)
+    .collectType[OrderCompleted]
+    .take(10) // cancels the query stream after pulling 10 elements
+    .runFold(Vector.empty[OrderCompleted])(_ :+ _)
+
+// start another query, from the known offset
+val furtherOrders = readJournal.eventsByTag(&quot;order-completed&quot;, offset = Sequence(10))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L276-L296" target="_blank" title="Go to snippet source">source</a><code class="language-java">// assuming journal is able to work with numeric offsets we can:
+final Source&lt;EventEnvelope, NotUsed&gt; completedOrders =
+    readJournal.eventsByTag(&quot;order-completed&quot;, new Sequence(0L));
+
+// find first 10 completed orders:
+final CompletionStage&lt;List&lt;OrderCompleted&gt;&gt; firstCompleted =
+    completedOrders
+        .map(EventEnvelope::event)
+        .collectType(OrderCompleted.class)
+        .take(10) // cancels the query stream after pulling 10 elements
+        .runFold(
+            new ArrayList&lt;&gt;(10),
+            (acc, e) -&gt; {
+              acc.add(e);
+              return acc;
+            },
+            system);
+
+// start another query, from the known offset
+Source&lt;EventEnvelope, NotUsed&gt; furtherOrders =
+    readJournal.eventsByTag(&quot;order-completed&quot;, new Sequence(10));</code></pre></dd>
+</dl>
+<p>As you can see, we can use all the usual stream operators available from <a href="stream/index.html">Streams</a> on the resulting query stream, including for example taking the first 10 and cancelling the stream. It is worth pointing out that the built-in <code>EventsByTag</code> query has an optionally supported offset parameter (of type <code>Long</code>) which the journals can use to implement resumable-streams. For example a journal may be able to use a WHERE clause to begin the read starting from a specific row, or in a datastore that is able to order events by insertion time it could treat the Long as a timestamp and select only older events.</p>
+<p>If your usage does not require a live stream, you can use the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/CurrentEventsByTagQuery.html" title="org.apache.pekko.persistence.query.javadsl.CurrentEventsByTagQuery"><code>currentEventsByTag</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/CurrentEventsByTagQuery.html" title="org.apache.pekko.persistence.query.scaladsl.CurrentEventsByTagQuery"><code>currentEventsByTag</code></a></span> query.</p>
+<h4><a href="#eventsbyslice-and-currenteventsbyslice" name="eventsbyslice-and-currenteventsbyslice" class="anchor"><span class="anchor-link"></span></a>EventsBySlice and CurrentEventsBySlice</h4>
+<p>Query events for given entity type and slices. A slice is deterministically defined based on the persistence id. The purpose is to evenly distribute all persistence ids over the slices.</p>
+<p>See <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/typed/javadsl/EventsBySliceQuery.html" title="org.apache.pekko.persistence.query.typed.javadsl.EventsBySliceQuery"><code>EventsBySliceQuery</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/typed/scaladsl/EventsBySliceQuery.html" title="org.apache.pekko.persistence.query.typed.scaladsl.EventsBySliceQuery"><code>EventsBySliceQuery</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/typed/javadsl/CurrentEventsBySliceQuery.html" title="org.apache.pekko.persistence.query.typed.javadsl.CurrentEventsBySliceQuery"><code>CurrentEventsBySliceQuery</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/typed/scaladsl/CurrentEventsBySliceQuery.html" title="org.apache.pekko.persistence.query.typed.scaladsl.CurrentEventsBySliceQuery"><code>CurrentEventsBySliceQuery</code></a></span>. </p>
+<h3><a href="#materialized-values-of-queries" name="materialized-values-of-queries" class="anchor"><span class="anchor-link"></span></a>Materialized values of queries</h3>
+<p>Journals are able to provide additional information related to a query by exposing <a href="stream/stream-quickstart.html#materialized-values-quick">Materialized values</a>, which are a feature of <a href="stream/index.html">Streams</a> that allows to expose additional values at stream materialization time.</p>
+<p>More advanced query journals may use this technique to expose information about the character of the materialized stream, for example if it&rsquo;s finite or infinite, strictly ordered or not ordered at all. The materialized value type is defined as the second type parameter of the returned <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>, which allows journals to provide users with their specialised query object, as demonstrated in the sample below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L40-L43" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class RichEvent(tags: Set[String], payload: Any)
+
+// a plugin can provide:
+case class QueryMetadata(deterministicOrder: Boolean, infinite: Boolean)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L44-L66" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class RichEvent {
+  public final Set&lt;String&gt; tags;
+  public final Object payload;
+
+  public RichEvent(Set&lt;String&gt; tags, Object payload) {
+    this.tags = tags;
+    this.payload = payload;
+  }
+}
+// a plugin can provide:
+static final class QueryMetadata {
+  public final boolean deterministicOrder;
+  public final boolean infinite;
+
+  public QueryMetadata(boolean deterministicOrder, boolean infinite) {
+    this.deterministicOrder = deterministicOrder;
+    this.infinite = infinite;
+  }
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L110" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def byTagsWithMeta(tags: Set[String]): Source[RichEvent, QueryMetadata] = {</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L154" target="_blank" title="Go to snippet source">source</a><code class="language-java">public Source&lt;RichEvent, QueryMetadata&gt; byTagsWithMeta(Set&lt;String&gt; tags) {</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L247-L261" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val query: Source[RichEvent, QueryMetadata] =
+  readJournal.byTagsWithMeta(Set(&quot;red&quot;, &quot;blue&quot;))
+
+query
+  .mapMaterializedValue { meta =&gt;
+    println(
+      s&quot;The query is: &quot; +
+      s&quot;ordered deterministically: ${meta.deterministicOrder}, &quot; +
+      s&quot;infinite: ${meta.infinite}&quot;)
+  }
+  .map { event =&gt;
+    println(s&quot;Event payload: ${event.payload}&quot;)
+  }
+  .runWith(Sink.ignore)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L309-L335" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>Set&lt;String&gt; tags = new HashSet&lt;String&gt;();
+tags.add(&quot;red&quot;);
+tags.add(&quot;blue&quot;);
+final Source&lt;RichEvent, QueryMetadata&gt; events =
+    readJournal
+        .byTagsWithMeta(tags)
+        .mapMaterializedValue(
+            meta -&gt; {
+              System.out.println(
+                  &quot;The query is: &quot;
+                      + &quot;ordered deterministically: &quot;
+                      + meta.deterministicOrder
+                      + &quot; &quot;
+                      + &quot;infinite: &quot;
+                      + meta.infinite);
+              return meta;
+            });
+
+events
+    .map(
+        event -&gt; {
+          System.out.println(&quot;Event payload: &quot; + event.payload);
+          return event.payload;
+        })
+    .runWith(Sink.ignore(), system);
+</code></pre></dd>
+</dl>
+<h2><a href="#performance-and-denormalization" name="performance-and-denormalization" class="anchor"><span class="anchor-link"></span></a>Performance and denormalization</h2>
+<p>When building systems using <a href="typed/persistence.html#event-sourcing-concepts">Event Sourcing</a> and CQRS (<a href="https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj554200%28v=pandp.10%29">Command &amp; Query Responsibility Segregation</a>) techniques it is tremendously important to realise that the write-side has completely different needs from the read-side, and separating those concerns into datastores that are optimised for either side makes it possible to offer the best experience for the write and read sides independently.</p>
+<p>For example, in a bidding system it is important to &ldquo;take the write&rdquo; and respond to the bidder that we have accepted the bid as soon as possible, which means that write-throughput is of highest importance for the write-side – often this means that data stores which are able to scale to accommodate these requirements have a less expressive query side.</p>
+<p>On the other hand the same application may have some complex statistics view or we may have analysts working with the data to figure out best bidding strategies and trends – this often requires some kind of expressive query capabilities like for example SQL or writing Spark jobs to analyse the data. Therefore the data stored in the write-side needs to be projected into the other read-optimised datastore.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>When referring to <strong>Materialized Views</strong> in Pekko Persistence think of it as &ldquo;some persistent storage of the result of a Query&rdquo;. In other words, it means that the view is created once, in order to be afterwards queried multiple times, as in this format it may be more efficient or interesting to query it (instead of the source events directly).</p></div>
+<h3><a href="#materialize-view-to-reactive-streams-compatible-datastore" name="materialize-view-to-reactive-streams-compatible-datastore" class="anchor"><span class="anchor-link"></span></a>Materialize view to Reactive Streams compatible datastore</h3>
+<p>If the read datastore exposes a <a href="https://www.reactive-streams.org">Reactive Streams</a> interface then implementing a simple projection is as simple as, using the read-journal and feeding it into the databases driver interface, for example like so:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L167-L180" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val system: ActorSystem = ActorSystem()
+
+val readJournal =
+  PersistenceQuery(system).readJournalFor[MyScaladslReadJournal](JournalId)
+val dbBatchWriter: Subscriber[immutable.Seq[Any]] =
+  ReactiveStreamsCompatibleDBDriver.batchWriter
+
+// Using an example (Reactive Streams) Database driver
+readJournal
+  .eventsByPersistenceId(&quot;user-1337&quot;, fromSequenceNr = 0L, toSequenceNr = Long.MaxValue)
+  .map(envelope =&gt; envelope.event)
+  .map(convertToReadSideTypes) // convert to datatype
+  .grouped(20) // batch inserts into groups of 20
+  .runWith(Sink.fromSubscriber(dbBatchWriter)) // write batches to read-side database</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L354-L362" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ReactiveStreamsCompatibleDBDriver driver = new ReactiveStreamsCompatibleDBDriver();
+final Subscriber&lt;List&lt;Object&gt;&gt; dbBatchWriter = driver.batchWriter();
+
+// Using an example (Reactive Streams) Database driver
+readJournal
+    .eventsByPersistenceId(&quot;user-1337&quot;, 0L, Long.MAX_VALUE)
+    .map(envelope -&gt; envelope.event())
+    .grouped(20) // batch inserts into groups of 20
+    .runWith(Sink.fromSubscriber(dbBatchWriter), system); // write batches to read-side database</code></pre></dd>
+</dl>
+<h3><a href="#materialize-view-using-mapasync" name="materialize-view-using-mapasync" class="anchor"><span class="anchor-link"></span></a>Materialize view using mapAsync</h3>
+<p>If the target database does not provide a reactive streams <code>Subscriber</code> that can perform writes, you may have to implement the write logic using plain functions or Actors instead.</p>
+<p>In case your write logic is state-less and you need to convert the events from one data type to another before writing into the alternative datastore, then the projection will look like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L277-L279" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait ExampleStore {
+  def save(event: Any): Future[Unit]
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L367-L374" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class ExampleStore {
+  CompletionStage&lt;Void&gt; save(Object any) {
+    // ...
+  }
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L283-L290" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val store: ExampleStore = ???
+
+readJournal
+  .eventsByTag(&quot;bid&quot;, NoOffset)
+  .mapAsync(1) { e =&gt;
+    store.save(e)
+  }
+  .runWith(Sink.ignore)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L386-L391" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ExampleStore store = new ExampleStore();
+
+readJournal
+    .eventsByTag(&quot;bid&quot;, new Sequence(0L))
+    .mapAsync(1, store::save)
+    .runWith(Sink.ignore(), system);</code></pre></dd>
+</dl>
+<h3><a href="#resumable-projections" name="resumable-projections" class="anchor"><span class="anchor-link"></span></a>Resumable projections</h3>
+<p>Sometimes, you may need to use &ldquo;resumable&rdquo; projections, which will not start from the beginning of time each time when run. In such case, the sequence number (or <code>offset</code>) of the processed event will be stored and used the next time this projection is started. This pattern is implemented in the <a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a> module.</p>
+<a id="read-journal-plugin-api"></a>
+<h2><a href="#query-plugins" name="query-plugins" class="anchor"><span class="anchor-link"></span></a>Query plugins</h2>
+<p>Query plugins are various (mostly community driven) <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/ReadJournal.html" title="org.apache.pekko.persistence.query.javadsl.ReadJournal"><code>ReadJournal</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/ReadJournal.html" title="org.apache.pekko.persistence.query.scaladsl.ReadJournal"><code>ReadJournal</code></a></span> implementations for all kinds of available datastores.</p>
+<p>This section aims to provide tips and guide plugin developers through implementing a custom query plugin. Most users will not need to implement journals themselves, except if targeting a not yet supported datastore.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Since different data stores provide different query capabilities journal plugins <strong>must extensively document</strong> their exposed semantics as well as handled query scenarios.</p></div>
+<h3><a href="#readjournal-plugin-api" name="readjournal-plugin-api" class="anchor"><span class="anchor-link"></span></a>ReadJournal plugin API</h3>
+<p>A read journal plugin must implement <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/ReadJournalProvider.html" title="org.apache.pekko.persistence.query.ReadJournalProvider"><code>pekko.query.ReadJournalProvider</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/ReadJournalProvider.html" title="org.apache.pekko.persistence.query.ReadJournalProvider"><code>pekko.query.ReadJournalProvider</code></a></span> which creates instances of <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/query/scaladsl/ReadJournal.html" title="pekko.persistence.query.scaladsl.ReadJournal"><code>pekko.persistence.query.scaladsl.ReadJournal</code></a> and <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/query/javadsl/ReadJournal.html" title="pekko.persistence.query.javadsl.ReadJournal"><code>persistence.query.javadsl.ReadJournal</code></a>. The plugin must implement both the <code>scaladsl</code> and the <code>javadsl</code> <span class="group-scala">traits</span><span class="group-java">interfaces</span> because the <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/scaladsl/Source.html" title="pekko.stream.scaladsl.Source"><code>pekko.stream.scaladsl.Source</code></a> and <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/javadsl/Source.html" title="pekko.stream.javadsl.Source"><code>stream.javadsl.Source</code></a> are different types and even though those types can be converted to each other it is most convenient for the end user to get access to the Java or Scala <code>Source</code> directly. As illustrated below one of the implementations can delegate to the other. </p>
+<p>Below is a simple journal implementation:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/PersistenceQueryDocSpec.scala#L47-L147" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+class MyReadJournalProvider(system: ExtendedActorSystem, config: Config) extends ReadJournalProvider {
+
+  private val readJournal: MyScaladslReadJournal =
+    new MyScaladslReadJournal(system, config)
+
+  override def scaladslReadJournal(): MyScaladslReadJournal =
+    readJournal
+
+  override def javadslReadJournal(): MyJavadslReadJournal =
+    new MyJavadslReadJournal(readJournal)
+}
+
+class MyScaladslReadJournal(system: ExtendedActorSystem, config: Config)
+    extends pekko.persistence.query.scaladsl.ReadJournal
+    with pekko.persistence.query.scaladsl.EventsByTagQuery
+    with pekko.persistence.query.scaladsl.EventsByPersistenceIdQuery
+    with pekko.persistence.query.scaladsl.PersistenceIdsQuery
+    with pekko.persistence.query.scaladsl.CurrentPersistenceIdsQuery {
+
+  private val refreshInterval: FiniteDuration =
+    config.getDuration(&quot;refresh-interval&quot;, MILLISECONDS).millis
+
+  /**
+   * You can use `NoOffset` to retrieve all events with a given tag or retrieve a subset of all
+   * events by specifying a `Sequence` `offset`. The `offset` corresponds to an ordered sequence number for
+   * the specific tag. Note that the corresponding offset of each event is provided in the
+   * [[pekko.persistence.query.EventEnvelope]], which makes it possible to resume the
+   * stream at a later point from a given offset.
+   *
+   * The `offset` is exclusive, i.e. the event with the exact same sequence number will not be included
+   * in the returned stream. This means that you can use the offset that is returned in `EventEnvelope`
+   * as the `offset` parameter in a subsequent query.
+   */
+  override def eventsByTag(tag: String, offset: Offset): Source[EventEnvelope, NotUsed] = offset match {
+    case Sequence(offsetValue) =&gt;
+      Source.fromGraph(new MyEventsByTagSource(tag, offsetValue, refreshInterval))
+    case NoOffset =&gt; eventsByTag(tag, Sequence(0L)) // recursive
+    case _ =&gt;
+      throw new IllegalArgumentException(&quot;MyJournal does not support &quot; + offset.getClass.getName + &quot; offsets&quot;)
+  }
+
+  override def eventsByPersistenceId(
+      persistenceId: String,
+      fromSequenceNr: Long,
+      toSequenceNr: Long): Source[EventEnvelope, NotUsed] = {
+    // implement in a similar way as eventsByTag
+    ???
+  }
+
+  override def persistenceIds(): Source[String, NotUsed] = {
+    // implement in a similar way as eventsByTag
+    ???
+  }
+
+  override def currentPersistenceIds(): Source[String, NotUsed] = {
+    // implement in a similar way as eventsByTag
+    ???
+  }
+
+  // possibility to add more plugin specific queries
+
+  def byTagsWithMeta(tags: Set[String]): Source[RichEvent, QueryMetadata] = {
+    // implement in a similar way as eventsByTag
+    ???
+  }
+
+}
+
+class MyJavadslReadJournal(scaladslReadJournal: MyScaladslReadJournal)
+    extends pekko.persistence.query.javadsl.ReadJournal
+    with pekko.persistence.query.javadsl.EventsByTagQuery
+    with pekko.persistence.query.javadsl.EventsByPersistenceIdQuery
+    with pekko.persistence.query.javadsl.PersistenceIdsQuery
+    with pekko.persistence.query.javadsl.CurrentPersistenceIdsQuery {
+
+  override def eventsByTag(tag: String, offset: Offset = Sequence(0L)): javadsl.Source[EventEnvelope, NotUsed] =
+    scaladslReadJournal.eventsByTag(tag, offset).asJava
+
+  override def eventsByPersistenceId(
+      persistenceId: String,
+      fromSequenceNr: Long = 0L,
+      toSequenceNr: Long = Long.MaxValue): javadsl.Source[EventEnvelope, NotUsed] =
+    scaladslReadJournal.eventsByPersistenceId(persistenceId, fromSequenceNr, toSequenceNr).asJava
+
+  override def persistenceIds(): javadsl.Source[String, NotUsed] =
+    scaladslReadJournal.persistenceIds().asJava
+
+  override def currentPersistenceIds(): javadsl.Source[String, NotUsed] =
+    scaladslReadJournal.currentPersistenceIds().asJava
+
+  // possibility to add more plugin specific queries
+
+  def byTagsWithMeta(tags: java.util.Set[String]): javadsl.Source[RichEvent, QueryMetadata] = {
+    import pekko.util.ccompat.JavaConverters._
+    scaladslReadJournal.byTagsWithMeta(tags.asScala.toSet).asJava
+  }
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/PersistenceQueryDocTest.java#L73-L208" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class MyReadJournalProvider implements ReadJournalProvider {
+  private final MyJavadslReadJournal javadslReadJournal;
+
+  public MyReadJournalProvider(ExtendedActorSystem system, Config config) {
+    this.javadslReadJournal = new MyJavadslReadJournal(system, config);
+  }
+
+  @Override
+  public MyScaladslReadJournal scaladslReadJournal() {
+    return new MyScaladslReadJournal(javadslReadJournal);
+  }
+
+  @Override
+  public MyJavadslReadJournal javadslReadJournal() {
+    return this.javadslReadJournal;
+  }
+}
+static class MyJavadslReadJournal
+    implements org.apache.pekko.persistence.query.javadsl.ReadJournal,
+        org.apache.pekko.persistence.query.javadsl.EventsByTagQuery,
+        org.apache.pekko.persistence.query.javadsl.EventsByPersistenceIdQuery,
+        org.apache.pekko.persistence.query.javadsl.PersistenceIdsQuery,
+        org.apache.pekko.persistence.query.javadsl.CurrentPersistenceIdsQuery {
+
+  private final Duration refreshInterval;
+  private Connection conn;
+
+  public MyJavadslReadJournal(ExtendedActorSystem system, Config config) {
+    refreshInterval = config.getDuration(&quot;refresh-interval&quot;);
+  }
+
+  /**
+   * You can use `NoOffset` to retrieve all events with a given tag or retrieve a subset of all
+   * events by specifying a `Sequence` `offset`. The `offset` corresponds to an ordered sequence
+   * number for the specific tag. Note that the corresponding offset of each event is provided in
+   * the [[pekko.persistence.query.EventEnvelope]], which makes it possible to resume the stream
+   * at a later point from a given offset.
+   *
+   * &lt;p&gt;The `offset` is exclusive, i.e. the event with the exact same sequence number will not be
+   * included in the returned stream. This means that you can use the offset that is returned in
+   * `EventEnvelope` as the `offset` parameter in a subsequent query.
+   */
+  @Override
+  public Source&lt;EventEnvelope, NotUsed&gt; eventsByTag(String tag, Offset offset) {
+    if (offset instanceof Sequence) {
+      Sequence sequenceOffset = (Sequence) offset;
+      return Source.fromGraph(
+          new MyEventsByTagSource(conn, tag, sequenceOffset.value(), refreshInterval));
+    } else if (offset == NoOffset.getInstance())
+      return eventsByTag(tag, Offset.sequence(0L)); // recursive
+    else
+      throw new IllegalArgumentException(
+          &quot;MyJavadslReadJournal does not support &quot; + offset.getClass().getName() + &quot; offsets&quot;);
+  }
+
+  @Override
+  public Source&lt;EventEnvelope, NotUsed&gt; eventsByPersistenceId(
+      String persistenceId, long fromSequenceNr, long toSequenceNr) {
+    // implement in a similar way as eventsByTag
+    throw new UnsupportedOperationException(&quot;Not implemented yet&quot;);
+  }
+
+  @Override
+  public Source&lt;String, NotUsed&gt; persistenceIds() {
+    // implement in a similar way as eventsByTag
+    throw new UnsupportedOperationException(&quot;Not implemented yet&quot;);
+  }
+
+  @Override
+  public Source&lt;String, NotUsed&gt; currentPersistenceIds() {
+    // implement in a similar way as eventsByTag
+    throw new UnsupportedOperationException(&quot;Not implemented yet&quot;);
+  }
+
+  // possibility to add more plugin specific queries
+
+  public Source&lt;RichEvent, QueryMetadata&gt; byTagsWithMeta(Set&lt;String&gt; tags) {
+    // implement in a similar way as eventsByTag
+    throw new UnsupportedOperationException(&quot;Not implemented yet&quot;);
+  }
+}
+static class MyScaladslReadJournal
+    implements org.apache.pekko.persistence.query.scaladsl.ReadJournal,
+        org.apache.pekko.persistence.query.scaladsl.EventsByTagQuery,
+        org.apache.pekko.persistence.query.scaladsl.EventsByPersistenceIdQuery,
+        org.apache.pekko.persistence.query.scaladsl.PersistenceIdsQuery,
+        org.apache.pekko.persistence.query.scaladsl.CurrentPersistenceIdsQuery {
+
+  private final MyJavadslReadJournal javadslReadJournal;
+
+  public MyScaladslReadJournal(MyJavadslReadJournal javadslReadJournal) {
+    this.javadslReadJournal = javadslReadJournal;
+  }
+
+  @Override
+  public org.apache.pekko.stream.scaladsl.Source&lt;EventEnvelope, NotUsed&gt; eventsByTag(
+      String tag, org.apache.pekko.persistence.query.Offset offset) {
+    return javadslReadJournal.eventsByTag(tag, offset).asScala();
+  }
+
+  @Override
+  public org.apache.pekko.stream.scaladsl.Source&lt;EventEnvelope, NotUsed&gt; eventsByPersistenceId(
+      String persistenceId, long fromSequenceNr, long toSequenceNr) {
+    return javadslReadJournal
+        .eventsByPersistenceId(persistenceId, fromSequenceNr, toSequenceNr)
+        .asScala();
+  }
+
+  @Override
+  public org.apache.pekko.stream.scaladsl.Source&lt;String, NotUsed&gt; persistenceIds() {
+    return javadslReadJournal.persistenceIds().asScala();
+  }
+
+  @Override
+  public org.apache.pekko.stream.scaladsl.Source&lt;String, NotUsed&gt; currentPersistenceIds() {
+    return javadslReadJournal.currentPersistenceIds().asScala();
+  }
+
+  // possibility to add more plugin specific queries
+
+  public org.apache.pekko.stream.scaladsl.Source&lt;RichEvent, QueryMetadata&gt; byTagsWithMeta(
+      scala.collection.Set&lt;String&gt; tags) {
+    Set&lt;String&gt; jTags = scala.collection.JavaConverters.setAsJavaSetConverter(tags).asJava();
+    return javadslReadJournal.byTagsWithMeta(jTags).asScala();
+  }
+}</code></pre></dd>
+</dl>
+<p>And the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/javadsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.javadsl.EventsByTagQuery"><code>eventsByTag</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/scaladsl/EventsByTagQuery.html" title="org.apache.pekko.persistence.query.scaladsl.EventsByTagQuery"><code>eventsByTag</code></a></span> could be backed by a GraphStage for example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/persistence/query/MyEventsByTagSource.scala#L25-L115" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyEventsByTagSource(tag: String, offset: Long, refreshInterval: FiniteDuration)
+    extends GraphStage[SourceShape[EventEnvelope]] {
+
+  private case object Continue
+  val out: Outlet[EventEnvelope] = Outlet(&quot;MyEventByTagSource.out&quot;)
+  override def shape: SourceShape[EventEnvelope] = SourceShape(out)
+
+  override protected def initialAttributes: Attributes = Attributes(ActorAttributes.IODispatcher)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new TimerGraphStageLogic(shape) with OutHandler {
+      lazy val system = materializer.system
+      private val Limit = 1000
+      private val connection: java.sql.Connection = ???
+      private var currentOffset = offset
+      private var buf = Vector.empty[EventEnvelope]
+      private val serialization = SerializationExtension(system)
+
+      override def preStart(): Unit = {
+        scheduleWithFixedDelay(Continue, refreshInterval, refreshInterval)
+      }
+
+      override def onPull(): Unit = {
+        query()
+        tryPush()
+      }
+
+      override def onDownstreamFinish(cause: Throwable): Unit = {
+        // close connection if responsible for doing so
+      }
+
+      private def query(): Unit = {
+        if (buf.isEmpty) {
+          try {
+            buf = Select.run(tag, currentOffset, Limit)
+          } catch {
+            case NonFatal(e) =&gt;
+              failStage(e)
+          }
+        }
+      }
+
+      private def tryPush(): Unit = {
+        if (buf.nonEmpty &amp;&amp; isAvailable(out)) {
+          push(out, buf.head)
+          buf = buf.tail
+        }
+      }
+
+      override protected def onTimer(timerKey: Any): Unit = timerKey match {
+        case Continue =&gt;
+          query()
+          tryPush()
+      }
+
+      object Select {
+        private def statement() =
+          connection.prepareStatement(&quot;&quot;&quot;
+            SELECT id, persistence_id, seq_nr, serializer_id, serializer_manifest, payload 
+            FROM journal WHERE tag = ? AND id &gt; ? 
+            ORDER BY id LIMIT ?
+      &quot;&quot;&quot;)
+
+        def run(tag: String, from: Long, limit: Int): Vector[EventEnvelope] = {
+          val s = statement()
+          try {
+            s.setString(1, tag)
+            s.setLong(2, from)
+            s.setLong(3, limit)
+            val rs = s.executeQuery()
+
+            val b = Vector.newBuilder[EventEnvelope]
+            while (rs.next()) {
+              val deserialized = serialization
+                .deserialize(rs.getBytes(&quot;payload&quot;), rs.getInt(&quot;serializer_id&quot;), rs.getString(&quot;serializer_manifest&quot;))
+                .get
+              currentOffset = rs.getLong(&quot;id&quot;)
+              b += EventEnvelope(
+                Offset.sequence(currentOffset),
+                rs.getString(&quot;persistence_id&quot;),
+                rs.getLong(&quot;seq_nr&quot;),
+                deserialized,
+                System.currentTimeMillis())
+            }
+            b.result()
+          } finally s.close()
+        }
+      }
+    }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/persistence/query/MyEventsByTagSource.java#L33-L141" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyEventsByTagSource extends GraphStage&lt;SourceShape&lt;EventEnvelope&gt;&gt; {
+  public Outlet&lt;EventEnvelope&gt; out = Outlet.create(&quot;MyEventByTagSource.out&quot;);
+  private static final String QUERY =
+      &quot;SELECT id, persistence_id, seq_nr, serializer_id, serializer_manifest, payload &quot;
+          + &quot;FROM journal WHERE tag = ? AND id &gt; ? &quot;
+          + &quot;ORDER BY id LIMIT ?&quot;;
+
+  enum Continue {
+    INSTANCE;
+  }
+
+  private static final int LIMIT = 1000;
+  private final Connection connection;
+  private final String tag;
+  private final long initialOffset;
+  private final Duration refreshInterval;
+
+  // assumes a shared connection, could also be a factory for creating connections/pool
+  public MyEventsByTagSource(
+      Connection connection, String tag, long initialOffset, Duration refreshInterval) {
+    this.connection = connection;
+    this.tag = tag;
+    this.initialOffset = initialOffset;
+    this.refreshInterval = refreshInterval;
+  }
+
+  @Override
+  public Attributes initialAttributes() {
+    return Attributes.apply(ActorAttributes.IODispatcher());
+  }
+
+  @Override
+  public SourceShape&lt;EventEnvelope&gt; shape() {
+    return SourceShape.of(out);
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new TimerGraphStageLogic(shape()) {
+      private ActorSystem system = materializer().system();
+      private long currentOffset = initialOffset;
+      private List&lt;EventEnvelope&gt; buf = new LinkedList&lt;&gt;();
+      private final Serialization serialization = SerializationExtension.get(system);
+
+      @Override
+      public void preStart() {
+        scheduleWithFixedDelay(Continue.INSTANCE, refreshInterval, refreshInterval);
+      }
+
+      @Override
+      public void onTimer(Object timerKey) {
+        query();
+        deliver();
+      }
+
+      private void deliver() {
+        if (isAvailable(out) &amp;&amp; !buf.isEmpty()) {
+          push(out, buf.remove(0));
+        }
+      }
+
+      private void query() {
+        if (buf.isEmpty()) {
+
+          try (PreparedStatement s = connection.prepareStatement(QUERY)) {
+            s.setString(1, tag);
+            s.setLong(2, currentOffset);
+            s.setLong(3, LIMIT);
+            try (ResultSet rs = s.executeQuery()) {
+              final List&lt;EventEnvelope&gt; res = new ArrayList&lt;&gt;(LIMIT);
+              while (rs.next()) {
+                Object deserialized =
+                    serialization
+                        .deserialize(
+                            rs.getBytes(&quot;payload&quot;),
+                            rs.getInt(&quot;serializer_id&quot;),
+                            rs.getString(&quot;serializer_manifest&quot;))
+                        .get();
+                currentOffset = rs.getLong(&quot;id&quot;);
+                res.add(
+                    new EventEnvelope(
+                        Offset.sequence(currentOffset),
+                        rs.getString(&quot;persistence_id&quot;),
+                        rs.getLong(&quot;seq_nr&quot;),
+                        deserialized,
+                        System.currentTimeMillis()));
+              }
+              buf = res;
+            }
+          } catch (Exception e) {
+            failStage(e);
+          }
+        }
+      }
+
+      {
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() {
+                query();
+                deliver();
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/ReadJournalProvider.html" title="org.apache.pekko.persistence.query.ReadJournalProvider"><code>ReadJournalProvider</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/query/ReadJournalProvider.html" title="org.apache.pekko.persistence.query.ReadJournalProvider"><code>ReadJournalProvider</code></a></span> class must have a constructor with one of these signatures:</p>
+<ul>
+  <li>constructor with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ExtendedActorSystem.html" title="org.apache.pekko.actor.ExtendedActorSystem"><code>ExtendedActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ExtendedActorSystem.html" title="org.apache.pekko.actor.ExtendedActorSystem"><code>ExtendedActorSystem</code></a></span> parameter, a <a href="https://javadoc.io/doc/com.typesafe/config/latest/com/typesafe/config/Config.html" title="com.typesafe.config.Config"><code>com.typesafe.config.Config</code></a> parameter, and a <code>String</code> parameter for the config path</li>
+  <li>constructor with a <code>ExtendedActorSystem</code> parameter, and a <code>com.typesafe.config.Config</code> parameter</li>
+  <li>constructor with one <code>ExtendedActorSystem</code> parameter</li>
+  <li>constructor without parameters</li>
+</ul>
+<p>The plugin section of the actor system&rsquo;s config will be passed in the config constructor parameter. The config path of the plugin is passed in the <code>String</code> parameter.</p>
+<p>If the underlying datastore only supports queries that are completed when they reach the end of the &ldquo;result set&rdquo;, the journal has to submit new queries after a while in order to support &ldquo;infinite&rdquo; event streams that include events stored after the initial query has completed. It is recommended that the plugin use a configuration property named <code>refresh-interval</code> for defining such a refresh interval. </p>
+<h2><a href="#scaling-out" name="scaling-out" class="anchor"><span class="anchor-link"></span></a>Scaling out</h2>
+<p>In a use case where the number of events are very high, the work needed for each event is high or where resilience is important so that if a node crashes the persistent queries are quickly started on a new node and can resume operations <a href="cluster-sharding.html">Cluster Sharding</a> together with event tagging is an excellent fit to shard events over a cluster.</p>
+<h2><a href="#example-project" name="example-project" class="anchor"><span class="anchor-link"></span></a>Example project</h2>
+<p>The <a href="https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/">Microservices with Pekko tutorial</a> explains how to use Event Sourcing and Projections together. The events are tagged to be consumed by even processors to build other representations from the events, or publish the events to other services.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/persistence-query.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="persistence-schema-evolution.html" title="Schema Evolution for Event Sourced Actors" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Schema Evolution for Event Sourced Actors
+</span>
+</div>
+</a>
+<a href="persistence-query-leveldb.html" title="Persistence Query for LevelDB" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Persistence Query for LevelDB
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

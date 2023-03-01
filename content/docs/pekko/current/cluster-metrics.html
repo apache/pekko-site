@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic Cluster Metrics Extension · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic Cluster Metrics Extension
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="cluster-metrics.html#classic-cluster-metrics-extension" class="header">Classic Cluster Metrics Extension</a>
+  <ul>
+    <li><a href="cluster-metrics.html#module-info" class="header">Module info</a></li>
+    <li><a href="cluster-metrics.html#introduction" class="header">Introduction</a></li>
+    <li><a href="cluster-metrics.html#metrics-collector" class="header">Metrics Collector</a></li>
+    <li><a href="cluster-metrics.html#metrics-events" class="header">Metrics Events</a></li>
+    <li><a href="cluster-metrics.html#hyperic-sigar-provisioning" class="header">Hyperic Sigar Provisioning</a></li>
+    <li><a href="cluster-metrics.html#adaptive-load-balancing" class="header">Adaptive Load Balancing</a></li>
+    <li><a href="cluster-metrics.html#subscribe-to-metrics-events" class="header">Subscribe to Metrics Events</a></li>
+    <li><a href="cluster-metrics.html#custom-metrics-collector" class="header">Custom Metrics Collector</a></li>
+    <li><a href="cluster-metrics.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="cluster-metrics.html#classic-cluster-metrics-extension" class="header">Classic Cluster Metrics Extension</a>
+  <ul>
+    <li><a href="cluster-metrics.html#module-info" class="header">Module info</a></li>
+    <li><a href="cluster-metrics.html#introduction" class="header">Introduction</a></li>
+    <li><a href="cluster-metrics.html#metrics-collector" class="header">Metrics Collector</a></li>
+    <li><a href="cluster-metrics.html#metrics-events" class="header">Metrics Events</a></li>
+    <li><a href="cluster-metrics.html#hyperic-sigar-provisioning" class="header">Hyperic Sigar Provisioning</a></li>
+    <li><a href="cluster-metrics.html#adaptive-load-balancing" class="header">Adaptive Load Balancing</a></li>
+    <li><a href="cluster-metrics.html#subscribe-to-metrics-events" class="header">Subscribe to Metrics Events</a></li>
+    <li><a href="cluster-metrics.html#custom-metrics-collector" class="header">Custom Metrics Collector</a></li>
+    <li><a href="cluster-metrics.html#configuration" class="header">Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-cluster-metrics-extension" name="classic-cluster-metrics-extension" class="anchor"><span class="anchor-link"></span></a>Classic Cluster Metrics Extension</h1>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Cluster Metrics Extension, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-metrics" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-metrics_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-metrics_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>and add the following configuration stanza to your <code>application.conf</code> :</p>
+<pre><code>pekko.extensions = [ &quot;pekko.cluster.metrics.ClusterMetricsExtension&quot; ]
+</code></pre>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster Metrics (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-metrics</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.metrics</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/metrics/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/metrics/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>The member nodes of the cluster can collect system health metrics and publish that to other cluster nodes and to the registered subscribers on the system event bus with the help of Cluster Metrics Extension.</p>
+
+<p>Cluster metrics information is primarily used for load-balancing routers, and can also be used to implement advanced metrics-based node life cycles, such as &ldquo;Node Let-it-crash&rdquo; when CPU steal time becomes excessive.</p>
+
+<p>Cluster members with status <a href="typed/cluster-membership.html#weaklyup-members">WeaklyUp</a>, if that feature is enabled, will participate in Cluster Metrics collection and dissemination.</p>
+
+<h2><a href="#metrics-collector" name="metrics-collector" class="anchor"><span class="anchor-link"></span></a>Metrics Collector</h2>
+
+<p>Metrics collection is delegated to an implementation of <code>org.apache.pekko.cluster.metrics.MetricsCollector</code>.</p>
+
+<p>Different collector implementations provide different subsets of metrics published to the cluster. Certain message routing and let-it-crash functions may not work when Sigar is not provisioned.</p>
+
+<p>Cluster metrics extension comes with two built-in collector implementations:</p>
+
+<ol>
+  <li><code>org.apache.pekko.cluster.metrics.SigarMetricsCollector</code>, which requires Sigar provisioning, and is more rich/precise</li>
+  <li><code>org.apache.pekko.cluster.metrics.JmxMetricsCollector</code>, which is used as fall back, and is less rich/precise</li>
+</ol>
+<p>You can also plug-in your own metrics collector implementation.</p>
+<p>By default, metrics extension will use collector provider fall back and will try to load them in this order:</p>
+<ol>
+  <li>configured user-provided collector</li>
+  <li>built-in <code>org.apache.pekko.cluster.metrics.SigarMetricsCollector</code></li>
+  <li>and finally <code>org.apache.pekko.cluster.metrics.JmxMetricsCollector</code></li>
+</ol>
+<h2><a href="#metrics-events" name="metrics-events" class="anchor"><span class="anchor-link"></span></a>Metrics Events</h2>
+<p>Metrics extension periodically publishes current snapshot of the cluster metrics to the node system event bus.</p>
+<p>The publication interval is controlled by the <code>pekko.cluster.metrics.collector.sample-interval</code> setting.</p>
+<p>The payload of the <code>org.apache.pekko.cluster.metrics.ClusterMetricsChanged</code> event will contain latest metrics of the node as well as other cluster member nodes metrics gossip which was received during the collector sample interval.</p>
+<p>You can subscribe your metrics listener actors to these events in order to implement custom node lifecycle:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><code class="language-scala">ClusterMetricsExtension(system).subscribe(metricsListenerActor)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><code class="language-java">ClusterMetricsExtension.get(system).subscribe(metricsListenerActor);
+</code></pre></dd>
+</dl>
+<h2><a href="#hyperic-sigar-provisioning" name="hyperic-sigar-provisioning" class="anchor"><span class="anchor-link"></span></a>Hyperic Sigar Provisioning</h2>
+<p>Both user-provided and built-in metrics collectors can optionally use <a href="http://www.hyperic.com/products/sigar">Hyperic Sigar</a> for a wider and more accurate range of metrics compared to what can be retrieved from ordinary JMX MBeans.</p>
+<p>Sigar is using a native o/s library, and requires library provisioning, i.e. deployment, extraction and loading of the o/s native library into JVM at runtime.</p>
+<p>User can provision Sigar classes and native library in one of the following ways:</p>
+<ol>
+  <li>Use <a href="https://github.com/kamon-io/sigar-loader">Kamon sigar-loader</a> as a project dependency for the user project. Metrics extension will extract and load sigar library on demand with help of Kamon sigar provisioner.</li>
+  <li>Use <a href="https://github.com/kamon-io/sigar-loader">Kamon sigar-loader</a> as java agent: <code>java -javaagent:/path/to/sigar-loader.jar</code>. Kamon sigar loader agent will extract and load sigar library during JVM start.</li>
+  <li>Place <code>sigar.jar</code> on the <code>classpath</code> and Sigar native library for the o/s on the <code>java.library.path</code>. User is required to manage both project dependency and library deployment manually.</li>
+</ol><div class="callout warning "><div class="callout-title">Warning</div>
+<p>When using <a href="https://github.com/kamon-io/sigar-loader">Kamon sigar-loader</a> and running multiple instances of the same application on the same host, you have to make sure that sigar library is extracted to a unique per instance directory. You can control the extract directory with the <code>pekko.cluster.metrics.native-library-extract-folder</code> configuration setting.</p></div>
+<p>To enable usage of Sigar you can add the following dependency to the user project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "io.kamon" % "sigar-loader" % "1.6.6-rev002"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.kamon&lt;/groupId&gt;
+    &lt;artifactId&gt;sigar-loader&lt;/artifactId&gt;
+    &lt;version&gt;1.6.6-rev002&lt;/version&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
+  implementation "io.kamon:sigar-loader:1.6.6-rev002"
+}</code></pre></dd></dl>
+<p>You can download Kamon sigar-loader from <a href="https://search.maven.org/search?q=sigar-loader">Maven Central</a></p>
+<h2><a href="#adaptive-load-balancing" name="adaptive-load-balancing" class="anchor"><span class="anchor-link"></span></a>Adaptive Load Balancing</h2>
+<p>The <code>AdaptiveLoadBalancingPool</code> / <code>AdaptiveLoadBalancingGroup</code> performs load balancing of messages to cluster nodes based on the cluster metrics data. It uses random selection of routees with probabilities derived from the remaining capacity of the corresponding node. It can be configured to use a specific MetricsSelector to produce the probabilities, a.k.a. weights:</p>
+<ul>
+  <li><code>heap</code> / <code>HeapMetricsSelector</code> - Used and max JVM heap memory. Weights based on remaining heap capacity; (max - used) / max</li>
+  <li><code>load</code> / <code>SystemLoadAverageMetricsSelector</code> - System load average for the past 1 minute, corresponding value can be found in <code>top</code> of Linux systems. The system is possibly nearing a bottleneck if the system load average is nearing number of cpus/cores. Weights based on remaining load capacity; 1 - (load / processors)</li>
+  <li><code>cpu</code> / <code>CpuMetricsSelector</code> - CPU utilization in percentage, sum of User + Sys + Nice + Wait. Weights based on remaining cpu capacity; 1 - utilization</li>
+  <li><code>mix</code> / <code>MixMetricsSelector</code> - Combines heap, cpu and load. Weights based on mean of remaining capacity of the combined selectors.</li>
+  <li>Any custom implementation of <code>org.apache.pekko.cluster.metrics.MetricsSelector</code></li>
+</ul>
+<p>The collected metrics values are smoothed with <a href="https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average">exponential weighted moving average</a>. In the <a href="cluster-usage.html#cluster-configuration">Cluster configuration</a> you can adjust how quickly past data is decayed compared to new data.</p>
+<p>Let&rsquo;s take a look at this router in action. What can be more demanding than calculating factorials?</p>
+<p>The backend worker that performs the factorial calculation:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/cluster/FactorialBackend.scala#L26-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class FactorialBackend extends Actor with ActorLogging {
+
+  import context.dispatcher
+
+  def receive = {
+    case (n: Int) =&gt;
+      Future(factorial(n))
+        .map { result =&gt;
+          (n, result)
+        }
+        .pipeTo(sender())
+  }
+
+  def factorial(n: Int): BigInt = {
+    @tailrec def factorialAcc(acc: BigInt, n: Int): BigInt = {
+      if (n &lt;= 1) acc
+      else factorialAcc(acc * n, n - 1)
+    }
+    factorialAcc(BigInt(1), n)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/cluster/FactorialBackend.java#L23-L47" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class FactorialBackend extends AbstractActor {
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Integer.class,
+            n -&gt; {
+              CompletableFuture&lt;FactorialResult&gt; result =
+                  CompletableFuture.supplyAsync(() -&gt; factorial(n))
+                      .thenApply((factorial) -&gt; new FactorialResult(n, factorial));
+
+              pipe(result, getContext().dispatcher()).to(getSender());
+            })
+        .build();
+  }
+
+  BigInteger factorial(int n) {
+    BigInteger acc = BigInteger.ONE;
+    for (int i = 1; i &lt;= n; ++i) {
+      acc = acc.multiply(BigInteger.valueOf(i));
+    }
+    return acc;
+  }
+}</code></pre></dd>
+</dl>
+<p>The frontend that receives user jobs and delegates to the backends via the router:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/cluster/FactorialFrontend.scala#L29-L56" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class FactorialFrontend(upToN: Int, repeat: Boolean) extends Actor with ActorLogging {
+
+  val backend = context.actorOf(FromConfig.props(), name = &quot;factorialBackendRouter&quot;)
+
+  override def preStart(): Unit = {
+    sendJobs()
+    if (repeat) {
+      context.setReceiveTimeout(10.seconds)
+    }
+  }
+
+  def receive = {
+    case (n: Int, factorial: BigInt) =&gt;
+      if (n == upToN) {
+        log.debug(&quot;{}! = {}&quot;, n, factorial)
+        if (repeat) sendJobs()
+        else context.stop(self)
+      }
+    case ReceiveTimeout =&gt;
+      log.info(&quot;Timeout&quot;)
+      sendJobs()
+  }
+
+  def sendJobs(): Unit = {
+    log.info(&quot;Starting batch of factorials up to [{}]&quot;, upToN)
+    (1 to upToN).foreach { backend ! _ }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/cluster/FactorialFrontend.java#L39-L86" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class FactorialFrontend extends AbstractActor {
+  final int upToN;
+  final boolean repeat;
+
+  LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+
+  ActorRef backend =
+      getContext().actorOf(FromConfig.getInstance().props(), &quot;factorialBackendRouter&quot;);
+
+  public FactorialFrontend(int upToN, boolean repeat) {
+    this.upToN = upToN;
+    this.repeat = repeat;
+  }
+
+  @Override
+  public void preStart() {
+    sendJobs();
+    getContext().setReceiveTimeout(Duration.ofSeconds(10));
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            FactorialResult.class,
+            result -&gt; {
+              if (result.n == upToN) {
+                log.debug(&quot;{}! = {}&quot;, result.n, result.factorial);
+                if (repeat) sendJobs();
+                else getContext().stop(getSelf());
+              }
+            })
+        .match(
+            ReceiveTimeout.class,
+            x -&gt; {
+              log.info(&quot;Timeout&quot;);
+              sendJobs();
+            })
+        .build();
+  }
+
+  void sendJobs() {
+    log.info(&quot;Starting batch of factorials up to [{}]&quot;, upToN);
+    for (int n = 1; n &lt;= upToN; n++) {
+      backend.tell(n, getSelf());
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>As you can see, the router is defined in the same way as other routers, and in this case it is configured as follows:</p>
+<pre><code>pekko.actor.deployment {
+  /factorialFrontend/factorialBackendRouter = {
+    # Router type provided by metrics extension.
+    router = cluster-metrics-adaptive-group
+    # Router parameter specific for metrics extension.
+    # metrics-selector = heap
+    # metrics-selector = load
+    # metrics-selector = cpu
+    metrics-selector = mix
+    #
+    routees.paths = [&quot;/user/factorialBackend&quot;]
+    cluster {
+      enabled = on
+      use-roles = [&quot;backend&quot;]
+      allow-local-routees = off
+    }
+  }
+}
+</code></pre>
+<p>It is only <code>router</code> type and the <code>metrics-selector</code> parameter that is specific to this router, other things work in the same way as other routers.</p>
+<p>The same type of router could also have been defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/cluster/FactorialFrontend.scala#L80-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.cluster.routing.ClusterRouterGroup
+import pekko.cluster.routing.ClusterRouterGroupSettings
+import pekko.cluster.metrics.AdaptiveLoadBalancingGroup
+import pekko.cluster.metrics.HeapMetricsSelector
+
+val backend = context.actorOf(
+  ClusterRouterGroup(
+    AdaptiveLoadBalancingGroup(HeapMetricsSelector),
+    ClusterRouterGroupSettings(
+      totalInstances = 100,
+      routeesPaths = List(&quot;/user/factorialBackend&quot;),
+      allowLocalRoutees = true,
+      useRoles = Set(&quot;backend&quot;))).props(),
+  name = &quot;factorialBackendRouter2&quot;)
+
+import pekko.cluster.routing.ClusterRouterPool
+import pekko.cluster.routing.ClusterRouterPoolSettings
+import pekko.cluster.metrics.AdaptiveLoadBalancingPool
+import pekko.cluster.metrics.SystemLoadAverageMetricsSelector
+
+val backend = context.actorOf(
+  ClusterRouterPool(
+    AdaptiveLoadBalancingPool(SystemLoadAverageMetricsSelector),
+    ClusterRouterPoolSettings(
+      totalInstances = 100,
+      maxInstancesPerNode = 3,
+      allowLocalRoutees = false,
+      useRoles = Set(&quot;backend&quot;))).props(Props[FactorialBackend]()),
+  name = &quot;factorialBackendRouter3&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/cluster/FactorialFrontend.java#L92-L106" target="_blank" title="Go to snippet source">source</a><code class="language-java">int totalInstances = 100;
+Iterable&lt;String&gt; routeesPaths = Arrays.asList(&quot;/user/factorialBackend&quot;, &quot;&quot;);
+boolean allowLocalRoutees = true;
+Set&lt;String&gt; useRoles = new HashSet&lt;&gt;(Arrays.asList(&quot;backend&quot;));
+ActorRef backend =
+    getContext()
+        .actorOf(
+            new ClusterRouterGroup(
+                    new AdaptiveLoadBalancingGroup(
+                        HeapMetricsSelector.getInstance(), Collections.&lt;String&gt;emptyList()),
+                    new ClusterRouterGroupSettings(
+                        totalInstances, routeesPaths, allowLocalRoutees, useRoles))
+                .props(),
+            &quot;factorialBackendRouter2&quot;);
+
+int totalInstances = 100;
+int maxInstancesPerNode = 3;
+boolean allowLocalRoutees = false;
+Set&lt;String&gt; useRoles = new HashSet&lt;&gt;(Arrays.asList(&quot;backend&quot;));
+ActorRef backend =
+    getContext()
+        .actorOf(
+            new ClusterRouterPool(
+                    new AdaptiveLoadBalancingPool(
+                        SystemLoadAverageMetricsSelector.getInstance(), 0),
+                    new ClusterRouterPoolSettings(
+                        totalInstances, maxInstancesPerNode, allowLocalRoutees, useRoles))
+                .props(Props.create(FactorialBackend.class)),
+            &quot;factorialBackendRouter3&quot;);</code></pre></dd>
+</dl>
+<h2><a href="#subscribe-to-metrics-events" name="subscribe-to-metrics-events" class="anchor"><span class="anchor-link"></span></a>Subscribe to Metrics Events</h2>
+<p>It is possible to subscribe to the metrics events directly to implement other functionality.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/cluster/MetricsListener.scala#L17-L59" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorLogging
+import pekko.actor.Actor
+import pekko.cluster.Cluster
+import pekko.cluster.metrics.ClusterMetricsEvent
+import pekko.cluster.metrics.ClusterMetricsChanged
+import pekko.cluster.ClusterEvent.CurrentClusterState
+import pekko.cluster.metrics.NodeMetrics
+import pekko.cluster.metrics.StandardMetrics.HeapMemory
+import pekko.cluster.metrics.StandardMetrics.Cpu
+import pekko.cluster.metrics.ClusterMetricsExtension
+
+class MetricsListener extends Actor with ActorLogging {
+  val selfAddress = Cluster(context.system).selfAddress
+  val extension = ClusterMetricsExtension(context.system)
+
+  // Subscribe unto ClusterMetricsEvent events.
+  override def preStart(): Unit = extension.subscribe(self)
+
+  // Unsubscribe from ClusterMetricsEvent events.
+  override def postStop(): Unit = extension.unsubscribe(self)
+
+  def receive = {
+    case ClusterMetricsChanged(clusterMetrics) =&gt;
+      clusterMetrics.filter(_.address == selfAddress).foreach { nodeMetrics =&gt;
+        logHeap(nodeMetrics)
+        logCpu(nodeMetrics)
+      }
+    case state: CurrentClusterState =&gt; // Ignore.
+  }
+
+  def logHeap(nodeMetrics: NodeMetrics): Unit = nodeMetrics match {
+    case HeapMemory(address, timestamp, used, committed, max) =&gt;
+      log.info(&quot;Used heap: {} MB&quot;, used.doubleValue / 1024 / 1024)
+    case _ =&gt; // No heap info.
+  }
+
+  def logCpu(nodeMetrics: NodeMetrics): Unit = nodeMetrics match {
+    case Cpu(address, timestamp, Some(systemLoadAverage), cpuCombined, cpuStolen, processors) =&gt;
+      log.info(&quot;Load: {} ({} processors)&quot;, systemLoadAverage, processors)
+    case _ =&gt; // No cpu info.
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/cluster/MetricsListener.java#L17-L82" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.AbstractActor;
+import org.apache.pekko.cluster.Cluster;
+import org.apache.pekko.cluster.ClusterEvent.CurrentClusterState;
+import org.apache.pekko.cluster.metrics.ClusterMetricsChanged;
+import org.apache.pekko.cluster.metrics.NodeMetrics;
+import org.apache.pekko.cluster.metrics.StandardMetrics;
+import org.apache.pekko.cluster.metrics.StandardMetrics.HeapMemory;
+import org.apache.pekko.cluster.metrics.StandardMetrics.Cpu;
+import org.apache.pekko.cluster.metrics.ClusterMetricsExtension;
+import org.apache.pekko.event.Logging;
+import org.apache.pekko.event.LoggingAdapter;
+
+public class MetricsListener extends AbstractActor {
+  LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+
+  Cluster cluster = Cluster.get(getContext().getSystem());
+
+  ClusterMetricsExtension extension = ClusterMetricsExtension.get(getContext().getSystem());
+
+  // Subscribe unto ClusterMetricsEvent events.
+  @Override
+  public void preStart() {
+    extension.subscribe(getSelf());
+  }
+
+  // Unsubscribe from ClusterMetricsEvent events.
+  @Override
+  public void postStop() {
+    extension.unsubscribe(getSelf());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            ClusterMetricsChanged.class,
+            clusterMetrics -&gt; {
+              for (NodeMetrics nodeMetrics : clusterMetrics.getNodeMetrics()) {
+                if (nodeMetrics.address().equals(cluster.selfAddress())) {
+                  logHeap(nodeMetrics);
+                  logCpu(nodeMetrics);
+                }
+              }
+            })
+        .match(
+            CurrentClusterState.class,
+            message -&gt; {
+              // Ignore.
+            })
+        .build();
+  }
+
+  void logHeap(NodeMetrics nodeMetrics) {
+    HeapMemory heap = StandardMetrics.extractHeapMemory(nodeMetrics);
+    if (heap != null) {
+      log.info(&quot;Used heap: {} MB&quot;, ((double) heap.used()) / 1024 / 1024);
+    }
+  }
+
+  void logCpu(NodeMetrics nodeMetrics) {
+    Cpu cpu = StandardMetrics.extractCpu(nodeMetrics);
+    if (cpu != null &amp;&amp; cpu.systemLoadAverage().isDefined()) {
+      log.info(&quot;Load: {} ({} processors)&quot;, cpu.systemLoadAverage().get(), cpu.processors());
+    }
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#custom-metrics-collector" name="custom-metrics-collector" class="anchor"><span class="anchor-link"></span></a>Custom Metrics Collector</h2>
+<p>Metrics collection is delegated to the implementation of <code>org.apache.pekko.cluster.metrics.MetricsCollector</code></p>
+<p>You can plug-in your own metrics collector instead of built-in <code>org.apache.pekko.cluster.metrics.SigarMetricsCollector</code> or <code>org.apache.pekko.cluster.metrics.JmxMetricsCollector</code>.</p>
+<p>Look at those two implementations for inspiration.</p>
+<p>Custom metrics collector implementation class must be specified in the <code>pekko.cluster.metrics.collector.provider</code> configuration property.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>The Cluster metrics extension can be configured with the following properties:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-metrics/src/main/resources/reference.conf" target="_blank" title="Go to snippet source">source</a><code class="language-conf">##############################################
+# Pekko Cluster Metrics Reference Config File #
+##############################################
+
+# This is the reference config file that contains all the default settings.
+# Make your edits in your application.conf in order to override these settings.
+
+# Sigar provisioning:
+#
+#  User can provision sigar classes and native library in one of the following ways:
+# 
+#  1) Use https://github.com/kamon-io/sigar-loader Kamon sigar-loader as a project dependency for the user project.
+#  Metrics extension will extract and load sigar library on demand with help of Kamon sigar provisioner.
+# 
+#  2) Use https://github.com/kamon-io/sigar-loader Kamon sigar-loader as java agent: `java -javaagent:/path/to/sigar-loader.jar`
+#  Kamon sigar loader agent will extract and load sigar library during JVM start.
+# 
+#  3) Place `sigar.jar` on the `classpath` and sigar native library for the o/s on the `java.library.path`
+#  User is required to manage both project dependency and library deployment manually.
+
+# Cluster metrics extension.
+# Provides periodic statistics collection and publication throughout the cluster.
+pekko.cluster.metrics {
+  # Full path of dispatcher configuration key.
+  dispatcher = &quot;pekko.actor.default-dispatcher&quot;
+  # How long should any actor wait before starting the periodic tasks.
+  periodic-tasks-initial-delay = 1s
+  # Sigar native library extract location.
+  # Use per-application-instance scoped location, such as program working directory.
+  native-library-extract-folder = ${user.dir}&quot;/native&quot;
+  # Metrics supervisor actor.
+  supervisor {
+    # Actor name. Example name space: /system/cluster-metrics
+    name = &quot;cluster-metrics&quot;
+    # Supervision strategy.
+    strategy {
+      #
+      # FQCN of class providing `org.apache.pekko.actor.SupervisorStrategy`.
+      # Must have a constructor with signature `&lt;init&gt;(com.typesafe.config.Config)`.
+      # Default metrics strategy provider is a configurable extension of `OneForOneStrategy`.
+      provider = &quot;org.apache.pekko.cluster.metrics.ClusterMetricsStrategy&quot;
+      #
+      # Configuration of the default strategy provider.
+      # Replace with custom settings when overriding the provider.
+      configuration = {
+        # Log restart attempts.
+        loggingEnabled = true
+        # Child actor restart-on-failure window.
+        withinTimeRange = 3s
+        # Maximum number of restart attempts before child actor is stopped.
+        maxNrOfRetries = 3
+      }
+    }
+  }
+  # Metrics collector actor.
+  collector {
+    # Enable or disable metrics collector for load-balancing nodes.
+    # Metrics collection can also be controlled at runtime by sending control messages
+    # to /system/cluster-metrics actor: `org.apache.pekko.cluster.metrics.{CollectionStartMessage,CollectionStopMessage}`
+    enabled = on
+    # FQCN of the metrics collector implementation.
+    # It must implement `org.apache.pekko.cluster.metrics.MetricsCollector` and
+    # have public constructor with org.apache.pekko.actor.ActorSystem parameter.
+    # Will try to load in the following order of priority:
+    # 1) configured custom collector 2) internal `SigarMetricsCollector` 3) internal `JmxMetricsCollector`
+    provider = &quot;&quot;
+    # Try all 3 available collector providers, or else fail on the configured custom collector provider.
+    fallback = true
+    # How often metrics are sampled on a node.
+    # Shorter interval will collect the metrics more often.
+    # Also controls frequency of the metrics publication to the node system event bus.
+    sample-interval = 3s
+    # How often a node publishes metrics information to the other nodes in the cluster.
+    # Shorter interval will publish the metrics gossip more often.
+    gossip-interval = 3s
+    # How quickly the exponential weighting of past data is decayed compared to
+    # new data. Set lower to increase the bias toward newer values.
+    # The relevance of each data sample is halved for every passing half-life
+    # duration, i.e. after 4 times the half-life, a data sample’s relevance is
+    # reduced to 6% of its original relevance. The initial relevance of a data
+    # sample is given by 1 – 0.5 ^ (collect-interval / half-life).
+    # See https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
+    moving-average-half-life = 12s
+  }
+}
+
+# Cluster metrics extension serializers and routers.
+pekko.actor {
+  # Protobuf serializer for remote cluster metrics messages.
+  serializers {
+    pekko-cluster-metrics = &quot;org.apache.pekko.cluster.metrics.protobuf.MessageSerializer&quot;
+  }
+  # Interface binding for remote cluster metrics messages.
+  serialization-bindings {
+    &quot;org.apache.pekko.cluster.metrics.ClusterMetricsMessage&quot; = pekko-cluster-metrics
+    &quot;org.apache.pekko.cluster.metrics.AdaptiveLoadBalancingPool&quot; = pekko-cluster-metrics
+    &quot;org.apache.pekko.cluster.metrics.MixMetricsSelector&quot; = pekko-cluster-metrics
+    &quot;org.apache.pekko.cluster.metrics.CpuMetricsSelector$&quot; = pekko-cluster-metrics
+    &quot;org.apache.pekko.cluster.metrics.HeapMetricsSelector$&quot; = pekko-cluster-metrics
+    &quot;org.apache.pekko.cluster.metrics.SystemLoadAverageMetricsSelector$&quot; = pekko-cluster-metrics
+  }
+  # Globally unique metrics extension serializer identifier.
+  serialization-identifiers {
+    &quot;org.apache.pekko.cluster.metrics.protobuf.MessageSerializer&quot; = 10
+  }
+  #  Provide routing of messages based on cluster metrics.
+  router.type-mapping {
+    cluster-metrics-adaptive-pool  = &quot;org.apache.pekko.cluster.metrics.AdaptiveLoadBalancingPool&quot;
+    cluster-metrics-adaptive-group = &quot;org.apache.pekko.cluster.metrics.AdaptiveLoadBalancingGroup&quot;
+  }
+}</code></pre>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/cluster-metrics.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="cluster-sharding.html" title="Classic Cluster Sharding" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Cluster Sharding
+</span>
+</div>
+</a>
+<a href="distributed-data.html" title="Classic Distributed Data" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Distributed Data
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

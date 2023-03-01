@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Routers · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Routers
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html#routers" class="active page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/routers.html#routers" class="header">Routers</a>
+  <ul>
+    <li><a href="../typed/routers.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/routers.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/routers.html#pool-router" class="header">Pool Router</a></li>
+    <li><a href="../typed/routers.html#group-router" class="header">Group Router</a></li>
+    <li><a href="../typed/routers.html#routing-strategies" class="header">Routing strategies</a></li>
+    <li><a href="../typed/routers.html#routers-and-performance" class="header">Routers and performance</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/routers.html#routers" class="header">Routers</a>
+  <ul>
+    <li><a href="../typed/routers.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/routers.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/routers.html#pool-router" class="header">Pool Router</a></li>
+    <li><a href="../typed/routers.html#group-router" class="header">Group Router</a></li>
+    <li><a href="../typed/routers.html#routing-strategies" class="header">Routing strategies</a></li>
+    <li><a href="../typed/routers.html#routers-and-performance" class="header">Routers and performance</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#routers" name="routers" class="anchor"><span class="anchor-link"></span></a>Routers</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../routing.html">Classic Routing</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Pekko Actor Typed, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>In some cases it is useful to distribute messages of the same type over a set of actors, so that messages can be processed in parallel - a single actor will only process one message at a time.</p>
+<p>The router itself is a behavior that is spawned into a running actor that will then forward any message sent to it to one final recipient out of the set of routees.</p>
+<p>There are two kinds of routers included in Pekko Typed - the pool router and the group router.</p>
+<h2><a href="#pool-router" name="pool-router" class="anchor"><span class="anchor-link"></span></a>Pool Router</h2>
+<p>The pool router is created with a routee <code>Behavior</code> and spawns a number of children with that behavior which it will then forward messages to.</p>
+<p>If a child is stopped the pool router removes it from its set of routees. When the last child stops the router itself stops. To make a resilient router that deals with failures the routee <code>Behavior</code> must be supervised.</p>
+<p>As actor children are always local the routees are never spread across a cluster with a pool router.</p>
+<p>Let&rsquo;s first introduce the routee:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L29-L43" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Worker {
+  sealed trait Command
+  case class DoLog(text: String) extends Command
+
+  def apply(): Behavior[Command] = Behaviors.setup { context =&gt;
+    context.log.info(&quot;Starting worker&quot;)
+
+    Behaviors.receiveMessage {
+      case DoLog(text) =&gt;
+        context.log.info(&quot;Got message {}&quot;, text)
+        Behaviors.same
+    }
+  }
+}
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L47-L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">class Worker {
+  interface Command {}
+
+  static class DoLog implements Command {
+    public final String text;
+
+    public DoLog(String text) {
+      this.text = text;
+    }
+  }
+
+  static final Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(
+        context -&gt; {
+          context.getLog().info(&quot;Starting worker&quot;);
+
+          return Behaviors.receive(Command.class)
+              .onMessage(DoLog.class, doLog -&gt; onDoLog(context, doLog))
+              .build();
+        });
+  }
+
+  private static Behavior&lt;Command&gt; onDoLog(ActorContext&lt;Command&gt; context, DoLog doLog) {
+    context.getLog().info(&quot;Got message {}&quot;, doLog.text);
+    return Behaviors.same();
+  }
+}
+
+static class Proxy {
+
+  public final ServiceKey&lt;Message&gt; registeringKey =
+      ServiceKey.create(Message.class, &quot;aggregator-key&quot;);
+
+  public String mapping(Message message) {
+    return message.getId();
+  }
+
+  static class Message {
+
+    public Message(String id, String content) {
+      this.id = id;
+      this.content = content;
+    }
+
+    private String content;
+    private String id;
+
+    public final String getContent() {
+      return content;
+    }
+
+    public final String getId() {
+      return id;
+    }
+  }
+
+  static Behavior&lt;Message&gt; create(ActorRef&lt;String&gt; monitor) {
+    return Behaviors.receive(Message.class)
+        .onMessage(Message.class, in -&gt; onMyMessage(monitor, in))
+        .build();
+  }
+
+  private static Behavior&lt;Message&gt; onMyMessage(ActorRef&lt;String&gt; monitor, Message message) {
+    monitor.tell(message.getId());
+    return Behaviors.same();
+  }
+}
+</code></pre></dd>
+</dl>
+<p>After having defined the routee, we can now concentrate on configuring the router itself. Note again that the router is an Actor in itself:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L18-L115" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.testkit.typed.scaladsl.{ LogCapturing, ScalaTestWithActorTestKit }
+import pekko.actor.typed.{ ActorRef, Behavior, SupervisorStrategy }
+import pekko.actor.typed.receptionist.{ Receptionist, ServiceKey }
+import pekko.actor.typed.scaladsl.{ Behaviors, Routers }
+
+// This would be defined within your actor object
+Behaviors.setup[Unit] { ctx =&gt;
+  val pool = Routers.pool(poolSize = 4) {
+    // make sure the workers are restarted if they fail
+    Behaviors.supervise(Worker()).onFailure[Exception](SupervisorStrategy.restart)
+  }
+  val router = ctx.spawn(pool, &quot;worker-pool&quot;)
+
+  (0 to 10).foreach { n =&gt;
+    router ! Worker.DoLog(s&quot;msg $n&quot;)
+  }
+
+  val poolWithBroadcast = pool.withBroadcastPredicate(_.isInstanceOf[DoBroadcastLog])
+  val routerWithBroadcast = ctx.spawn(poolWithBroadcast, &quot;pool-with-broadcast&quot;)
+  // this will be sent to all 4 routees
+  routerWithBroadcast ! DoBroadcastLog(&quot;msg&quot;)
+  Behaviors.empty
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L22-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.SupervisorStrategy;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.GroupRouter;
+import org.apache.pekko.actor.typed.javadsl.PoolRouter;
+import org.apache.pekko.actor.typed.javadsl.Routers;
+import org.apache.pekko.actor.typed.receptionist.Receptionist;
+import org.apache.pekko.actor.typed.receptionist.ServiceKey;
+
+import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.scalatestplus.junit.JUnitSuite;
+
+// This would be defined within your actor class
+Behaviors.setup(
+    context -&gt; {
+      int poolSize = 4;
+      PoolRouter&lt;Worker.Command&gt; pool =
+          Routers.pool(
+              poolSize,
+              // make sure the workers are restarted if they fail
+              Behaviors.supervise(Worker.create()).onFailure(SupervisorStrategy.restart()));
+      ActorRef&lt;Worker.Command&gt; router = context.spawn(pool, &quot;worker-pool&quot;);
+
+      for (int i = 0; i &lt; 10; i++) {
+        router.tell(new Worker.DoLog(&quot;msg &quot; + i));
+      }
+    });</code></pre></dd>
+</dl>
+<h3><a href="#configuring-dispatchers" name="configuring-dispatchers" class="anchor"><span class="anchor-link"></span></a>Configuring Dispatchers</h3>
+<p>Since the router itself is spawned as an actor the dispatcher used for it can be configured directly in the call to <code>spawn</code>. The routees, however, are spawned by the router. Therefore, the <code>PoolRouter</code> has a property to configure the <code>Props</code> of its routees:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L92-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// make sure workers use the default blocking IO dispatcher
+val blockingPool = pool.withRouteeProps(routeeProps = DispatcherSelector.blocking())
+// spawn head router using the same executor as the parent
+val blockingRouter = ctx.spawn(blockingPool, &quot;blocking-pool&quot;, DispatcherSelector.sameAsParent())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L145-L150" target="_blank" title="Go to snippet source">source</a><code class="language-java">// make sure workers use the default blocking IO dispatcher
+PoolRouter&lt;Worker.Command&gt; blockingPool =
+    pool.withRouteeProps(DispatcherSelector.blocking());
+// spawn head router using the same executor as the parent
+ActorRef&lt;Worker.Command&gt; blockingRouter =
+    context.spawn(blockingPool, &quot;blocking-pool&quot;, DispatcherSelector.sameAsParent());</code></pre></dd>
+</dl>
+<h3><a href="#broadcasting-a-message-to-all-routees" name="broadcasting-a-message-to-all-routees" class="anchor"><span class="anchor-link"></span></a>Broadcasting a message to all routees</h3>
+<p>Pool routers can be configured to identify messages intended to be broad-casted to all routees. Therefore, the <code>PoolRouter</code> has a property to configure its <code>broadcastPredicate</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L109-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val poolWithBroadcast = pool.withBroadcastPredicate(_.isInstanceOf[DoBroadcastLog])
+val routerWithBroadcast = ctx.spawn(poolWithBroadcast, &quot;pool-with-broadcast&quot;)
+// this will be sent to all 4 routees
+routerWithBroadcast ! DoBroadcastLog(&quot;msg&quot;)
+Behaviors.empty</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L158-L159" target="_blank" title="Go to snippet source">source</a><code class="language-java">PoolRouter&lt;Worker.Command&gt; broadcastingPool =
+    pool.withBroadcastPredicate(msg -&gt; msg instanceof DoBroadcastLog);</code></pre></dd>
+</dl>
+<h2><a href="#group-router" name="group-router" class="anchor"><span class="anchor-link"></span></a>Group Router</h2>
+<p>The group router is created with a <code>ServiceKey</code> and uses the receptionist (see <a href="actor-discovery.html#receptionist">Receptionist</a>) to discover available actors for that key and routes messages to one of the currently known registered actors for a key.</p>
+<p>Since the receptionist is used this means the group router is cluster-aware out of the box. The router sends messages to registered actors on any node in the cluster that is reachable. If no reachable actor exists the router will fallback and route messages to actors on nodes marked as unreachable.</p>
+<p>That the receptionist is used also means that the set of routees is eventually consistent, and that immediately when the group router is started the set of routees it knows about is empty, until it has seen a listing from the receptionist it stashes incoming messages and forwards them as soon as it gets a listing from the receptionist. </p>
+<p>When the router has received a listing from the receptionist and the set of registered actors is empty the router will drop them (publish them to the event stream as <code>org.apache.pekko.actor.Dropped</code>).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L55-L150" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val serviceKey = ServiceKey[Worker.Command](&quot;log-worker&quot;)
+
+Behaviors.setup[Unit] { ctx =&gt;
+  // this would likely happen elsewhere - if we create it locally we
+  // can just as well use a pool
+  val worker = ctx.spawn(Worker(), &quot;worker&quot;)
+  ctx.system.receptionist ! Receptionist.Register(serviceKey, worker)
+
+  val group = Routers.group(serviceKey)
+  val router = ctx.spawn(group, &quot;worker-group&quot;)
+
+  // the group router will stash messages until it sees the first listing of registered
+  // services from the receptionist, so it is safe to send messages right away
+  (0 to 10).foreach { n =&gt;
+    router ! Worker.DoLog(s&quot;msg $n&quot;)
+  }
+
+  Behaviors.empty
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L171-L195" target="_blank" title="Go to snippet source">source</a><code class="language-java">ServiceKey&lt;Worker.Command&gt; serviceKey = ServiceKey.create(Worker.Command.class, &quot;log-worker&quot;);
+
+Behaviors.setup(
+    context -&gt; {
+
+      // this would likely happen elsewhere - if we create it locally we
+      // can just as well use a pool
+      ActorRef&lt;Worker.Command&gt; worker = context.spawn(Worker.create(), &quot;worker&quot;);
+      context.getSystem().receptionist().tell(Receptionist.register(serviceKey, worker));
+
+      GroupRouter&lt;Worker.Command&gt; group = Routers.group(serviceKey);
+      ActorRef&lt;Worker.Command&gt; router = context.spawn(group, &quot;worker-group&quot;);
+
+      // the group router will stash messages until it sees the first listing of
+      // registered
+      // services from the receptionist, so it is safe to send messages right away
+      for (int i = 0; i &lt; 10; i++) {
+        router.tell(new Worker.DoLog(&quot;msg &quot; + i));
+      }
+
+      return Behaviors.empty();
+    });</code></pre></dd>
+</dl>
+<h2><a href="#routing-strategies" name="routing-strategies" class="anchor"><span class="anchor-link"></span></a>Routing strategies</h2>
+<p>There are three different strategies for selecting which routee a message is forwarded to that can be selected from the router before spawning it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L101" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val alternativePool = pool.withPoolSize(2).withRoundRobinRouting()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L154" target="_blank" title="Go to snippet source">source</a><code class="language-java">PoolRouter&lt;Worker.Command&gt; alternativePool = pool.withPoolSize(2).withRoundRobinRouting();</code></pre></dd>
+</dl>
+<h3><a href="#round-robin" name="round-robin" class="anchor"><span class="anchor-link"></span></a>Round Robin</h3>
+<p>Rotates over the set of routees making sure that if there are <code>n</code> routees, then for <code>n</code> messages sent through the router, each actor is forwarded one message.</p>
+<p>Round robin gives fair routing where every available routee gets the same amount of messages as long as the set of routees stays relatively stable, but may be unfair if the set of routees changes a lot.</p>
+<p>This is the default for pool routers as the pool of routees is expected to remain the same.</p>
+<p>An optional parameter <code>preferLocalRoutees</code> can be used for this strategy. Routers will only use routees located in local actor system if <code>preferLocalRoutees</code> is true and local routees do exist. The default value for this parameter is false.</p>
+<h3><a href="#random" name="random" class="anchor"><span class="anchor-link"></span></a>Random</h3>
+<p>Randomly selects a routee when a message is sent through the router.</p>
+<p>This is the default for group routers as the group of routees is expected to change as nodes join and leave the cluster.</p>
+<p>An optional parameter <code>preferLocalRoutees</code> can be used for this strategy. Routers will only use routees located in local actor system if <code>preferLocalRoutees</code> is true and local routees do exist. The default value for this parameter is false.</p>
+<h3><a href="#consistent-hashing" name="consistent-hashing" class="anchor"><span class="anchor-link"></span></a>Consistent Hashing</h3>
+<p>Uses <a href="https://en.wikipedia.org/wiki/Consistent_hashing">consistent hashing</a> to select a routee based on the sent message. This <a href="http://www.tom-e-white.com/2007/11/consistent-hashing.html">article</a> gives good insight into how consistent hashing is implemented.</p>
+<p>Currently you have to define hashMapping of the router to map incoming messages to their consistent hash key. This makes the decision transparent for the sender.</p>
+<p>Consistent hashing delivers messages with the same hash to the same routee as long as the set of routees stays the same. When the set of routees changes, consistent hashing tries to make sure, but does not guarantee, that messages with the same hash are routed to the same routee.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/RouterSpec.scala#L189-L196" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router = spawn(Routers.group(Proxy.RegisteringKey).withConsistentHashingRouting(10, Proxy.mapping))
+
+router ! Proxy.Message(&quot;123&quot;, &quot;Text1&quot;)
+router ! Proxy.Message(&quot;123&quot;, &quot;Text2&quot;)
+
+router ! Proxy.Message(&quot;zh3&quot;, &quot;Text3&quot;)
+router ! Proxy.Message(&quot;zh3&quot;, &quot;Text4&quot;)
+// the hash is calculated over the Proxy.Message first parameter obtained through the Proxy.mapping function</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/RouterTest.java#L226-L239" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef&lt;Proxy.Message&gt; router =
+    testKit.spawn(
+        Routers.group(proxy.registeringKey)
+            .withConsistentHashingRouting(10, command -&gt; proxy.mapping(command)));
+
+final String id1 = &quot;123&quot;;
+router.tell(new Proxy.Message(id1, &quot;Text1&quot;));
+router.tell(new Proxy.Message(id1, &quot;Text2&quot;));
+
+final String id2 = &quot;abcdef&quot;;
+router.tell(new Proxy.Message(id2, &quot;Text3&quot;));
+router.tell(new Proxy.Message(id2, &quot;Text4&quot;));
+// the hash is calculated over the Proxy.Message first parameter obtained through the
+// Proxy.mapping function</code></pre></dd>
+</dl>
+<p>See also <a href="cluster-sharding.html">Pekko Cluster Sharding</a> which provides stable routing and rebalancing of the routee actors.</p>
+<h2><a href="#routers-and-performance" name="routers-and-performance" class="anchor"><span class="anchor-link"></span></a>Routers and performance</h2>
+<p>Note that if the routees are sharing a resource, the resource will determine if increasing the number of actors will actually give higher throughput or faster answers. For example if the routees are CPU bound actors it will not give better performance to create more routees than there are threads to execute the actors.</p>
+<p>Since the router itself is an actor and has a mailbox this means that messages are routed sequentially to the routees where it can be processed in parallel (depending on the available threads in the dispatcher). In a high throughput use cases the sequential routing could become a bottle neck. Pekko Typed does not provide an optimized tool for this.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/routers.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/actor-discovery.html" title="Actor discovery" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Actor discovery
+</span>
+</div>
+</a>
+<a href="../typed/stash.html" title="Stash" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Stash
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko message delivery semantics, at-most-once delivery and message ordering.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko message delivery semantics, at-most-once delivery and message ordering.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Message Delivery Reliability · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Message Delivery Reliability
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html#message-delivery-reliability" class="active page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../general/message-delivery-reliability.html#message-delivery-reliability" class="header">Message Delivery Reliability</a>
+  <ul>
+    <li><a href="../general/message-delivery-reliability.html#the-general-rules" class="header">The General Rules</a></li>
+    <li><a href="../general/message-delivery-reliability.html#the-rules-for-in-jvm-local-message-sends" class="header">The Rules for In-JVM (Local) Message Sends</a></li>
+    <li><a href="../general/message-delivery-reliability.html#higher-level-abstractions" class="header">Higher-level abstractions</a></li>
+    <li><a href="../general/message-delivery-reliability.html#dead-letters" class="header">Dead Letters</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../general/message-delivery-reliability.html#message-delivery-reliability" class="header">Message Delivery Reliability</a>
+  <ul>
+    <li><a href="../general/message-delivery-reliability.html#the-general-rules" class="header">The General Rules</a></li>
+    <li><a href="../general/message-delivery-reliability.html#the-rules-for-in-jvm-local-message-sends" class="header">The Rules for In-JVM (Local) Message Sends</a></li>
+    <li><a href="../general/message-delivery-reliability.html#higher-level-abstractions" class="header">Higher-level abstractions</a></li>
+    <li><a href="../general/message-delivery-reliability.html#dead-letters" class="header">Dead Letters</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#message-delivery-reliability" name="message-delivery-reliability" class="anchor"><span class="anchor-link"></span></a>Message Delivery Reliability</h1>
+<p>Pekko helps you build reliable applications which make use of multiple processor cores in one machine (“scaling up”) or distributed across a computer network (“scaling out”). The key abstraction to make this work is that all interactions between your code units—actors—happen via message passing, which is why the precise semantics of how messages are passed between actors deserve their own chapter.</p>
+<p>In order to give some context to the discussion below, consider an application which spans multiple network hosts. The basic mechanism for communication is the same whether sending to an actor on the local JVM or to a remote actor, but there will be observable differences in the latency of delivery (possibly also depending on the bandwidth of the network link and the message size) and the reliability. In case of a remote message send there are more steps involved which means that more can go wrong. Another aspect is that local sending will pass a reference to the message inside the same JVM, without any restrictions on the underlying object which is sent, whereas a remote transport will place a limit on the message size.</p>
+<p>Writing your actors such that every interaction could possibly be remote is the safe, pessimistic bet. It means to only rely on those properties which are always guaranteed and which are discussed in detail below. This has some overhead in the actor’s implementation. If you are willing to sacrifice full location transparency—for example in case of a group of closely collaborating actors—you can place them always on the same JVM and enjoy stricter guarantees on message delivery. The details of this trade-off are discussed further below.</p>
+<p>As a supplementary part we give a few pointers at how to build stronger reliability on top of the built-in ones. The chapter closes by discussing the role of the “Dead Letter Office”.</p>
+<h2><a href="#the-general-rules" name="the-general-rules" class="anchor"><span class="anchor-link"></span></a>The General Rules</h2>
+<p>These are the rules for message sends (i.e. the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/ActorRef.html#tell(msg:Any,sender:org.apache.pekko.actor.ActorRef):Unit" title="pekko.actor.ActorRef"><code>tell</code></a> or <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/ActorRef.html#!(message:Any)(implicitsender:org.apache.pekko.actor.ActorRef):Unit" title="pekko.actor.ActorRef"><code>!</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/ActorRef.html#tell(java.lang.Object,org.apache.pekko.actor.ActorRef)" title="pekko.actor.ActorRef"><code>tell</code></a></span> method, which also underlies the <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/AskSupport.html#ask(actorRef:org.apache.pekko.actor.ActorRef):org.apache.pekko.pattern.AskableActorRef" title="pekko.pattern.AskSupport"><code>ask</code></a> pattern):</p>
+<ul>
+  <li><strong>at-most-once delivery</strong>, i.e. no guaranteed delivery</li>
+  <li><strong>message ordering per sender–receiver pair</strong></li>
+</ul>
+<p>The first rule is typically found also in other actor implementations while the second is specific to Pekko.</p>
+<h3><a href="#discussion-what-does-at-most-once-mean-" name="discussion-what-does-at-most-once-mean-" class="anchor"><span class="anchor-link"></span></a>Discussion: What does “at-most-once” mean?</h3>
+<p>When it comes to describing the semantics of a delivery mechanism, there are three basic categories:</p>
+<ul>
+  <li><strong>at-most-once</strong> delivery means that for each message handed to the mechanism, that message is delivered once or not at all; in more casual terms it means that messages may be lost.</li>
+  <li><strong>at-least-once</strong> delivery means that for each message handed to the mechanism potentially multiple attempts are made at delivering it, such that at least one succeeds; again, in more casual terms this means that messages may be duplicated but not lost.</li>
+  <li><strong>exactly-once</strong> delivery means that for each message handed to the mechanism exactly one delivery is made to the recipient; the message can neither be lost nor duplicated.</li>
+</ul>
+<p>The first one is the cheapest—highest performance, least implementation overhead—because it can be done in a fire-and-forget fashion without keeping state at the sending end or in the transport mechanism. The second one requires retries to counter transport losses, which means keeping state at the sending end and having an acknowledgement mechanism at the receiving end. The third is most expensive—and has consequently worst performance—because in addition to the second it requires state to be kept at the receiving end in order to filter out duplicate deliveries.</p>
+<h3><a href="#discussion-why-no-guaranteed-delivery-" name="discussion-why-no-guaranteed-delivery-" class="anchor"><span class="anchor-link"></span></a>Discussion: Why No Guaranteed Delivery?</h3>
+<p>At the core of the problem lies the question what exactly this guarantee shall mean:</p>
+<ol>
+  <li>The message is sent out on the network?</li>
+  <li>The message is received by the other host?</li>
+  <li>The message is put into the target actor&rsquo;s mailbox?</li>
+  <li>The message is starting to be processed by the target actor?</li>
+  <li>The message is processed successfully by the target actor?</li>
+</ol>
+<p>Each one of these have different challenges and costs, and it is obvious that there are conditions under which any message passing library would be unable to comply; think for example about configurable mailbox types and how a bounded mailbox would interact with the third point, or even what it would mean to decide upon the “successfully” part of point five.</p>
+<p>Along those same lines goes the reasoning in <a href="https://www.infoq.com/articles/no-reliable-messaging/">Nobody Needs Reliable Messaging</a>. The only meaningful way for a sender to know whether an interaction was successful is by receiving a business-level acknowledgement message, which is not something Pekko could make up on its own (neither are we writing a “do what I mean” framework nor would you want us to).</p>
+<p>Pekko embraces distributed computing and makes the fallibility of communication explicit through message passing, therefore it does not try to lie and emulate a leaky abstraction. This is a model that has been used with great success in Erlang and requires the users to design their applications around it. You can read more about this approach in the <a href="https://erlang.org/faq/academic.html">Erlang documentation</a> (section 10.8 and 10.9), Pekko follows it closely.</p>
+<p>Another angle on this issue is that by providing only basic guarantees those use cases which do not need stronger reliability do not pay the cost of their implementation; it is always possible to add stronger reliability on top of basic ones, but it is not possible to retro-actively remove reliability in order to gain more performance.</p>
+<a id="message-ordering"></a>
+<h3><a href="#discussion-message-ordering" name="discussion-message-ordering" class="anchor"><span class="anchor-link"></span></a>Discussion: Message Ordering</h3>
+<p>The rule more specifically is that <em>for a given pair of actors, messages sent directly from the first to the second will not be received out-of-order.</em> The word <em>directly</em> emphasizes that this guarantee only applies when sending with the <em>tell</em> operator to the final destination, not when employing mediators or other message dissemination features (unless stated otherwise).</p>
+<p>The guarantee is illustrated in the following:</p>
+<blockquote>
+  <p>Actor <code>A1</code> sends messages <code>M1</code>, <code>M2</code>, <code>M3</code> to <code>A2</code></p>
+  <p>Actor <code>A3</code> sends messages <code>M4</code>, <code>M5</code>, <code>M6</code> to <code>A2</code></p>
+</blockquote>
+<p>This means that:</p>
+<ol>
+  <li>If <code>M1</code> is delivered it must be delivered before <code>M2</code> and <code>M3</code></li>
+  <li>If <code>M2</code> is delivered it must be delivered before <code>M3</code></li>
+  <li>If <code>M4</code> is delivered it must be delivered before <code>M5</code> and <code>M6</code></li>
+  <li>If <code>M5</code> is delivered it must be delivered before <code>M6</code></li>
+  <li><code>A2</code> can see messages from <code>A1</code> interleaved with messages from <code>A3</code></li>
+  <li>Since there is no guaranteed delivery, any of the messages may be dropped, i.e. not arrive at <code>A2</code></li>
+</ol><div class="callout note "><div class="callout-title">Note</div>
+<p>It is important to note that Pekko’s guarantee applies to the order in which messages are enqueued into the recipient’s mailbox. If the mailbox implementation does not respect FIFO order (e.g. a <code>PriorityMailbox</code>), then the order of processing by the actor can deviate from the enqueueing order.</p></div>
+<p>Please note that this rule is <strong>not transitive</strong>:</p>
+<blockquote>
+  <p>Actor <code>A</code> sends message <code>M1</code> to actor <code>C</code></p>
+  <p>Actor <code>A</code> then sends message <code>M2</code> to actor <code>B</code></p>
+  <p>Actor <code>B</code> forwards message <code>M2</code> to actor <code>C</code></p>
+  <p>Actor <code>C</code> may receive <code>M1</code> and <code>M2</code> in any order</p>
+</blockquote>
+<p>Causal transitive ordering would imply that <code>M2</code> is never received before <code>M1</code> at actor <code>C</code> (though any of them might be lost). This ordering can be violated due to different message delivery latencies when <code>A</code>, <code>B</code> and <code>C</code> reside on different network hosts, see more below.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Actor creation is treated as a message sent from the parent to the child, with the same semantics as discussed above. Sending a message to an actor in a way which could be reordered with this initial creation message means that the message might not arrive because the actor does not exist yet. An example where the message might arrive too early would be to create a remote-deployed actor R1, send its reference to another remote actor R2 and have R2 send a message to R1. An example of well-defined ordering is a parent which creates an actor and immediately sends a message to it.</p></div>
+<h4><a href="#communication-of-failure" name="communication-of-failure" class="anchor"><span class="anchor-link"></span></a>Communication of failure</h4>
+<p>Please note, that the ordering guarantees discussed above only hold for user messages between actors. Failure of a child of an actor is communicated by special system messages that are not ordered relative to ordinary user messages. In particular:</p>
+<blockquote>
+  <p>Child actor <code>C</code> sends message <code>M</code> to its parent <code>P</code></p>
+  <p>Child actor fails with failure <code>F</code></p>
+  <p>Parent actor <code>P</code> might receive the two events either in order <code>M</code>, <code>F</code> or <code>F</code>, <code>M</code></p>
+</blockquote>
+<p>The reason for this is that internal system messages have their own mailboxes therefore the ordering of enqueue calls of a user and system messages cannot guarantee the ordering of their dequeue times.</p>
+<h2><a href="#the-rules-for-in-jvm-local-message-sends" name="the-rules-for-in-jvm-local-message-sends" class="anchor"><span class="anchor-link"></span></a>The Rules for In-JVM (Local) Message Sends</h2>
+<h3><a href="#be-careful-what-you-do-with-this-section-" name="be-careful-what-you-do-with-this-section-" class="anchor"><span class="anchor-link"></span></a>Be careful what you do with this section!</h3>
+<p>Relying on the stronger reliability in this section is not recommended since it will bind your application to local-only deployment: an application may have to be designed differently (as opposed to just employing some message exchange patterns local to some actors) in order to be fit for running on a cluster of machines. Our credo is “design once, deploy any way you wish”, and to achieve this you should only rely on <a href="message-delivery-reliability.html#the-general-rules">The General Rules</a>.</p>
+<h3><a href="#reliability-of-local-message-sends" name="reliability-of-local-message-sends" class="anchor"><span class="anchor-link"></span></a>Reliability of Local Message Sends</h3>
+<p>The Pekko test suite relies on not losing messages in the local context (and for non-error condition tests also for remote deployment), meaning that we actually do apply the best effort to keep our tests stable. A local <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html#tell(msg:Any,sender:org.apache.pekko.actor.ActorRef):Unit" title="org.apache.pekko.actor.ActorRef"><code>tell</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html#tell(java.lang.Object,org.apache.pekko.actor.ActorRef)" title="org.apache.pekko.actor.ActorRef"><code>tell</code></a></span> operation can however fail for the same reasons as a normal method call can on the JVM:</p>
+<ul>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/StackOverflowError.html" title="java.lang.StackOverflowError"><code>StackOverflowError</code></a></li>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/OutOfMemoryError.html" title="java.lang.OutOfMemoryError"><code>OutOfMemoryError</code></a></li>
+  <li>other <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/VirtualMachineError.html" title="java.lang.VirtualMachineError"><code>VirtualMachineError</code></a></li>
+</ul>
+<p>In addition, local sends can fail in Pekko-specific ways:</p>
+<ul>
+  <li>if the mailbox does not accept the message (e.g. full <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/dispatch/BoundedMailbox.html" title="org.apache.pekko.dispatch.BoundedMailbox"><code>BoundedMailbox</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/dispatch/BoundedMailbox.html" title="org.apache.pekko.dispatch.BoundedMailbox"><code>BoundedMailbox</code></a></span>)</li>
+  <li>if the receiving actor fails while processing the message or is already terminated</li>
+</ul>
+<p>While the first is a matter of configuration the second deserves some thought: the sender of a message does not get feedback if there was an exception while processing, that notification goes to the supervisor instead. This is in general not distinguishable from a lost message for an outside observer.</p>
+<h3><a href="#ordering-of-local-message-sends" name="ordering-of-local-message-sends" class="anchor"><span class="anchor-link"></span></a>Ordering of Local Message Sends</h3>
+<p>Assuming strict FIFO mailboxes the aforementioned caveat of non-transitivity of the message ordering guarantee is eliminated under certain conditions. As you will note, these are quite subtle as it stands, and it is even possible that future performance optimizations will invalidate this whole paragraph. The possibly non-exhaustive list of counter-indications is:</p>
+<ul>
+  <li>Before receiving the first reply from a top-level actor, there is a lock which protects an internal interim queue, and this lock is not fair; the implication is that enqueue requests from different senders which arrive during the actor’s construction (figuratively, the details are more involved) may be reordered depending on low-level thread scheduling. Since completely fair locks do not exist on the JVM this is unfixable.</li>
+  <li>The same mechanism is used during the construction of a Router, more precisely the routed ActorRef, hence the same problem exists for actors deployed with Routers.</li>
+  <li>As mentioned above, the problem occurs anywhere a lock is involved during enqueueing, which may also apply to custom mailboxes.</li>
+</ul>
+<p>This list has been compiled carefully, but other problematic scenarios may have escaped our analysis.</p>
+<h3><a href="#how-does-local-ordering-relate-to-network-ordering" name="how-does-local-ordering-relate-to-network-ordering" class="anchor"><span class="anchor-link"></span></a>How does Local Ordering relate to Network Ordering</h3>
+<p>The rule that <em>for a given pair of actors, messages sent directly from the first to the second will not be received out-of-order</em> holds for messages sent over the network with the TCP based Pekko remote transport protocol.</p>
+<p>As explained in the previous section local message sends obey transitive causal ordering under certain conditions. This ordering can be violated due to different message delivery latencies. For example:</p>
+<blockquote>
+  <p>Actor <code>A</code> on node-1 sends message <code>M1</code> to actor <code>C</code> on node-3</p>
+  <p>Actor <code>A</code> on node-1 then sends message <code>M2</code> to actor <code>B</code> on node-2</p>
+  <p>Actor <code>B</code> on node-2 forwards message <code>M2</code> to actor <code>C</code> on node-3</p>
+  <p>Actor <code>C</code> may receive <code>M1</code> and <code>M2</code> in any order</p>
+</blockquote>
+<p>It might take longer time for <code>M1</code> to &ldquo;travel&rdquo; to node-3 than it takes for <code>M2</code> to &ldquo;travel&rdquo; to node-3 via node-2.</p>
+<h2><a href="#higher-level-abstractions" name="higher-level-abstractions" class="anchor"><span class="anchor-link"></span></a>Higher-level abstractions</h2>
+<p>Based on a small and consistent tool set in Pekko&rsquo;s core, Pekko also provides powerful, higher-level abstractions on top of it.</p>
+<h3><a href="#messaging-patterns" name="messaging-patterns" class="anchor"><span class="anchor-link"></span></a>Messaging Patterns</h3>
+<p>As discussed above a straight-forward answer to the requirement of reliable delivery is an explicit ACK–RETRY protocol. In its simplest form this requires</p>
+<ul>
+  <li>a way to identify individual messages to correlate message with acknowledgement</li>
+  <li>a retry mechanism which will resend messages if not acknowledged in time</li>
+  <li>a way for the receiver to detect and discard duplicates</li>
+</ul>
+<p>The third becomes necessary by virtue of the acknowledgements not being guaranteed to arrive either.</p>
+<p>An ACK-RETRY protocol with business-level acknowledgements and de-duplication using identifiers is supported by the <a href="../typed/reliable-delivery.html">Reliable Delivery</a> feature.</p>
+<p>Another way of implementing the third part would be to make processing the messages idempotent on the level of the business logic.</p>
+<h3><a href="#event-sourcing" name="event-sourcing" class="anchor"><span class="anchor-link"></span></a>Event Sourcing</h3>
+<p>Event Sourcing (and sharding) is what makes large websites scale to billions of users, and the idea is quite simple: when a component (think actor) processes a command it will generate a list of events representing the effect of the command. These events are stored in addition to being applied to the component’s state. The nice thing about this scheme is that events only ever are appended to the storage, nothing is ever mutated; this enables perfect replication and scaling of consumers of this event stream (i.e. other components may consume the event stream as a means to replicate the component’s state on a different continent or to react to changes). If the component’s state is lost—due to a machine failure or by being pushed out of a cache—it can be reconstructed by replaying the event stream (usually employing snapshots to speed up the process). <a href="../typed/persistence.html#event-sourcing-concepts">Event Sourcing</a> is supported by Pekko Persistence.</p>
+<h3><a href="#mailbox-with-explicit-acknowledgement" name="mailbox-with-explicit-acknowledgement" class="anchor"><span class="anchor-link"></span></a>Mailbox with Explicit Acknowledgement</h3>
+<p>By implementing a custom mailbox type it is possible to retry message processing at the receiving actor’s end in order to handle temporary failures. This pattern is mostly useful in the local communication context where delivery guarantees are otherwise sufficient to fulfill the application’s requirements.</p>
+<p>Please note that the caveats for <a href="message-delivery-reliability.html#the-rules-for-in-jvm-local-message-sends">The Rules for In-JVM (Local) Message Sends</a> do apply.</p>
+<a id="deadletters"></a>
+<h2><a href="#dead-letters" name="dead-letters" class="anchor"><span class="anchor-link"></span></a>Dead Letters</h2>
+<p>Messages which cannot be delivered (and for which this can be ascertained) will be delivered to a synthetic actor called <code>/deadLetters</code>. This delivery happens on a best-effort basis; it may fail even within the local JVM (e.g. during actor termination). Messages sent via unreliable network transports will be lost without turning up as dead letters.</p>
+<h3><a href="#what-should-i-use-dead-letters-for-" name="what-should-i-use-dead-letters-for-" class="anchor"><span class="anchor-link"></span></a>What Should I Use Dead Letters For?</h3>
+<p>The main use of this facility is for debugging, especially if an actor send does not arrive consistently (where usually inspecting the dead letters will tell you that the sender or recipient was set wrong somewhere along the way). In order to be useful for this purpose it is good practice to avoid sending to deadLetters where possible, i.e. run your application with a suitable dead letter logger (see more below) from time to time and clean up the log output. This exercise—like all else—requires judicious application of common sense: it may well be that avoiding to send to a terminated actor complicates the sender’s code more than is gained in debug output clarity.</p>
+<p>The dead letter service follows the same rules with respect to delivery guarantees as all other message sends, hence it cannot be used to implement guaranteed delivery.</p>
+<h3><a href="#how-do-i-receive-dead-letters-" name="how-do-i-receive-dead-letters-" class="anchor"><span class="anchor-link"></span></a>How do I Receive Dead Letters?</h3>
+<p>An actor can subscribe to class <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/DeadLetter.html" title="org.apache.pekko.actor.DeadLetter"><code>actor.DeadLetter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/DeadLetter.html" title="org.apache.pekko.actor.DeadLetter"><code>actor.DeadLetter</code></a></span> on the event stream, see <a href="../event-bus.html#event-stream">Event Stream</a> for how to do that. The subscribed actor will then receive all dead letters published in the (local) system from that point onwards. Dead letters are not propagated over the network, if you want to collect them in one place you will have to subscribe one actor per network node and forward them manually. Also consider that dead letters are generated at that node which can determine that a send operation is failed, which for a remote send can be the local system (if no network connection can be established) or the remote one (if the actor you are sending to does not exist at that point in time).</p>
+<h3><a href="#dead-letters-which-are-usually-not-worrisome" name="dead-letters-which-are-usually-not-worrisome" class="anchor"><span class="anchor-link"></span></a>Dead Letters Which are (Usually) not Worrisome</h3>
+<p>Every time an actor does not terminate by its own decision, there is a chance that some messages which it sends to itself are lost. There is one which happens quite easily in complex shutdown scenarios that is usually benign: seeing instances of a graceful stop command for an actor being dropped means that two stop requests were given, but only one can succeed. In the same vein, you might see <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>actor.Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>actor.Terminated</code></a></span> messages from children while stopping a hierarchy of actors turning up in dead letters if the parent is still watching the child when the parent terminates.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/general/message-delivery-reliability.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../general/jmm.html" title="Apache Pekko and the Java Memory Model" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Apache Pekko and the Java Memory Model
+</span>
+</div>
+</a>
+<a href="../general/configuration.html" title="Configuration" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Configuration
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Details about the underlying remoting module for Apache Pekko Cluster.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Details about the underlying remoting module for Apache Pekko Cluster.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Artery Remoting · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Artery Remoting
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html#artery-remoting" class="active page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="remoting-artery.html#artery-remoting" class="header">Artery Remoting</a>
+  <ul>
+    <li><a href="remoting-artery.html#dependency" class="header">Dependency</a></li>
+    <li><a href="remoting-artery.html#configuration" class="header">Configuration</a></li>
+    <li><a href="remoting-artery.html#introduction" class="header">Introduction</a></li>
+    <li><a href="remoting-artery.html#selecting-a-transport" class="header">Selecting a transport</a></li>
+    <li><a href="remoting-artery.html#canonical-address" class="header">Canonical address</a></li>
+    <li><a href="remoting-artery.html#acquiring-references-to-remote-actors" class="header">Acquiring references to remote actors</a></li>
+    <li><a href="remoting-artery.html#remote-security" class="header">Remote Security</a></li>
+    <li><a href="remoting-artery.html#quarantine" class="header">Quarantine</a></li>
+    <li><a href="remoting-artery.html#serialization" class="header">Serialization</a></li>
+    <li><a href="remoting-artery.html#routers-with-remote-destinations" class="header">Routers with Remote Destinations</a></li>
+    <li><a href="remoting-artery.html#what-is-new-in-artery" class="header">What is new in Artery</a></li>
+    <li><a href="remoting-artery.html#performance-tuning" class="header">Performance tuning</a></li>
+    <li><a href="remoting-artery.html#remote-configuration" class="header">Remote Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="remoting-artery.html#artery-remoting" class="header">Artery Remoting</a>
+  <ul>
+    <li><a href="remoting-artery.html#dependency" class="header">Dependency</a></li>
+    <li><a href="remoting-artery.html#configuration" class="header">Configuration</a></li>
+    <li><a href="remoting-artery.html#introduction" class="header">Introduction</a></li>
+    <li><a href="remoting-artery.html#selecting-a-transport" class="header">Selecting a transport</a></li>
+    <li><a href="remoting-artery.html#canonical-address" class="header">Canonical address</a></li>
+    <li><a href="remoting-artery.html#acquiring-references-to-remote-actors" class="header">Acquiring references to remote actors</a></li>
+    <li><a href="remoting-artery.html#remote-security" class="header">Remote Security</a></li>
+    <li><a href="remoting-artery.html#quarantine" class="header">Quarantine</a></li>
+    <li><a href="remoting-artery.html#serialization" class="header">Serialization</a></li>
+    <li><a href="remoting-artery.html#routers-with-remote-destinations" class="header">Routers with Remote Destinations</a></li>
+    <li><a href="remoting-artery.html#what-is-new-in-artery" class="header">What is new in Artery</a></li>
+    <li><a href="remoting-artery.html#performance-tuning" class="header">Performance tuning</a></li>
+    <li><a href="remoting-artery.html#remote-configuration" class="header">Remote Configuration</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#artery-remoting" name="artery-remoting" class="anchor"><span class="anchor-link"></span></a>Artery Remoting</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Remoting is the mechanism by which Actors on different nodes talk to each other internally.</p>
+<p>When building a Pekko application, you would usually not use the Remoting concepts directly, but instead use the more high-level <a href="index-cluster.html">Pekko Cluster</a> utilities or technology-agnostic protocols such as <a href="https://pekko.apache.org/docs/pekko-http/current/">HTTP</a>, <a href="https://pekko.apache.org/docs/pekko-grpc/current/">gRPC</a> etc.</p></div>
+<p>If migrating from classic remoting see <a href="remoting-artery.html#what-is-new-in-artery">what&rsquo;s new in Artery</a></p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Artery Remoting, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-remote" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-remote_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-remote_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>One option is to use Artery with Aeron, see <a href="remoting-artery.html#selecting-a-transport">Selecting a transport</a>. The Aeron dependency needs to be explicitly added if using the <code>aeron-udp</code> transport:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies ++= Seq(
+  "io.aeron" % "aeron-driver" % "1.38.1",
+  "io.aeron" % "aeron-client" % "1.38.1"
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.aeron&lt;/groupId&gt;
+    &lt;artifactId&gt;aeron-driver&lt;/artifactId&gt;
+    &lt;version&gt;1.38.1&lt;/version&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;io.aeron&lt;/groupId&gt;
+    &lt;artifactId&gt;aeron-client&lt;/artifactId&gt;
+    &lt;version&gt;1.38.1&lt;/version&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
+  implementation "io.aeron:aeron-driver:1.38.1"
+  implementation "io.aeron:aeron-client:1.38.1"
+}</code></pre></dd></dl>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>To enable remote capabilities in your Pekko project you should, at a minimum, add the following changes to your <code>application.conf</code> file:</p>
+<pre><code>pekko {
+  actor {
+    # provider=remote is possible, but prefer cluster
+    provider = cluster 
+  }
+  remote {
+    artery {
+      transport = tcp # See Selecting a transport below
+      canonical.hostname = &quot;127.0.0.1&quot;
+      canonical.port = 25520
+    }
+  }
+}
+</code></pre>
+<p>As you can see in the example above there are four things you need to add to get started:</p>
+<ul>
+  <li>Change provider from <code>local</code>. We recommend using <a href="cluster-usage.html">Pekko Cluster</a> over using remoting directly.</li>
+  <li>Enable Artery to use it as the remoting implementation</li>
+  <li>Add host name - the machine you want to run the actor system on; this host name is exactly what is passed to remote systems in order to identify this system and consequently used for connecting back to this system if need be, hence set it to a reachable IP address or resolvable name in case you want to communicate across the network.</li>
+  <li>Add port number - the port the actor system should listen on, set to 0 to have it chosen automatically</li>
+</ul><div class="callout note "><div class="callout-title">Note</div>
+<p>The port number needs to be unique for each actor system on the same machine even if the actor systems have different names. This is because each actor system has its own networking subsystem listening for connections and handling messages as not to interfere with other actor systems.</p></div>
+<p>The example above only illustrates the bare minimum of properties you have to add to enable remoting. All settings are described in <a href="remoting-artery.html#remote-configuration-artery">Remote Configuration</a>.</p>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>We recommend <a href="cluster-usage.html">Pekko Cluster</a> over using remoting directly. As remoting is the underlying module that allows for Cluster, it is still useful to understand details about it though.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>This page describes the remoting subsystem, codenamed <em>Artery</em> that has replaced the <a href="remoting.html">classic remoting implementation</a>.</p></div>
+<p>Remoting enables Actor systems on different hosts or JVMs to communicate with each other. By enabling remoting the system will start listening on a provided network address and also gains the ability to connect to other systems through the network. From the application&rsquo;s perspective there is no API difference between local or remote systems, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> instances that point to remote systems look exactly the same as local ones: they can be sent messages to, watched, etc. Every <code>ActorRef</code> contains hostname and port information and can be passed around even on the network. This means that on a network every <code>ActorRef</code> is a unique identifier of an actor on that network.</p>
+<p>You need to enable <a href="serialization.html">serialization</a> for your actor messages. <a href="serialization-jackson.html">Serialization with Jackson</a> is a good choice in many cases and our recommendation if you don&rsquo;t have other preference.</p>
+<p>Remoting is not a server-client technology. All systems using remoting can contact any other system on the network if they possess an <code>ActorRef</code> pointing to those system. This means that every system that is remoting enabled acts as a &ldquo;server&rdquo; to which arbitrary systems on the same network can connect to.</p>
+<h2><a href="#selecting-a-transport" name="selecting-a-transport" class="anchor"><span class="anchor-link"></span></a>Selecting a transport</h2>
+<p>There are three alternatives of which underlying transport to use. It is configured by property <code>pekko.remote.artery.transport</code> with the possible values:</p>
+<ul>
+  <li><code>tcp</code> - Based on <a href="stream/stream-io.html#streaming-tcp">Pekko Streams TCP</a> (default if other not configured)</li>
+  <li><code>tls-tcp</code> - Same as <code>tcp</code> with encryption using <a href="stream/stream-io.html#tls">Pekko Streams TLS</a></li>
+  <li><code>aeron-udp</code> - Based on <a href="https://github.com/real-logic/aeron">Aeron (UDP)</a></li>
+</ul>
+<p>If you are uncertain of what to select a good choice is to use the default, which is <code>tcp</code>.</p>
+<p>The Aeron (UDP) transport is a high performance transport and should be used for systems that require high throughput and low latency. It uses more CPU than TCP when the system is idle or at low message rates. There is no encryption for Aeron.</p>
+<p>The TCP and TLS transport is implemented using Pekko Streams TCP/TLS. This is the choice when encryption is needed, but it can also be used with plain TCP without TLS. It&rsquo;s also the obvious choice when UDP can&rsquo;t be used. It has very good performance (high throughput and low latency) but latency at high throughput might not be as good as the Aeron transport. It has less operational complexity than the Aeron transport and less risk of trouble in container environments.</p>
+<p>Aeron requires 64bit JVM to work reliably and is only officially supported on Linux, Mac and Windows. It may work on other Unixes e.g. Solaris but insufficient testing has taken place for it to be officially supported. If you&rsquo;re on a Big Endian processor, such as Sparc, it is recommended to use TCP.</p><div class="callout note "><div class="callout-title">Note</div>
+<p><a href="additional/rolling-updates.html">Rolling update</a> is not supported when changing from one transport to another.</p></div>
+<h2><a href="#canonical-address" name="canonical-address" class="anchor"><span class="anchor-link"></span></a>Canonical address</h2>
+<p>In order for remoting to work properly, where each system can send messages to any other system on the same network (for example a system forwards a message to a third system, and the third replies directly to the sender system) it is essential for every system to have a <em>unique, globally reachable</em> address and port. This address is part of the unique name of the system and will be used by other systems to open a connection to it and send messages. This means that if a host has multiple names (different DNS records pointing to the same IP address) then only one of these can be <em>canonical</em>. If a message arrives to a system but it contains a different hostname than the expected canonical name then the message will be dropped. If multiple names for a system would be allowed, then equality checks among <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> instances would no longer to be trusted and this would violate the fundamental assumption that an actor has a globally unique reference on a given network. As a consequence, this also means that localhost addresses (e.g. <em>127.0.0.1</em>) cannot be used in general (apart from local development) since they are not unique addresses in a real network.</p>
+<p>In cases, where Network Address Translation (NAT) is used or other network bridging is involved, it is important to configure the system so that it understands that there is a difference between his externally visible, canonical address and between the host-port pair that is used to listen for connections. See <a href="remoting-artery.html#remote-configuration-nat-artery">Pekko behind NAT or in a Docker container</a> for details.</p>
+<h2><a href="#acquiring-references-to-remote-actors" name="acquiring-references-to-remote-actors" class="anchor"><span class="anchor-link"></span></a>Acquiring references to remote actors</h2>
+<p>In order to communicate with an actor, it is necessary to have its <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span>. In the local case it is usually the creator of the actor (the caller of <code>actorOf()</code>) is who gets the <code>ActorRef</code> for an actor that it can then send to other actors. In other words:</p>
+<ul>
+  <li>An Actor can get a remote Actor&rsquo;s reference by receiving a message from it (as it&rsquo;s available as <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/Actor.html#sender():org.apache.pekko.actor.ActorRef" title="pekko.actor.Actor"><code>sender()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/AbstractActor.html#getSender()" title="pekko.actor.AbstractActor"><code>getSender()</code></a></span> then), or inside of a remote message (e.g. <em>PleaseReply(message: String, remoteActorRef: ActorRef)</em>)</li>
+</ul>
+<p>Alternatively, an actor can look up another located at a known path using <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span>. These methods are available even in remoting enabled systems:</p>
+<ul>
+  <li>Remote Lookup : used to look up an actor on a remote node with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorSelection(path:String):org.apache.pekko.actor.ActorSelection" title="org.apache.pekko.actor.ActorRefFactory"><code>actorSelection(path)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorSelection(java.lang.String)" title="org.apache.pekko.actor.ActorRefFactory"><code>actorSelection(path)</code></a></span></li>
+  <li>Remote Creation : used to create an actor on a remote node with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorOf(props:org.apache.pekko.actor.Props,name:String):org.apache.pekko.actor.ActorRef" title="org.apache.pekko.actor.ActorRefFactory"><code>actorOf(Props(...), actorName)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorOf(org.apache.pekko.actor.Props,java.lang.String)" title="org.apache.pekko.actor.ActorRefFactory"><code>actorOf(Props(...), actorName)</code></a></span></li>
+</ul>
+<p>In the next sections the two alternatives are described in detail.</p>
+<h3><a href="#looking-up-remote-actors" name="looking-up-remote-actors" class="anchor"><span class="anchor-link"></span></a>Looking up Remote Actors</h3>
+<p><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorSelection(path:String):org.apache.pekko.actor.ActorSelection" title="org.apache.pekko.actor.ActorRefFactory"><code>actorSelection(path)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#actorSelection(java.lang.String)" title="org.apache.pekko.actor.ActorRefFactory"><code>actorSelection(path)</code></a></span> will obtain an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span> to an Actor on a remote node, e.g.:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre><code>val selection =
+  context.actorSelection(&quot;pekko://actorSystemName@10.0.0.1:25520/user/actorName&quot;)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre><code>ActorSelection selection =
+  context.actorSelection(&quot;pekko://actorSystemName@10.0.0.1:25520/user/actorName&quot;);
+</code></pre></dd>
+</dl>
+<p>As you can see from the example above the following pattern is used to find an actor on a remote node:</p>
+<pre><code>pekko://&lt;actor system&gt;@&lt;hostname&gt;:&lt;port&gt;/&lt;actor path&gt;
+</code></pre><div class="callout note "><div class="callout-title">Note</div>
+<p>Unlike with earlier remoting, the protocol field is always <em>pekko</em> as pluggable transports are no longer supported.</p></div>
+<p>Once you obtained a selection to the actor you can interact with it in the same way you would with a local actor, e.g.:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre><code>selection ! &quot;Pretty awesome feature&quot;
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre><code>selection.tell(&quot;Pretty awesome feature&quot;, getSelf());
+</code></pre></dd>
+</dl>
+<p>To acquire an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> for an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span> you need to send a message to the selection and use the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/Actor.html#sender():org.apache.pekko.actor.ActorRef" title="pekko.actor.Actor"><code>sender()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/AbstractActor.html#getSender()" title="pekko.actor.AbstractActor"><code>getSender()</code></a></span> reference of the reply from the actor. There is a built-in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Identify.html" title="org.apache.pekko.actor.Identify"><code>Identify</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Identify.html" title="org.apache.pekko.actor.Identify"><code>Identify</code></a></span> message that all Actors will understand and automatically reply to with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorIdentity.html" title="org.apache.pekko.actor.ActorIdentity"><code>ActorIdentity</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorIdentity.html" title="org.apache.pekko.actor.ActorIdentity"><code>ActorIdentity</code></a></span> message containing the <code>ActorRef</code>. This can also be done with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html#resolveOne(timeout:scala.concurrent.duration.FiniteDuration):scala.concurrent.Future[org.apache.pekko.actor.ActorRef]" title="org.apache.pekko.actor.ActorSelection"><code>resolveOne</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html#resolveOne(java.time.Duration)" title="org.apache.pekko.actor.ActorSelection"><code>resolveOne</code></a></span> method of the <code>ActorSelection</code>, which returns a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> of the matching <code>ActorRef</code>.</p>
+<p>For more details on how actor addresses and paths are formed and used, please refer to <a href="general/addressing.html">Actor References, Paths and Addresses</a>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Message sends to actors that are actually in the sending actor system do not get delivered via the remote actor ref provider. They&rsquo;re delivered directly, by the local actor ref provider.</p>
+<p>Aside from providing better performance, this also means that if the hostname you configure remoting to listen as cannot actually be resolved from within the very same actor system, such messages will (perhaps counterintuitively) be delivered just fine.</p></div>
+<h2><a href="#remote-security" name="remote-security" class="anchor"><span class="anchor-link"></span></a>Remote Security</h2>
+<p>An <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> should not be exposed via Pekko Remote (Artery) over plain Aeron/UDP or TCP to an untrusted network (e.g. Internet). It should be protected by network security, such as a firewall. If that is not considered as enough protection <a href="remoting-artery.html#remote-tls">TLS with mutual authentication</a> should be enabled.</p>
+<p>Best practice is that Pekko remoting nodes should only be accessible from the adjacent network. Note that if TLS is enabled with mutual authentication there is still a risk that an attacker can gain access to a valid certificate by compromising any node with certificates issued by the same internal PKI tree.</p>
+<p>By default, <a href="serialization.html#java-serialization">Java serialization</a> is disabled in Pekko. That is also security best-practice because of its multiple <a href="https://community.microfocus.com/cyberres/fortify/f/fortify-discussions/317555/the-perils-of-java-deserialization">known attack surfaces</a>.</p>
+<a id="remote-tls"></a>
+<h3><a href="#configuring-ssl-tls-for-pekko-remoting" name="configuring-ssl-tls-for-pekko-remoting" class="anchor"><span class="anchor-link"></span></a>Configuring SSL/TLS for Pekko Remoting</h3>
+<p>In addition to what is described here, you can read the blog post addressing this aspect for Pekko <a href="https://akka.io/blog/article/2021/10/27/akka-cluster-mtls">Securing Pekko cluster communication in Kubernetes</a>.</p>
+<p>SSL can be used as the remote transport by using the <code>tls-tcp</code> transport:</p>
+<pre><code>pekko.remote.artery {
+  transport = tls-tcp
+}
+</code></pre>
+<p>Next the actual SSL/TLS parameters have to be configured:</p>
+<pre><code>pekko.remote.artery {
+  transport = tls-tcp
+
+  ssl.config-ssl-engine {
+    key-store = &quot;/example/path/to/mykeystore.jks&quot;
+    trust-store = &quot;/example/path/to/mytruststore.jks&quot;
+
+    key-store-password = ${SSL_KEY_STORE_PASSWORD}
+    key-password = ${SSL_KEY_PASSWORD}
+    trust-store-password = ${SSL_TRUST_STORE_PASSWORD}
+
+    protocol = &quot;TLSv1.2&quot;
+
+    enabled-algorithms = [TLS_DHE_RSA_WITH_AES_128_GCM_SHA256]
+  }
+}
+</code></pre>
+<p>Always use <a href="https://github.com/lightbend/config#optional-system-or-env-variable-overrides">substitution from environment variables</a> for passwords. Don&rsquo;t define real passwords in config files.</p>
+<p>According to <a href="https://www.rfc-editor.org/rfc/rfc7525.html">RFC 7525</a> the recommended algorithms to use with TLS 1.2 (as of writing this document) are:</p>
+<ul>
+  <li>TLS_DHE_RSA_WITH_AES_128_GCM_SHA256</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</li>
+  <li>TLS_DHE_RSA_WITH_AES_256_GCM_SHA384</li>
+  <li>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</li>
+</ul>
+<p>You should always check the latest information about security and algorithm recommendations though before you configure your system.</p>
+<p>Since a Pekko remoting is inherently <a href="general/remoting.html#symmetric-communication">peer-to-peer</a> both the key-store as well as trust-store need to be configured on each remoting node participating in the cluster.</p>
+<p>The official <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html">Java Secure Socket Extension documentation</a> as well as the <a href="https://docs.oracle.com/cd/E19509-01/820-3503/6nf1il6er/index.html">Oracle documentation on creating KeyStore and TrustStores</a> are both great resources to research when setting up security on the JVM. Please consult those resources when troubleshooting and configuring SSL.</p>
+<p>Mutual authentication between TLS peers is enabled by default. Mutual authentication means that the passive side (the TLS server side) of a connection will also request and verify a certificate from the connecting peer. Without this mode only the client side is requesting and verifying certificates. While Pekko is a peer-to-peer technology, each connection between nodes starts out from one side (the &ldquo;client&rdquo;) towards the other (the &ldquo;server&rdquo;).</p>
+<p>Note that if TLS is enabled with mutual authentication there is still a risk that an attacker can gain access to a valid certificate by compromising any node with certificates issued by the same internal PKI tree.</p>
+<p>It&rsquo;s recommended that you enable hostname verification with <code>pekko.remote.artery.ssl.config-ssl-engine.hostname-verification=on</code>. When enabled it will verify that the destination hostname matches the hostname in the peer&rsquo;s certificate.</p>
+<p>In deployments where hostnames are dynamic and not known up front it can make sense to leave the hostname verification off.</p>
+<p>You have a few choices how to set up certificates and hostname verification:</p>
+<ul>
+  <li>Have a single set of keys and a single certificate for all nodes and <em>disable</em> hostname checking
+    <ul>
+      <li>The single set of keys and the single certificate is distributed to all nodes. The certificate can  be self-signed as it is distributed both as a certificate for authentication but also as the trusted certificate.</li>
+      <li>If the keys/certificate are lost, someone else can connect to your cluster.</li>
+      <li>Adding nodes to the cluster is simple as the key material can be deployed / distributed to the new node.</li>
+    </ul>
+  </li>
+  <li>Have a single set of keys and a single certificate for all nodes that contains all of the host names and <em>enable</em>  hostname checking.
+    <ul>
+      <li>This means that only the hosts mentioned in the certificate can connect to the cluster.</li>
+      <li>It cannot be checked, though, if the node you talk to is actually the node it is supposed to be (or if it is one  of the other nodes). This seems like a minor restriction as you&rsquo;ll have to trust all cluster nodes the same in an  Pekko cluster anyway.</li>
+      <li>The certificate can be self-signed in which case the same single certificate is distributed and trusted on all  nodes (but see the next bullet)</li>
+      <li>Adding a new node means that its host name needs to conform to the trusted host names in the certificate.  That either means to foresee new hosts, use a wildcard certificate, or use a full CA in the first place,  so you can later issue more certificates if more nodes are to be added (but then you already get into the  territory of the next solution).</li>
+      <li>If a certificate is stolen, it can only be used to connect to the cluster from a node reachable via a hostname  that is trusted in the certificate. It would require tampering with DNS to allow other nodes to get access to  the cluster (however, tampering DNS might be easier in an internal setting than on internet scale).</li>
+    </ul>
+  </li>
+  <li>Have a CA and then keys/certificates, one for each node, and <em>enable</em> host name checking.
+    <ul>
+      <li>Basically like internet HTTPS but that you only trust the internal CA and then issue certificates for each new node.</li>
+      <li>Needs a PKI, the CA certificate is trusted on all nodes, the individual certificates are used for authentication.</li>
+      <li>Only the CA certificate and the key/certificate for a node is distributed.</li>
+      <li>If keys/certificates are stolen, only the same node can access the cluster (unless DNS is tampered with as well).  You can revoke single certificates.</li>
+    </ul>
+  </li>
+</ul>
+<p>See also a description of the settings in the <a href="remoting-artery.html#remote-configuration-artery">Remote Configuration</a> section.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>When using SHA1PRNG on Linux it&rsquo;s recommended specify <code>-Djava.security.egd=file:/dev/urandom</code> as argument to the JVM to prevent blocking. It is NOT as secure because it reuses the seed.</p></div>
+<h3><a href="#untrusted-mode" name="untrusted-mode" class="anchor"><span class="anchor-link"></span></a>Untrusted Mode</h3>
+<p>As soon as an actor system can connect to another remotely, it may in principle send any possible message to any actor contained within that remote system. One example may be sending a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span> to the system guardian, shutting that system down. This is not always desired, and it can be disabled with the following setting:</p>
+<pre><code>pekko.remote.artery.untrusted-mode = on
+</code></pre>
+<p>This disallows sending of system messages (actor life-cycle commands, DeathWatch, etc.) and any message extending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span> to the system on which this flag is set. Should a client send them nonetheless they are dropped and logged (at DEBUG level in order to reduce the possibilities for a denial of service attack). <code>PossiblyHarmful</code> covers the predefined messages like <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span>, but it can also be added as a marker trait to user-defined messages.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Untrusted mode does not give full protection against attacks by itself. It makes it slightly harder to perform malicious or unintended actions but it should be noted that <a href="serialization.html#java-serialization">Java serialization</a> should still not be enabled. Additional protection can be achieved when running in an untrusted network by network security (e.g. firewalls) and/or enabling <a href="remoting-artery.html#remote-tls">TLS with mutual authentication</a>.</p></div>
+<p>Messages sent with actor selection are by default discarded in untrusted mode, but permission to receive actor selection messages can be granted to specific actors defined in configuration:</p>
+<pre><code>pekko.remote.artery.trusted-selection-paths = [&quot;/user/receptionist&quot;, &quot;/user/namingService&quot;]
+</code></pre>
+<p>The actual message must still not be of type <code>PossiblyHarmful</code>.</p>
+<p>In summary, the following operations are ignored by a system configured in untrusted mode when incoming via the remoting layer:</p>
+<ul>
+  <li>remote deployment (which also means no remote supervision)</li>
+  <li>remote DeathWatch</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#stop(actor:org.apache.pekko.actor.ActorRef):Unit" title="org.apache.pekko.actor.ActorRefFactory"><code>system.stop()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRefFactory.html#stop(org.apache.pekko.actor.ActorRef)" title="org.apache.pekko.actor.ActorRefFactory"><code>system.stop()</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span></li>
+  <li>sending any message which extends from the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span> marker interface, which includes <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>Terminated</code></a></span></li>
+  <li>messages sent with actor selection, unless destination defined in <code>trusted-selection-paths</code>.</li>
+</ul><div class="callout note "><div class="callout-title">Note</div>
+<p>Enabling the untrusted mode does not remove the capability of the client to freely choose the target of its message sends, which means that messages not prohibited by the above rules can be sent to any actor in the remote system. It is good practice for a client-facing system to only contain a well-defined set of entry point actors, which then forward requests (possibly after performing validation) to another actor system containing the actual worker actors. If messaging between these two server-side systems is done using local <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> (they can be exchanged safely between actor systems within the same JVM), you can restrict the messages on this interface by marking them <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PossiblyHarmful.html" title="org.apache.pekko.actor.PossiblyHarmful"><code>PossiblyHarmful</code></a></span> so that a client cannot forge them.</p></div>
+<h2><a href="#quarantine" name="quarantine" class="anchor"><span class="anchor-link"></span></a>Quarantine</h2>
+<p>Pekko remoting is using TCP or Aeron as underlying message transport. Aeron is using UDP and adds among other things reliable delivery and session semantics, very similar to TCP. This means that the order of the messages are preserved, which is needed for the <a href="general/message-delivery-reliability.html#message-ordering">Actor message ordering guarantees</a>. Under normal circumstances all messages will be delivered but there are cases when messages may not be delivered to the destination:</p>
+<ul>
+  <li>during a network partition when the TCP connection or the Aeron session is broken, this automatically recovered once the partition is over</li>
+  <li>when sending too many messages without flow control and thereby filling up the outbound send queue (<code>outbound-message-queue-size</code> config)</li>
+  <li>if serialization or deserialization of a message fails (only that message will be dropped)</li>
+  <li>if an unexpected exception occurs in the remoting infrastructure</li>
+</ul>
+<p>In short, Actor message delivery is “at-most-once” as described in <a href="general/message-delivery-reliability.html">Message Delivery Reliability</a></p>
+<p>Some messages in Pekko are called system messages and those cannot be dropped because that would result in an inconsistent state between the systems. Such messages are used for essentially two features; remote death watch and remote deployment. These messages are delivered by Pekko remoting with “exactly-once” guarantee by confirming each message and resending unconfirmed messages. If a system message anyway cannot be delivered the association with the destination system is irrecoverable failed, and Terminated is signaled for all watched actors on the remote system. It is placed in a so called quarantined state. Quarantine usually does not happen if remote watch or remote deployment is not used.</p>
+<p>Each <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> instance has an unique identifier (UID), which is important for differentiating between incarnations of a system when it is restarted with the same hostname and port. It is the specific incarnation (UID) that is quarantined. The only way to recover from this state is to restart one of the actor systems.</p>
+<p>Messages that are sent to and received from a quarantined system will be dropped. However, it is possible to send messages with <code>actorSelection</code> to the address of a quarantined system, which is useful to probe if the system has been restarted.</p>
+<p>An association will be quarantined when:</p>
+<ul>
+  <li>Cluster node is removed from the cluster membership.</li>
+  <li>Remote failure detector triggers, i.e. remote watch is used. This is different when <a href="cluster-usage.html">Pekko Cluster</a> is used. The unreachable observation by the cluster failure detector can go back to reachable if the network partition heals. A cluster member is not quarantined when the failure detector triggers.</li>
+  <li>Overflow of the system message delivery buffer, e.g. because of too many <code>watch</code> requests at the same time (<code>system-message-buffer-size</code> config).</li>
+  <li>Unexpected exception occurs in the control subchannel of the remoting infrastructure.</li>
+</ul>
+<p>The UID of the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> is exchanged in a two-way handshake when the first message is sent to a destination. The handshake will be retried until the other system replies and no other messages will pass through until the handshake is completed. If the handshake cannot be established within a timeout (<code>handshake-timeout</code> config) the association is stopped (freeing up resources). Queued messages will be dropped if the handshake cannot be established. It will not be quarantined, because the UID is unknown. New handshake attempt will start when next message is sent to the destination.</p>
+<p>Handshake requests are actually also sent periodically to be able to establish a working connection when the destination system has been restarted.</p>
+<h3><a href="#watching-remote-actors" name="watching-remote-actors" class="anchor"><span class="anchor-link"></span></a>Watching Remote Actors</h3>
+<p>Watching a remote actor is API wise not different than watching a local actor, as described in <a href="actors.html#deathwatch">Lifecycle Monitoring aka DeathWatch</a>. However, it is important to note, that unlike in the local case, remoting has to handle when a remote actor does not terminate in a graceful way sending a system message to notify the watcher actor about the event, but instead being hosted on a system which stopped abruptly (crashed). These situations are handled by the built-in failure detector.</p>
+<h3><a href="#failure-detector" name="failure-detector" class="anchor"><span class="anchor-link"></span></a>Failure Detector</h3>
+<p>Under the hood remote death watch uses heartbeat messages and a failure detector to generate <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Terminated.html" title="org.apache.pekko.actor.Terminated"><code>Terminated</code></a></span> message from network failures and JVM crashes, in addition to graceful termination of watched actor.</p>
+<p>The heartbeat arrival times is interpreted by an implementation of <a href="http://www.jaist.ac.jp/~defago/files/pdf/IS_RR_2004_010.pdf">The Phi Accrual Failure Detector</a>.</p>
+<p>The suspicion level of failure is given by a value called <em>phi</em>. The basic idea of the phi failure detector is to express the value of <em>phi</em> on a scale that is dynamically adjusted to reflect current network conditions.</p>
+<p>The value of <em>phi</em> is calculated as:</p>
+<pre><code>phi = -log10(1 - F(timeSinceLastHeartbeat))
+</code></pre>
+<p>where F is the cumulative distribution function of a normal distribution with mean and standard deviation estimated from historical heartbeat inter-arrival times.</p>
+<p>In the <a href="remoting-artery.html#remote-configuration-artery">Remote Configuration</a> you can adjust the <code>pekko.remote.watch-failure-detector.threshold</code> to define when a <em>phi</em> value is considered to be a failure.</p>
+<p>A low <code>threshold</code> is prone to generate many false positives but ensures a quick detection in the event of a real crash. Conversely, a high <code>threshold</code> generates fewer mistakes but needs more time to detect actual crashes. The default <code>threshold</code> is 10 and is appropriate for most situations. However in cloud environments, such as Amazon EC2, the value could be increased to 12 in order to account for network issues that sometimes occur on such platforms.</p>
+<p>The following chart illustrates how <em>phi</em> increase with increasing time since the previous heartbeat.</p>
+<p><img src="./images/phi1.png" alt="phi1.png" /></p>
+<p>Phi is calculated from the mean and standard deviation of historical inter arrival times. The previous chart is an example for standard deviation of 200 ms. If the heartbeats arrive with less deviation the curve becomes steeper, i.e. it is possible to determine failure more quickly. The curve looks like this for a standard deviation of 100 ms.</p>
+<p><img src="./images/phi2.png" alt="phi2.png" /></p>
+<p>To be able to survive sudden abnormalities, such as garbage collection pauses and transient network failures the failure detector is configured with a margin, <code>pekko.remote.watch-failure-detector.acceptable-heartbeat-pause</code>. You may want to adjust the <a href="remoting-artery.html#remote-configuration-artery">Remote Configuration</a> of this depending on you environment. This is how the curve looks like for <code>acceptable-heartbeat-pause</code> configured to 3 seconds.</p>
+<p><img src="./images/phi3.png" alt="phi3.png" /></p>
+<h2><a href="#serialization" name="serialization" class="anchor"><span class="anchor-link"></span></a>Serialization</h2>
+<p>You need to enable <a href="serialization.html">serialization</a> for your actor messages. <a href="serialization-jackson.html">Serialization with Jackson</a> is a good choice in many cases and our recommendation if you don&rsquo;t have other preference.</p>
+<a id="remote-bytebuffer-serialization"></a>
+<h3><a href="#bytebuffer-based-serialization" name="bytebuffer-based-serialization" class="anchor"><span class="anchor-link"></span></a>ByteBuffer based serialization</h3>
+<p>Artery introduces a new serialization mechanism which allows the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>ByteBufferSerializer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>ByteBufferSerializer</code></a></span> to directly write into a shared <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/ByteBuffer.html" title="java.nio.ByteBuffer"><code>java.nio.ByteBuffer</code></a> instead of being forced to allocate and return an <code>Array[Byte]</code> for each serialized message. For high-throughput messaging this API change can yield significant performance benefits, so we recommend changing your serializers to use this new mechanism.</p>
+<p>This new API also plays well with new versions of Google Protocol Buffers and other serialization libraries, which gained the ability to serialize directly into and from ByteBuffers.</p>
+<p>As the new feature only changes how bytes are read and written, and the rest of the serialization infrastructure remained the same, we recommend reading the <a href="serialization.html">Serialization</a> documentation first.</p>
+<p>Implementing an <code>org.apache.pekko.serialization.ByteBufferSerializer</code> works the same way as any other serializer,</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor/src/main/scala/org/apache/pekko/serialization/Serializer.scala#L211-L225" target="_blank" title="Go to snippet source">source</a><code class="language-scala">trait ByteBufferSerializer {
+
+  /**
+   * Serializes the given object into the `ByteBuffer`.
+   */
+  def toBinary(o: AnyRef, buf: ByteBuffer): Unit
+
+  /**
+   * Produces an object from a `ByteBuffer`, with an optional type-hint;
+   * the class should be loaded using ActorSystem.dynamicAccess.
+   */
+  @throws(classOf[NotSerializableException])
+  def fromBinary(buf: ByteBuffer, manifest: String): AnyRef
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/ByteBufferSerializerDocTest.java#L72-L81" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface ByteBufferSerializer {
+  /** Serializes the given object into the `ByteBuffer`. */
+  void toBinary(Object o, ByteBuffer buf);
+
+  /**
+   * Produces an object from a `ByteBuffer`, with an optional type-hint; the class should be
+   * loaded using ActorSystem.dynamicAccess.
+   */
+  Object fromBinary(ByteBuffer buf, String manifest);
+}</code></pre></dd>
+</dl>
+<p>Implementing a serializer for Artery is therefore as simple as implementing this interface, and binding the serializer as usual (which is explained in <a href="serialization.html">Serialization</a>).</p>
+<p>Implementations should typically extend <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>SerializerWithStringManifest</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>SerializerWithStringManifest</code></a></span> and in addition to the <code>ByteBuffer</code> based <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html#toBinary(o:AnyRef,buf:java.nio.ByteBuffer):Unit" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>toBinary</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html#toBinary(java.lang.Object,java.nio.ByteBuffer)" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>toBinary</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html#fromBinary(buf:java.nio.ByteBuffer,manifest:String):AnyRef" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>fromBinary</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/ByteBufferSerializer.html#fromBinary(java.nio.ByteBuffer,java.lang.String)" title="org.apache.pekko.serialization.ByteBufferSerializer"><code>fromBinary</code></a></span> methods also implement the array based <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html#toBinary(o:AnyRef):Array[Byte]" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>toBinary</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html#toBinary(java.lang.Object)" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>toBinary</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html#fromBinary(bytes:Array[Byte],manifest:Option[Class[_]]):AnyRef" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>fromBinary</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/serialization/SerializerWithStringManifest.html#fromBinary(byte[],scala.Option)" title="org.apache.pekko.serialization.SerializerWithStringManifest"><code>fromBinary</code></a></span> methods. The array based methods will be used when <code>ByteBuffer</code> is not used, e.g. in Pekko Persistence.</p>
+<p>Note that the array based methods can be implemented by delegation like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/ByteBufferSerializerDocSpec.scala#L17-L50" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import java.nio.ByteBuffer
+import org.apache.pekko
+import pekko.serialization.ByteBufferSerializer
+import pekko.serialization.SerializerWithStringManifest
+
+class ExampleByteBufSerializer extends SerializerWithStringManifest with ByteBufferSerializer {
+  override def identifier: Int = 1337
+  override def manifest(o: AnyRef): String = &quot;naive-toStringImpl&quot;
+
+  // Implement this method for compatibility with `SerializerWithStringManifest`.
+  override def toBinary(o: AnyRef): Array[Byte] = {
+    // in production code, acquire this from a BufferPool
+    val buf = ByteBuffer.allocate(256)
+
+    toBinary(o, buf)
+    buf.flip()
+    val bytes = new Array[Byte](buf.remaining)
+    buf.get(bytes)
+    bytes
+  }
+
+  // Implement this method for compatibility with `SerializerWithStringManifest`.
+  override def fromBinary(bytes: Array[Byte], manifest: String): AnyRef =
+    fromBinary(ByteBuffer.wrap(bytes), manifest)
+
+  // Actual implementation in the ByteBuffer versions of to/fromBinary:
+  override def toBinary(o: AnyRef, buf: ByteBuffer): Unit = ??? // implement actual logic here
+  override def fromBinary(buf: ByteBuffer, manifest: String): AnyRef = ??? // implement actual logic here
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/ByteBufferSerializerDocTest.java#L17-L66" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.serialization.ByteBufferSerializer;
+import org.apache.pekko.serialization.SerializerWithStringManifest;
+
+class ExampleByteBufSerializer extends SerializerWithStringManifest
+    implements ByteBufferSerializer {
+
+  @Override
+  public int identifier() {
+    return 1337;
+  }
+
+  @Override
+  public String manifest(Object o) {
+    return &quot;serialized-&quot; + o.getClass().getSimpleName();
+  }
+
+  @Override
+  public byte[] toBinary(Object o) {
+    // in production code, acquire this from a BufferPool
+    final ByteBuffer buf = ByteBuffer.allocate(256);
+
+    toBinary(o, buf);
+    buf.flip();
+    final byte[] bytes = new byte[buf.remaining()];
+    buf.get(bytes);
+    return bytes;
+  }
+
+  @Override
+  public Object fromBinary(byte[] bytes, String manifest) {
+    return fromBinary(ByteBuffer.wrap(bytes), manifest);
+  }
+
+  @Override
+  public void toBinary(Object o, ByteBuffer buf) {
+    // Implement actual serialization here
+  }
+
+  @Override
+  public Object fromBinary(ByteBuffer buf, String manifest) {
+    // Implement actual deserialization here
+    return null;
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#routers-with-remote-destinations" name="routers-with-remote-destinations" class="anchor"><span class="anchor-link"></span></a>Routers with Remote Destinations</h2>
+<p>It is absolutely feasible to combine remoting with <a href="routing.html">Routing</a>.</p>
+<p>A pool of remote deployed routees can be configured as:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L228-L234" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/remotePool {
+    router = round-robin-pool
+    nr-of-instances = 10
+    target.nodes = [&quot;tcp://app@10.0.0.2:2552&quot;, &quot;pekko://app@10.0.0.3:2552&quot;]
+  }
+}</code></pre>
+<p>This configuration setting will clone the actor defined in the <code>Props</code> of the <code>remotePool</code> 10 times and deploy it evenly distributed across the two given target nodes.</p>
+<p>When using a pool of remote deployed routees you must ensure that all parameters of the <code>Props</code> can be <a href="serialization.html">serialized</a>.</p>
+<p>A group of remote actors can be configured as:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L250-L258" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/remoteGroup2 {
+    router = round-robin-group
+    routees.paths = [
+      &quot;pekko://app@10.0.0.1:2552/user/workers/w1&quot;,
+      &quot;pekko://app@10.0.0.2:2552/user/workers/w1&quot;,
+      &quot;pekko://app@10.0.0.3:2552/user/workers/w1&quot;]
+  }
+}</code></pre>
+<p>This configuration setting will send messages to the defined remote actor paths. It requires that you create the destination actors on the remote nodes with matching paths. That is not done by the router.</p>
+<h2><a href="#what-is-new-in-artery" name="what-is-new-in-artery" class="anchor"><span class="anchor-link"></span></a>What is new in Artery</h2>
+<p>Artery is a reimplementation of the old remoting module aimed at improving performance and stability. It is mostly source compatible with the old implementation and it is a drop-in replacement in many cases. Main features of Artery compared to the previous implementation:</p>
+<ul>
+  <li>Based on Pekko Streams TCP/TLS or <a href="https://github.com/real-logic/Aeron">Aeron</a> (UDP) instead of Netty TCP</li>
+  <li>Focused on high-throughput, low-latency communication</li>
+  <li>Isolation of internal control messages from user messages improving stability and reducing false failure detection in case of heavy traffic by using a dedicated subchannel.</li>
+  <li>Mostly allocation-free operation</li>
+  <li>Support for a separate subchannel for large messages to avoid interference with smaller messages</li>
+  <li>Compression of actor paths on the wire to reduce overhead for smaller messages</li>
+  <li>Support for faster serialization/deserialization using ByteBuffers directly</li>
+  <li>Built-in Java Flight Recorder (JFR) to help debugging implementation issues without polluting users logs with implementation specific events</li>
+  <li>Providing protocol stability across major Pekko versions to support rolling updates of large-scale systems</li>
+</ul>
+<p>The main incompatible change from the previous implementation that the protocol field of the string representation of an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> is always <em>pekko</em> instead of the previously used <em>pekko.tcp</em> or <em>pekko.ssl.tcp</em>. Configuration properties are also different.</p>
+<h2><a href="#performance-tuning" name="performance-tuning" class="anchor"><span class="anchor-link"></span></a>Performance tuning</h2>
+<h3><a href="#lanes" name="lanes" class="anchor"><span class="anchor-link"></span></a>Lanes</h3>
+<p>Message serialization and deserialization can be a bottleneck for remote communication. Therefore there is support for parallel inbound and outbound lanes to perform serialization and other tasks for different destination actors in parallel. Using multiple lanes is of most value for the inbound messages, since all inbound messages from all remote systems share the same inbound stream. For outbound messages there is already one stream per remote destination system, so multiple outbound lanes only add value when sending to different actors in same destination system.</p>
+<p>The selection of lane is based on consistent hashing of the recipient ActorRef to preserve message ordering per receiver.</p>
+<p>Note that lowest latency can be achieved with <code>inbound-lanes=1</code> and <code>outbound-lanes=1</code> because multiple lanes introduce an asynchronous boundary. </p>
+<p>Also note that the total amount of parallel tasks are bound by the <code>remote-dispatcher</code> and the thread pool size should not exceed the number of CPU cores minus headroom for actually processing the messages in the application, i.e. in practice the pool size should be less than half of the number of cores.</p>
+<p>See <code>inbound-lanes</code> and <code>outbound-lanes</code> in the <a href="general/configuration-reference.html#config-pekko-remote-artery">reference configuration</a> for default values.</p>
+<h3><a href="#dedicated-subchannel-for-large-messages" name="dedicated-subchannel-for-large-messages" class="anchor"><span class="anchor-link"></span></a>Dedicated subchannel for large messages</h3>
+<p>All the communication between user defined remote actors are isolated from the channel of Pekko internal messages so a large user message cannot block an urgent system message. While this provides good isolation for Pekko services, all user communications by default happen through a shared network connection. When some actors send large messages this can cause other messages to suffer higher latency as they need to wait until the full message has been transported on the shared channel (and hence, shared bottleneck). In these cases it is usually helpful to separate actors that have different QoS requirements: large messages vs. low latency.</p>
+<p>Pekko remoting provides a dedicated channel for large messages if configured. Since actor message ordering must not be violated the channel is actually dedicated for <em>actors</em> instead of messages, to ensure all of the messages arrive in send order. It is possible to assign actors on given paths to use this dedicated channel by using path patterns that have to be specified in the actor system&rsquo;s configuration on both the sending and the receiving side:</p>
+<pre><code>pekko.remote.artery.large-message-destinations = [
+   &quot;/user/largeMessageActor&quot;,
+   &quot;/user/largeMessagesGroup/*&quot;,
+   &quot;/user/anotherGroup/*/largeMesssages&quot;,
+   &quot;/user/thirdGroup/**&quot;,
+   &quot;/temp/session-ask-actor*&quot;
+]
+</code></pre>
+<p>*NOTE: Support for * inside of an actor path (ie. /temp/session-ask-actor*) is only available in 2.6.18+</p>
+<p>This means that all messages sent to the following actors will pass through the dedicated, large messages channel:</p>
+<ul>
+  <li><code>/user/largeMessageActor</code></li>
+  <li><code>/user/largeMessageActorGroup/actor1</code></li>
+  <li><code>/user/largeMessageActorGroup/actor2</code></li>
+  <li><code>/user/anotherGroup/actor1/largeMessages</code></li>
+  <li><code>/user/anotherGroup/actor2/largeMessages</code></li>
+  <li><code>/user/thirdGroup/actor3/</code></li>
+  <li><code>/user/thirdGroup/actor4/actor5</code></li>
+  <li><code>/temp/session-ask-actor$abc</code></li>
+</ul>
+<p>Messages destined for actors not matching any of these patterns are sent using the default channel as before.</p>
+<p>To notice large messages you can enable logging of message types with payload size in bytes larger than the configured <code>log-frame-size-exceeding</code>.</p>
+<pre><code>pekko.remote.artery {
+  log-frame-size-exceeding = 10000b
+}
+</code></pre>
+<p>Example log messages:</p>
+<pre><code>[INFO] Payload size for [java.lang.String] is [39068] bytes. Sent to Actor[pekko://Sys@localhost:53039/user/destination#-1908386800]
+[INFO] New maximum payload size for [java.lang.String] is [44068] bytes. Sent to Actor[pekko://Sys@localhost:53039/user/destination#-1908386800].
+</code></pre>
+<p>The large messages channel can still not be used for extremely large messages, a few MB per message at most. An alternative is to use the <a href="typed/reliable-delivery.html">Reliable delivery</a> that has support for automatically <a href="typed/reliable-delivery.html#chunk-large-messages">splitting up large messages</a> and assemble them again on the receiving side.</p>
+<h3><a href="#external-shared-aeron-media-driver" name="external-shared-aeron-media-driver" class="anchor"><span class="anchor-link"></span></a>External, shared Aeron media driver</h3>
+<p>The Aeron transport is running in a so called <a href="https://github.com/real-logic/Aeron/wiki/Media-Driver-Operation">media driver</a>. By default, Pekko starts the media driver embedded in the same JVM process as application. This is convenient and simplifies operational concerns by only having one process to start and monitor.</p>
+<p>The media driver may use rather much CPU resources. If you run more than one Pekko application JVM on the same machine it can therefore be wise to share the media driver by running it as a separate process.</p>
+<p>The media driver has also different resource usage characteristics than a normal application and it can therefore be more efficient and stable to run the media driver as a separate process.</p>
+<p>Given that Aeron jar files are in the classpath the standalone media driver can be started with:</p>
+<pre><code>java io.aeron.driver.MediaDriver
+</code></pre>
+<p>The needed classpath:</p>
+<pre><code>Agrona-0.5.4.jar:aeron-driver-1.0.1.jar:aeron-client-1.0.1.jar
+</code></pre>
+<p>You find those jar files on <a href="https://search.maven.org/">Maven Central</a>, or you can create a package with your preferred build tool.</p>
+<p>You can pass <a href="https://github.com/real-logic/Aeron/wiki/Configuration-Options">Aeron properties</a> as command line <em>-D</em> system properties:</p>
+<pre><code>-Daeron.dir=/dev/shm/aeron
+</code></pre>
+<p>You can also define Aeron properties in a file:</p>
+<pre><code>java io.aeron.driver.MediaDriver config/aeron.properties
+</code></pre>
+<p>An example of such a properties file:</p>
+<pre><code>aeron.mtu.length=16384
+aeron.socket.so_sndbuf=2097152
+aeron.socket.so_rcvbuf=2097152
+aeron.rcv.buffer.length=16384
+aeron.rcv.initial.window.length=2097152
+agrona.disable.bounds.checks=true
+
+aeron.threading.mode=SHARED_NETWORK
+
+# low latency settings
+#aeron.threading.mode=DEDICATED
+#aeron.sender.idle.strategy=org.agrona.concurrent.BusySpinIdleStrategy
+#aeron.receiver.idle.strategy=org.agrona.concurrent.BusySpinIdleStrategy
+
+# use same director in pekko.remote.artery.advanced.aeron-dir config
+# of the Pekko application
+aeron.dir=/dev/shm/aeron
+</code></pre>
+<p>Read more about the media driver in the <a href="https://github.com/real-logic/Aeron/wiki/Media-Driver-Operation">Aeron documentation</a>.</p>
+<p>To use the external media driver from the Pekko application you need to define the following two configuration properties:</p>
+<pre><code>pekko.remote.artery.advanced.aeron {
+  embedded-media-driver = off
+  aeron-dir = /dev/shm/aeron
+}
+</code></pre>
+<p>The <code>aeron-dir</code> must match the directory you started the media driver with, i.e. the <code>aeron.dir</code> property.</p>
+<p>Several Pekko applications can then be configured to use the same media driver by pointing to the same directory.</p>
+<p>Note that if the media driver process is stopped the Pekko applications that are using it will also be stopped.</p>
+<h3><a href="#aeron-tuning" name="aeron-tuning" class="anchor"><span class="anchor-link"></span></a>Aeron Tuning</h3>
+<p>See Aeron documentation about <a href="https://github.com/real-logic/Aeron/wiki/Performance-Testing">Performance Testing</a>.</p>
+<h3><a href="#fine-tuning-cpu-usage-latency-tradeoff" name="fine-tuning-cpu-usage-latency-tradeoff" class="anchor"><span class="anchor-link"></span></a>Fine-tuning CPU usage latency tradeoff</h3>
+<p>Artery has been designed for low latency and as a result it can be CPU hungry when the system is mostly idle. This is not always desirable. When using the Aeron transport it is possible to tune the tradeoff between CPU usage and latency with the following configuration:</p>
+<pre><code># Values can be from 1 to 10, where 10 strongly prefers low latency
+# and 1 strongly prefers less CPU usage
+pekko.remote.artery.advanced.aeron.idle-cpu-level = 1
+</code></pre>
+<p>By setting this value to a lower number, it tells Pekko to do longer &ldquo;sleeping&rdquo; periods on its thread dedicated for <a href="https://en.wikipedia.org/wiki/Busy_waiting">spin-waiting</a> and hence reducing CPU load when there is no immediate task to execute at the cost of a longer reaction time to an event when it actually happens. It is worth to be noted though that during a continuously high-throughput period this setting makes not much difference as the thread mostly has tasks to execute. This also means that under high throughput (but below maximum capacity) the system might have less latency than at low message rates.</p>
+<a id="remote-configuration-artery"></a>
+<h2><a href="#remote-configuration" name="remote-configuration" class="anchor"><span class="anchor-link"></span></a>Remote Configuration</h2>
+<p>There are lots of configuration properties that are related to remoting in Pekko. We refer to the <a href="general/configuration-reference.html#config-pekko-remote-artery">reference configuration</a> for more information.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Setting properties like the listening IP and port number programmatically is best done by using something like the following:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/remoting/RemoteDeploymentDocTest.java#L98-L99" target="_blank" title="Go to snippet source">source</a><code class="language-java">ConfigFactory.parseString(&quot;pekko.remote.artery.canonical.hostname=\&quot;1.2.3.4\&quot;&quot;)
+    .withFallback(ConfigFactory.load());</code></pre></div>
+<a id="remote-configuration-nat-artery"></a>
+<h3><a href="#pekko-behind-nat-or-in-a-docker-container" name="pekko-behind-nat-or-in-a-docker-container" class="anchor"><span class="anchor-link"></span></a>Pekko behind NAT or in a Docker container</h3>
+<p>In setups involving Network Address Translation (NAT), Load Balancers or Docker containers the hostname and port pair that Pekko binds to will be different than the &ldquo;logical&rdquo; host name and port pair that is used to connect to the system from the outside. This requires special configuration that sets both the logical and the bind pairs for remoting.</p>
+<pre><code>pekko {
+  remote {
+    artery {
+      canonical.hostname = my.domain.com      # external (logical) hostname
+      canonical.port = 8000                   # external (logical) port
+
+      bind.hostname = local.address # internal (bind) hostname
+      bind.port = 25520              # internal (bind) port
+    }
+ }
+}
+</code></pre>
+<p>You can look at the <span class="group-java"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-sample-cluster-docker-compose-java">Cluster with docker-compose example project</a></span> <span class="group-scala"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-sample-cluster-docker-compose-scala">Cluster with docker-compose example project</a></span> to see what this looks like in practice.</p>
+<h3><a href="#running-in-docker-kubernetes" name="running-in-docker-kubernetes" class="anchor"><span class="anchor-link"></span></a>Running in Docker/Kubernetes</h3>
+<p>When using <code>aeron-udp</code> in a containerized environment special care must be taken that the media driver runs on a ram disk. This by default is located in <code>/dev/shm</code> which on most physical Linux machines will be mounted as half the size of the system memory.</p>
+<p>Docker and Kubernetes mount a 64Mb ram disk. This is unlikely to be large enough. For docker this can be overridden with <code>--shm-size=&quot;512mb&quot;</code>.</p>
+<p>In Kubernetes there is no direct support (yet) for setting <code>shm</code> size. Instead mount an <code>EmptyDir</code> with type <code>Memory</code> to <code>/dev/shm</code> for example in a deployment.yml:</p>
+<pre><code>spec:
+  containers:
+  - name: artery-udp-cluster
+    // rest of container spec...
+    volumeMounts:
+    - mountPath: /dev/shm
+      name: media-driver
+  volumes:
+  - name: media-driver
+    emptyDir:
+      medium: Memory
+      name: media-driver
+</code></pre>
+<p>There is currently no way to limit the size of a memory empty dir but there is a <a href="https://github.com/kubernetes/kubernetes/pull/63641">pull request</a> for adding it.</p>
+<p>Any space used in the mount will count towards your container&rsquo;s memory usage.</p>
+<h3><a href="#flight-recorder" name="flight-recorder" class="anchor"><span class="anchor-link"></span></a>Flight Recorder</h3>
+<p>When running on JDK 11 Artery specific flight recording is available through the <a href="https://openjdk.java.net/jeps/328">Java Flight Recorder (JFR)</a>. The flight recorder is automatically enabled by detecting JDK 11 but can be disabled if needed by setting <code>pekko.java-flight-recorder.enabled = false</code>.</p>
+<p>Low overhead Artery specific events are emitted by default when JFR is enabled, higher overhead events needs a custom settings template and are not enabled automatically with the <code>profiling</code> JFR template. To enable those create a copy of the <code>profiling</code> template and enable all <code>Pekko</code> sub category events, for example through the JMC GUI. </p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/remoting-artery.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="multi-node-testing.html" title="Multi Node Testing" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Multi Node Testing
+</span>
+</div>
+</a>
+<a href="remoting.html" title="Classic Remoting (Deprecated)" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Remoting (Deprecated)
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../../assets/images/pekko_favicon.png">
+<title>Part 4: Working with Device Groups · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../../lib/prettify/prettify.css">
+<script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Part 4: Working with Device Groups
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#part-4-working-with-device-groups" class="active page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../typed/guide/tutorial_4.html#part-4-working-with-device-groups" class="header">Part 4: Working with Device Groups</a>
+  <ul>
+    <li><a href="../../typed/guide/tutorial_4.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#device-manager-hierarchy" class="header">Device manager hierarchy</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#the-registration-protocol" class="header">The Registration Protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#adding-registration-support-to-device-group-actors" class="header">Adding registration support to device group actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#creating-device-manager-actors" class="header">Creating device manager actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#whats-next-" class="header">What&rsquo;s next?</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../typed/guide/tutorial_4.html#part-4-working-with-device-groups" class="header">Part 4: Working with Device Groups</a>
+  <ul>
+    <li><a href="../../typed/guide/tutorial_4.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#device-manager-hierarchy" class="header">Device manager hierarchy</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#the-registration-protocol" class="header">The Registration Protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#adding-registration-support-to-device-group-actors" class="header">Adding registration support to device group actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#creating-device-manager-actors" class="header">Creating device manager actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html#whats-next-" class="header">What&rsquo;s next?</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#part-4-working-with-device-groups" name="part-4-working-with-device-groups" class="anchor"><span class="anchor-link"></span></a>Part 4: Working with Device Groups</h1>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Let&rsquo;s take a closer look at the main functionality required by our use case. In a complete IoT system for monitoring home temperatures, the steps for connecting a device sensor to our system might look like this:</p>
+<ol>
+  <li>A sensor device in the home connects through some protocol.</li>
+  <li>The component managing network connections accepts the connection.</li>
+  <li>The sensor provides its group and device ID to register with the device manager component of our system.</li>
+  <li>The device manager component handles registration by looking up or creating the actor responsible for keeping sensor state.</li>
+  <li>The actor responds with an acknowledgement, exposing its <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>.</li>
+  <li>The networking component now uses the <code>ActorRef</code> for communication between the sensor and device actor without going through the device manager.</li>
+</ol>
+<p>Steps 1 and 2 take place outside the boundaries of our tutorial system. In this chapter, we will start addressing steps 3-6 and create a way for sensors to register with our system and to communicate with actors. But first, we have another architectural decision &#8212; how many levels of actors should we use to represent device groups and device sensors?</p>
+<p>One of the main design challenges for Pekko programmers is choosing the best granularity for actors. In practice, depending on the characteristics of the interactions between actors, there are usually several valid ways to organize a system. In our use case, for example, it would be possible to have a single actor maintain all the groups and devices &#8212; perhaps using hash maps. It would also be reasonable to have an actor for each group that tracks the state of all devices in the same home.</p>
+<p>The following guidelines help us choose the most appropriate actor hierarchy:</p>
+<ul>
+  <li>In general, prefer larger granularity. Introducing more fine-grained actors than needed causes more problems than it solves.</li>
+  <li>Add finer granularity when the system requires:
+    <ul>
+      <li>Higher concurrency.</li>
+      <li>Complex conversations between actors that have many states. We will see a very good example for this in the next chapter.</li>
+      <li>Sufficient state that it makes sense to divide into smaller actors.</li>
+      <li>Multiple unrelated responsibilities. Using separate actors allows individuals to fail and be restored with little impact on others.</li>
+    </ul>
+  </li>
+</ul>
+<h2><a href="#device-manager-hierarchy" name="device-manager-hierarchy" class="anchor"><span class="anchor-link"></span></a>Device manager hierarchy</h2>
+<p>Considering the principles outlined in the previous section, We will model the device manager component as an actor tree with three levels:</p>
+<ul>
+  <li>The top level supervisor actor represents the system component for devices. It is also the entry point to look up and create device group and device actors.</li>
+  <li>At the next level, group actors each supervise the device actors for one group id (e.g. one home). They also provide services, such as querying temperature readings from all of the available devices in their group.</li>
+  <li>Device actors manage all the interactions with the actual device sensors, such as storing temperature readings.</li>
+</ul>
+<p><img src="diagrams/device_manager_tree.png" alt="device manager tree" /></p>
+<p>We chose this three-layered architecture for these reasons:</p>
+<ul>
+  <li>
+    <p>Having groups of individual actors:</p>
+    <ul>
+      <li>Isolates failures that occur in a group. If a single actor managed all device groups, an error in one group that causes a restart would wipe out the state of groups that are otherwise non-faulty.</li>
+      <li>Simplifies the problem of querying all the devices belonging to a group. Each group actor only contains state related to its group.</li>
+      <li>Increases parallelism in the system. Since each group has a dedicated actor, they run concurrently and we can query multiple groups concurrently.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Having sensors modeled as individual device actors:</p>
+    <ul>
+      <li>Isolates failures of one device actor from the rest of the devices in the group.</li>
+      <li>Increases the parallelism of collecting temperature readings. Network connections from different sensors communicate with their individual device actors directly, reducing contention points.</li>
+    </ul>
+  </li>
+</ul>
+<p>With the architecture defined, we can start working on the protocol for registering sensors.</p>
+<h2><a href="#the-registration-protocol" name="the-registration-protocol" class="anchor"><span class="anchor-link"></span></a>The Registration Protocol</h2>
+<p>As the first step, we need to design the protocol both for registering a device and for creating the group and device actors that will be responsible for it. This protocol will be provided by the <code>DeviceManager</code> component itself because that is the only actor that is known and available up front: device groups and device actors are created on-demand.</p>
+<p>Looking at registration in more detail, we can outline the necessary functionality:</p>
+<ol>
+  <li>When a <code>DeviceManager</code> receives a request with a group and device id:
+    <ul>
+      <li>If the manager already has an actor for the device group, it forwards the request to it.</li>
+      <li>Otherwise, it creates a new device group actor and then forwards the request.</li>
+    </ul>
+  </li>
+  <li>The <code>DeviceGroup</code> actor receives the request to register an actor for the given device:
+    <ul>
+      <li>If the group already has an actor for the device it replies with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> of the existing device actor.</li>
+      <li>Otherwise, the <code>DeviceGroup</code> actor first creates a device actor and replies with the <code>ActorRef</code> of the newly created device actor.</li>
+    </ul>
+  </li>
+  <li>The sensor will now have the <code>ActorRef</code> of the device actor to send messages directly to it.</li>
+</ol>
+<p>The messages that we will use to communicate registration requests and their acknowledgement have the definition:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceManager.scala#L34-L38" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class RequestTrackDevice(groupId: String, deviceId: String, replyTo: ActorRef[DeviceRegistered])
+    extends DeviceManager.Command
+    with DeviceGroup.Command
+
+final case class DeviceRegistered(device: ActorRef[Device.Command])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceManager.java#L31-L147" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceManager extends AbstractBehavior&lt;DeviceManager.Command&gt; {
+
+  public interface Command {}
+
+  public static final class RequestTrackDevice
+      implements DeviceManager.Command, DeviceGroup.Command {
+    public final String groupId;
+    public final String deviceId;
+    public final ActorRef&lt;DeviceRegistered&gt; replyTo;
+
+    public RequestTrackDevice(String groupId, String deviceId, ActorRef&lt;DeviceRegistered&gt; replyTo) {
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class DeviceRegistered {
+    public final ActorRef&lt;Device.Command&gt; device;
+
+    public DeviceRegistered(ActorRef&lt;Device.Command&gt; device) {
+      this.device = device;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>In this case we have not included a request ID field in the messages. Since registration happens once, when the component connects the system to some network protocol, the ID is not important. However, it is usually a best practice to include a request ID.</p>
+<p>Now, we&rsquo;ll start implementing the protocol from the bottom up. In practice, both a top-down and bottom-up approach can work, but in our case, we benefit from the bottom-up approach as it allows us to immediately write tests for the new features without mocking out parts that we will need to build later.</p>
+<h2><a href="#adding-registration-support-to-device-group-actors" name="adding-registration-support-to-device-group-actors" class="anchor"><span class="anchor-link"></span></a>Adding registration support to device group actors</h2>
+<p>A group actor has some work to do when it comes to registrations, including:</p>
+<ul>
+  <li>Handling the registration request for existing device actor or by creating a new actor.</li>
+  <li>Tracking which device actors exist in the group and removing them from the group when they are stopped.</li>
+</ul>
+<h3><a href="#handling-the-registration-request" name="handling-the-registration-request" class="anchor"><span class="anchor-link"></span></a>Handling the registration request</h3>
+<p>A device group actor must either reply to the request with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> of an existing child, or it should create one. To look up child actors by their device IDs we will use a <code>Map</code>.</p>
+<p>Add the following to your source file:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroup.scala#L27-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object DeviceGroup {
+  def apply(groupId: String): Behavior[Command] =
+    Behaviors.setup(context =&gt; new DeviceGroup(context, groupId))
+
+  trait Command
+
+  private final case class DeviceTerminated(device: ActorRef[Device.Command], groupId: String, deviceId: String)
+      extends Command
+
+}
+
+class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
+    extends AbstractBehavior[DeviceGroup.Command](context) {
+  import DeviceGroup._
+  import DeviceManager.{ DeviceRegistered, ReplyDeviceList, RequestDeviceList, RequestTrackDevice }
+
+  private var deviceIdToActor = Map.empty[String, ActorRef[Device.Command]]
+
+  context.log.info(&quot;DeviceGroup {} started&quot;, groupId)
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case trackMsg @ RequestTrackDevice(`groupId`, deviceId, replyTo) =&gt;
+        deviceIdToActor.get(deviceId) match {
+          case Some(deviceActor) =&gt;
+            replyTo ! DeviceRegistered(deviceActor)
+          case None =&gt;
+            context.log.info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId)
+            val deviceActor = context.spawn(Device(groupId, deviceId), s&quot;device-$deviceId&quot;)
+            deviceIdToActor += deviceId -&gt; deviceActor
+            replyTo ! DeviceRegistered(deviceActor)
+        }
+        this
+
+      case RequestTrackDevice(gId, _, _) =&gt;
+        context.log.warn2(&quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;, gId, groupId)
+        this
+    }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info(&quot;DeviceGroup {} stopped&quot;, groupId)
+      this
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroup.java#L30-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroup extends AbstractBehavior&lt;DeviceGroup.Command&gt; {
+
+  public interface Command {}
+
+  private class DeviceTerminated implements Command {
+    public final ActorRef&lt;Device.Command&gt; device;
+    public final String groupId;
+    public final String deviceId;
+
+    DeviceTerminated(ActorRef&lt;Device.Command&gt; device, String groupId, String deviceId) {
+      this.device = device;
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId) {
+    return Behaviors.setup(context -&gt; new DeviceGroup(context, groupId));
+  }
+
+  private final String groupId;
+  private final Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+
+  private DeviceGroup(ActorContext&lt;Command&gt; context, String groupId) {
+    super(context);
+    this.groupId = groupId;
+    context.getLog().info(&quot;DeviceGroup {} started&quot;, groupId);
+  }
+
+  private DeviceGroup onTrackDevice(DeviceManager.RequestTrackDevice trackMsg) {
+    if (this.groupId.equals(trackMsg.groupId)) {
+      ActorRef&lt;Device.Command&gt; deviceActor = deviceIdToActor.get(trackMsg.deviceId);
+      if (deviceActor != null) {
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      } else {
+        getContext().getLog().info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId);
+        deviceActor =
+            getContext()
+                .spawn(Device.create(groupId, trackMsg.deviceId), &quot;device-&quot; + trackMsg.deviceId);
+        deviceIdToActor.put(trackMsg.deviceId, deviceActor);
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      }
+    } else {
+      getContext()
+          .getLog()
+          .warn(
+              &quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;,
+              groupId,
+              this.groupId);
+    }
+    return this;
+  }
+
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(DeviceManager.RequestTrackDevice.class, this::onTrackDevice)
+        .build();
+  }
+
+  private DeviceGroup onPostStop() {
+    getContext().getLog().info(&quot;DeviceGroup {} stopped&quot;, groupId);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>Just as we did with the device, we test this new functionality. We also test that the actors returned for the two different IDs are actually different, and we also attempt to record a temperature reading for each of the devices to see if the actors are responding.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroupSpec.scala#L27-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;be able to register a device actor&quot; in {
+  val probe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, probe.ref)
+  val registered1 = probe.receiveMessage()
+  val deviceActor1 = registered1.device
+
+  // another deviceId
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, probe.ref)
+  val registered2 = probe.receiveMessage()
+  val deviceActor2 = registered2.device
+  deviceActor1 should !==(deviceActor2)
+
+  // Check that the device actors are working
+  val recordProbe = createTestProbe[TemperatureRecorded]()
+  deviceActor1 ! RecordTemperature(requestId = 0, 1.0, recordProbe.ref)
+  recordProbe.expectMessage(TemperatureRecorded(requestId = 0))
+  deviceActor2 ! Device.RecordTemperature(requestId = 1, 2.0, recordProbe.ref)
+  recordProbe.expectMessage(Device.TemperatureRecorded(requestId = 1))
+}
+
+&quot;ignore requests for wrong groupId&quot; in {
+  val probe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;wrongGroup&quot;, &quot;device1&quot;, probe.ref)
+  probe.expectNoMessage(500.milliseconds)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroupTest.java#L39-L67" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReplyToRegistrationRequests() {
+  TestProbe&lt;DeviceRegistered&gt; probe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device&quot;, probe.getRef()));
+  DeviceRegistered registered1 = probe.receiveMessage();
+
+  // another deviceId
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device3&quot;, probe.getRef()));
+  DeviceRegistered registered2 = probe.receiveMessage();
+  assertNotEquals(registered1.device, registered2.device);
+
+  // Check that the device actors are working
+  TestProbe&lt;Device.TemperatureRecorded&gt; recordProbe =
+      testKit.createTestProbe(Device.TemperatureRecorded.class);
+  registered1.device.tell(new Device.RecordTemperature(0L, 1.0, recordProbe.getRef()));
+  assertEquals(0L, recordProbe.receiveMessage().requestId);
+  registered2.device.tell(new Device.RecordTemperature(1L, 2.0, recordProbe.getRef()));
+  assertEquals(1L, recordProbe.receiveMessage().requestId);
+}
+
+@Test
+public void testIgnoreWrongRegistrationRequests() {
+  TestProbe&lt;DeviceRegistered&gt; probe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+  groupActor.tell(new RequestTrackDevice(&quot;wrongGroup&quot;, &quot;device1&quot;, probe.getRef()));
+  probe.expectNoMessage();
+}</code></pre></dd>
+</dl>
+<p>If a device actor already exists for the registration request, we would like to use the existing actor instead of a new one. We have not tested this yet, so we need to fix this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroupSpec.scala#L59-L71" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;return same actor for same deviceId&quot; in {
+  val probe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, probe.ref)
+  val registered1 = probe.receiveMessage()
+
+  // registering same again should be idempotent
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, probe.ref)
+  val registered2 = probe.receiveMessage()
+
+  registered1.device should ===(registered2.device)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroupTest.java#L71-L83" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReturnSameActorForSameDeviceId() {
+  TestProbe&lt;DeviceRegistered&gt; probe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device&quot;, probe.getRef()));
+  DeviceRegistered registered1 = probe.receiveMessage();
+
+  // registering same again should be idempotent
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device&quot;, probe.getRef()));
+  DeviceRegistered registered2 = probe.receiveMessage();
+  assertEquals(registered1.device, registered2.device);
+}</code></pre></dd>
+</dl>
+<h3><a href="#keeping-track-of-the-device-actors-in-the-group" name="keeping-track-of-the-device-actors-in-the-group" class="anchor"><span class="anchor-link"></span></a>Keeping track of the device actors in the group</h3>
+<p>So far, we have implemented logic for registering device actors in the group. Devices come and go, however, so we will need a way to remove device actors from the <span class="group-scala"><code>Map[String, ActorRef[DeviceMessage]]</code></span><span class="group-java"><code>Map&lt;String, ActorRef&lt;DeviceMessage&gt;&gt;</code></span>. We will assume that when a device is removed, its corresponding device actor is stopped. Supervision, as we discussed earlier, only handles error scenarios &#8212; not graceful stopping. So we need to notify the parent when one of the device actors is stopped.</p>
+<p>Pekko provides a <em>Death Watch</em> feature that allows an actor to <em>watch</em> another actor and be notified if the other actor is stopped. Unlike supervision, watching is not limited to parent-child relationships, any actor can watch any other actor as long as it knows the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>. After a watched actor stops, the watcher receives a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated(actorRef)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated(actorRef)</code></a></span> signal which also contains the reference to the watched actor. The watcher can either handle this message explicitly or will fail with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/DeathPactException.html" title="org.apache.pekko.actor.typed.DeathPactException"><code>DeathPactException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/DeathPactException.html" title="org.apache.pekko.actor.typed.DeathPactException"><code>DeathPactException</code></a></span>. This latter is useful if the actor can no longer perform its own duties after the watched actor has been stopped. In our case, the group should still function after one device have been stopped, so we need to handle the <code>Terminated(actorRef)</code> signal.</p>
+<p>Our device group actor needs to include functionality that:</p>
+<ol>
+  <li>Starts watching new device actors when they are created.</li>
+  <li>Removes a device actor from the <span class="group-scala"><code>Map[String, ActorRef[DeviceMessage]]</code></span><span class="group-java"><code>Map&lt;String, ActorRef&lt;DeviceMessage&gt;&gt;</code></span> &#8212; which maps devices to device actors &#8212; when the notification indicates it has stopped.</li>
+</ol>
+<p>Unfortunately, the <code>Terminated</code> signal only contains the <code>ActorRef</code> of the child actor. We need the actor&rsquo;s ID to remove it from the map of existing device to device actor mappings. An alternative to the <code>Terminated</code> signal is to define a custom message that will be sent when the watched actor is stopped. We will use that here because it gives us the possibility to carry the device ID in that message.</p>
+<p>Adding the functionality to identify the actor results in this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroup.scala#L40-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
+    extends AbstractBehavior[DeviceGroup.Command](context) {
+  import DeviceGroup._
+  import DeviceManager.{ DeviceRegistered, ReplyDeviceList, RequestDeviceList, RequestTrackDevice }
+
+  private var deviceIdToActor = Map.empty[String, ActorRef[Device.Command]]
+
+  context.log.info(&quot;DeviceGroup {} started&quot;, groupId)
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case trackMsg @ RequestTrackDevice(`groupId`, deviceId, replyTo) =&gt;
+        deviceIdToActor.get(deviceId) match {
+          case Some(deviceActor) =&gt;
+            replyTo ! DeviceRegistered(deviceActor)
+          case None =&gt;
+            context.log.info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId)
+            val deviceActor = context.spawn(Device(groupId, deviceId), s&quot;device-$deviceId&quot;)
+            context.watchWith(deviceActor, DeviceTerminated(deviceActor, groupId, deviceId))
+            deviceIdToActor += deviceId -&gt; deviceActor
+            replyTo ! DeviceRegistered(deviceActor)
+        }
+        this
+
+      case RequestTrackDevice(gId, _, _) =&gt;
+        context.log.warn2(&quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;, gId, groupId)
+        this
+
+      case DeviceTerminated(_, _, deviceId) =&gt;
+        context.log.info(&quot;Device actor for {} has been terminated&quot;, deviceId)
+        deviceIdToActor -= deviceId
+        this
+
+    }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info(&quot;DeviceGroup {} stopped&quot;, groupId)
+      this
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroup.java#L30-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroup extends AbstractBehavior&lt;DeviceGroup.Command&gt; {
+
+  public interface Command {}
+
+  private class DeviceTerminated implements Command {
+    public final ActorRef&lt;Device.Command&gt; device;
+    public final String groupId;
+    public final String deviceId;
+
+    DeviceTerminated(ActorRef&lt;Device.Command&gt; device, String groupId, String deviceId) {
+      this.device = device;
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId) {
+    return Behaviors.setup(context -&gt; new DeviceGroup(context, groupId));
+  }
+
+  private final String groupId;
+  private final Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+
+  private DeviceGroup(ActorContext&lt;Command&gt; context, String groupId) {
+    super(context);
+    this.groupId = groupId;
+    context.getLog().info(&quot;DeviceGroup {} started&quot;, groupId);
+  }
+
+  private DeviceGroup onTrackDevice(DeviceManager.RequestTrackDevice trackMsg) {
+    if (this.groupId.equals(trackMsg.groupId)) {
+      ActorRef&lt;Device.Command&gt; deviceActor = deviceIdToActor.get(trackMsg.deviceId);
+      if (deviceActor != null) {
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      } else {
+        getContext().getLog().info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId);
+        deviceActor =
+            getContext()
+                .spawn(Device.create(groupId, trackMsg.deviceId), &quot;device-&quot; + trackMsg.deviceId);
+        getContext()
+            .watchWith(deviceActor, new DeviceTerminated(deviceActor, groupId, trackMsg.deviceId));
+        deviceIdToActor.put(trackMsg.deviceId, deviceActor);
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      }
+    } else {
+      getContext()
+          .getLog()
+          .warn(
+              &quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;,
+              groupId,
+              this.groupId);
+    }
+    return this;
+  }
+
+
+  private DeviceGroup onTerminated(DeviceTerminated t) {
+    getContext().getLog().info(&quot;Device actor for {} has been terminated&quot;, t.deviceId);
+    deviceIdToActor.remove(t.deviceId);
+    return this;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(DeviceManager.RequestTrackDevice.class, this::onTrackDevice)
+        .onMessage(DeviceTerminated.class, this::onTerminated)
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private DeviceGroup onPostStop() {
+    getContext().getLog().info(&quot;DeviceGroup {} stopped&quot;, groupId);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>So far we have no means to get which devices the group device actor keeps track of and, therefore, we cannot test our new functionality yet. To make it testable, we add a new query capability (message <code>RequestDeviceList</code>) that lists the currently active device IDs:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceManager.scala#L42-L46" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class RequestDeviceList(requestId: Long, groupId: String, replyTo: ActorRef[ReplyDeviceList])
+    extends DeviceManager.Command
+    with DeviceGroup.Command
+
+final case class ReplyDeviceList(requestId: Long, ids: Set[String])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceManager.java#L58-L79" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class RequestDeviceList
+    implements DeviceManager.Command, DeviceGroup.Command {
+  final long requestId;
+  final String groupId;
+  final ActorRef&lt;ReplyDeviceList&gt; replyTo;
+
+  public RequestDeviceList(long requestId, String groupId, ActorRef&lt;ReplyDeviceList&gt; replyTo) {
+    this.requestId = requestId;
+    this.groupId = groupId;
+    this.replyTo = replyTo;
+  }
+}
+
+public static final class ReplyDeviceList {
+  final long requestId;
+  final Set&lt;String&gt; ids;
+
+  public ReplyDeviceList(long requestId, Set&lt;String&gt; ids) {
+    this.requestId = requestId;
+    this.ids = ids;
+  }
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroup.scala#L27-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object DeviceGroup {
+  def apply(groupId: String): Behavior[Command] =
+    Behaviors.setup(context =&gt; new DeviceGroup(context, groupId))
+
+  trait Command
+
+  private final case class DeviceTerminated(device: ActorRef[Device.Command], groupId: String, deviceId: String)
+      extends Command
+
+}
+
+class DeviceGroup(context: ActorContext[DeviceGroup.Command], groupId: String)
+    extends AbstractBehavior[DeviceGroup.Command](context) {
+  import DeviceGroup._
+  import DeviceManager.{ DeviceRegistered, ReplyDeviceList, RequestDeviceList, RequestTrackDevice }
+
+  private var deviceIdToActor = Map.empty[String, ActorRef[Device.Command]]
+
+  context.log.info(&quot;DeviceGroup {} started&quot;, groupId)
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case trackMsg @ RequestTrackDevice(`groupId`, deviceId, replyTo) =&gt;
+        deviceIdToActor.get(deviceId) match {
+          case Some(deviceActor) =&gt;
+            replyTo ! DeviceRegistered(deviceActor)
+          case None =&gt;
+            context.log.info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId)
+            val deviceActor = context.spawn(Device(groupId, deviceId), s&quot;device-$deviceId&quot;)
+            context.watchWith(deviceActor, DeviceTerminated(deviceActor, groupId, deviceId))
+            deviceIdToActor += deviceId -&gt; deviceActor
+            replyTo ! DeviceRegistered(deviceActor)
+        }
+        this
+
+      case RequestTrackDevice(gId, _, _) =&gt;
+        context.log.warn2(&quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;, gId, groupId)
+        this
+
+      case RequestDeviceList(requestId, gId, replyTo) =&gt;
+        if (gId == groupId) {
+          replyTo ! ReplyDeviceList(requestId, deviceIdToActor.keySet)
+          this
+        } else
+          Behaviors.unhandled
+
+      case DeviceTerminated(_, _, deviceId) =&gt;
+        context.log.info(&quot;Device actor for {} has been terminated&quot;, deviceId)
+        deviceIdToActor -= deviceId
+        this
+
+    }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info(&quot;DeviceGroup {} stopped&quot;, groupId)
+      this
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroup.java#L30-L126" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceGroup extends AbstractBehavior&lt;DeviceGroup.Command&gt; {
+
+  public interface Command {}
+
+  private class DeviceTerminated implements Command {
+    public final ActorRef&lt;Device.Command&gt; device;
+    public final String groupId;
+    public final String deviceId;
+
+    DeviceTerminated(ActorRef&lt;Device.Command&gt; device, String groupId, String deviceId) {
+      this.device = device;
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId) {
+    return Behaviors.setup(context -&gt; new DeviceGroup(context, groupId));
+  }
+
+  private final String groupId;
+  private final Map&lt;String, ActorRef&lt;Device.Command&gt;&gt; deviceIdToActor = new HashMap&lt;&gt;();
+
+  private DeviceGroup(ActorContext&lt;Command&gt; context, String groupId) {
+    super(context);
+    this.groupId = groupId;
+    context.getLog().info(&quot;DeviceGroup {} started&quot;, groupId);
+  }
+
+  private DeviceGroup onTrackDevice(DeviceManager.RequestTrackDevice trackMsg) {
+    if (this.groupId.equals(trackMsg.groupId)) {
+      ActorRef&lt;Device.Command&gt; deviceActor = deviceIdToActor.get(trackMsg.deviceId);
+      if (deviceActor != null) {
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      } else {
+        getContext().getLog().info(&quot;Creating device actor for {}&quot;, trackMsg.deviceId);
+        deviceActor =
+            getContext()
+                .spawn(Device.create(groupId, trackMsg.deviceId), &quot;device-&quot; + trackMsg.deviceId);
+        getContext()
+            .watchWith(deviceActor, new DeviceTerminated(deviceActor, groupId, trackMsg.deviceId));
+        deviceIdToActor.put(trackMsg.deviceId, deviceActor);
+        trackMsg.replyTo.tell(new DeviceManager.DeviceRegistered(deviceActor));
+      }
+    } else {
+      getContext()
+          .getLog()
+          .warn(
+              &quot;Ignoring TrackDevice request for {}. This actor is responsible for {}.&quot;,
+              groupId,
+              this.groupId);
+    }
+    return this;
+  }
+
+
+  private DeviceGroup onDeviceList(DeviceManager.RequestDeviceList r) {
+    r.replyTo.tell(new DeviceManager.ReplyDeviceList(r.requestId, deviceIdToActor.keySet()));
+    return this;
+  }
+
+  private DeviceGroup onTerminated(DeviceTerminated t) {
+    getContext().getLog().info(&quot;Device actor for {} has been terminated&quot;, t.deviceId);
+    deviceIdToActor.remove(t.deviceId);
+    return this;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(DeviceManager.RequestTrackDevice.class, this::onTrackDevice)
+        .onMessage(
+            DeviceManager.RequestDeviceList.class,
+            r -&gt; r.groupId.equals(groupId),
+            this::onDeviceList)
+        .onMessage(DeviceTerminated.class, this::onTerminated)
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private DeviceGroup onPostStop() {
+    getContext().getLog().info(&quot;DeviceGroup {} stopped&quot;, groupId);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>We are almost ready to test the removal of devices. But, we still need the following capabilities:</p>
+<ul>
+  <li>To stop a device actor from our test case, from the outside, we must send a message to it. We add a <code>Passivate</code> message which instructs the actor to stop.</li>
+  <li>To be notified once the device actor is stopped. We can use the <em>Death Watch</em> facility for this purpose, too.</li>
+</ul>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/Device.scala#L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case object Passivate extends Command</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/Device.java#L73-L75" target="_blank" title="Go to snippet source">source</a><code class="language-java">static enum Passivate implements Command {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/Device.scala#L17-L76" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.PostStop
+import pekko.actor.typed.Signal
+import pekko.actor.typed.scaladsl.AbstractBehavior
+import pekko.actor.typed.scaladsl.ActorContext
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.scaladsl.LoggerOps
+
+object Device {
+  def apply(groupId: String, deviceId: String): Behavior[Command] =
+    Behaviors.setup(context =&gt; new Device(context, groupId, deviceId))
+
+  sealed trait Command
+
+  final case class ReadTemperature(requestId: Long, replyTo: ActorRef[RespondTemperature]) extends Command
+  final case class RespondTemperature(requestId: Long, value: Option[Double])
+
+  final case class RecordTemperature(requestId: Long, value: Double, replyTo: ActorRef[TemperatureRecorded])
+      extends Command
+  final case class TemperatureRecorded(requestId: Long)
+
+  case object Passivate extends Command
+}
+
+class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String)
+    extends AbstractBehavior[Device.Command](context) {
+  import Device._
+
+  var lastTemperatureReading: Option[Double] = None
+
+  context.log.info2(&quot;Device actor {}-{} started&quot;, groupId, deviceId)
+
+  override def onMessage(msg: Command): Behavior[Command] = {
+    msg match {
+      case RecordTemperature(id, value, replyTo) =&gt;
+        context.log.info2(&quot;Recorded temperature reading {} with {}&quot;, value, id)
+        lastTemperatureReading = Some(value)
+        replyTo ! TemperatureRecorded(id)
+        this
+
+      case ReadTemperature(id, replyTo) =&gt;
+        replyTo ! RespondTemperature(id, lastTemperatureReading)
+        this
+
+      case Passivate =&gt;
+        Behaviors.stopped
+    }
+  }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info2(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId)
+      this
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/Device.java#L17-L121" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import java.util.Optional;
+
+import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.PostStop;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+
+public class Device extends AbstractBehavior&lt;Device.Command&gt; {
+
+  public interface Command {}
+
+  public static final class RecordTemperature implements Command {
+    final long requestId;
+    final double value;
+    final ActorRef&lt;TemperatureRecorded&gt; replyTo;
+
+    public RecordTemperature(long requestId, double value, ActorRef&lt;TemperatureRecorded&gt; replyTo) {
+      this.requestId = requestId;
+      this.value = value;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class TemperatureRecorded {
+    final long requestId;
+
+    public TemperatureRecorded(long requestId) {
+      this.requestId = requestId;
+    }
+  }
+
+  public static final class ReadTemperature implements Command {
+    final long requestId;
+    final ActorRef&lt;RespondTemperature&gt; replyTo;
+
+    public ReadTemperature(long requestId, ActorRef&lt;RespondTemperature&gt; replyTo) {
+      this.requestId = requestId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class RespondTemperature {
+    final long requestId;
+    final Optional&lt;Double&gt; value;
+
+    public RespondTemperature(long requestId, Optional&lt;Double&gt; value) {
+      this.requestId = requestId;
+      this.value = value;
+    }
+  }
+
+  static enum Passivate implements Command {
+    INSTANCE
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId, String deviceId) {
+    return Behaviors.setup(context -&gt; new Device(context, groupId, deviceId));
+  }
+
+  private final String groupId;
+  private final String deviceId;
+
+  private Optional&lt;Double&gt; lastTemperatureReading = Optional.empty();
+
+  private Device(ActorContext&lt;Command&gt; context, String groupId, String deviceId) {
+    super(context);
+    this.groupId = groupId;
+    this.deviceId = deviceId;
+
+    context.getLog().info(&quot;Device actor {}-{} started&quot;, groupId, deviceId);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(RecordTemperature.class, this::onRecordTemperature)
+        .onMessage(ReadTemperature.class, this::onReadTemperature)
+        .onMessage(Passivate.class, m -&gt; Behaviors.stopped())
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onRecordTemperature(RecordTemperature r) {
+    getContext().getLog().info(&quot;Recorded temperature reading {} with {}&quot;, r.value, r.requestId);
+    lastTemperatureReading = Optional.of(r.value);
+    r.replyTo.tell(new TemperatureRecorded(r.requestId));
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onReadTemperature(ReadTemperature r) {
+    r.replyTo.tell(new RespondTemperature(r.requestId, lastTemperatureReading));
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onPostStop() {
+    getContext().getLog().info(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId);
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p>We add two more test cases now. In the first, we test that we get back the list of proper IDs once we have added a few devices. The second test case makes sure that the device ID is properly removed after the device actor has been stopped. The <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/testkit/typed/javadsl/TestProbe.html" title="org.apache.pekko.actor.testkit.typed.javadsl.TestProbe"><code>TestProbe</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/testkit/typed/scaladsl/TestProbe.html" title="org.apache.pekko.actor.testkit.typed.scaladsl.TestProbe"><code>TestProbe</code></a></span> has a <code>expectTerminated</code> method that we can easily use to assert that the device actor has been terminated.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceGroupSpec.scala#L75-L114" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;be able to list active devices&quot; in {
+  val registeredProbe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.ref)
+  registeredProbe.receiveMessage()
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.ref)
+  registeredProbe.receiveMessage()
+
+  val deviceListProbe = createTestProbe[ReplyDeviceList]()
+  groupActor ! RequestDeviceList(requestId = 0, groupId = &quot;group&quot;, deviceListProbe.ref)
+  deviceListProbe.expectMessage(ReplyDeviceList(requestId = 0, Set(&quot;device1&quot;, &quot;device2&quot;)))
+}
+
+&quot;be able to list active devices after one shuts down&quot; in {
+  val registeredProbe = createTestProbe[DeviceRegistered]()
+  val groupActor = spawn(DeviceGroup(&quot;group&quot;))
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.ref)
+  val registered1 = registeredProbe.receiveMessage()
+  val toShutDown = registered1.device
+
+  groupActor ! RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.ref)
+  registeredProbe.receiveMessage()
+
+  val deviceListProbe = createTestProbe[ReplyDeviceList]()
+  groupActor ! RequestDeviceList(requestId = 0, groupId = &quot;group&quot;, deviceListProbe.ref)
+  deviceListProbe.expectMessage(ReplyDeviceList(requestId = 0, Set(&quot;device1&quot;, &quot;device2&quot;)))
+
+  toShutDown ! Passivate
+  registeredProbe.expectTerminated(toShutDown, registeredProbe.remainingOrDefault)
+
+  // using awaitAssert to retry because it might take longer for the groupActor
+  // to see the Terminated, that order is undefined
+  registeredProbe.awaitAssert {
+    groupActor ! RequestDeviceList(requestId = 1, groupId = &quot;group&quot;, deviceListProbe.ref)
+    deviceListProbe.expectMessage(ReplyDeviceList(requestId = 1, Set(&quot;device2&quot;)))
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceGroupTest.java#L87-L139" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testListActiveDevices() {
+  TestProbe&lt;DeviceRegistered&gt; registeredProbe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.getRef()));
+  registeredProbe.receiveMessage();
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.getRef()));
+  registeredProbe.receiveMessage();
+
+  TestProbe&lt;ReplyDeviceList&gt; deviceListProbe = testKit.createTestProbe(ReplyDeviceList.class);
+
+  groupActor.tell(new RequestDeviceList(0L, &quot;group&quot;, deviceListProbe.getRef()));
+  ReplyDeviceList reply = deviceListProbe.receiveMessage();
+  assertEquals(0L, reply.requestId);
+  assertEquals(Stream.of(&quot;device1&quot;, &quot;device2&quot;).collect(Collectors.toSet()), reply.ids);
+}
+
+@Test
+public void testListActiveDevicesAfterOneShutsDown() {
+  TestProbe&lt;DeviceRegistered&gt; registeredProbe = testKit.createTestProbe(DeviceRegistered.class);
+  ActorRef&lt;DeviceGroup.Command&gt; groupActor = testKit.spawn(DeviceGroup.create(&quot;group&quot;));
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device1&quot;, registeredProbe.getRef()));
+  DeviceRegistered registered1 = registeredProbe.receiveMessage();
+
+  groupActor.tell(new RequestTrackDevice(&quot;group&quot;, &quot;device2&quot;, registeredProbe.getRef()));
+  DeviceRegistered registered2 = registeredProbe.receiveMessage();
+
+  ActorRef&lt;Device.Command&gt; toShutDown = registered1.device;
+
+  TestProbe&lt;ReplyDeviceList&gt; deviceListProbe = testKit.createTestProbe(ReplyDeviceList.class);
+
+  groupActor.tell(new RequestDeviceList(0L, &quot;group&quot;, deviceListProbe.getRef()));
+  ReplyDeviceList reply = deviceListProbe.receiveMessage();
+  assertEquals(0L, reply.requestId);
+  assertEquals(Stream.of(&quot;device1&quot;, &quot;device2&quot;).collect(Collectors.toSet()), reply.ids);
+
+  toShutDown.tell(Device.Passivate.INSTANCE);
+  registeredProbe.expectTerminated(toShutDown, registeredProbe.getRemainingOrDefault());
+
+  // using awaitAssert to retry because it might take longer for the groupActor
+  // to see the Terminated, that order is undefined
+  registeredProbe.awaitAssert(
+      () -&gt; {
+        groupActor.tell(new RequestDeviceList(1L, &quot;group&quot;, deviceListProbe.getRef()));
+        ReplyDeviceList r = deviceListProbe.receiveMessage();
+        assertEquals(1L, r.requestId);
+        assertEquals(Stream.of(&quot;device2&quot;).collect(Collectors.toSet()), r.ids);
+        return null;
+      });
+}</code></pre></dd>
+</dl>
+<h2><a href="#creating-device-manager-actors" name="creating-device-manager-actors" class="anchor"><span class="anchor-link"></span></a>Creating device manager actors</h2>
+<p>Going up to the next level in our hierarchy, we need to create the entry point for our device manager component in the <code>DeviceManager</code> source file. This actor is very similar to the device group actor, but creates device group actors instead of device actors:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_4/DeviceManager.scala#L25-L97" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object DeviceManager {
+  def apply(): Behavior[Command] =
+    Behaviors.setup(context =&gt; new DeviceManager(context))
+
+
+  sealed trait Command
+
+  final case class RequestTrackDevice(groupId: String, deviceId: String, replyTo: ActorRef[DeviceRegistered])
+      extends DeviceManager.Command
+      with DeviceGroup.Command
+
+  final case class DeviceRegistered(device: ActorRef[Device.Command])
+
+  final case class RequestDeviceList(requestId: Long, groupId: String, replyTo: ActorRef[ReplyDeviceList])
+      extends DeviceManager.Command
+      with DeviceGroup.Command
+
+  final case class ReplyDeviceList(requestId: Long, ids: Set[String])
+
+  private final case class DeviceGroupTerminated(groupId: String) extends DeviceManager.Command
+}
+
+class DeviceManager(context: ActorContext[DeviceManager.Command])
+    extends AbstractBehavior[DeviceManager.Command](context) {
+  import DeviceManager._
+
+  var groupIdToActor = Map.empty[String, ActorRef[DeviceGroup.Command]]
+
+  context.log.info(&quot;DeviceManager started&quot;)
+
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case trackMsg @ RequestTrackDevice(groupId, _, replyTo) =&gt;
+        groupIdToActor.get(groupId) match {
+          case Some(ref) =&gt;
+            ref ! trackMsg
+          case None =&gt;
+            context.log.info(&quot;Creating device group actor for {}&quot;, groupId)
+            val groupActor = context.spawn(DeviceGroup(groupId), &quot;group-&quot; + groupId)
+            context.watchWith(groupActor, DeviceGroupTerminated(groupId))
+            groupActor ! trackMsg
+            groupIdToActor += groupId -&gt; groupActor
+        }
+        this
+
+      case req @ RequestDeviceList(requestId, groupId, replyTo) =&gt;
+        groupIdToActor.get(groupId) match {
+          case Some(ref) =&gt;
+            ref ! req
+          case None =&gt;
+            replyTo ! ReplyDeviceList(requestId, Set.empty)
+        }
+        this
+
+      case DeviceGroupTerminated(groupId) =&gt;
+        context.log.info(&quot;Device group actor for {} has been terminated&quot;, groupId)
+        groupIdToActor -= groupId
+        this
+    }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info(&quot;DeviceManager stopped&quot;)
+      this
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_4/DeviceManager.java#L31-L147" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class DeviceManager extends AbstractBehavior&lt;DeviceManager.Command&gt; {
+
+  public interface Command {}
+
+  public static final class RequestTrackDevice
+      implements DeviceManager.Command, DeviceGroup.Command {
+    public final String groupId;
+    public final String deviceId;
+    public final ActorRef&lt;DeviceRegistered&gt; replyTo;
+
+    public RequestTrackDevice(String groupId, String deviceId, ActorRef&lt;DeviceRegistered&gt; replyTo) {
+      this.groupId = groupId;
+      this.deviceId = deviceId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class DeviceRegistered {
+    public final ActorRef&lt;Device.Command&gt; device;
+
+    public DeviceRegistered(ActorRef&lt;Device.Command&gt; device) {
+      this.device = device;
+    }
+  }
+
+  public static final class RequestDeviceList
+      implements DeviceManager.Command, DeviceGroup.Command {
+    final long requestId;
+    final String groupId;
+    final ActorRef&lt;ReplyDeviceList&gt; replyTo;
+
+    public RequestDeviceList(long requestId, String groupId, ActorRef&lt;ReplyDeviceList&gt; replyTo) {
+      this.requestId = requestId;
+      this.groupId = groupId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class ReplyDeviceList {
+    final long requestId;
+    final Set&lt;String&gt; ids;
+
+    public ReplyDeviceList(long requestId, Set&lt;String&gt; ids) {
+      this.requestId = requestId;
+      this.ids = ids;
+    }
+  }
+
+  private static class DeviceGroupTerminated implements DeviceManager.Command {
+    public final String groupId;
+
+    DeviceGroupTerminated(String groupId) {
+      this.groupId = groupId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(DeviceManager::new);
+  }
+
+  private final Map&lt;String, ActorRef&lt;DeviceGroup.Command&gt;&gt; groupIdToActor = new HashMap&lt;&gt;();
+
+  private DeviceManager(ActorContext&lt;Command&gt; context) {
+    super(context);
+    context.getLog().info(&quot;DeviceManager started&quot;);
+  }
+
+  private DeviceManager onTrackDevice(RequestTrackDevice trackMsg) {
+    String groupId = trackMsg.groupId;
+    ActorRef&lt;DeviceGroup.Command&gt; ref = groupIdToActor.get(groupId);
+    if (ref != null) {
+      ref.tell(trackMsg);
+    } else {
+      getContext().getLog().info(&quot;Creating device group actor for {}&quot;, groupId);
+      ActorRef&lt;DeviceGroup.Command&gt; groupActor =
+          getContext().spawn(DeviceGroup.create(groupId), &quot;group-&quot; + groupId);
+      getContext().watchWith(groupActor, new DeviceGroupTerminated(groupId));
+      groupActor.tell(trackMsg);
+      groupIdToActor.put(groupId, groupActor);
+    }
+    return this;
+  }
+
+  private DeviceManager onRequestDeviceList(RequestDeviceList request) {
+    ActorRef&lt;DeviceGroup.Command&gt; ref = groupIdToActor.get(request.groupId);
+    if (ref != null) {
+      ref.tell(request);
+    } else {
+      request.replyTo.tell(new ReplyDeviceList(request.requestId, Collections.emptySet()));
+    }
+    return this;
+  }
+
+  private DeviceManager onTerminated(DeviceGroupTerminated t) {
+    getContext().getLog().info(&quot;Device group actor for {} has been terminated&quot;, t.groupId);
+    groupIdToActor.remove(t.groupId);
+    return this;
+  }
+
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(RequestTrackDevice.class, this::onTrackDevice)
+        .onMessage(RequestDeviceList.class, this::onRequestDeviceList)
+        .onMessage(DeviceGroupTerminated.class, this::onTerminated)
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private DeviceManager onPostStop() {
+    getContext().getLog().info(&quot;DeviceManager stopped&quot;);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>We leave tests of the device manager as an exercise for you since it is very similar to the tests we have already written for the group actor.</p>
+<h2><a href="#whats-next-" name="whats-next-" class="anchor"><span class="anchor-link"></span></a>What&rsquo;s next?</h2>
+<p>We have now a hierarchical component for registering and tracking devices and recording measurements. We have seen how to implement different types of conversation patterns, such as:</p>
+<ul>
+  <li>Request-respond (for temperature recordings)</li>
+  <li>Create-on-demand (for registration of devices)</li>
+  <li>Create-watch-terminate (for creating the group and device actor as children)</li>
+</ul>
+<p>In the next chapter, we will introduce group query capabilities, which will establish a new conversation pattern of scatter-gather. In particular, we will implement the functionality that allows users to query the status of all the devices belonging to a group.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/guide/tutorial_4.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../../typed/guide/tutorial_3.html" title="Part 3: Working with Device Actors" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Part 3: Working with Device Actors
+</span>
+</div>
+</a>
+<a href="../../typed/guide/tutorial_5.html" title="Part 5: Querying Device Groups" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Part 5: Querying Device Groups
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../../assets/javascripts/application.583bbe55.js"></script>
+<script src="../../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../../."}})</script>
+<script type="text/javascript" src="../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

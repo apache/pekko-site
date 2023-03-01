@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Logging options with Apache Pekko.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Logging options with Apache Pekko.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Logging · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Logging
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html#logging" class="active page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/logging.html#logging" class="header">Logging</a>
+  <ul>
+    <li><a href="../typed/logging.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/logging.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/logging.html#how-to-log" class="header">How to log</a></li>
+    <li><a href="../typed/logging.html#mdc" class="header">MDC</a></li>
+    <li><a href="../typed/logging.html#slf4j-backend" class="header">SLF4J backend</a></li>
+    <li><a href="../typed/logging.html#internal-logging-by-pekko" class="header">Internal logging by Pekko</a></li>
+    <li><a href="../typed/logging.html#logging-in-tests" class="header">Logging in tests</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/logging.html#logging" class="header">Logging</a>
+  <ul>
+    <li><a href="../typed/logging.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/logging.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/logging.html#how-to-log" class="header">How to log</a></li>
+    <li><a href="../typed/logging.html#mdc" class="header">MDC</a></li>
+    <li><a href="../typed/logging.html#slf4j-backend" class="header">SLF4J backend</a></li>
+    <li><a href="../typed/logging.html#internal-logging-by-pekko" class="header">Internal logging by Pekko</a></li>
+    <li><a href="../typed/logging.html#logging-in-tests" class="header">Logging in tests</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#logging" name="logging" class="anchor"><span class="anchor-link"></span></a>Logging</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../logging.html">Classic Logging</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Logging, you must at least use the Pekko actors dependency in your project, and configure logging via the SLF4J backend, such as Logback configuration.</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p><a href="https://www.slf4j.org/">SLF4J</a> is used for logging and Pekko provides access to an <a href="https://www.slf4j.org/api/org/slf4j/Logger.html">org.slf4j.Logger</a> for a specific actor via the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span>. You may also retrieve a <code>Logger</code> with the ordinary <a href="https://www.slf4j.org/api/org/slf4j/LoggerFactory.html">org.slf4j.LoggerFactory</a>.</p>
+<p>To ensure that logging has minimal performance impact it&rsquo;s important that you configure an asynchronous appender for the SLF4J backend. Logging generally means IO and locks, which can slow down the operations of your code if it was performed synchronously.</p>
+<h2><a href="#how-to-log" name="how-to-log" class="anchor"><span class="anchor-link"></span></a>How to log</h2>
+<p>The <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span> provides access to an <a href="https://www.slf4j.org/api/org/slf4j/Logger.html">org.slf4j.Logger</a> for a specific actor.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L40-L43" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Behaviors.receive[String] { (context, message) =&gt;
+  context.log.info(&quot;Received message: {}&quot;, message)
+  Behaviors.same
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L41-L60" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyLoggingBehavior extends AbstractBehavior&lt;String&gt; {
+
+  public static Behavior&lt;String&gt; create() {
+    return Behaviors.setup(MyLoggingBehavior::new);
+  }
+
+  private MyLoggingBehavior(ActorContext&lt;String&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;String&gt; createReceive() {
+    return newReceiveBuilder().onMessage(String.class, this::onReceive).build();
+  }
+
+  private Behavior&lt;String&gt; onReceive(String message) {
+    getContext().getLog().info(&quot;Received message: {}&quot;, message);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>The <code>Logger</code> via the <code>ActorContext</code> will automatically have a name that corresponds to the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> of the actor when the log is accessed the first time. The class name when using <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.javadsl.AbstractBehavior"><code>AbstractBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.scaladsl.AbstractBehavior"><code>AbstractBehavior</code></a></span> or the class <span class="group-scala">or object</span> name where the <code>Behavior</code> is defined when using the functional style. You can set a custom logger name with the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#setLoggerName(java.lang.String)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>setLoggerName</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#setLoggerName(name:String):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>setLoggerName</code></a></span> of the <code>ActorContext</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L47-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Behaviors.setup[String] { context =&gt;
+  context.setLoggerName(&quot;com.myservice.BackendManager&quot;)
+  context.log.info(&quot;Starting up&quot;)
+
+  Behaviors.receiveMessage { message =&gt;
+    context.log.debug(&quot;Received message: {}&quot;, message)
+    Behaviors.same
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L64-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class BackendManager extends AbstractBehavior&lt;String&gt; {
+
+  public static Behavior&lt;String&gt; create() {
+    return Behaviors.setup(
+        context -&gt; {
+          context.setLoggerName(BackendManager.class);
+          context.getLog().info(&quot;Starting up&quot;);
+          return new BackendManager(context);
+        });
+  }
+
+  private BackendManager(ActorContext&lt;String&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;String&gt; createReceive() {
+    return newReceiveBuilder().onMessage(String.class, this::onReceive).build();
+  }
+
+  private Behavior&lt;String&gt; onReceive(String message) {
+    getContext().getLog().debug(&quot;Received message: {}&quot;, message);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>The convention is to use logger names like fully qualified class names. The parameter to <code>setLoggerName</code> can be a <code>String</code> or a <code>Class</code>, where the latter is convenience for the class name.</p>
+<p>When logging via the <code>ActorContext</code> the path of the actor will automatically be added as <code>pekkoSource</code> Mapped Diagnostic Context (MDC) value. MDC is typically implemented with a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ThreadLocal.html" title="java.lang.ThreadLocal"><code>ThreadLocal</code></a> by the SLF4J backend. To reduce performance impact, this MDC value is set when you access the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#log:org.slf4j.Logger" title="pekko.actor.typed.scaladsl.ActorContext"><code>log</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getLog()" title="pekko.actor.typed.javadsl.ActorContext"><code>getLog()</code></a></span> method so you shouldn&rsquo;t cache the returned <code>Logger</code> in your own field. That is handled by <code>ActorContext</code> and retrieving the <code>Logger</code> repeatedly with the <span class="group-scala"><code>log</code></span><span class="group-java"><code>getLog</code></span> method has low overhead. The MDC is cleared automatically after processing of current message has finished.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <code>Logger</code> is thread-safe but the <span class="group-scala"><code>log</code></span><span class="group-java"><code>getLog</code></span> method in <code>ActorContext</code> is not thread-safe and should not be accessed from threads other than the ordinary actor message processing thread, such as <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> callbacks.</p></div>
+<p>It&rsquo;s also perfectly fine to use a <a href="https://www.slf4j.org/api/org/slf4j/Logger.html">Logger</a> retrieved via <a href="https://www.slf4j.org/api/org/slf4j/LoggerFactory.html">org.slf4j.LoggerFactory</a>, but then the logging events will not include the <code>pekkoSource</code> MDC value. This is the recommended way when logging outside of an actor, including logging from <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> callbacks.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L59-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val log = LoggerFactory.getLogger(&quot;com.myservice.BackendTask&quot;)
+
+Future {
+  // some work
+  &quot;result&quot;
+}.onComplete {
+  case Success(result) =&gt; log.info(&quot;Task completed: {}&quot;, result)
+  case Failure(exc)    =&gt; log.error(&quot;Task failed&quot;, exc)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L92-L108" target="_blank" title="Go to snippet source">source</a><code class="language-java">class BackendTask {
+  private final Logger log = LoggerFactory.getLogger(getClass());
+
+  void run() {
+    CompletableFuture&lt;String&gt; task =
+        CompletableFuture.supplyAsync(
+            () -&gt; {
+              // some work
+              return &quot;result&quot;;
+            });
+    task.whenComplete(
+        (result, exc) -&gt; {
+          if (exc == null) log.error(&quot;Task failed&quot;, exc);
+          else log.info(&quot;Task completed: {}&quot;, result);
+        });
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#placeholder-arguments" name="placeholder-arguments" class="anchor"><span class="anchor-link"></span></a>Placeholder arguments</h3>
+<p>The log message may contain argument placeholders <code>{}</code>, which will be substituted if the log level is enabled. Compared to constructing a full string for the log message this has the advantage of avoiding superfluous string concatenation and object allocations when the log level is disabled. Some logging backends may also use these message templates before argument substitution to group and filter logging events.</p>
+<p>It can be good to know that 3 or more arguments will result in the relatively small cost of allocating an array (vararg parameter) also when the log level is disabled. The methods with 1 or 2 arguments don&rsquo;t allocate the vararg array.</p><div class="group-scala">
+<p>When using the methods for 2 argument placeholders the compiler will often not be able to select the right method and report compiler error &ldquo;ambiguous reference to overloaded definition&rdquo;. To work around this problem you can use the <code>trace2</code>, <code>debug2</code>, <code>info2</code>, <code>warn2</code> or <code>error2</code> extension methods that are added by <code>import org.apache.pekko.actor.typed.scaladsl.LoggerOps</code> or <code>import org.apache.pekko.actor.typed.scaladsl._</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L74-L79" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.typed.scaladsl.LoggerOps
+
+Behaviors.receive[String] { (context, message) =&gt;
+  context.log.info2(&quot;{} received message: {}&quot;, context.self.path.name, message)
+  Behaviors.same
+}</code></pre></dd>
+</dl>
+<p>When using the methods for 3 or more argument placeholders, the compiler will not be able to convert the method parameters to the vararg array when they contain primitive values such as <code>Int</code>, and report compiler error &ldquo;overloaded method value info with alternatives&rdquo;. To work around this problem you can use the <code>traceN</code>, <code>debugN</code>, <code>infoN</code>, <code>warnN</code> or <code>errorN</code> extension methods that are added by the same <code>LoggerOps</code> import.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L83-L92" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.typed.scaladsl.LoggerOps
+
+Behaviors.receive[String] { (context, message) =&gt;
+  context.log.infoN(
+    &quot;{} received message of size {} starting with: {}&quot;,
+    context.self.path.name,
+    message.length,
+    message.take(10))
+  Behaviors.same
+}</code></pre></dd>
+</dl>
+<p>If you find it tedious to add the import of <code>LoggerOps</code> at many places you can make those additional methods available with a single implicit conversion placed in a root package object of your code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/myapp/package.scala#L17-L26" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.language.implicitConversions
+import org.apache.pekko.actor.typed.scaladsl.LoggerOps
+import org.slf4j.Logger
+
+package object myapp {
+
+  implicit def loggerOps(logger: Logger): LoggerOps =
+    LoggerOps(logger)
+
+}</code></pre></dd>
+</dl></div>
+<h3><a href="#behaviors-logmessages" name="behaviors-logmessages" class="anchor"><span class="anchor-link"></span></a>Behaviors.logMessages</h3>
+<p>If you want very detailed logging of messages and signals you can decorate a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> with <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#logMessages(org.apache.pekko.actor.typed.LogOptions,org.apache.pekko.actor.typed.Behavior)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.logMessages</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#logMessages[T](logOptions:org.apache.pekko.actor.typed.LogOptions,behavior:org.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.logMessages</code></a></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L99-L102" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.typed.LogOptions
+import org.slf4j.event.Level
+
+Behaviors.logMessages(LogOptions().withLevel(Level.TRACE), BackendManager())</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L29-L113" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.slf4j.event.Level;
+
+Behaviors.logMessages(LogOptions.create().withLevel(Level.TRACE), BackendManager.create());</code></pre></dd>
+</dl>
+<h2><a href="#mdc" name="mdc" class="anchor"><span class="anchor-link"></span></a>MDC</h2>
+<p><a href="https://logback.qos.ch/manual/mdc.html">MDC</a> allows for adding additional context dependent attributes to log entries. Out of the box, Pekko will place the path of the actor in the MDC attribute <code>pekkoSource</code>.</p>
+<p>One or more tags can also be added to the MDC using the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorTags$.html" title="org.apache.pekko.actor.typed.ActorTags"><code>ActorTags</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorTags$.html" title="org.apache.pekko.actor.typed.ActorTags"><code>ActorTags</code></a></span> props. The tags will be rendered as a comma separated list and be put in the MDC attribute <code>pekkoTags</code>. This can be used to categorize log entries from a set of different actors to allow easier filtering of logs:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L158" target="_blank" title="Go to snippet source">source</a><code class="language-scala">context.spawn(myBehavior, &quot;MyActor&quot;, ActorTags(&quot;processing&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L202" target="_blank" title="Go to snippet source">source</a><code class="language-java">context.spawn(myBehavior, &quot;MyActor&quot;, ActorTags.create(&quot;processing&quot;));</code></pre></dd>
+</dl>
+<p>In addition to these two built in MDC attributes you can also decorate a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> with <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#withMdc(java.lang.Class,java.util.Map,org.apache.pekko.japi.function.Function,org.apache.pekko.actor.typed.Behavior)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.withMdc</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#withMdc[T](staticMdc:Map[String,String],mdcForMessage:T=%3EMap[String,String])(behavior:org.apache.pekko.actor.typed.Behavior[T])(implicitevidence$4:scala.reflect.ClassTag[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.withMdc</code></a></span> or use the <a href="https://www.slf4j.org/api/org/slf4j/MDC.html">org.slf4j.MDC</a> API directly.</p>
+<p>The <code>Behaviors.withMdc</code> decorator has two parts. A static <code>Map</code> of MDC attributes that are not changed, and a dynamic <code>Map</code> that can be constructed for each message.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/LoggingDocExamples.scala#L110-L116" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val staticMdc = Map(&quot;startTime&quot; -&gt; system.startTime.toString)
+Behaviors.withMdc[BackendManager.Command](
+  staticMdc,
+  mdcForMessage =
+    (msg: BackendManager.Command) =&gt; Map(&quot;identifier&quot; -&gt; msg.identifier, &quot;upTime&quot; -&gt; system.uptime.toString)) {
+  BackendManager()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/LoggingDocExamples.java#L141-L153" target="_blank" title="Go to snippet source">source</a><code class="language-java">Map&lt;String, String&gt; staticMdc = new HashMap&lt;&gt;();
+staticMdc.put(&quot;startTime&quot;, String.valueOf(system.startTime()));
+
+Behaviors.withMdc(
+    BackendManager2.Command.class,
+    staticMdc,
+    message -&gt; {
+      Map&lt;String, String&gt; msgMdc = new HashMap&lt;&gt;();
+      msgMdc.put(&quot;identifier&quot;, message.identifier());
+      msgMdc.put(&quot;upTime&quot;, String.valueOf(system.uptime()));
+      return msgMdc;
+    },
+    BackendManager2.create());</code></pre></dd>
+</dl>
+<p>If you use the MDC API directly, be aware that MDC is typically implemented with a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/ThreadLocal.html" title="java.lang.ThreadLocal"><code>ThreadLocal</code></a> by the SLF4J backend. Pekko clears the MDC if logging is performed via the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#log:org.slf4j.Logger" title="pekko.actor.typed.scaladsl.ActorContext"><code>log</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getLog()" title="pekko.actor.typed.javadsl.ActorContext"><code>getLog()</code></a></span> of the <code>ActorContext</code> and it is cleared automatically after processing of current message has finished, but only if you accessed <span class="group-scala"><code>log</code></span><span class="group-java"><code>getLog()</code></span>. The entire MDC is cleared, including attributes that you add yourself to the MDC. MDC is not cleared automatically if you use a <a href="https://www.slf4j.org/api/org/slf4j/Logger.html">Logger</a> via <a href="https://www.slf4j.org/api/org/slf4j/LoggerFactory.html">LoggerFactory</a> or not touch <span class="group-scala"><code>log</code></span><span class="group-java"><code>getLog()</code></span> in the <code>ActorContext</code>.</p>
+<h2><a href="#slf4j-backend" name="slf4j-backend" class="anchor"><span class="anchor-link"></span></a>SLF4J backend</h2>
+<p>To ensure that logging has minimal performance impact it&rsquo;s important that you configure an asynchronous appender for the SLF4J backend. Logging generally means IO and locks, which can slow down the operations of your code if it was performed synchronously.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>For production the SLF4J backend should be configured with an asynchronous appender as described here. Otherwise there is a risk of reduced performance and thread starvation problems of the dispatchers that are running actors and other tasks.</p></div>
+<h3><a href="#logback" name="logback" class="anchor"><span class="anchor-link"></span></a>Logback</h3>
+<p><code>pekko-actor-typed</code> includes a dependency to the <code>slf4j-api</code>. In your runtime, you also need a SLF4J backend. We recommend <a href="https://logback.qos.ch/">Logback</a>:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.11"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+    &lt;version&gt;1.2.11&lt;/version&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
+  implementation "ch.qos.logback:logback-classic:1.2.11"
+}</code></pre></dd></dl>
+<p>Logback has flexible configuration options and details can be found in the <a href="https://logback.qos.ch/manual/configuration.html">Logback manual</a> and other external resources.</p>
+<p>One part that is important to highlight is the importance of configuring an <a href="https://logback.qos.ch/manual/appenders.html#AsyncAppender">AsyncAppender</a>, because it offloads rendering of logging events to a background thread, increasing performance. It doesn&rsquo;t block the threads of the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> while the underlying infrastructure writes the log messages to disk or other configured destination. It also contains a feature which will drop <code>INFO</code> and <code>DEBUG</code> messages if the logging load is high.</p>
+<p>A starting point for configuration of <code>logback.xml</code> for production:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/resources/logback-doc-prod.xml" target="_blank" title="Go to snippet source">source</a><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+
+    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;file&gt;myapp.log&lt;/file&gt;
+        &lt;immediateFlush&gt;false&lt;/immediateFlush&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;myapp_%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+        &lt;/rollingPolicy&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;[%date{ISO8601}] [%level] [%logger] [%marker] [%thread] - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;ASYNC&quot; class=&quot;ch.qos.logback.classic.AsyncAppender&quot;&gt;
+        &lt;queueSize&gt;8192&lt;/queueSize&gt;
+        &lt;neverBlock&gt;true&lt;/neverBlock&gt;
+        &lt;appender-ref ref=&quot;FILE&quot; /&gt;
+    &lt;/appender&gt;
+
+    &lt;root level=&quot;INFO&quot;&gt;
+        &lt;appender-ref ref=&quot;ASYNC&quot;/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+<p>Note that the <a href="https://logback.qos.ch/apidocs/ch/qos/logback/classic/AsyncAppender.html">AsyncAppender</a> may drop log events if the queue becomes full, which may happen if the logging backend can&rsquo;t keep up with the throughput of produced log events. Dropping log events is necessary if you want to gracefully degrade your application if only your logging backend or filesystem is experiencing issues. </p>
+<p>An alternative of the Logback <code>AsyncAppender</code> with better performance is the <a href="https://github.com/logstash/logstash-logback-encoder#async-appenders">Logstash async appender</a>.</p>
+<p>The ELK-stack is commonly used as logging infrastructure for production:</p>
+<ul>
+  <li><a href="https://github.com/logstash/logstash-logback-encoder">Logstash Logback encoder</a></li>
+  <li><a href="https://www.elastic.co/guide/en/logstash/current/index.html">Logstash</a></li>
+  <li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html">Elasticsearch</a></li>
+  <li><a href="https://www.elastic.co/guide/en/kibana/current/index.html">Kibana</a></li>
+</ul>
+<p>For development you might want to log to standard out, but also have all debug level logging to file, like in this example:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/resources/logback-doc-dev.xml" target="_blank" title="Go to snippet source">source</a><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;
+            &lt;level&gt;INFO&lt;/level&gt;
+        &lt;/filter&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;[%date{ISO8601}] [%level] [%logger] [%marker] [%thread] - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.FileAppender&quot;&gt;
+        &lt;file&gt;target/myapp-dev.log&lt;/file&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;[%date{ISO8601}] [%level] [%logger] [%marker] [%thread] - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;root level=&quot;DEBUG&quot;&gt;
+        &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+        &lt;appender-ref ref=&quot;FILE&quot;/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+<p>Place the <code>logback.xml</code> file in <code>src/main/resources/logback.xml</code>. For tests you can define different logging configuration in <code>src/test/resources/logback-test.xml</code>.</p>
+<h4><a href="#mdc-values" name="mdc-values" class="anchor"><span class="anchor-link"></span></a>MDC values</h4>
+<p>When logging via the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#log:org.slf4j.Logger" title="pekko.actor.typed.scaladsl.ActorContext"><code>log</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getLog()" title="pekko.actor.typed.javadsl.ActorContext"><code>getLog()</code></a></span> of the <code>ActorContext</code>, as described in <a href="logging.html#how-to-log">How to log</a>, Pekko includes a few MDC properties:</p>
+<ul>
+  <li><code>pekkoSource</code>: the actor&rsquo;s path</li>
+  <li><code>pekkoAddress</code>: the full address of the ActorSystem, including hostname and port if Cluster is enabled</li>
+  <li><code>pekkoTags</code>: tags defined in the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Props.html" title="org.apache.pekko.actor.typed.Props"><code>Props</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Props.html" title="org.apache.pekko.actor.typed.Props"><code>Props</code></a></span> of the actor</li>
+  <li><code>sourceActorSystem</code>: the name of the ActorSystem</li>
+</ul>
+<p>These MDC properties can be included in the Logback output with for example <code>%X{pekkoSource}</code> specifier within the <a href="https://logback.qos.ch/manual/layouts.html#mdc">pattern layout configuration</a>:</p>
+<pre><code>  &lt;encoder&gt;
+    &lt;pattern&gt;%date{ISO8601} %-5level %logger{36} %X{pekkoSource} - %msg%n&lt;/pattern&gt;
+  &lt;/encoder&gt;
+</code></pre>
+<p>All MDC properties as key-value entries can be included with <code>%mdc</code>:</p>
+<pre><code>  &lt;encoder&gt;
+    &lt;pattern&gt;%date{ISO8601} %-5level %logger{36} - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+  &lt;/encoder&gt;
+</code></pre>
+<h2><a href="#internal-logging-by-pekko" name="internal-logging-by-pekko" class="anchor"><span class="anchor-link"></span></a>Internal logging by Pekko</h2>
+<h3><a href="#event-bus" name="event-bus" class="anchor"><span class="anchor-link"></span></a>Event bus</h3>
+<p>For historical reasons logging by the Pekko internals and by classic actors are performed asynchronously through an event bus. Such log events are processed by an event handler actor, which then emits them to SLF4J or directly to standard out.</p>
+<p>When <code>pekko-actor-typed</code> and <code>pekko-slf4j</code> are on the classpath this event handler actor will emit the events to SLF4J. The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/slf4j/Slf4jLogger.html" title="org.apache.pekko.event.slf4j.Slf4jLogger"><code>event.slf4j.Slf4jLogger</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/slf4j/Slf4jLogger.html" title="org.apache.pekko.event.slf4j.Slf4jLogger"><code>event.slf4j.Slf4jLogger</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/slf4j/Slf4jLoggingFilter.html" title="org.apache.pekko.event.slf4j.Slf4jLoggingFilter"><code>event.slf4j.Slf4jLoggingFilter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/slf4j/Slf4jLoggingFilter.html" title="org.apache.pekko.event.slf4j.Slf4jLoggingFilter"><code>event.slf4j.Slf4jLoggingFilter</code></a></span> are enabled automatically without additional configuration. This can be disabled by <code>pekko.use-slf4j=off</code> configuration property.</p>
+<p>In other words, you don&rsquo;t have to do anything for the Pekko internal logging to end up in your configured SLF4J backend.</p>
+<h3><a href="#log-level" name="log-level" class="anchor"><span class="anchor-link"></span></a>Log level</h3>
+<p>Ultimately the log level defined in the SLF4J backend is used. For the Pekko internal logging it will also check the level defined by the SLF4J backend before constructing the final log message and emitting it to the event bus.</p>
+<p>However, there is an additional <code>pekko.loglevel</code> configuration property that defines if logging events with lower log level should be discarded immediately without consulting the SLF4J backend. By default this is at <code>INFO</code> level, which means that <code>DEBUG</code> level logging from the Pekko internals will not reach the SLF4J backend even if <code>DEBUG</code> is enabled in the backend.</p>
+<p>You can enable <code>DEBUG</code> level for <code>pekko.loglevel</code> and control the actual level in the SLF4j backend without any significant overhead, also for production.</p>
+<pre><code>pekko.loglevel = &quot;DEBUG&quot;
+</code></pre>
+<p>To turn off all Pekko internal logging (not recommended) you can configure the log levels to be <code>OFF</code> like this.</p>
+<pre><code>pekko {
+  stdout-loglevel = &quot;OFF&quot;
+  loglevel = &quot;OFF&quot;
+}
+</code></pre>
+<p>The <code>stdout-loglevel</code> is only in effect during system startup and shutdown, and setting it to <code>OFF</code> as well, ensures that nothing gets logged during system startup or shutdown.</p>
+<p>See <a href="logging.html#logger-names">Logger names</a> for configuration of log level in SLF4J backend for certain modules of Pekko.</p>
+<h3><a href="#logging-to-stdout-during-startup-and-shutdown" name="logging-to-stdout-during-startup-and-shutdown" class="anchor"><span class="anchor-link"></span></a>Logging to stdout during startup and shutdown</h3>
+<p>When the actor system is starting up and shutting down the configured <code>loggers</code> are not used. Instead log messages are printed to stdout (System.out). The default log level for this stdout logger is <code>WARNING</code> and it can be silenced completely by setting <code>pekko.stdout-loglevel=OFF</code>.</p>
+<h3><a href="#logging-of-dead-letters" name="logging-of-dead-letters" class="anchor"><span class="anchor-link"></span></a>Logging of Dead Letters</h3>
+<p>By default messages sent to dead letters are logged at info level. Existence of dead letters does not necessarily indicate a problem, but they are logged by default for the sake of caution. After a few messages this logging is turned off, to avoid flooding the logs. You can disable this logging completely or adjust how many dead letters are logged. During system shutdown it is likely that you see dead letters, since pending messages in the actor mailboxes are sent to dead letters. You can also disable logging of dead letters during shutdown.</p>
+<pre><code>pekko {
+  log-dead-letters = 10
+  log-dead-letters-during-shutdown = on
+}
+</code></pre>
+<p>To customize the logging further or take other actions for dead letters you can subscribe to the <a href="../event-bus.html#event-stream">Event Stream</a>.</p>
+<h3><a href="#auxiliary-logging-options" name="auxiliary-logging-options" class="anchor"><span class="anchor-link"></span></a>Auxiliary logging options</h3>
+<p>Pekko has a few configuration options for very low level debugging. These make more sense in development than in production.</p>
+<p>You almost definitely need to have logging set to DEBUG to use any of the options below:</p>
+<pre><code>pekko {
+  loglevel = &quot;DEBUG&quot;
+}
+</code></pre>
+<p>This config option is very good if you want to know what config settings are loaded by Pekko:</p>
+<pre><code>pekko {
+  # Log the complete configuration at INFO level when the actor system is started.
+  # This is useful when you are uncertain of what configuration is used.
+  log-config-on-start = on
+}
+</code></pre>
+<p>If you want unhandled messages logged at DEBUG:</p>
+<pre><code>pekko {
+  actor {
+    debug {
+      # enable DEBUG logging of unhandled messages
+      unhandled = on
+    }
+  }
+}
+</code></pre>
+<p>If you want to monitor subscriptions (subscribe/unsubscribe) on the ActorSystem.eventStream:</p>
+<pre><code>pekko {
+  actor {
+    debug {
+      # enable DEBUG logging of subscription changes on the eventStream
+      event-stream = on
+    }
+  }
+}
+</code></pre>
+<a id="logging-remote"></a>
+<h3><a href="#auxiliary-remote-logging-options" name="auxiliary-remote-logging-options" class="anchor"><span class="anchor-link"></span></a>Auxiliary remote logging options</h3>
+<p>If you want to see all messages that are sent through remoting at DEBUG log level, use the following config option. Note that this logs the messages as they are sent by the transport layer, not by an actor.</p>
+<pre><code>pekko.remote.artery {
+  # If this is &quot;on&quot;, Pekko will log all outbound messages at DEBUG level,
+  # if off then they are not logged
+  log-sent-messages = on
+}
+</code></pre>
+<p>If you want to see all messages that are received through remoting at DEBUG log level, use the following config option. Note that this logs the messages as they are received by the transport layer, not by an actor.</p>
+<pre><code>pekko.remote.artery {
+  # If this is &quot;on&quot;, Pekko will log all inbound messages at DEBUG level,
+  # if off then they are not logged
+  log-received-messages = on
+}
+</code></pre>
+<p>Logging of message types with payload size in bytes larger than the configured <code>log-frame-size-exceeding</code>.</p>
+<pre><code>pekko.remote.artery {
+  log-frame-size-exceeding = 10000b
+}
+</code></pre>
+<h3><a href="#mdc-values-from-pekko-internal-logging" name="mdc-values-from-pekko-internal-logging" class="anchor"><span class="anchor-link"></span></a>MDC values from Pekko internal logging</h3>
+<p>Since the logging is done asynchronously, the thread in which the logging was performed is captured in MDC with attribute name <code>sourceThread</code>.</p>
+<p>The path of the actor in which the logging was performed is available in the MDC with attribute name <code>pekkoSource</code>.</p>
+<p>The actor system name in which the logging was performed is available in the MDC with attribute name <code>sourceActorSystem</code>, but that is typically also included in the <code>pekkoSource</code> attribute.</p>
+<p>The address of the actor system, containing host and port if the system is using cluster, is available through <code>pekkoAddress</code>.</p>
+<p>For typed actors the log event timestamp is taken when the log call was made but for Pekko&rsquo;s <em>internal</em> logging as well as the classic actor logging is asynchronous which means that the timestamp of a log entry is taken from when the underlying logger implementation is called, which can be surprising at first. If you want to more accurately output the timestamp for such loggers, use the MDC attribute <code>pekkoTimestamp</code>. Note that the MDC key will not have any value for a typed actor.</p>
+<h3><a href="#markers" name="markers" class="anchor"><span class="anchor-link"></span></a>Markers</h3>
+<p>Pekko is logging some events with markers. Some of these events also include structured MDC properties. </p>
+<ul>
+  <li>The &ldquo;SECURITY&rdquo; marker is used for highlighting security related events or incidents.</li>
+  <li>Pekko Actor is using the markers defined in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorLogMarker$.html" title="org.apache.pekko.actor.ActorLogMarker"><code>ActorLogMarker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorLogMarker$.html" title="org.apache.pekko.actor.ActorLogMarker"><code>ActorLogMarker</code></a></span>.</li>
+  <li>Pekko Cluster is using the markers defined in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ClusterLogMarker$.html" title="org.apache.pekko.cluster.ClusterLogMarker"><code>ClusterLogMarker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ClusterLogMarker$.html" title="org.apache.pekko.cluster.ClusterLogMarker"><code>ClusterLogMarker</code></a></span>.</li>
+  <li>Pekko Remoting is using the markers defined in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/remote/RemoteLogMarker$.html" title="org.apache.pekko.remote.RemoteLogMarker"><code>RemoteLogMarker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/remote/RemoteLogMarker$.html" title="org.apache.pekko.remote.RemoteLogMarker"><code>RemoteLogMarker</code></a></span>.</li>
+  <li>Pekko Cluster Sharding is using the markers defined in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardingLogMarker$.html" title="org.apache.pekko.cluster.sharding.ShardingLogMarker"><code>ShardingLogMarker</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/ShardingLogMarker$.html" title="org.apache.pekko.cluster.sharding.ShardingLogMarker"><code>ShardingLogMarker</code></a></span>.</li>
+</ul>
+<p>Markers and MDC properties are automatically picked up by the <a href="https://github.com/logstash/logstash-logback-encoder">Logstash Logback encoder</a>.</p>
+<p>The marker can be included in the Logback output with <code>%marker</code> and all MDC properties as key-value entries with <code>%mdc</code>.</p>
+<pre><code>  &lt;encoder&gt;
+    &lt;pattern&gt;[%date{ISO8601}] [%level] [%logger] [%marker] [%thread] - %msg MDC: {%mdc}%n&lt;/pattern&gt;
+  &lt;/encoder&gt;
+</code></pre>
+<h3><a href="#logger-names" name="logger-names" class="anchor"><span class="anchor-link"></span></a>Logger names</h3>
+<p>It can be useful to enable debug level or other SLF4J backend configuration for certain modules of Pekko when troubleshooting. Those logger names are typically prefixed with the package name of the classes in that module. For example, in Logback the configuration may look like this to enable debug logging for Cluster Sharding: </p>
+<pre><code>   &lt;logger name=&quot;pekko.cluster.sharding&quot; level=&quot;DEBUG&quot; /&gt;
+
+    &lt;root level=&quot;INFO&quot;&gt;
+        &lt;appender-ref ref=&quot;ASYNC&quot;/&gt;
+    &lt;/root&gt;
+</code></pre>
+<p>Other examples of logger names or prefixes:</p>
+<pre><code>pekko.cluster
+pekko.cluster.Cluster
+pekko.cluster.ClusterHeartbeat
+pekko.cluster.ClusterGossip
+pekko.cluster.ddata
+pekko.cluster.pubsub
+pekko.cluster.singleton
+pekko.cluster.sharding
+pekko.coordination.lease
+pekko.discovery
+pekko.persistence
+pekko.remote
+</code></pre>
+<h2><a href="#logging-in-tests" name="logging-in-tests" class="anchor"><span class="anchor-link"></span></a>Logging in tests</h2>
+<p>Testing utilities are described in <a href="testing-async.html#test-of-logging">Testing</a>.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/logging.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../index-utilities.html" title="Utilities" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Utilities
+</span>
+</div>
+</a>
+<a href="../common/circuitbreaker.html" title="Circuit Breaker" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Circuit Breaker
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Share data between nodes and perform updates without coordination in a Apache Pekko Cluster using Conflict Free Replicated Data Types CRDT.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Share data between nodes and perform updates without coordination in a Apache Pekko Cluster using Conflict Free Replicated Data Types CRDT.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Distributed Data · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Distributed Data
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html#distributed-data" class="active page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/distributed-data.html#distributed-data" class="header">Distributed Data</a>
+  <ul>
+    <li><a href="../typed/distributed-data.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/distributed-data.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/distributed-data.html#using-the-replicator" class="header">Using the Replicator</a></li>
+    <li><a href="../typed/distributed-data.html#replicated-data-types" class="header">Replicated data types</a></li>
+    <li><a href="../typed/distributed-data.html#durable-storage" class="header">Durable Storage</a></li>
+    <li><a href="../typed/distributed-data.html#limitations" class="header">Limitations</a></li>
+    <li><a href="../typed/distributed-data.html#learn-more-about-crdts" class="header">Learn More about CRDTs</a></li>
+    <li><a href="../typed/distributed-data.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/distributed-data.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/distributed-data.html#distributed-data" class="header">Distributed Data</a>
+  <ul>
+    <li><a href="../typed/distributed-data.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/distributed-data.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/distributed-data.html#using-the-replicator" class="header">Using the Replicator</a></li>
+    <li><a href="../typed/distributed-data.html#replicated-data-types" class="header">Replicated data types</a></li>
+    <li><a href="../typed/distributed-data.html#durable-storage" class="header">Durable Storage</a></li>
+    <li><a href="../typed/distributed-data.html#limitations" class="header">Limitations</a></li>
+    <li><a href="../typed/distributed-data.html#learn-more-about-crdts" class="header">Learn More about CRDTs</a></li>
+    <li><a href="../typed/distributed-data.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/distributed-data.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#distributed-data" name="distributed-data" class="anchor"><span class="anchor-link"></span></a>Distributed Data</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../distributed-data.html">Classic Distributed Data</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Pekko Cluster Distributed Data, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster (typed)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-typed</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.typed</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/typed/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/typed/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p><em>Pekko Distributed Data</em> is useful when you need to share data between nodes in an Pekko Cluster. The data is accessed with an actor providing a key-value store like API. The keys are unique identifiers with type information of the data values. The values are <em>Conflict Free Replicated Data Types</em> (CRDTs).</p>
+
+<p>All data entries are spread to all nodes, or nodes with a certain role, in the cluster via direct replication and gossip based dissemination. You have fine grained control of the consistency level for reads and writes.</p>
+
+<p>The nature of CRDTs makes it possible to perform updates from any node without coordination. Concurrent updates from different nodes will automatically be resolved by the monotonic merge function, which all data types must provide. The state changes always converge. Several useful data types for counters, sets, maps and registers are provided and you can also implement your own custom data types.</p>
+
+<p>It is eventually consistent and geared toward providing high read and write availability (partition tolerance), with low latency. Note that in an eventually consistent system a read may return an out-of-date value.</p>
+
+<h2><a href="#using-the-replicator" name="using-the-replicator" class="anchor"><span class="anchor-link"></span></a>Using the Replicator</h2>
+
+<p>You can interact with the data through the replicator actor which can be accessed through the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/javadsl/DistributedData.html" title="org.apache.pekko.cluster.ddata.typed.javadsl.DistributedData"><code>DistributedData</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/scaladsl/DistributedData.html" title="org.apache.pekko.cluster.ddata.typed.scaladsl.DistributedData"><code>DistributedData</code></a></span> extension.</p>
+
+<p>The messages for the replicator, such as <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/javadsl/Replicator$$Update.html" title="org.apache.pekko.cluster.ddata.typed.javadsl.Replicator.Update"><code>Replicator.Update</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/scaladsl/Replicator$$Update.html" title="org.apache.pekko.cluster.ddata.typed.scaladsl.Replicator.Update"><code>Replicator.Update</code></a></span> are defined as subclasses of <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/javadsl/Replicator$$Command.html" title="org.apache.pekko.cluster.ddata.typed.javadsl.Replicator.Command"><code>Replicator.Command</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/typed/scaladsl/Replicator$$Command.html" title="org.apache.pekko.cluster.ddata.typed.scaladsl.Replicator.Command"><code>Replicator.Command</code></a></span> and the actual CRDTs are defined in the <code>pekko.cluster.ddata</code> package, for example <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/GCounter.html" title="org.apache.pekko.cluster.ddata.GCounter"><code>GCounter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/ddata/GCounter.html" title="org.apache.pekko.cluster.ddata.GCounter"><code>GCounter</code></a></span>. It requires a <span class="group-scala">implicit</span> <code>org.apache.pekko.cluster.ddata.SelfUniqueAddress</code>, available from:</p>
+
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/ddata/typed/scaladsl/ReplicatorDocSpec.scala#L61" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node: SelfUniqueAddress = DistributedData(context.system).selfUniqueAddress</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/ddata/typed/javadsl/ReplicatorDocSample.java#L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(context.getSystem()).selfUniqueAddress();</code></pre></dd>
+</dl>
+<p>The replicator can contain multiple entries each containing a replicated data type, we therefore need to create a key identifying the entry and helping us know what type it has, and then use that key for every interaction with the replicator. Each replicated data type contains a factory for defining such a key.</p>
+<p>Cluster members with status <a href="cluster-membership.html#weakly-up">WeaklyUp</a>, will participate in Distributed Data. This means that the data will be replicated to the <code>WeaklyUp</code> nodes with the background gossip protocol. Note that it will not participate in any actions where the consistency mode is to read/write from all nodes or the majority of nodes. The <code>WeaklyUp</code> node is not counted as part of the cluster. So 3 nodes + 5 <code>WeaklyUp</code> is essentially a 3 node cluster as far as consistent actions are concerned.</p>
+<p>This sample uses the replicated data type <code>GCounter</code> to implement a counter that can be written to on any node of the cluster: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/docs/org/apache/pekko/cluster/ddata/typed/scaladsl/ReplicatorDocSpec.scala#L26-L123" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.cluster.ddata.GCounter
+import pekko.cluster.ddata.GCounterKey
+import pekko.cluster.ddata.typed.scaladsl.Replicator._
+
+object Counter {
+  sealed trait Command
+  case object Increment extends Command
+  final case class GetValue(replyTo: ActorRef[Int]) extends Command
+  final case class GetCachedValue(replyTo: ActorRef[Int]) extends Command
+  case object Unsubscribe extends Command
+  private sealed trait InternalCommand extends Command
+  private case class InternalUpdateResponse(rsp: Replicator.UpdateResponse[GCounter]) extends InternalCommand
+  private case class InternalGetResponse(rsp: Replicator.GetResponse[GCounter], replyTo: ActorRef[Int])
+      extends InternalCommand
+  private case class InternalSubscribeResponse(chg: Replicator.SubscribeResponse[GCounter]) extends InternalCommand
+
+  def apply(key: GCounterKey): Behavior[Command] =
+    Behaviors.setup[Command] { context =&gt;
+      implicit val node: SelfUniqueAddress = DistributedData(context.system).selfUniqueAddress
+
+      // adapter that turns the response messages from the replicator into our own protocol
+      DistributedData.withReplicatorMessageAdapter[Command, GCounter] { replicatorAdapter =&gt;
+        // Subscribe to changes of the given `key`.
+        replicatorAdapter.subscribe(key, InternalSubscribeResponse.apply)
+
+        def updated(cachedValue: Int): Behavior[Command] = {
+          Behaviors.receiveMessage[Command] {
+            case Increment =&gt;
+              replicatorAdapter.askUpdate(
+                askReplyTo =&gt; Replicator.Update(key, GCounter.empty, Replicator.WriteLocal, askReplyTo)(_ :+ 1),
+                InternalUpdateResponse.apply)
+
+              Behaviors.same
+
+            case GetValue(replyTo) =&gt;
+              replicatorAdapter.askGet(
+                askReplyTo =&gt; Replicator.Get(key, Replicator.ReadLocal, askReplyTo),
+                value =&gt; InternalGetResponse(value, replyTo))
+
+              Behaviors.same
+
+            case GetCachedValue(replyTo) =&gt;
+              replyTo ! cachedValue
+              Behaviors.same
+
+            case Unsubscribe =&gt;
+              replicatorAdapter.unsubscribe(key)
+              Behaviors.same
+
+            case internal: InternalCommand =&gt;
+              internal match {
+                case InternalUpdateResponse(_) =&gt; Behaviors.same // ok
+
+                case InternalGetResponse(rsp @ Replicator.GetSuccess(`key`), replyTo) =&gt;
+                  val value = rsp.get(key).value.toInt
+                  replyTo ! value
+                  Behaviors.same
+
+                case InternalGetResponse(_, _) =&gt;
+                  Behaviors.unhandled // not dealing with failures
+                case InternalSubscribeResponse(chg @ Replicator.Changed(`key`)) =&gt;
+                  val value = chg.get(key).value.intValue
+                  updated(value)
+
+                case InternalSubscribeResponse(Replicator.Deleted(_)) =&gt;
+                  Behaviors.unhandled // no deletes
+
+                case InternalSubscribeResponse(_) =&gt; // changed but wrong key
+                  Behaviors.unhandled
+
+              }
+          }
+        }
+
+        updated(cachedValue = 0)
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/java/jdocs/org/apache/pekko/cluster/ddata/typed/javadsl/ReplicatorDocSample.java#L17-L191" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+import org.apache.pekko.cluster.ddata.GCounter;
+import org.apache.pekko.cluster.ddata.Key;
+import org.apache.pekko.cluster.ddata.SelfUniqueAddress;
+import org.apache.pekko.cluster.ddata.typed.javadsl.DistributedData;
+import org.apache.pekko.cluster.ddata.typed.javadsl.Replicator;
+import org.apache.pekko.cluster.ddata.typed.javadsl.ReplicatorMessageAdapter;
+
+  public class Counter extends AbstractBehavior&lt;Counter.Command&gt; {
+    interface Command {}
+
+    enum Increment implements Command {
+      INSTANCE
+    }
+
+    public static class GetValue implements Command {
+      public final ActorRef&lt;Integer&gt; replyTo;
+
+      public GetValue(ActorRef&lt;Integer&gt; replyTo) {
+        this.replyTo = replyTo;
+      }
+    }
+
+    public static class GetCachedValue implements Command {
+      public final ActorRef&lt;Integer&gt; replyTo;
+
+      public GetCachedValue(ActorRef&lt;Integer&gt; replyTo) {
+        this.replyTo = replyTo;
+      }
+    }
+
+    enum Unsubscribe implements Command {
+      INSTANCE
+    }
+
+    private interface InternalCommand extends Command {}
+
+    private static class InternalUpdateResponse implements InternalCommand {
+      final Replicator.UpdateResponse&lt;GCounter&gt; rsp;
+
+      InternalUpdateResponse(Replicator.UpdateResponse&lt;GCounter&gt; rsp) {
+        this.rsp = rsp;
+      }
+    }
+
+    private static class InternalGetResponse implements InternalCommand {
+      final Replicator.GetResponse&lt;GCounter&gt; rsp;
+      final ActorRef&lt;Integer&gt; replyTo;
+
+      InternalGetResponse(Replicator.GetResponse&lt;GCounter&gt; rsp, ActorRef&lt;Integer&gt; replyTo) {
+        this.rsp = rsp;
+        this.replyTo = replyTo;
+      }
+    }
+
+    private static final class InternalSubscribeResponse implements InternalCommand {
+      final Replicator.SubscribeResponse&lt;GCounter&gt; rsp;
+
+      InternalSubscribeResponse(Replicator.SubscribeResponse&lt;GCounter&gt; rsp) {
+        this.rsp = rsp;
+      }
+    }
+
+    public static Behavior&lt;Command&gt; create(Key&lt;GCounter&gt; key) {
+      return Behaviors.setup(
+          ctx -&gt;
+              DistributedData.withReplicatorMessageAdapter(
+                  (ReplicatorMessageAdapter&lt;Command, GCounter&gt; replicatorAdapter) -&gt;
+                      new Counter(ctx, replicatorAdapter, key)));
+    }
+
+    // adapter that turns the response messages from the replicator into our own protocol
+    private final ReplicatorMessageAdapter&lt;Command, GCounter&gt; replicatorAdapter;
+    private final SelfUniqueAddress node;
+    private final Key&lt;GCounter&gt; key;
+
+    private int cachedValue = 0;
+
+    private Counter(
+        ActorContext&lt;Command&gt; context,
+        ReplicatorMessageAdapter&lt;Command, GCounter&gt; replicatorAdapter,
+        Key&lt;GCounter&gt; key) {
+      super(context);
+
+      this.replicatorAdapter = replicatorAdapter;
+      this.key = key;
+
+      final SelfUniqueAddress node = DistributedData.get(context.getSystem()).selfUniqueAddress();
+
+      this.node = DistributedData.get(context.getSystem()).selfUniqueAddress();
+
+      this.replicatorAdapter.subscribe(this.key, InternalSubscribeResponse::new);
+    }
+
+    @Override
+    public Receive&lt;Command&gt; createReceive() {
+      return newReceiveBuilder()
+          .onMessage(Increment.class, this::onIncrement)
+          .onMessage(InternalUpdateResponse.class, msg -&gt; Behaviors.same())
+          .onMessage(GetValue.class, this::onGetValue)
+          .onMessage(GetCachedValue.class, this::onGetCachedValue)
+          .onMessage(Unsubscribe.class, this::onUnsubscribe)
+          .onMessage(InternalGetResponse.class, this::onInternalGetResponse)
+          .onMessage(InternalSubscribeResponse.class, this::onInternalSubscribeResponse)
+          .build();
+    }
+
+    private Behavior&lt;Command&gt; onIncrement(Increment cmd) {
+      replicatorAdapter.askUpdate(
+          askReplyTo -&gt;
+              new Replicator.Update&lt;&gt;(
+                  key,
+                  GCounter.empty(),
+                  Replicator.writeLocal(),
+                  askReplyTo,
+                  curr -&gt; curr.increment(node, 1)),
+          InternalUpdateResponse::new);
+
+      return this;
+    }
+
+    private Behavior&lt;Command&gt; onGetValue(GetValue cmd) {
+      replicatorAdapter.askGet(
+          askReplyTo -&gt; new Replicator.Get&lt;&gt;(key, Replicator.readLocal(), askReplyTo),
+          rsp -&gt; new InternalGetResponse(rsp, cmd.replyTo));
+
+      return this;
+    }
+
+    private Behavior&lt;Command&gt; onGetCachedValue(GetCachedValue cmd) {
+      cmd.replyTo.tell(cachedValue);
+      return this;
+    }
+
+    private Behavior&lt;Command&gt; onUnsubscribe(Unsubscribe cmd) {
+      replicatorAdapter.unsubscribe(key);
+      return this;
+    }
+
+    private Behavior&lt;Command&gt; onInternalGetResponse(InternalGetResponse msg) {
+      if (msg.rsp instanceof Replicator.GetSuccess) {
+        int value = ((Replicator.GetSuccess&lt;?&gt;) msg.rsp).get(key).getValue().intValue();
+        msg.replyTo.tell(value);
+        return this;
+      } else {
+        // not dealing with failures
+        return Behaviors.unhandled();
+      }
+    }
+
+    private Behavior&lt;Command&gt; onInternalSubscribeResponse(InternalSubscribeResponse msg) {
+      if (msg.rsp instanceof Replicator.Changed) {
+        GCounter counter = ((Replicator.Changed&lt;?&gt;) msg.rsp).get(key);
+        cachedValue = counter.getValue().intValue();
+        return this;
+      } else {
+        // no deletes
+        return Behaviors.unhandled();
+      }
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>Although you can interact with the <code>Replicator</code> using the <span class="group-scala"><code>ActorRef[Replicator.Command]</code></span><span class="group-java"><code>ActorRef&lt;Replicator.Command&gt;</code></span> from <span class="group-scala"><code>DistributedData(ctx.system).replicator</code></span><span class="group-java"><code>DistributedData(ctx.getSystem()).replicator()</code></span> it&rsquo;s often more convenient to use the <code>ReplicatorMessageAdapter</code> as in the above example.</p>
+<a id="replicator-update"></a>
+<h3><a href="#update" name="update" class="anchor"><span class="anchor-link"></span></a>Update</h3>
+<p>To modify and replicate a data value you send a <code>Replicator.Update</code> message to the local <code>Replicator</code>.</p>
+<p>In the above example, for an incoming <code>Increment</code> command, we send the <code>replicator</code> a <code>Replicator.Update</code> request, it contains five values:</p>
+<ol>
+  <li>the <span class="group-scala"><code>Key</code></span><span class="group-java"><code>KEY</code></span> we want to update</li>
+  <li>the data to use as the empty state if the replicator has not seen the key before</li>
+  <li>the <a href="distributed-data.html#write-consistency">write consistency level</a> we want for the update</li>
+  <li>an <span class="group-scala"><code>ActorRef[Replicator.UpdateResponse[GCounter]]</code></span><span class="group-java"><code>ActorRef&lt;Replicator.UpdateResponse&lt;GCounter&gt;&gt;</code></span> to respond to when the update is completed</li>
+  <li>a <code>modify</code> function that takes a previous state and updates it, in our case by incrementing it with 1</li>
+</ol><div class="group-scala">
+<p>There is alternative way of constructing the function for the <code>Update</code> message:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/org/apache/pekko/cluster/ddata/typed/scaladsl/ReplicatorCompileOnlyTest.scala#L64-L73" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// alternative way to define the `createRequest` function
+// Replicator.Update instance has a curried `apply` method
+replicatorAdapter.askUpdate(
+  Replicator.Update(key, GCounter.empty, Replicator.WriteLocal)(_ :+ 1),
+  InternalUpdateResponse.apply)
+
+// that is the same as
+replicatorAdapter.askUpdate(
+  askReplyTo =&gt; Replicator.Update(key, GCounter.empty, Replicator.WriteLocal, askReplyTo)(_ :+ 1),
+  InternalUpdateResponse.apply)</code></pre></dd>
+</dl></div>
+<p>The current data value for the <code>key</code> of the <code>Update</code> is passed as parameter to the <code>modify</code> function of the <code>Update</code>. The function is supposed to return the new value of the data, which will then be replicated according to the given <a href="distributed-data.html#write-consistency">write consistency level</a>.</p>
+<p>The <code>modify</code> function is called by the <code>Replicator</code> actor and must therefore be a pure function that only uses the data parameter and stable fields from enclosing scope. It must for example not access the <code>ActorContext</code> or mutable state of an enclosing actor. <code>Update</code> is intended to only be sent from an actor running in same local <code>ActorSystem</code>  as the <code>Replicator</code>, because the <code>modify</code> function is typically not serializable.</p>
+<p>You will always see your own writes. For example if you send two <code>Update</code> messages changing the value of the same <code>key</code>, the <code>modify</code> function of the second message will see the change that was performed by the first <code>Update</code> message. </p>
+<p>As reply of the <code>Update</code> a <code>Replicator.UpdateSuccess</code> is sent to the <code>replyTo</code> of the <code>Update</code> if the value was successfully replicated according to the supplied consistency level within the supplied timeout. Otherwise a <code>Replicator.UpdateFailure</code> subclass is sent back. Note that a <code>Replicator.UpdateTimeout</code> reply does not mean that the update completely failed or was rolled back. It may still have been replicated to some nodes, and will eventually be replicated to all nodes with the gossip protocol.</p>
+<p>It is possible to abort the <code>Update</code> when inspecting the state parameter that is passed in to the <code>modify</code> function by throwing an exception. That happens before the update is performed and a <code>Replicator.ModifyFailure</code> is sent back as reply. </p>
+<h3><a href="#get" name="get" class="anchor"><span class="anchor-link"></span></a>Get</h3>
+<p>To retrieve the current value of a data you send <code>Replicator.Get</code> message to the <code>Replicator</code>. </p>
+<p>The example has the <code>GetValue</code> command, which is asking the replicator for current value. Note how the <code>replyTo</code> from the incoming message can be used when the <code>GetSuccess</code> response from the replicator is received.</p><div class="group-scala">
+<p>Alternative way of constructing the function for the <code>Get</code> and <code>Delete</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-typed/src/test/scala/org/apache/pekko/cluster/ddata/typed/scaladsl/ReplicatorCompileOnlyTest.scala#L77-L84" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// alternative way to define the `createRequest` function
+// Replicator.Get instance has a curried `apply` method
+replicatorAdapter.askGet(Replicator.Get(key, Replicator.ReadLocal), value =&gt; InternalGetResponse(value, replyTo))
+
+// that is the same as
+replicatorAdapter.askGet(
+  askReplyTo =&gt; Replicator.Get(key, Replicator.ReadLocal, askReplyTo),
+  value =&gt; InternalGetResponse(value, replyTo))</code></pre></dd>
+</dl></div>
+<p>For a <code>Get</code> you supply a <a href="distributed-data.html#read-consistency">read consistency level</a>.</p>
+<p>You will always read your own writes. For example if you send a <code>Update</code> message followed by a <code>Get</code> of the same <code>key</code> the <code>Get</code> will retrieve the change that was performed by the preceding <code>Update</code> message. However, the order of the reply messages are not defined, i.e. in the previous example you may receive the <code>GetSuccess</code> before the <code>UpdateSuccess</code>.</p>
+<p>As reply of the <code>Get</code> a <code>Replicator.GetSuccess</code> is sent to the <code>replyTo</code> of the <code>Get</code> if the value was successfully retrieved according to the supplied consistency level within the supplied timeout. Otherwise a <code>Replicator.GetFailure</code> is sent. If the key does not exist the reply will be <code>Replicator.NotFound</code>.</p>
+<h3><a href="#subscribe" name="subscribe" class="anchor"><span class="anchor-link"></span></a>Subscribe</h3>
+<p>Whenever the distributed counter in the example is updated, we cache the value so that we can answer requests about the value without the extra interaction with the replicator using the <code>GetCachedValue</code> command.</p>
+<p>When we start up the actor we subscribe it to changes for our key, meaning whenever the replicator observes a change for the counter our actor will receive a <span class="group-scala"><code>Replicator.Changed[GCounter]</code></span><span class="group-java"><code>Replicator.Changed&lt;GCounter&gt;</code></span>. Since this is not a message in our protocol, we use a message transformation function to wrap it in the internal <code>InternalSubscribeResponse</code> message, which is then handled in the regular message handling of the behavior, as shown in the above example. Subscribers will be notified of changes, if there are any, based on the configurable <code>pekko.cluster.distributed-data.notify-subscribers-interval</code>.</p>
+<p>The subscriber is automatically unsubscribed if the subscriber is terminated. A subscriber can also be de-registered with the <code>replicatorAdapter.unsubscribe(key)</code> function.</p>
+<h3><a href="#delete" name="delete" class="anchor"><span class="anchor-link"></span></a>Delete</h3>
+<p>A data entry can be deleted by sending a <code>Replicator.Delete</code> message to the local <code>Replicator</code>. As reply of the <code>Delete</code> a <code>Replicator.DeleteSuccess</code> is sent to the <code>replyTo</code> of the <code>Delete</code> if the value was successfully deleted according to the supplied consistency level within the supplied timeout. Otherwise a <code>Replicator.ReplicationDeleteFailure</code> is sent. Note that <code>ReplicationDeleteFailure</code> does not mean that the delete completely failed or was rolled back. It may still have been replicated to some nodes, and may eventually be replicated to all nodes.</p>
+<p>A deleted key cannot be reused again, but it is still recommended to delete unused data entries because that reduces the replication overhead when new nodes join the cluster. Subsequent <code>Delete</code>, <code>Update</code> and <code>Get</code> requests will be replied with <code>Replicator.DataDeleted</code>. Subscribers will receive <code>Replicator.Deleted</code>.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>As deleted keys continue to be included in the stored data on each node as well as in gossip messages, a continuous series of updates and deletes of top-level entities will result in growing memory usage until an ActorSystem runs out of memory. To use Pekko Distributed Data where frequent adds and removes are required, you should use a fixed number of top-level data types that support both updates and removals, for example <code>ORMap</code> or <code>ORSet</code>.</p></div>
+<h3><a href="#consistency" name="consistency" class="anchor"><span class="anchor-link"></span></a>Consistency</h3>
+<p>The consistency level that is supplied in the <a href="distributed-data.html#update">Update</a> and <a href="distributed-data.html#get">Get</a> specifies per request how many replicas that must respond successfully to a write and read request.</p>
+<p><code>WriteAll</code> and <code>ReadAll</code> is the strongest consistency level, but also the slowest and with lowest availability. For example, it is enough that one node is unavailable for a <code>Get</code> request and you will not receive the value.</p>
+<p>For low latency reads you use <span class="group-scala"><code>ReadLocal</code></span><span class="group-java"><code>readLocal</code></span> with the risk of retrieving stale data, i.e. updates from other nodes might not be visible yet.</p>
+<h4><a href="#write-consistency" name="write-consistency" class="anchor"><span class="anchor-link"></span></a>Write consistency</h4>
+<p>When using <span class="group-scala"><code>WriteLocal</code></span><span class="group-java"><code>writeLocal</code></span> the <code>Update</code> is only written to the local replica and then disseminated in the background with the gossip protocol, which can take few seconds to spread to all nodes.</p>
+<p>For an update you supply a write consistency level which has the following meaning:</p>
+<ul>
+  <li><span class="group-scala"><code>WriteLocal</code></span><span class="group-java"><code>writeLocal</code></span> the value will immediately only be written to the local replica, and later disseminated with gossip</li>
+  <li><code>WriteTo(n)</code> the value will immediately be written to at least <code>n</code> replicas, including the local replica</li>
+  <li><code>WriteMajority</code> the value will immediately be written to a majority of replicas, i.e. at least <strong>N/2 + 1</strong> replicas, where N is the number of nodes in the cluster (or cluster role group)</li>
+  <li><code>WriteMajorityPlus</code> is like <code>WriteMajority</code> but with the given number of <code>additional</code> nodes added  to the majority count. At most all nodes. This gives better tolerance for membership changes between  writes and reads. Exiting nodes are excluded using <code>WriteMajorityPlus</code> because those are typically about to be removed  and will not be able to respond.</li>
+  <li><code>WriteAll</code> the value will immediately be written to all nodes in the cluster (or all nodes in the cluster role group).  Exiting nodes are excluded using <code>WriteAll</code> because those are typically about to be removed and will not be able to respond.</li>
+</ul>
+<p>When you specify to write to <code>n</code> out of <code>x</code> nodes, the update will first replicate to <code>n</code> nodes. If there are not enough Acks after a 1/5th of the timeout, the update will be replicated to <code>n</code> other nodes. If there are less than n nodes left all of the remaining nodes are used. Reachable nodes are preferred over unreachable nodes.</p>
+<p>Note that <code>WriteMajority</code> and <code>WriteMajorityPlus</code> have a <code>minCap</code> parameter that is useful to specify to achieve better safety for small clusters.</p>
+<h4><a href="#read-consistency" name="read-consistency" class="anchor"><span class="anchor-link"></span></a>Read consistency</h4>
+<p>If consistency is a priority, you can ensure that a read always reflects the most recent write by using the following formula:</p>
+<pre><code>(nodes_written + nodes_read) &gt; N
+</code></pre>
+<p>where N is the total number of nodes in the cluster, or the number of nodes with the role that is used for the <code>Replicator</code>.</p>
+<p>You supply a consistency level which has the following meaning:</p>
+<ul>
+  <li><span class="group-scala"><code>ReadLocal</code></span><span class="group-java"><code>readLocal</code></span> the value will only be read from the local replica</li>
+  <li><code>ReadFrom(n)</code> the value will be read and merged from <code>n</code> replicas, including the local replica</li>
+  <li><code>ReadMajority</code> the value will be read and merged from a majority of replicas, i.e. at least <strong>N/2 + 1</strong> replicas, where N is the number of nodes in the cluster (or cluster role group)</li>
+  <li><code>ReadMajorityPlus</code> is like <code>ReadMajority</code> but with the given number of <code>additional</code> nodes added  to the majority count. At most all nodes. This gives better tolerance for membership changes between  writes and reads. Exiting nodes are excluded using <code>ReadMajorityPlus</code> because those are typically about to be  removed and will not be able to respond.</li>
+  <li><code>ReadAll</code> the value will be read and merged from all nodes in the cluster (or all nodes in the cluster role group).  Exiting nodes are excluded using <code>ReadAll</code> because those are typically about to be removed and will not be able to respond.</li>
+</ul>
+<p>Note that <code>ReadMajority</code> and <code>ReadMajorityPlus</code> have a <code>minCap</code> parameter that is useful to specify to achieve better safety for small clusters.</p>
+<h4><a href="#consistency-and-response-types" name="consistency-and-response-types" class="anchor"><span class="anchor-link"></span></a>Consistency and response types</h4>
+<p>When using <code>ReadLocal</code>, you will never receive a <code>GetFailure</code> response, since the local replica is always available to local readers. <code>WriteLocal</code> however may still reply with <code>UpdateFailure</code> messages if the <code>modify</code> function throws an exception, or if it fails to persist to <a href="distributed-data.html#durable-storage">durable storage</a>.</p>
+<h4><a href="#examples" name="examples" class="anchor"><span class="anchor-link"></span></a>Examples</h4>
+<p>In a 7 node cluster these consistency properties are achieved by writing to 4 nodes and reading from 4 nodes, or writing to 5 nodes and reading from 3 nodes.</p>
+<p>By combining <code>WriteMajority</code> and <code>ReadMajority</code> levels a read always reflects the most recent write. The <code>Replicator</code> writes and reads to a majority of replicas, i.e. <strong>N / 2 + 1</strong>. For example, in a 5 node cluster it writes to 3 nodes and reads from 3 nodes. In a 6 node cluster it writes to 4 nodes and reads from 4 nodes.</p>
+<p>You can define a minimum number of nodes for <code>WriteMajority</code> and <code>ReadMajority</code>, this will minimize the risk of reading stale data. Minimum cap is provided by minCap property of <code>WriteMajority</code> and <code>ReadMajority</code> and defines the required majority. If the minCap is higher then <strong>N / 2 + 1</strong> the minCap will be used.</p>
+<p>For example if the minCap is 5 the <code>WriteMajority</code> and <code>ReadMajority</code> for cluster of 3 nodes will be 3, for cluster of 6 nodes will be 5 and for cluster of 12 nodes will be 7 ( <strong>N / 2 + 1</strong> ).</p>
+<p>For small clusters (&lt;7) the risk of membership changes between a WriteMajority and ReadMajority is rather high and then the nice properties of combining majority write and reads are not guaranteed. Therefore the <code>ReadMajority</code> and <code>WriteMajority</code> have a <code>minCap</code> parameter that is useful to specify to achieve better safety for small clusters. It means that if the cluster size is smaller than the majority size it will use the <code>minCap</code> number of nodes but at most the total size of the cluster.</p>
+<p>In some rare cases, when performing an <code>Update</code> it is needed to first try to fetch latest data from other nodes. That can be done by first sending a <code>Get</code> with <code>ReadMajority</code> and then continue with the <code>Update</code> when the <code>GetSuccess</code>, <code>GetFailure</code> or <code>NotFound</code> reply is received. This might be needed when you need to base a decision on latest information or when removing entries from an <code>ORSet</code> or <code>ORMap</code>. If an entry is added to an <code>ORSet</code> or <code>ORMap</code> from one node and removed from another node the entry will only be removed if the added entry is visible on the node where the removal is performed (hence the name observed-removed set).</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p><em>Caveat:</em> Even if you use <code>WriteMajority</code> and <code>ReadMajority</code> there is small risk that you may read stale data if the cluster membership has changed between the <code>Update</code> and the <code>Get</code>. For example, in cluster of 5 nodes when you <code>Update</code> and that change is written to 3 nodes: n1, n2, n3. Then 2 more nodes are added and a <code>Get</code> request is reading from 4 nodes, which happens to be n4, n5, n6, n7, i.e. the value on n1, n2, n3 is not seen in the response of the <code>Get</code> request. For additional tolerance of membership changes between writes and reads you can use <code>WriteMajorityPlus</code> and <code>ReadMajorityPlus</code>.</p></div>
+<h3><a href="#running-separate-instances-of-the-replicator" name="running-separate-instances-of-the-replicator" class="anchor"><span class="anchor-link"></span></a>Running separate instances of the replicator</h3>
+<p>For some use cases, for example when limiting the replicator to certain roles, or using different subsets on different roles, it makes sense to start separate replicators, this needs to be done on all nodes, or the group of nodes tagged with a specific role. To do this with Distributed Data you will first have to start a classic <code>Replicator</code> and pass it to the <code>Replicator.behavior</code> method that takes a classic actor ref. All such <code>Replicator</code>s must run on the same path in the classic actor hierarchy.</p>
+<p>A standalone <code>ReplicatorMessageAdapter</code> can also be created for a given <code>Replicator</code> instead of creating one via the <code>DistributedData</code> extension.</p>
+<h2><a href="#replicated-data-types" name="replicated-data-types" class="anchor"><span class="anchor-link"></span></a>Replicated data types</h2>
+<p>Pekko contains a set of useful replicated data types and it is fully possible to implement custom replicated data types. </p>
+<p>The data types must be convergent (stateful) CRDTs and implement the <span class="group-scala"><code>ReplicatedData</code> trait</span><span class="group-java"><code>AbstractReplicatedData</code> interface</span>, i.e. they provide a monotonic merge function and the state changes always converge.</p>
+<p>You can use your own custom <span class="group-scala"><code>ReplicatedData</code> or <code>DeltaReplicatedData</code></span><span class="group-java"><code>AbstractReplicatedData</code> or <code>AbstractDeltaReplicatedData</code></span> types, and several types are provided by this package, such as:</p>
+<ul>
+  <li>Counters: <code>GCounter</code>, <code>PNCounter</code></li>
+  <li>Sets: <code>GSet</code>, <code>ORSet</code></li>
+  <li>Maps: <code>ORMap</code>, <code>ORMultiMap</code>, <code>LWWMap</code>, <code>PNCounterMap</code></li>
+  <li>Registers: <code>LWWRegister</code>, <code>Flag</code></li>
+</ul>
+<h3><a href="#counters" name="counters" class="anchor"><span class="anchor-link"></span></a>Counters</h3>
+<p><code>GCounter</code> is a &ldquo;grow only counter&rdquo;. It only supports increments, no decrements.</p>
+<p>It works in a similar way as a vector clock. It keeps track of one counter per node and the total value is the sum of these counters. The <code>merge</code> is implemented by taking the maximum count for each node.</p>
+<p>If you need both increments and decrements you can use the <code>PNCounter</code> (positive/negative counter).</p>
+<p>It is tracking the increments (P) separate from the decrements (N). Both P and N are represented as two internal <code>GCounter</code>s. Merge is handled by merging the internal P and N counters. The value of the counter is the value of the P counter minus the value of the N counter.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L299-L305" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node = DistributedData(system).selfUniqueAddress
+
+val c0 = PNCounter.empty
+val c1 = c0 :+ 1
+val c2 = c1 :+ 7
+val c3: PNCounter = c2.decrement(2)
+println(c3.value) // 6</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L366-L371" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+final PNCounter c0 = PNCounter.create();
+final PNCounter c1 = c0.increment(node, 1);
+final PNCounter c2 = c1.increment(node, 7);
+final PNCounter c3 = c2.decrement(node, 2);
+System.out.println(c3.value()); // 6</code></pre></dd>
+</dl>
+<p><code>GCounter</code> and <code>PNCounter</code> have support for <a href="distributed-data.html#delta-crdt">delta-CRDT</a> and don&rsquo;t need causal delivery of deltas.</p>
+<p>Several related counters can be managed in a map with the <code>PNCounterMap</code> data type. When the counters are placed in a <code>PNCounterMap</code> as opposed to placing them as separate top level values they are guaranteed to be replicated together as one unit, which is sometimes necessary for related data.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L312-L318" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node = DistributedData(system).selfUniqueAddress
+val m0 = PNCounterMap.empty[String]
+val m1 = m0.increment(node, &quot;a&quot;, 7)
+val m2 = m1.decrement(node, &quot;a&quot;, 2)
+val m3 = m2.increment(node, &quot;b&quot;, 1)
+println(m3.get(&quot;a&quot;)) // 5
+m3.entries.foreach { case (key, value) =&gt; println(s&quot;$key -&gt; $value&quot;) }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L377-L383" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+final PNCounterMap&lt;String&gt; m0 = PNCounterMap.create();
+final PNCounterMap&lt;String&gt; m1 = m0.increment(node, &quot;a&quot;, 7);
+final PNCounterMap&lt;String&gt; m2 = m1.decrement(node, &quot;a&quot;, 2);
+final PNCounterMap&lt;String&gt; m3 = m2.increment(node, &quot;b&quot;, 1);
+System.out.println(m3.get(&quot;a&quot;)); // 5
+System.out.println(m3.getEntries());</code></pre></dd>
+</dl>
+<h3><a href="#sets" name="sets" class="anchor"><span class="anchor-link"></span></a>Sets</h3>
+<p>If you only need to add elements to a set and not remove elements the <code>GSet</code> (grow-only set) is the data type to use. The elements can be any type of values that can be serialized. Merge is the union of the two sets.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L325-L329" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val s0 = GSet.empty[String]
+val s1 = s0 + &quot;a&quot;
+val s2 = s1 + &quot;b&quot; + &quot;c&quot;
+if (s2.contains(&quot;a&quot;))
+  println(s2.elements) // a, b, c</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L389-L392" target="_blank" title="Go to snippet source">source</a><code class="language-java">final GSet&lt;String&gt; s0 = GSet.create();
+final GSet&lt;String&gt; s1 = s0.add(&quot;a&quot;);
+final GSet&lt;String&gt; s2 = s1.add(&quot;b&quot;).add(&quot;c&quot;);
+if (s2.contains(&quot;a&quot;)) System.out.println(s2.getElements()); // a, b, c</code></pre></dd>
+</dl>
+<p><code>GSet</code> has support for <a href="distributed-data.html#delta-crdt">delta-CRDT</a> and it doesn&rsquo;t require causal delivery of deltas.</p>
+<p>If you need add and remove operations you should use the <code>ORSet</code> (observed-remove set). Elements can be added and removed any number of times. If an element is concurrently added and removed, the add will win. You cannot remove an element that you have not seen.</p>
+<p>The <code>ORSet</code> has a version vector that is incremented when an element is added to the set. The version for the node that added the element is also tracked for each element in a so called &ldquo;birth dot&rdquo;. The version vector and the dots are used by the <code>merge</code> function to track causality of the operations and resolve concurrent updates.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L336-L341" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node = DistributedData(system).selfUniqueAddress
+val s0 = ORSet.empty[String]
+val s1 = s0 :+ &quot;a&quot;
+val s2 = s1 :+ &quot;b&quot;
+val s3 = s2.remove(&quot;a&quot;)
+println(s3.elements) // b</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L398-L403" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+final ORSet&lt;String&gt; s0 = ORSet.create();
+final ORSet&lt;String&gt; s1 = s0.add(node, &quot;a&quot;);
+final ORSet&lt;String&gt; s2 = s1.add(node, &quot;b&quot;);
+final ORSet&lt;String&gt; s3 = s2.remove(node, &quot;a&quot;);
+System.out.println(s3.getElements()); // b</code></pre></dd>
+</dl>
+<p><code>ORSet</code> has support for <a href="distributed-data.html#delta-crdt">delta-CRDT</a> and it requires causal delivery of deltas.</p>
+<h3><a href="#maps" name="maps" class="anchor"><span class="anchor-link"></span></a>Maps</h3>
+<p><code>ORMap</code> (observed-remove map) is a map with keys of <code>Any</code> type and the values are <code>ReplicatedData</code> types themselves. It supports add, update and remove any number of times for a map entry.</p>
+<p>If an entry is concurrently added and removed, the add will win. You cannot remove an entry that you have not seen. This is the same semantics as for the <code>ORSet</code>.</p>
+<p>If an entry is concurrently updated to different values the values will be merged, hence the requirement that the values must be <code>ReplicatedData</code> types.</p>
+<p>While the <code>ORMap</code> supports removing and re-adding keys any number of times, the impact that this has on the values can be non-deterministic. A merge will always attempt to merge two values for the same key, regardless of whether that key has been removed and re-added in the meantime, an attempt to replace a value with a new one may not have the intended effect. This means that old values can effectively be resurrected if a node, that has seen both the remove and the update,gossips with a node that has seen neither. One consequence of this is that changing the value type of the CRDT, for example, from a <code>GCounter</code> to a <code>GSet</code>, could result in the merge function for the CRDT always failing. This could be an unrecoverable state for the node, hence, the types of <code>ORMap</code> values must never change for a given key.</p>
+<p>It is rather inconvenient to use the <code>ORMap</code> directly since it does not expose specific types of the values. The <code>ORMap</code> is intended as a low level tool for building more specific maps, such as the following specialized maps.</p>
+<p><code>ORMultiMap</code> (observed-remove multi-map) is a multi-map implementation that wraps an <code>ORMap</code> with an <code>ORSet</code> for the map&rsquo;s value.</p>
+<p><code>PNCounterMap</code> (positive negative counter map) is a map of named counters (where the name can be of any type). It is a specialized <code>ORMap</code> with <code>PNCounter</code> values.</p>
+<p><code>LWWMap</code> (last writer wins map) is a specialized <code>ORMap</code> with <code>LWWRegister</code> (last writer wins register) values.</p>
+<p><code>ORMap</code>, <code>ORMultiMap</code>, <code>PNCounterMap</code> and <code>LWWMap</code> have support for <a href="distributed-data.html#delta-crdt">delta-CRDT</a> and they require causal delivery of deltas. Support for deltas here means that the <code>ORSet</code> being underlying key type for all those maps uses delta propagation to deliver updates. Effectively, the update for map is then a pair, consisting of delta for the <code>ORSet</code> being the key and full update for the respective value (<code>ORSet</code>, <code>PNCounter</code> or <code>LWWRegister</code>) kept in the map.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L348-L354" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node = DistributedData(system).selfUniqueAddress
+val m0 = ORMultiMap.empty[String, Int]
+val m1 = m0 :+ (&quot;a&quot; -&gt; Set(1, 2, 3))
+val m2 = m1.addBinding(node, &quot;a&quot;, 4)
+val m3 = m2.removeBinding(node, &quot;a&quot;, 2)
+val m4 = m3.addBinding(node, &quot;b&quot;, 1)
+println(m4.entries)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L409-L415" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+final ORMultiMap&lt;String, Integer&gt; m0 = ORMultiMap.create();
+final ORMultiMap&lt;String, Integer&gt; m1 = m0.put(node, &quot;a&quot;, new HashSet&lt;&gt;(Arrays.asList(1, 2, 3)));
+final ORMultiMap&lt;String, Integer&gt; m2 = m1.addBinding(node, &quot;a&quot;, 4);
+final ORMultiMap&lt;String, Integer&gt; m3 = m2.removeBinding(node, &quot;a&quot;, 2);
+final ORMultiMap&lt;String, Integer&gt; m4 = m3.addBinding(node, &quot;b&quot;, 1);
+System.out.println(m4.getEntries());</code></pre></dd>
+</dl>
+<p>When a data entry is changed the full state of that entry is replicated to other nodes, i.e. when you update a map, the whole map is replicated. Therefore, instead of using one <code>ORMap</code> with 1000 elements it is more efficient to split that up in 10 top level <code>ORMap</code> entries with 100 elements each. Top level entries are replicated individually, which has the trade-off that different entries may not be replicated at the same time and you may see inconsistencies between related entries. Separate top level entries cannot be updated atomically together.</p>
+<p>There is a special version of <code>ORMultiMap</code>, created by using separate constructor <code>ORMultiMap.emptyWithValueDeltas[A, B]</code>, that also propagates the updates to its values (of <code>ORSet</code> type) as deltas. This means that the <code>ORMultiMap</code> initiated with <code>ORMultiMap.emptyWithValueDeltas</code> propagates its updates as pairs consisting of delta of the key and delta of the value. It is much more efficient in terms of network bandwidth consumed.</p>
+<p>However, this behavior has not been made default for <code>ORMultiMap</code> and if you wish to use it in your code, you need to replace invocations of <code>ORMultiMap.empty[A, B]</code> (or <code>ORMultiMap()</code>) with <code>ORMultiMap.emptyWithValueDeltas[A, B]</code> where <code>A</code> and <code>B</code> are types respectively of keys and values in the map.</p>
+<p>Please also note, that despite having the same Scala type, <code>ORMultiMap.emptyWithValueDeltas</code> is not compatible with &lsquo;vanilla&rsquo; <code>ORMultiMap</code>, because of different replication mechanism. One needs to be extra careful not to mix the two, as they have the same type, so compiler will not hint the error. Nonetheless <code>ORMultiMap.emptyWithValueDeltas</code> uses the same <code>ORMultiMapKey</code> type as the &lsquo;vanilla&rsquo; <code>ORMultiMap</code> for referencing.</p>
+<p>Note that <code>LWWRegister</code> and therefore <code>LWWMap</code> relies on synchronized clocks and should only be used when the choice of value is not important for concurrent updates occurring within the clock skew. Read more in the below section about <code>LWWRegister</code>.</p>
+<h3><a href="#flags-and-registers" name="flags-and-registers" class="anchor"><span class="anchor-link"></span></a>Flags and Registers</h3>
+<p><code>Flag</code> is a data type for a boolean value that is initialized to <code>false</code> and can be switched to <code>true</code>. Thereafter it cannot be changed. <code>true</code> wins over <code>false</code> in merge.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L361-L363" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val f0 = Flag.Disabled
+val f1 = f0.switchOn
+println(f1.enabled)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L421-L423" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flag f0 = Flag.create();
+final Flag f1 = f0.switchOn();
+System.out.println(f1.enabled());</code></pre></dd>
+</dl>
+<p><code>LWWRegister</code> (last writer wins register) can hold any (serializable) value.</p>
+<p>Merge of a <code>LWWRegister</code> takes the register with highest timestamp. Note that this relies on synchronized clocks. <em>LWWRegister</em> should only be used when the choice of value is not important for concurrent updates occurring within the clock skew.</p>
+<p>Merge takes the register updated by the node with lowest address (<code>UniqueAddress</code> is ordered) if the timestamps are exactly the same.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L370-L373" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit val node = DistributedData(system).selfUniqueAddress
+val r1 = LWWRegister.create(&quot;Hello&quot;)
+val r2 = r1.withValueOf(&quot;Hi&quot;)
+println(s&quot;${r1.value} by ${r1.updatedBy} at ${r1.timestamp}&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L430-L433" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+final LWWRegister&lt;String&gt; r1 = LWWRegister.create(node, &quot;Hello&quot;);
+final LWWRegister&lt;String&gt; r2 = r1.withValue(node, &quot;Hi&quot;);
+System.out.println(r1.value() + &quot; by &quot; + r1.updatedBy() + &quot; at &quot; + r1.timestamp());</code></pre></dd>
+</dl>
+<p>Instead of using timestamps based on <code>System.currentTimeMillis()</code> time it is possible to use a timestamp value based on something else, for example an increasing version number from a database record that is used for optimistic concurrency control.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L381-L396" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Record(version: Int, name: String, address: String)
+
+implicit val node = DistributedData(system).selfUniqueAddress
+implicit val recordClock: LWWRegister.Clock[Record] = new LWWRegister.Clock[Record] {
+  override def apply(currentTimestamp: Long, value: Record): Long =
+    value.version
+}
+
+val record1 = Record(version = 1, &quot;Alice&quot;, &quot;Union Square&quot;)
+val r1 = LWWRegister(node, record1, recordClock)
+
+val record2 = Record(version = 2, &quot;Alice&quot;, &quot;Madison Square&quot;)
+val r2 = LWWRegister(node, record2, recordClock)
+
+val r3 = r1.merge(r2)
+println(r3.value)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/DistributedDataDocTest.java#L440-L473" target="_blank" title="Go to snippet source">source</a><code class="language-java">class Record {
+  public final int version;
+  public final String name;
+  public final String address;
+
+  public Record(int version, String name, String address) {
+    this.version = version;
+    this.name = name;
+    this.address = address;
+  }
+}
+
+
+  final SelfUniqueAddress node = DistributedData.get(system).selfUniqueAddress();
+  final LWWRegister.Clock&lt;Record&gt; recordClock =
+      new LWWRegister.Clock&lt;Record&gt;() {
+        @Override
+        public long apply(long currentTimestamp, Record value) {
+          return value.version;
+        }
+      };
+
+  final Record record1 = new Record(1, &quot;Alice&quot;, &quot;Union Square&quot;);
+  final LWWRegister&lt;Record&gt; r1 = LWWRegister.create(node, record1);
+
+  final Record record2 = new Record(2, &quot;Alice&quot;, &quot;Madison Square&quot;);
+  final LWWRegister&lt;Record&gt; r2 = LWWRegister.create(node, record2);
+
+  final LWWRegister&lt;Record&gt; r3 = r1.merge(r2);
+  System.out.println(r3.value());</code></pre></dd>
+</dl>
+<p>For first-write-wins semantics you can use the <code>LWWRegister#reverseClock</code> instead of the <code>LWWRegister#defaultClock</code>.</p>
+<p>The <code>defaultClock</code> is using max value of <code>System.currentTimeMillis()</code> and <code>currentTimestamp + 1</code>. This means that the timestamp is increased for changes on the same node that occurs within the same millisecond. It also means that it is safe to use the <code>LWWRegister</code> without synchronized clocks when there is only one active writer, e.g. a Cluster Singleton. Such a single writer should then first read current value with <code>ReadMajority</code> (or more) before changing and writing the value with <code>WriteMajority</code> (or more). When using <code>LWWRegister</code> with Cluster Singleton it&rsquo;s also recommended to enable:</p>
+<pre><code># Update and Get operations are sent to oldest nodes first.
+pekko.cluster.distributed-data.prefer-oldest = on
+</code></pre>
+<h3><a href="#delta-crdt" name="delta-crdt" class="anchor"><span class="anchor-link"></span></a>Delta-CRDT</h3>
+<p><a href="https://arxiv.org/abs/1603.01529">Delta State Replicated Data Types</a> are supported. A delta-CRDT is a way to reduce the need for sending the full state for updates. For example adding element <code>&#39;c&#39;</code> and <code>&#39;d&#39;</code> to set <code>{&#39;a&#39;, &#39;b&#39;}</code> would result in sending the delta <code>{&#39;c&#39;, &#39;d&#39;}</code> and merge that with the state on the receiving side, resulting in set <code>{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;}</code>.</p>
+<p>The protocol for replicating the deltas supports causal consistency if the data type is marked with <code>RequiresCausalDeliveryOfDeltas</code>. Otherwise it is only eventually consistent. Without causal consistency it means that if elements <code>&#39;c&#39;</code> and <code>&#39;d&#39;</code> are added in two separate <em>Update</em> operations these deltas may occasionally be propagated to nodes in a different order to the causal order of the updates. For this example it can result in that set <code>{&#39;a&#39;, &#39;b&#39;, &#39;d&#39;}</code> can be seen before element &lsquo;c&rsquo; is seen. Eventually it will be <code>{&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;}</code>.</p>
+<p>Note that the full state is occasionally also replicated for delta-CRDTs, for example when new nodes are added to the cluster or when deltas could not be propagated because of network partitions or similar problems.</p>
+<p>The the delta propagation can be disabled with configuration property:</p>
+<pre><code>pekko.cluster.distributed-data.delta-crdt.enabled=off
+</code></pre>
+<h3><a href="#custom-data-type" name="custom-data-type" class="anchor"><span class="anchor-link"></span></a>Custom Data Type</h3>
+<p>You can implement your own data types. The only requirement is that it implements the <span class="group-scala"><code>merge</code></span><span class="group-java"><code>mergeData</code></span> function of the <span class="group-scala"><code>ReplicatedData</code></span><span class="group-java"><code>AbstractReplicatedData</code></span> trait.</p>
+<p>A nice property of stateful CRDTs is that they typically compose nicely, i.e. you can combine several smaller data types to build richer data structures. For example, the <code>PNCounter</code> is composed of two internal <code>GCounter</code> instances to keep track of increments and decrements separately.</p>
+<p>Here is s simple implementation of a custom <code>TwoPhaseSet</code> that is using two internal <code>GSet</code> types to keep track of addition and removals. A <code>TwoPhaseSet</code> is a set where an element may be added and removed, but never added again thereafter.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/TwoPhaseSet.scala#L20-L33" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class TwoPhaseSet(adds: GSet[String] = GSet.empty, removals: GSet[String] = GSet.empty) extends ReplicatedData {
+  type T = TwoPhaseSet
+
+  def add(element: String): TwoPhaseSet =
+    copy(adds = adds.add(element))
+
+  def remove(element: String): TwoPhaseSet =
+    copy(removals = removals.add(element))
+
+  def elements: Set[String] = adds.elements.diff(removals.elements)
+
+  override def merge(that: TwoPhaseSet): TwoPhaseSet =
+    copy(adds = this.adds.merge(that.adds), removals = this.removals.merge(that.removals))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/TwoPhaseSet.java#L24-L56" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class TwoPhaseSet extends AbstractReplicatedData&lt;TwoPhaseSet&gt; {
+
+  public final GSet&lt;String&gt; adds;
+  public final GSet&lt;String&gt; removals;
+
+  public TwoPhaseSet(GSet&lt;String&gt; adds, GSet&lt;String&gt; removals) {
+    this.adds = adds;
+    this.removals = removals;
+  }
+
+  public static TwoPhaseSet create() {
+    return new TwoPhaseSet(GSet.create(), GSet.create());
+  }
+
+  public TwoPhaseSet add(String element) {
+    return new TwoPhaseSet(adds.add(element), removals);
+  }
+
+  public TwoPhaseSet remove(String element) {
+    return new TwoPhaseSet(adds, removals.add(element));
+  }
+
+  public Set&lt;String&gt; getElements() {
+    Set&lt;String&gt; result = new HashSet&lt;&gt;(adds.getElements());
+    result.removeAll(removals.getElements());
+    return result;
+  }
+
+  @Override
+  public TwoPhaseSet mergeData(TwoPhaseSet that) {
+    return new TwoPhaseSet(this.adds.merge(that.adds), this.removals.merge(that.removals));
+  }
+}</code></pre></dd>
+</dl>
+<p>Data types should be immutable, i.e. &ldquo;modifying&rdquo; methods should return a new instance.</p>
+<p>Implement the additional methods of <span class="group-scala"><code>DeltaReplicatedData</code></span><span class="group-java"><code>AbstractDeltaReplicatedData</code></span> if it has support for delta-CRDT replication.</p>
+<h4><a href="#serialization" name="serialization" class="anchor"><span class="anchor-link"></span></a>Serialization</h4>
+<p>The data types must be serializable with an <a href="../serialization.html">Pekko Serializer</a>. It is highly recommended that you implement efficient serialization with Protobuf or similar for your custom data types. The built in data types are marked with <code>ReplicatedDataSerialization</code> and serialized with <code>org.apache.pekko.cluster.ddata.protobuf.ReplicatedDataSerializer</code>.</p>
+<p>Serialization of the data types are used in remote messages and also for creating message digests (SHA-1) to detect changes. Therefore it is important that the serialization is efficient and produce the same bytes for the same content. For example sets and maps should be sorted deterministically in the serialization.</p>
+<p>This is a protobuf representation of the above <code>TwoPhaseSet</code>:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/protobuf/TwoPhaseSetMessages.proto#L19-L25" target="_blank" title="Go to snippet source">source</a><code class="language-proto">option java_package = &quot;docs.ddata.protobuf.msg&quot;;
+option optimize_for = SPEED;
+
+message TwoPhaseSet {
+  repeated string adds = 1;
+  repeated string removals = 2;
+}</code></pre>
+<p>The serializer for the <code>TwoPhaseSet</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/protobuf/TwoPhaseSetSerializer.scala#L17-L71" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import java.util.ArrayList
+import java.util.Collections
+import org.apache.pekko
+import pekko.util.ccompat.JavaConverters._
+import pekko.actor.ExtendedActorSystem
+import pekko.cluster.ddata.GSet
+import pekko.cluster.ddata.protobuf.SerializationSupport
+import pekko.serialization.Serializer
+import docs.ddata.TwoPhaseSet
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages
+
+class TwoPhaseSetSerializer(val system: ExtendedActorSystem) extends Serializer with SerializationSupport {
+
+  override def includeManifest: Boolean = false
+
+  override def identifier = 99999
+
+  override def toBinary(obj: AnyRef): Array[Byte] = obj match {
+    case m: TwoPhaseSet =&gt; twoPhaseSetToProto(m).toByteArray
+    case _              =&gt; throw new IllegalArgumentException(s&quot;Can&#39;t serialize object of type ${obj.getClass}&quot;)
+  }
+
+  override def fromBinary(bytes: Array[Byte], clazz: Option[Class[_]]): AnyRef = {
+    twoPhaseSetFromBinary(bytes)
+  }
+
+  def twoPhaseSetToProto(twoPhaseSet: TwoPhaseSet): TwoPhaseSetMessages.TwoPhaseSet = {
+    val b = TwoPhaseSetMessages.TwoPhaseSet.newBuilder()
+    // using java collections and sorting for performance (avoid conversions)
+    val adds = new ArrayList[String]
+    twoPhaseSet.adds.elements.foreach(adds.add)
+    if (!adds.isEmpty) {
+      Collections.sort(adds)
+      b.addAllAdds(adds)
+    }
+    val removals = new ArrayList[String]
+    twoPhaseSet.removals.elements.foreach(removals.add)
+    if (!removals.isEmpty) {
+      Collections.sort(removals)
+      b.addAllRemovals(removals)
+    }
+    b.build()
+  }
+
+  def twoPhaseSetFromBinary(bytes: Array[Byte]): TwoPhaseSet = {
+    val msg = TwoPhaseSetMessages.TwoPhaseSet.parseFrom(bytes)
+    val addsSet = msg.getAddsList.iterator.asScala.toSet
+    val removalsSet = msg.getRemovalsList.iterator.asScala.toSet
+    val adds = addsSet.foldLeft(GSet.empty[String])((acc, el) =&gt; acc.add(el))
+    val removals = removalsSet.foldLeft(GSet.empty[String])((acc, el) =&gt; acc.add(el))
+    // GSet will accumulate deltas when adding elements,
+    // but those are not of interest in the result of the deserialization
+    TwoPhaseSet(adds.resetDelta, removals.resetDelta)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/protobuf/TwoPhaseSetSerializer.java#L17-L97" target="_blank" title="Go to snippet source">source</a><code class="language-java">import jdocs.ddata.TwoPhaseSet;
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages;
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages.TwoPhaseSet.Builder;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.pekko.actor.ExtendedActorSystem;
+import org.apache.pekko.cluster.ddata.GSet;
+import org.apache.pekko.cluster.ddata.protobuf.AbstractSerializationSupport;
+
+public class TwoPhaseSetSerializer extends AbstractSerializationSupport {
+
+  private final ExtendedActorSystem system;
+
+  public TwoPhaseSetSerializer(ExtendedActorSystem system) {
+    this.system = system;
+  }
+
+  @Override
+  public ExtendedActorSystem system() {
+    return this.system;
+  }
+
+  @Override
+  public boolean includeManifest() {
+    return false;
+  }
+
+  @Override
+  public int identifier() {
+    return 99998;
+  }
+
+  @Override
+  public byte[] toBinary(Object obj) {
+    if (obj instanceof TwoPhaseSet) {
+      return twoPhaseSetToProto((TwoPhaseSet) obj).toByteArray();
+    } else {
+      throw new IllegalArgumentException(&quot;Can&#39;t serialize object of type &quot; + obj.getClass());
+    }
+  }
+
+  @Override
+  public Object fromBinaryJava(byte[] bytes, Class&lt;?&gt; manifest) {
+    return twoPhaseSetFromBinary(bytes);
+  }
+
+  protected TwoPhaseSetMessages.TwoPhaseSet twoPhaseSetToProto(TwoPhaseSet twoPhaseSet) {
+    Builder b = TwoPhaseSetMessages.TwoPhaseSet.newBuilder();
+    ArrayList&lt;String&gt; adds = new ArrayList&lt;&gt;(twoPhaseSet.adds.getElements());
+    if (!adds.isEmpty()) {
+      Collections.sort(adds);
+      b.addAllAdds(adds);
+    }
+    ArrayList&lt;String&gt; removals = new ArrayList&lt;&gt;(twoPhaseSet.removals.getElements());
+    if (!removals.isEmpty()) {
+      Collections.sort(removals);
+      b.addAllRemovals(removals);
+    }
+    return b.build();
+  }
+
+  protected TwoPhaseSet twoPhaseSetFromBinary(byte[] bytes) {
+    try {
+      TwoPhaseSetMessages.TwoPhaseSet msg = TwoPhaseSetMessages.TwoPhaseSet.parseFrom(bytes);
+      GSet&lt;String&gt; adds = GSet.create();
+      for (String elem : msg.getAddsList()) {
+        adds = adds.add(elem);
+      }
+      GSet&lt;String&gt; removals = GSet.create();
+      for (String elem : msg.getRemovalsList()) {
+        removals = removals.add(elem);
+      }
+      // GSet will accumulate deltas when adding elements,
+      // but those are not of interest in the result of the deserialization
+      return new TwoPhaseSet(adds.resetDelta(), removals.resetDelta());
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>Note that the elements of the sets are sorted so the SHA-1 digests are the same for the same elements.</p>
+<p>You register the serializer in configuration:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L34-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serializers {
+    two-phase-set = &quot;docs.ddata.protobuf.TwoPhaseSetSerializer&quot;
+  }
+  serialization-bindings {
+    &quot;docs.ddata.TwoPhaseSet&quot; = two-phase-set
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/DistributedDataDocSpec.scala#L45-L52" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor {
+  serializers {
+    twophaseset = &quot;jdocs.ddata.protobuf.TwoPhaseSetSerializer&quot;
+  }
+  serialization-bindings {
+    &quot;jdocs.ddata.TwoPhaseSet&quot; = twophaseset
+  }
+}</code></pre></dd>
+</dl>
+<p>Using compression can sometimes be a good idea to reduce the data size. Gzip compression is provided by the <span class="group-scala"><code>org.apache.pekko.cluster.ddata.protobuf.SerializationSupport</code> trait</span><span class="group-java"><code>org.apache.pekko.cluster.ddata.protobuf.AbstractSerializationSupport</code> interface</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/protobuf/TwoPhaseSetSerializer.scala#L76-L83" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def toBinary(obj: AnyRef): Array[Byte] = obj match {
+  case m: TwoPhaseSet =&gt; compress(twoPhaseSetToProto(m))
+  case _              =&gt; throw new IllegalArgumentException(s&quot;Can&#39;t serialize object of type ${obj.getClass}&quot;)
+}
+
+override def fromBinary(bytes: Array[Byte], clazz: Option[Class[_]]): AnyRef = {
+  twoPhaseSetFromBinary(decompress(bytes))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/protobuf/TwoPhaseSetSerializerWithCompression.java#L26-L38" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public byte[] toBinary(Object obj) {
+  if (obj instanceof TwoPhaseSet) {
+    return compress(twoPhaseSetToProto((TwoPhaseSet) obj));
+  } else {
+    throw new IllegalArgumentException(&quot;Can&#39;t serialize object of type &quot; + obj.getClass());
+  }
+}
+
+@Override
+public Object fromBinaryJava(byte[] bytes, Class&lt;?&gt; manifest) {
+  return twoPhaseSetFromBinary(decompress(bytes));
+}</code></pre></dd>
+</dl>
+<p>The two embedded <code>GSet</code> can be serialized as illustrated above, but in general when composing new data types from the existing built in types it is better to make use of the existing serializer for those types. This can be done by declaring those as bytes fields in protobuf:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/protobuf/TwoPhaseSetMessages.proto#L29-L32" target="_blank" title="Go to snippet source">source</a><code class="language-proto">message TwoPhaseSet2 {
+  optional bytes adds = 1;
+  optional bytes removals = 2;
+}</code></pre>
+<p>and use the methods <code>otherMessageToProto</code> and <code>otherMessageFromBinary</code> that are provided by the <code>SerializationSupport</code> trait to serialize and deserialize the <code>GSet</code> instances. This works with any type that has a registered Pekko serializer. This is how such an serializer would look like for the <code>TwoPhaseSet</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/ddata/protobuf/TwoPhaseSetSerializer2.scala#L17-L63" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ExtendedActorSystem
+import pekko.cluster.ddata.GSet
+import pekko.cluster.ddata.protobuf.SerializationSupport
+import pekko.serialization.Serializer
+import docs.ddata.TwoPhaseSet
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages
+
+class TwoPhaseSetSerializer2(val system: ExtendedActorSystem) extends Serializer with SerializationSupport {
+
+  override def includeManifest: Boolean = false
+
+  override def identifier = 99999
+
+  override def toBinary(obj: AnyRef): Array[Byte] = obj match {
+    case m: TwoPhaseSet =&gt; twoPhaseSetToProto(m).toByteArray
+    case _              =&gt; throw new IllegalArgumentException(s&quot;Can&#39;t serialize object of type ${obj.getClass}&quot;)
+  }
+
+  override def fromBinary(bytes: Array[Byte], clazz: Option[Class[_]]): AnyRef = {
+    twoPhaseSetFromBinary(bytes)
+  }
+
+  def twoPhaseSetToProto(twoPhaseSet: TwoPhaseSet): TwoPhaseSetMessages.TwoPhaseSet2 = {
+    val b = TwoPhaseSetMessages.TwoPhaseSet2.newBuilder()
+    if (!twoPhaseSet.adds.isEmpty)
+      b.setAdds(otherMessageToProto(twoPhaseSet.adds).toByteString())
+    if (!twoPhaseSet.removals.isEmpty)
+      b.setRemovals(otherMessageToProto(twoPhaseSet.removals).toByteString())
+    b.build()
+  }
+
+  def twoPhaseSetFromBinary(bytes: Array[Byte]): TwoPhaseSet = {
+    val msg = TwoPhaseSetMessages.TwoPhaseSet2.parseFrom(bytes)
+    val adds =
+      if (msg.hasAdds)
+        otherMessageFromBinary(msg.getAdds.toByteArray).asInstanceOf[GSet[String]]
+      else
+        GSet.empty[String]
+    val removals =
+      if (msg.hasRemovals)
+        otherMessageFromBinary(msg.getRemovals.toByteArray).asInstanceOf[GSet[String]]
+      else
+        GSet.empty[String]
+    TwoPhaseSet(adds, removals)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/ddata/protobuf/TwoPhaseSetSerializer2.java#L17-L91" target="_blank" title="Go to snippet source">source</a><code class="language-java">import jdocs.ddata.TwoPhaseSet;
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages;
+import docs.ddata.protobuf.msg.TwoPhaseSetMessages.TwoPhaseSet2.Builder;
+
+import org.apache.pekko.actor.ExtendedActorSystem;
+import org.apache.pekko.cluster.ddata.GSet;
+import org.apache.pekko.cluster.ddata.protobuf.AbstractSerializationSupport;
+import org.apache.pekko.cluster.ddata.protobuf.ReplicatedDataSerializer;
+
+public class TwoPhaseSetSerializer2 extends AbstractSerializationSupport {
+
+  private final ExtendedActorSystem system;
+  private final ReplicatedDataSerializer replicatedDataSerializer;
+
+  public TwoPhaseSetSerializer2(ExtendedActorSystem system) {
+    this.system = system;
+    this.replicatedDataSerializer = new ReplicatedDataSerializer(system);
+  }
+
+  @Override
+  public ExtendedActorSystem system() {
+    return this.system;
+  }
+
+  @Override
+  public boolean includeManifest() {
+    return false;
+  }
+
+  @Override
+  public int identifier() {
+    return 99998;
+  }
+
+  @Override
+  public byte[] toBinary(Object obj) {
+    if (obj instanceof TwoPhaseSet) {
+      return twoPhaseSetToProto((TwoPhaseSet) obj).toByteArray();
+    } else {
+      throw new IllegalArgumentException(&quot;Can&#39;t serialize object of type &quot; + obj.getClass());
+    }
+  }
+
+  @Override
+  public Object fromBinaryJava(byte[] bytes, Class&lt;?&gt; manifest) {
+    return twoPhaseSetFromBinary(bytes);
+  }
+
+  protected TwoPhaseSetMessages.TwoPhaseSet2 twoPhaseSetToProto(TwoPhaseSet twoPhaseSet) {
+    Builder b = TwoPhaseSetMessages.TwoPhaseSet2.newBuilder();
+    if (!twoPhaseSet.adds.isEmpty())
+      b.setAdds(otherMessageToProto(twoPhaseSet.adds).toByteString());
+    if (!twoPhaseSet.removals.isEmpty())
+      b.setRemovals(otherMessageToProto(twoPhaseSet.removals).toByteString());
+    return b.build();
+  }
+
+  @SuppressWarnings(&quot;unchecked&quot;)
+  protected TwoPhaseSet twoPhaseSetFromBinary(byte[] bytes) {
+    try {
+      TwoPhaseSetMessages.TwoPhaseSet2 msg = TwoPhaseSetMessages.TwoPhaseSet2.parseFrom(bytes);
+
+      GSet&lt;String&gt; adds = GSet.create();
+      if (msg.hasAdds()) adds = (GSet&lt;String&gt;) otherMessageFromBinary(msg.getAdds().toByteArray());
+
+      GSet&lt;String&gt; removals = GSet.create();
+      if (msg.hasRemovals())
+        adds = (GSet&lt;String&gt;) otherMessageFromBinary(msg.getRemovals().toByteArray());
+
+      return new TwoPhaseSet(adds, removals);
+    } catch (Exception e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#durable-storage" name="durable-storage" class="anchor"><span class="anchor-link"></span></a>Durable Storage</h2>
+<p>By default the data is only kept in memory. It is redundant since it is replicated to other nodes in the cluster, but if you stop all nodes the data is lost, unless you have saved it elsewhere.</p>
+<p>Entries can be configured to be durable, i.e. stored on local disk on each node. The stored data will be loaded next time the replicator is started, i.e. when actor system is restarted. This means data will survive as long as at least one node from the old cluster takes part in a new cluster. The keys of the durable entries are configured with:</p>
+<pre><code>pekko.cluster.distributed-data.durable.keys = [&quot;a&quot;, &quot;b&quot;, &quot;durable*&quot;]
+</code></pre>
+<p>Prefix matching is supported by using <code>*</code> at the end of a key.</p>
+<p>All entries can be made durable by specifying:</p>
+<pre><code>pekko.cluster.distributed-data.durable.keys = [&quot;*&quot;]
+</code></pre>
+<p><span class="group-scala"><a href="https://symas.com/lmdb/technical/">LMDB</a></span><span class="group-java"><a href="https://github.com/lmdbjava/lmdbjava/">LMDB</a></span> is the default storage implementation. It is possible to replace that with another implementation by implementing the actor protocol described in <code>org.apache.pekko.cluster.ddata.DurableStore</code> and defining the <code>pekko.cluster.distributed-data.durable.store-actor-class</code> property for the new implementation.</p>
+<p>The location of the files for the data is configured with:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre><code># Directory of LMDB file. There are two options:
+# 1. A relative or absolute path to a directory that ends with &#39;ddata&#39;
+#    the full name of the directory will contain name of the ActorSystem
+#    and its remote port.
+# 2. Otherwise the path is used as is, as a relative or absolute path to
+#    a directory.
+pekko.cluster.distributed-data.durable.lmdb.dir = &quot;ddata&quot;
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre><code># Directory of LMDB file. There are two options:
+# 1. A relative or absolute path to a directory that ends with &#39;ddata&#39;
+#    the full name of the directory will contain name of the ActorSystem
+#    and its remote port.
+# 2. Otherwise the path is used as is, as a relative or absolute path to
+#    a directory.
+pekko.cluster.distributed-data.durable.lmdb.dir = &quot;ddata&quot;
+</code></pre></dd>
+</dl>
+<p>When running in production you may want to configure the directory to a specific path (alt 2), since the default directory contains the remote port of the actor system to make the name unique. If using a dynamically assigned port (0) it will be different each time and the previously stored data will not be loaded.</p>
+<p>Making the data durable has a performance cost. By default, each update is flushed to disk before the <code>UpdateSuccess</code> reply is sent. For better performance, but with the risk of losing the last writes if the JVM crashes, you can enable write behind mode. Changes are then accumulated during a time period before it is written to LMDB and flushed to disk. Enabling write behind is especially efficient when performing many writes to the same key, because it is only the last value for each key that will be serialized and stored. The risk of losing writes if the JVM crashes is small since the data is typically replicated to other nodes immediately according to the given <code>WriteConsistency</code>.</p>
+<pre><code>pekko.cluster.distributed-data.durable.lmdb.write-behind-interval = 200 ms
+</code></pre>
+<p>Note that you should be prepared to receive <code>WriteFailure</code> as reply to an <code>Update</code> of a durable entry if the data could not be stored for some reason. When enabling <code>write-behind-interval</code> such errors will only be logged and <code>UpdateSuccess</code> will still be the reply to the <code>Update</code>.</p>
+<p>There is one important caveat when it comes pruning of <a href="distributed-data.html#crdt-garbage">CRDT Garbage</a> for durable data. If an old data entry that was never pruned is injected and merged with existing data after that the pruning markers have been removed the value will not be correct. The time-to-live of the markers is defined by configuration <code>pekko.cluster.distributed-data.durable.remove-pruning-marker-after</code> and is in the magnitude of days. This would be possible if a node with durable data didn&rsquo;t participate in the pruning (e.g. it was shutdown) and later started after this time. A node with durable data should not be stopped for longer time than this duration and if it is joining again after this duration its data should first be manually removed (from the lmdb directory).</p>
+<h2><a href="#limitations" name="limitations" class="anchor"><span class="anchor-link"></span></a>Limitations</h2>
+<p>There are some limitations that you should be aware of.</p>
+<p>CRDTs cannot be used for all types of problems, and eventual consistency does not fit all domains. Sometimes, you need strong consistency.</p>
+<p>It is not intended for <em>Big Data</em>. The number of top level entries should not exceed 100000. When a new node is added to the cluster all these entries are transferred (gossiped) to the new node. The entries are split up in chunks and all existing nodes collaborate in the gossip, but it will take a while (tens of seconds) to transfer all entries and this means that you cannot have too many top level entries. The current recommended limit is 100000. We will be able to improve this if needed, but the design is still not intended for billions of entries.</p>
+<p>All data is held in memory, which is another reason why it is not intended for <em>Big Data</em>.</p>
+<p>When a data entry is changed the full state of that entry may be replicated to other nodes if it doesn&rsquo;t support <a href="distributed-data.html#delta-crdt">delta-CRDT</a>. The full state is also replicated for delta-CRDTs, for example when new nodes are added to the cluster or when deltas could not be propagated because of network partitions or similar problems. This means that you cannot have too large data entries, because then the remote message size will be too large.</p>
+<h3><a href="#crdt-garbage" name="crdt-garbage" class="anchor"><span class="anchor-link"></span></a>CRDT Garbage</h3>
+<p>One thing that can be problematic with CRDTs is that some data types accumulate history (garbage). For example a <code>GCounter</code> keeps track of one counter per node. If a <code>GCounter</code> has been updated from one node it will associate the identifier of that node forever. That can become a problem for long running systems with many cluster nodes being added and removed. To solve this problem the <code>Replicator</code> performs pruning of data associated with nodes that have been removed from the cluster. Data types that need pruning have to implement the <code>RemovedNodePruning</code> trait. See the API documentation of the <code>Replicator</code> for details.</p>
+<h2><a href="#learn-more-about-crdts" name="learn-more-about-crdts" class="anchor"><span class="anchor-link"></span></a>Learn More about CRDTs</h2>
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=oyUHd894w18&amp;feature=youtu.be">Strong Eventual Consistency and Conflict-free Replicated Data Types (video)</a> talk by Mark Shapiro</li>
+  <li><a href="https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf">A comprehensive study of Convergent and Commutative Replicated Data Types</a> paper by Mark Shapiro et. al.</li>
+</ul>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>The <code>DistributedData</code> extension can be configured with the following properties:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/distributed-data/src/main/resources/reference.conf#L10-L142" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Settings for the DistributedData extension
+pekko.cluster.distributed-data {
+  # Actor name of the Replicator actor, /system/ddataReplicator
+  name = ddataReplicator
+
+  # Replicas are running on members tagged with this role.
+  # All members are used if undefined or empty.
+  role = &quot;&quot;
+
+  # How often the Replicator should send out gossip information
+  gossip-interval = 2 s
+  
+  # How often the subscribers will be notified of changes, if any
+  notify-subscribers-interval = 500 ms
+
+  # Logging of data with payload size in bytes larger than
+  # this value. Maximum detected size per key is logged once,
+  # with an increase threshold of 10%.
+  # It can be disabled by setting the property to off.
+  log-data-size-exceeding = 10 KiB
+
+  # Maximum number of entries to transfer in one round of gossip exchange when
+  # synchronizing the replicas. Next chunk will be transferred in next round of gossip.
+  # The actual number of data entries in each Gossip message is dynamically
+  # adjusted to not exceed the maximum remote message size (maximum-frame-size).
+  max-delta-elements = 500
+  
+  # The id of the dispatcher to use for Replicator actors.
+  # If specified you need to define the settings of the actual dispatcher.
+  use-dispatcher = &quot;pekko.actor.internal-dispatcher&quot;
+
+  # How often the Replicator checks for pruning of data associated with
+  # removed cluster nodes. If this is set to &#39;off&#39; the pruning feature will
+  # be completely disabled.
+  pruning-interval = 120 s
+  
+  # How long time it takes to spread the data to all other replica nodes.
+  # This is used when initiating and completing the pruning process of data associated
+  # with removed cluster nodes. The time measurement is stopped when any replica is 
+  # unreachable, but it&#39;s still recommended to configure this with certain margin.
+  # It should be in the magnitude of minutes even though typical dissemination time
+  # is shorter (grows logarithmic with number of nodes). There is no advantage of 
+  # setting this too low. Setting it to large value will delay the pruning process.
+  max-pruning-dissemination = 300 s
+  
+  # The markers of that pruning has been performed for a removed node are kept for this
+  # time and thereafter removed. If and old data entry that was never pruned is somehow
+  # injected and merged with existing data after this time the value will not be correct.
+  # This would be possible (although unlikely) in the case of a long network partition.
+  # It should be in the magnitude of hours. For durable data it is configured by 
+  # &#39;pekko.cluster.distributed-data.durable.pruning-marker-time-to-live&#39;.
+ pruning-marker-time-to-live = 6 h
+  
+  # Serialized Write and Read messages are cached when they are sent to 
+  # several nodes. If no further activity they are removed from the cache
+  # after this duration.
+  serializer-cache-time-to-live = 10s
+
+  # Update and Get operations are sent to oldest nodes first.
+  # This is useful together with Cluster Singleton, which is running on oldest nodes.
+  prefer-oldest = off
+  
+  # Settings for delta-CRDT
+  delta-crdt {
+    # enable or disable delta-CRDT replication
+    enabled = on
+    
+    # Some complex deltas grow in size for each update and above this
+    # threshold such deltas are discarded and sent as full state instead.
+    # This is number of elements or similar size hint, not size in bytes.
+    max-delta-size = 50
+  }
+  
+  durable {
+    # List of keys that are durable. Prefix matching is supported by using * at the
+    # end of a key.  
+    keys = []
+    
+    # The markers of that pruning has been performed for a removed node are kept for this
+    # time and thereafter removed. If and old data entry that was never pruned is
+    # injected and merged with existing data after this time the value will not be correct.
+    # This would be possible if replica with durable data didn&#39;t participate in the pruning
+    # (e.g. it was shutdown) and later started after this time. A durable replica should not 
+    # be stopped for longer time than this duration and if it is joining again after this
+    # duration its data should first be manually removed (from the lmdb directory).
+    # It should be in the magnitude of days. Note that there is a corresponding setting
+    # for non-durable data: &#39;pekko.cluster.distributed-data.pruning-marker-time-to-live&#39;.
+    pruning-marker-time-to-live = 10 d
+    
+    # Fully qualified class name of the durable store actor. It must be a subclass
+    # of pekko.actor.Actor and handle the protocol defined in 
+    # org.apache.pekko.cluster.ddata.DurableStore. The class must have a constructor with
+    # com.typesafe.config.Config parameter.
+    store-actor-class = org.apache.pekko.cluster.ddata.LmdbDurableStore
+    
+    use-dispatcher = pekko.cluster.distributed-data.durable.pinned-store
+    
+    pinned-store {
+      executor = thread-pool-executor
+      type = PinnedDispatcher
+    }
+    
+    # Config for the LmdbDurableStore
+    lmdb {
+      # Directory of LMDB file. There are two options:
+      # 1. A relative or absolute path to a directory that ends with &#39;ddata&#39;
+      #    the full name of the directory will contain name of the ActorSystem
+      #    and its remote port.
+      # 2. Otherwise the path is used as is, as a relative or absolute path to
+      #    a directory.
+      #
+      # When running in production you may want to configure this to a specific
+      # path (alt 2), since the default directory contains the remote port of the
+      # actor system to make the name unique. If using a dynamically assigned 
+      # port (0) it will be different each time and the previously stored data 
+      # will not be loaded.
+      dir = &quot;ddata&quot;
+      
+      # Size in bytes of the memory mapped file.
+      map-size = 100 MiB
+      
+      # Accumulate changes before storing improves performance with the
+      # risk of losing the last writes if the JVM crashes.
+      # The interval is by default set to &#39;off&#39; to write each update immediately.
+      # Enabling write behind by specifying a duration, e.g. 200ms, is especially 
+      # efficient when performing many writes to the same key, because it is only 
+      # the last value for each key that will be serialized and stored.  
+      # write-behind-interval = 200 ms
+      write-behind-interval = off
+    }
+  }
+  
+}</code></pre>
+<h2><a href="#example-project" name="example-project" class="anchor"><span class="anchor-link"></span></a>Example project</h2>
+<p><span class="group-java"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-distributed-data-java">Distributed Data example project</a></span> <span class="group-scala"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-distributed-data-scala">Distributed Data example project</a></span> is an example project that can be downloaded, and with instructions of how to run.</p>
+<p>This project contains several samples illustrating how to use Distributed Data.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/distributed-data.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/failure-detector.html" title="Phi Accrual Failure Detector" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Phi Accrual Failure Detector
+</span>
+</div>
+</a>
+<a href="../typed/cluster-singleton.html" title="Cluster Singleton" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Cluster Singleton
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

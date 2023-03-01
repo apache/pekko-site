@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Binary compatibility across Apache Pekko versions.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Binary compatibility across Apache Pekko versions.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Binary Compatibility Rules · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Binary Compatibility Rules
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-rules" class="active page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-rules" class="header">Binary Compatibility Rules</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-rules-explained" class="header">Binary compatibility rules explained</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#mixed-versioning-is-not-allowed" class="header">Mixed versioning is not allowed</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#the-meaning-of-" class="header">The meaning of &ldquo;may change&rdquo;</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#api-stability-annotations-and-comments" class="header">API stability annotations and comments</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-checking-toolchain" class="header">Binary Compatibility Checking Toolchain</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#serialization-compatibility-across-scala-versions" class="header">Serialization compatibility across Scala versions</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-rules" class="header">Binary Compatibility Rules</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-rules-explained" class="header">Binary compatibility rules explained</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#mixed-versioning-is-not-allowed" class="header">Mixed versioning is not allowed</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#the-meaning-of-" class="header">The meaning of &ldquo;may change&rdquo;</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#api-stability-annotations-and-comments" class="header">API stability annotations and comments</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#binary-compatibility-checking-toolchain" class="header">Binary Compatibility Checking Toolchain</a></li>
+    <li><a href="../common/binary-compatibility-rules.html#serialization-compatibility-across-scala-versions" class="header">Serialization compatibility across Scala versions</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#binary-compatibility-rules" name="binary-compatibility-rules" class="anchor"><span class="anchor-link"></span></a>Binary Compatibility Rules</h1>
+<p>Apache Pekko maintains and verifies <em>backwards binary compatibility</em> across versions of modules.</p>
+<p>In the rest of this document whenever <em>binary compatibility</em> is mentioned &ldquo;<em>backwards binary compatibility</em>&rdquo; is meant (as opposed to forward compatibility).</p>
+<p>This means that the new JARs are a drop-in replacement for the old one (but not the other way around) as long as your build does not enable the inliner (Scala-only restriction).</p>
+<p>Because of this approach applications can upgrade to the latest version of Pekko even when <a href="../project/downstream-upgrade-strategy.html">intermediate satellite projects are not yet upgraded</a></p>
+<h2><a href="#binary-compatibility-rules-explained" name="binary-compatibility-rules-explained" class="anchor"><span class="anchor-link"></span></a>Binary compatibility rules explained</h2>
+<p>Binary compatibility is maintained between:</p>
+<ul>
+  <li><strong>minor</strong> and <strong>patch</strong> versions</li>
+</ul>
+<p>Binary compatibility is <strong>NOT</strong> maintained between:</p>
+<ul>
+  <li><strong>major</strong> versions</li>
+  <li>any versions of <strong>may change</strong> modules – read <a href="may-change.html">Modules marked &ldquo;May Change&rdquo;</a> for details</li>
+  <li>a few notable exclusions explained below</li>
+</ul>
+<p>Specific examples:</p>
+<pre><code># [epoch.major.minor] era
+OK:  2.2.0 --&gt; 2.2.1 --&gt; ... --&gt; 2.2.x
+NO:  2.2.y --x 2.3.y
+OK:  2.3.0 --&gt; 2.3.1 --&gt; ... --&gt; 2.3.x
+OK:  2.3.x --&gt; 2.4.x (special case, migration to new versioning scheme)
+# [major.minor.patch] era
+OK:  2.4.0 --&gt; 2.5.x
+OK:  2.5.0 --&gt; 2.6.x
+NO:  2.x.y --x 3.x.y
+OK:  3.0.0 --&gt; 3.0.1 --&gt; ... --&gt; 3.0.n
+OK:  3.0.n --&gt; 3.1.0 --&gt; ... --&gt; 3.1.n
+OK:  3.1.n --&gt; 3.2.0 ...
+     ...
+</code></pre>
+<h3><a href="#cases-where-binary-compatibility-is-not-retained" name="cases-where-binary-compatibility-is-not-retained" class="anchor"><span class="anchor-link"></span></a>Cases where binary compatibility is not retained</h3>
+<p>If a security vulnerability is reported in Pekko or a transient dependency of Pekko and it cannot be solved without breaking binary compatibility then fixing the security issue is more important. In such cases binary compatibility might not be retained when releasing a minor version. Such exception is always noted in the release announcement.</p>
+<p>We do not guarantee binary compatibility with versions that are EOL, though in practice this does not make a big difference: only in rare cases would a change be binary compatible with recent previous releases but not with older ones.</p>
+<p>Some modules are excluded from the binary compatibility guarantees, such as:</p>
+<ul>
+  <li><code>*-testkit</code> modules - since these are to be used only in tests, which usually are re-compiled and run on demand</li>
+  <li><code>*-tck</code> modules - since they may want to add new tests (or force configuring something), in order to discover possible failures in an existing implementation that the TCK is supposed to be testing. Compatibility here is not <em>guaranteed</em>, however it is attempted to make the upgrade process as smooth as possible.</li>
+  <li>all <a href="may-change.html">may change</a> modules - which by definition are subject to rapid iteration and change. Read more about that in <a href="may-change.html">Modules marked &ldquo;May Change&rdquo;</a></li>
+</ul>
+<h3><a href="#when-will-a-deprecated-method-be-removed-entirely" name="when-will-a-deprecated-method-be-removed-entirely" class="anchor"><span class="anchor-link"></span></a>When will a deprecated method be removed entirely</h3>
+<p>Once a method has been deprecated then the guideline* is that it will be kept, at minimum, for one <strong>full</strong> minor version release. For example, if it is deprecated in version 2.5.2 then it will remain through the rest of 2.5, as well as the entirety of 2.6. </p>
+<p>*This is a guideline because in <strong>rare</strong> instances, after careful consideration, an exception may be made and the method removed earlier.</p>
+<h2><a href="#mixed-versioning-is-not-allowed" name="mixed-versioning-is-not-allowed" class="anchor"><span class="anchor-link"></span></a>Mixed versioning is not allowed</h2>
+<p>Modules that are released together under the Pekko project are intended to be upgraded together. For example, it is not legal to mix Pekko Actor <code>2.6.2</code> with Pekko Cluster <code>2.6.5</code> even though &ldquo;Pekko <code>2.6.2</code>&rdquo; and &ldquo;Pekko <code>2.6.5</code>&rdquo; <em>are</em> binary compatible. </p>
+<p>This is because modules may assume internals changes across module boundaries, for example some feature in Clustering may have required an internals change in Actor, however it is not public API, thus such change is considered safe.</p>
+<p>If you accidentally mix Pekko versions, for example through transitive dependencies, you might get a warning at run time such as:</p>
+<pre><code>You are using version 2.6.6 of Pekko, but it appears you (perhaps indirectly) also depend on older versions 
+of related artifacts. You can solve this by adding an explicit dependency on version 2.6.6 of the 
+[pekko-persistence-query] artifacts to your project. Here&#39;s a complete collection of detected 
+artifacts: (2.5.3, [pekko-persistence-query]), (2.6.6, [pekko-actor, pekko-cluster]).
+See also: https://pekko.apache.org/docs/pekko/current/common/binary-compatibility-rules.html#mixed-versioning-is-not-allowed
+</code></pre>
+<p>The fix is typically to pick the highest Pekko version, and add explicit dependencies to your project as needed. For example, in the example above you might want to add <code>pekko-persistence-query</code> dependency for 2.6.6.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>We recommend keeping an <code>pekkoVersion</code> variable in your build file, and re-use it for all included modules, so when you upgrade you can simply change it in this one place.</p></div>
+<p>The warning includes a full list of Pekko runtime dependencies in the classpath, and the version detected. You can use that information to include an explicit list of Pekko artifacts you depend on into your build. If you use Maven or Gradle, you can include the <a href="../typed/guide/modules.html#actor-library">Pekko Maven BOM</a> (bill of materials) to help you keep all the versions of your Pekko dependencies in sync. </p>
+<h2><a href="#the-meaning-of-" name="the-meaning-of-" class="anchor"><span class="anchor-link"></span></a>The meaning of &ldquo;may change&rdquo;</h2>
+<p><strong>May change</strong> is used in module descriptions and docs in order to signify that the API that they contain is subject to change without any prior warning and is not covered by the binary compatibility promise. Read more in <a href="may-change.html">Modules marked &ldquo;May Change&rdquo;</a>.</p>
+<h2><a href="#api-stability-annotations-and-comments" name="api-stability-annotations-and-comments" class="anchor"><span class="anchor-link"></span></a>API stability annotations and comments</h2>
+<p>Pekko gives a very strong binary compatibility promise to end-users. However some parts of Pekko are excluded from these rules, for example internal or known evolving APIs may be marked as such and shipped as part of an overall stable module. As general rule any breakage is avoided and handled via deprecation and method addition, however certain APIs which are known to not yet be fully frozen (or are fully internal) are marked as such and subject to change at any time (even if best-effort is taken to keep them compatible).</p>
+<h3><a href="#the-internal-api-and-marker" name="the-internal-api-and-marker" class="anchor"><span class="anchor-link"></span></a>The INTERNAL API and <em>@InternalAPI</em> marker</h3>
+<p>When browsing the source code and/or looking for methods available to be called, especially from Java which does not have as rich of an access protection system as Scala has, you may sometimes find methods or classes annotated with the <code>/** INTERNAL API */</code> comment or the <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/annotation/InternalApi.html" title="pekko.annotation.InternalApi"><code>@InternalApi</code></a> annotation. </p>
+<p>No compatibility guarantees are given about these classes. They may change or even disappear in minor versions, and user code is not supposed to call them.</p>
+<p>Side-note on JVM representation details of the Scala <code>private[pekko]</code> pattern that Pekko is using extensively in its internals: Such methods or classes, which act as &ldquo;accessible only from the given package&rdquo; in Scala, are compiled down to <code>public</code> (!) in raw Java bytecode. The access restriction, that Scala understands is carried along as metadata stored in the classfile. Thus, such methods are safely guarded from being accessed from Scala, however Java users will not be warned about this fact by the <code>javac</code> compiler. Please be aware of this and do not call into Internal APIs, as they are subject to change without any warning.</p>
+<h3><a href="#the-donotinherit-and-apimaychange-markers" name="the-donotinherit-and-apimaychange-markers" class="anchor"><span class="anchor-link"></span></a>The <code>@DoNotInherit</code> and <code>@ApiMayChange</code> markers</h3>
+<p>In addition to the special internal API marker two annotations exist in Pekko and specifically address the following use cases:</p>
+<ul>
+  <li><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/annotation/ApiMayChange.html" title="pekko.annotation.ApiMayChange"><code>@ApiMayChange</code></a> – which marks APIs which are known to be not fully stable yet. Read more in <a href="may-change.html">Modules marked &ldquo;May Change&rdquo;</a></li>
+  <li><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/annotation/DoNotInherit.html" title="pekko.annotation.DoNotInherit"><code>@DoNotInherit</code></a> – which marks APIs that are designed under a closed-world assumption, and thus must not be extended outside Pekko itself (or such code will risk facing binary incompatibilities). E.g. an interface may be marked using this annotation, and while the type is public, it is not meant for extension by user-code. This allows adding new methods to these interfaces without risking to break client code. Examples of such API are the <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/scaladsl/FlowOps.html" title="pekko.stream.scaladsl.FlowOps"><code>FlowOps</code></a> trait or the Pekko HTTP domain model.</li>
+</ul>
+<p>Please note that a best-effort approach is always taken when having to change APIs and breakage is avoided as much as possible, however these markers allow to experiment, gather feedback and stabilize the best possible APIs we could build.</p>
+<h2><a href="#binary-compatibility-checking-toolchain" name="binary-compatibility-checking-toolchain" class="anchor"><span class="anchor-link"></span></a>Binary Compatibility Checking Toolchain</h2>
+<p>Pekko uses the Lightbend maintained <a href="https://github.com/lightbend/mima">MiMa</a>, for enforcing binary compatibility is kept where it was promised.</p>
+<p>All Pull Requests must pass MiMa validation (which happens automatically), and if failures are detected, manual exception overrides may be put in place if the change happened to be in an Internal API for example.</p>
+<h2><a href="#serialization-compatibility-across-scala-versions" name="serialization-compatibility-across-scala-versions" class="anchor"><span class="anchor-link"></span></a>Serialization compatibility across Scala versions</h2>
+<p>Scala does not maintain serialization compatibility across major versions. This means that if Java serialization is used there is no guarantee objects can be cleanly deserialized if serialized with a different version of Scala.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/common/binary-compatibility-rules.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../project/index.html" title="Project Information" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Project Information
+</span>
+</div>
+</a>
+<a href="../project/scala3.html" title="Scala 3 support" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Scala 3 support
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

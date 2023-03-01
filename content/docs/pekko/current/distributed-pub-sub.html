@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic Distributed Publish Subscribe in Cluster · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic Distributed Publish Subscribe in Cluster
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="distributed-pub-sub.html#classic-distributed-publish-subscribe-in-cluster" class="header">Classic Distributed Publish Subscribe in Cluster</a>
+  <ul>
+    <li><a href="distributed-pub-sub.html#module-info" class="header">Module info</a></li>
+    <li><a href="distributed-pub-sub.html#introduction" class="header">Introduction</a></li>
+    <li><a href="distributed-pub-sub.html#publish" class="header">Publish</a></li>
+    <li><a href="distributed-pub-sub.html#send" class="header">Send</a></li>
+    <li><a href="distributed-pub-sub.html#distributedpubsub-extension" class="header">DistributedPubSub Extension</a></li>
+    <li><a href="distributed-pub-sub.html#delivery-guarantee" class="header">Delivery Guarantee</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="distributed-pub-sub.html#classic-distributed-publish-subscribe-in-cluster" class="header">Classic Distributed Publish Subscribe in Cluster</a>
+  <ul>
+    <li><a href="distributed-pub-sub.html#module-info" class="header">Module info</a></li>
+    <li><a href="distributed-pub-sub.html#introduction" class="header">Introduction</a></li>
+    <li><a href="distributed-pub-sub.html#publish" class="header">Publish</a></li>
+    <li><a href="distributed-pub-sub.html#send" class="header">Send</a></li>
+    <li><a href="distributed-pub-sub.html#distributedpubsub-extension" class="header">DistributedPubSub Extension</a></li>
+    <li><a href="distributed-pub-sub.html#delivery-guarantee" class="header">Delivery Guarantee</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-distributed-publish-subscribe-in-cluster" name="classic-distributed-publish-subscribe-in-cluster" class="anchor"><span class="anchor-link"></span></a>Classic Distributed Publish Subscribe in Cluster</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the new API see <a href="typed/distributed-pub-sub.html">Distributed Publish Subscribe in Cluster</a> </p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Distributed Publish Subscribe you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster-tools" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster-tools_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster-tools_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster Tools (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster-tools</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster.tools</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/tools/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/tools/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>How do I send a message to an actor without knowing which node it is running on?</p>
+
+<p>How do I send messages to all actors in the cluster that have registered interest in a named topic?</p>
+
+<p>This pattern provides a mediator actor, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator"><code>cluster.pubsub.DistributedPubSubMediator</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator"><code>cluster.pubsub.DistributedPubSubMediator</code></a></span>, that manages a registry of actor references and replicates the entries to peer actors among all cluster nodes or a group of nodes tagged with a specific role.</p>
+
+<p>The <code>DistributedPubSubMediator</code> actor is supposed to be started on all nodes, or all nodes with specified role, in the cluster. The mediator can be started with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>DistributedPubSub</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>DistributedPubSub</code></a></span> extension or as an ordinary actor.</p>
+
+<p>The registry is eventually consistent, i.e. changes are not immediately visible at other nodes, but typically they will be fully replicated to all other nodes after a few seconds. Changes are only performed in the own part of the registry and those changes are versioned. Deltas are disseminated in a scalable way to other nodes with a gossip protocol.</p>
+
+<p>Cluster members with status <a href="typed/cluster-membership.html#weakly-up">WeaklyUp</a>, will participate in Distributed Publish Subscribe, i.e. subscribers on nodes with <code>WeaklyUp</code> status will receive published messages if the publisher and subscriber are on same side of a network partition.</p>
+
+<p>You can send messages via the mediator on any node to registered actors on any other node.</p>
+
+<p>There a two different modes of message delivery, explained in the sections <a href="distributed-pub-sub.html#distributed-pub-sub-publish">Publish</a> and <a href="distributed-pub-sub.html#distributed-pub-sub-send">Send</a> below.</p>
+<div class="group-scala">
+<p>A more comprehensive sample is available in the tutorial named <a href="https://github.com/typesafehub/activator-pekko-clustering">Pekko Clustered PubSub with Scala!</a>.</p></div>
+<a id="distributed-pub-sub-publish"></a>
+<h2><a href="#publish" name="publish" class="anchor"><span class="anchor-link"></span></a>Publish</h2>
+<p>This is the true pub/sub mode. A typical usage of this mode is a chat room in an instant messaging application.</p>
+<p>Actors are registered to a named topic. This enables many subscribers on each node. The message will be delivered to all subscribers of the topic.</p>
+<p>For efficiency the message is sent over the wire only once per node (that has a matching topic), and then delivered to all subscribers of the local topic representation.</p>
+<p>You register actors to the local mediator with <code>DistributedPubSubMediator.Subscribe</code>. Successful <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Subscribe.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Subscribe"><code>DistributedPubSubMediator.Subscribe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Subscribe.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Subscribe"><code>DistributedPubSubMediator.Subscribe</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Unsubscribe.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Unsubscribe"><code>DistributedPubSubMediator.Unsubscribe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Unsubscribe.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Unsubscribe"><code>DistributedPubSubMediator.Unsubscribe</code></a></span> is acknowledged with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$SubscribeAck.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.SubscribeAck"><code>DistributedPubSubMediator.SubscribeAck</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$SubscribeAck.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.SubscribeAck"><code>DistributedPubSubMediator.SubscribeAck</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$UnsubscribeAck.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.UnsubscribeAck"><code>DistributedPubSubMediator.UnsubscribeAck</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$UnsubscribeAck.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.UnsubscribeAck"><code>DistributedPubSubMediator.UnsubscribeAck</code></a></span> replies. The acknowledgment means that the subscription is registered, but it can still take some time until it is replicated to other nodes.</p>
+<p>You publish messages by sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Publish.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Publish"><code>DistributedPubSubMediator.Publish</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Publish.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Publish"><code>DistributedPubSubMediator.Publish</code></a></span> message to the local mediator.</p>
+<p>Actors are automatically removed from the registry when they are terminated, or you can explicitly remove entries with <code>DistributedPubSubMediator.Unsubscribe</code>.</p>
+<p>An example of a subscriber actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L91-L103" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Subscriber extends Actor with ActorLogging {
+  import DistributedPubSubMediator.{ Subscribe, SubscribeAck }
+  val mediator = DistributedPubSub(context.system).mediator
+  // subscribe to the topic named &quot;content&quot;
+  mediator ! Subscribe(&quot;content&quot;, self)
+
+  def receive = {
+    case s: String =&gt;
+      log.info(&quot;Got {}&quot;, s)
+    case SubscribeAck(Subscribe(&quot;content&quot;, None, `self`)) =&gt;
+      log.info(&quot;subscribing&quot;)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L77-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Subscriber extends AbstractActor {
+  LoggingAdapter log = Logging.getLogger(getContext().system(), this);
+
+  public Subscriber() {
+    ActorRef mediator = DistributedPubSub.get(getContext().system()).mediator();
+    // subscribe to the topic named &quot;content&quot;
+    mediator.tell(new DistributedPubSubMediator.Subscribe(&quot;content&quot;, getSelf()), getSelf());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(String.class, msg -&gt; log.info(&quot;Got: {}&quot;, msg))
+        .match(DistributedPubSubMediator.SubscribeAck.class, msg -&gt; log.info(&quot;subscribed&quot;))
+        .build();
+  }
+}
+</code></pre></dd>
+</dl>
+<p>Subscriber actors can be started on several nodes in the cluster, and all will receive messages published to the &ldquo;content&rdquo; topic.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L361-L367" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(first) {
+  system.actorOf(Props[Subscriber](), &quot;subscriber1&quot;)
+}
+runOn(second) {
+  system.actorOf(Props[Subscriber](), &quot;subscriber2&quot;)
+  system.actorOf(Props[Subscriber](), &quot;subscriber3&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L47-L50" target="_blank" title="Go to snippet source">source</a><code class="language-java">system.actorOf(Props.create(Subscriber.class), &quot;subscriber1&quot;);
+// another node
+system.actorOf(Props.create(Subscriber.class), &quot;subscriber2&quot;);
+system.actorOf(Props.create(Subscriber.class), &quot;subscriber3&quot;);</code></pre></dd>
+</dl>
+<p>A simple actor that publishes to this &ldquo;content&rdquo; topic:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L77-L87" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Publisher extends Actor {
+  import DistributedPubSubMediator.Publish
+  // activate the extension
+  val mediator = DistributedPubSub(context.system).mediator
+
+  def receive = {
+    case in: String =&gt;
+      val out = in.toUpperCase
+      mediator ! Publish(&quot;content&quot;, out)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L98-L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Publisher extends AbstractActor {
+
+  // activate the extension
+  ActorRef mediator = DistributedPubSub.get(getContext().system()).mediator();
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            String.class,
+            in -&gt; {
+              String out = in.toUpperCase();
+              mediator.tell(new DistributedPubSubMediator.Publish(&quot;content&quot;, out), getSelf());
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>It can publish messages to the topic from anywhere in the cluster:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L371-L376" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(third) {
+  val publisher = system.actorOf(Props[Publisher](), &quot;publisher&quot;)
+  later()
+  // after a while the subscriptions are replicated
+  publisher ! &quot;hello&quot;
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L54-L57" target="_blank" title="Go to snippet source">source</a><code class="language-java">// somewhere else
+ActorRef publisher = system.actorOf(Props.create(Publisher.class), &quot;publisher&quot;);
+// after a while the subscriptions are replicated
+publisher.tell(&quot;hello&quot;, null);</code></pre></dd>
+</dl>
+<h3><a href="#topic-groups" name="topic-groups" class="anchor"><span class="anchor-link"></span></a>Topic Groups</h3>
+<p>Actors may also be subscribed to a named topic with a <code>group</code> id. If subscribing with a group id, each message published to a topic with the <code>sendOneMessageToEachGroup</code> flag set to <code>true</code> is delivered via the supplied <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span> (default random) to one actor within each subscribing group.</p>
+<p>If all the subscribed actors have the same group id, then this works just like <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Send.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Send"><code>DistributedPubSubMediator.Send</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Send.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Send"><code>DistributedPubSubMediator.Send</code></a></span> and each message is only delivered to one subscriber.</p>
+<p>If all the subscribed actors have different group names, then this works like normal <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Publish.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Publish"><code>DistributedPubSubMediator.Publish</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Publish.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Publish"><code>DistributedPubSubMediator.Publish</code></a></span> and each message is broadcasted to all subscribers.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Note that if the group id is used it is part of the topic identifier. Messages published with <code>sendOneMessageToEachGroup=false</code> will not be delivered to subscribers that subscribed with a group id. Messages published with <code>sendOneMessageToEachGroup=true</code> will not be delivered to subscribers that subscribed without a group id.</p></div>
+<a id="distributed-pub-sub-send"></a>
+<h2><a href="#send" name="send" class="anchor"><span class="anchor-link"></span></a>Send</h2>
+<p>This is a point-to-point mode where each message is delivered to one destination, but you still do not have to know where the destination is located. A typical usage of this mode is private chat to one other user in an instant messaging application. It can also be used for distributing tasks to registered workers, like a cluster aware router where the routees dynamically can register themselves.</p>
+<p>The message will be delivered to one recipient with a matching path, if any such exists in the registry. If several entries match the path because it has been registered on several nodes the message will be sent via the supplied <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span> (default random) to one destination. The sender of the message can specify that local affinity is preferred, i.e. the message is sent to an actor in the same local actor system as the used mediator actor, if any such exists, otherwise route to any other matching entry.</p>
+<p>You register actors to the local mediator with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Put.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Put"><code>DistributedPubSubMediator.Put</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Put.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Put"><code>DistributedPubSubMediator.Put</code></a></span>. The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> in <code>Put</code> must belong to the same local actor system as the mediator. The path without address information is the key to which you send messages. On each node there can only be one actor for a given path, since the path is unique within one local actor system.</p>
+<p>You send messages by sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Send.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Send"><code>DistributedPubSubMediator.Send</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Send.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Send"><code>DistributedPubSubMediator.Send</code></a></span> message to the local mediator with the path (without address information) of the destination actors.</p>
+<p>Actors are automatically removed from the registry when they are terminated, or you can explicitly remove entries with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Remove.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Remove"><code>DistributedPubSubMediator.Remove</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Remove.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Remove"><code>DistributedPubSubMediator.Remove</code></a></span>.</p>
+<p>An example of a destination actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L121-L131" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Destination extends Actor with ActorLogging {
+  import DistributedPubSubMediator.Put
+  val mediator = DistributedPubSub(context.system).mediator
+  // register to the path
+  mediator ! Put(self)
+
+  def receive = {
+    case s: String =&gt;
+      log.info(&quot;Got {}&quot;, s)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L118-L132" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Destination extends AbstractActor {
+  LoggingAdapter log = Logging.getLogger(getContext().system(), this);
+
+  public Destination() {
+    ActorRef mediator = DistributedPubSub.get(getContext().system()).mediator();
+    // register to the path
+    mediator.tell(new DistributedPubSubMediator.Put(getSelf()), getSelf());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(String.class, msg -&gt; log.info(&quot;Got: {}&quot;, msg)).build();
+  }
+}
+</code></pre></dd>
+</dl>
+<p>Destination actors can be started on several nodes in the cluster, and all will receive messages sent to the path (without address information).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L388-L393" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(first) {
+  system.actorOf(Props[Destination](), &quot;destination&quot;)
+}
+runOn(second) {
+  system.actorOf(Props[Destination](), &quot;destination&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L63-L65" target="_blank" title="Go to snippet source">source</a><code class="language-java">system.actorOf(Props.create(Destination.class), &quot;destination&quot;);
+// another node
+system.actorOf(Props.create(Destination.class), &quot;destination&quot;);</code></pre></dd>
+</dl>
+<p>A simple actor that sends to the path:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L107-L117" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Sender extends Actor {
+  import DistributedPubSubMediator.Send
+  // activate the extension
+  val mediator = DistributedPubSub(context.system).mediator
+
+  def receive = {
+    case in: String =&gt;
+      val out = in.toUpperCase
+      mediator ! Send(path = &quot;/user/destination&quot;, msg = out, localAffinity = true)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L136-L155" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Sender extends AbstractActor {
+
+  // activate the extension
+  ActorRef mediator = DistributedPubSub.get(getContext().system()).mediator();
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            String.class,
+            in -&gt; {
+              String out = in.toUpperCase();
+              boolean localAffinity = true;
+              mediator.tell(
+                  new DistributedPubSubMediator.Send(&quot;/user/destination&quot;, out, localAffinity),
+                  getSelf());
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>It can send messages to the path from anywhere in the cluster:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/multi-jvm/scala/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorSpec.scala#L397-L402" target="_blank" title="Go to snippet source">source</a><code class="language-scala">runOn(third) {
+  val sender = system.actorOf(Props[Sender](), &quot;sender&quot;)
+  later()
+  // after a while the destinations are replicated
+  sender ! &quot;hello&quot;
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/test/java/org/apache/pekko/cluster/pubsub/DistributedPubSubMediatorTest.java#L69-L72" target="_blank" title="Go to snippet source">source</a><code class="language-java">// somewhere else
+ActorRef sender = system.actorOf(Props.create(Publisher.class), &quot;sender&quot;);
+// after a while the destinations are replicated
+sender.tell(&quot;hello&quot;, null);</code></pre></dd>
+</dl>
+<p>It is also possible to broadcast messages to the actors that have been registered with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Put.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Put"><code>DistributedPubSubMediator.Put</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$Put.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.Put"><code>DistributedPubSubMediator.Put</code></a></span>. Send <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$SendToAll.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.SendToAll"><code>DistributedPubSubMediator.SendToAll</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSubMediator$$SendToAll.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSubMediator.SendToAll"><code>DistributedPubSubMediator.SendToAll</code></a></span> message to the local mediator and the wrapped message will then be delivered to all recipients with a matching path. Actors with the same path, without address information, can be registered on different nodes. On each node there can only be one such actor, since the path is unique within one local actor system.</p>
+<p>Typical usage of this mode is to broadcast messages to all replicas with the same path, e.g. 3 actors on different nodes that all perform the same actions, for redundancy. You can also optionally specify a property (<code>allButSelf</code>) deciding if the message should be sent to a matching path on the self node or not.</p>
+<h2><a href="#distributedpubsub-extension" name="distributedpubsub-extension" class="anchor"><span class="anchor-link"></span></a>DistributedPubSub Extension</h2>
+<p>In the example above the mediator is started and accessed with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>cluster.pubsub.DistributedPubSub</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/pubsub/DistributedPubSub.html" title="org.apache.pekko.cluster.pubsub.DistributedPubSub"><code>cluster.pubsub.DistributedPubSub</code></a></span> extension. That is convenient and perfectly fine in most cases, but it can be good to know that it is possible to start the mediator actor as an ordinary actor and you can have several different mediators at the same time to be able to divide a large number of actors/topics to different mediators. For example you might want to use different cluster roles for different mediators.</p>
+<p>The <code>DistributedPubSub</code> extension can be configured with the following properties:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-tools/src/main/resources/reference.conf#L9-L38" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># Settings for the DistributedPubSub extension
+pekko.cluster.pub-sub {
+  # Actor name of the mediator actor, /system/distributedPubSubMediator
+  name = distributedPubSubMediator
+
+  # Start the mediator on members tagged with this role.
+  # All members are used if undefined or empty.
+  role = &quot;&quot;
+
+  # The routing logic to use for &#39;Send&#39;
+  # Possible values: random, round-robin, broadcast
+  routing-logic = random
+
+  # How often the DistributedPubSubMediator should send out gossip information
+  gossip-interval = 1s
+
+  # Removed entries are pruned after this duration
+  removed-time-to-live = 120s
+
+  # Maximum number of elements to transfer in one message when synchronizing the registries.
+  # Next chunk will be transferred in next round of gossip.
+  max-delta-elements = 3000
+
+  # When a message is published to a topic with no subscribers send it to the dead letters.
+  send-to-dead-letters-when-no-subscribers = on
+  
+  # The id of the dispatcher to use for DistributedPubSubMediator actors. 
+  # If specified you need to define the settings of the actual dispatcher.
+  use-dispatcher = &quot;pekko.actor.internal-dispatcher&quot;
+}</code></pre>
+<p>It is recommended to load the extension when the actor system is started by defining it in <code>pekko.extensions</code> configuration property. Otherwise it will be activated when first used and then it takes a while for it to be populated.</p>
+<pre><code>pekko.extensions = [&quot;org.apache.pekko.cluster.pubsub.DistributedPubSub&quot;]
+</code></pre>
+<h2><a href="#delivery-guarantee" name="delivery-guarantee" class="anchor"><span class="anchor-link"></span></a>Delivery Guarantee</h2>
+<p>As in <a href="general/message-delivery-reliability.html">Message Delivery Reliability</a> of Pekko, message delivery guarantee in distributed pub sub modes is <strong>at-most-once delivery</strong>. In other words, messages can be lost over the wire.</p>
+<p>If you are looking for at-least-once delivery guarantee, we recommend <a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Connectors</a>.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/distributed-pub-sub.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="cluster-singleton.html" title="Classic Cluster Singleton" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Cluster Singleton
+</span>
+</div>
+</a>
+<a href="cluster-client.html" title="Classic Cluster Client" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Cluster Client
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2824 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Interaction Patterns · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Interaction Patterns
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html#interaction-patterns" class="active page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/interaction-patterns.html#interaction-patterns" class="header">Interaction Patterns</a>
+  <ul>
+    <li><a href="../typed/interaction-patterns.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/interaction-patterns.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/interaction-patterns.html#fire-and-forget" class="header">Fire and Forget</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response" class="header">Request-Response</a></li>
+    <li><a href="../typed/interaction-patterns.html#adapted-response" class="header">Adapted Response</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response-with-ask-between-two-actors" class="header">Request-Response with ask between two actors</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response-with-ask-from-outside-an-actor" class="header">Request-Response with ask from outside an Actor</a></li>
+    <li><a href="../typed/interaction-patterns.html#generic-response-wrapper" class="header">Generic response wrapper</a></li>
+    <li><a href="../typed/interaction-patterns.html#ignoring-replies" class="header">Ignoring replies</a></li>
+    <li><a href="../typed/interaction-patterns.html#send-future-result-to-self" class="header">Send Future result to self</a></li>
+    <li><a href="../typed/interaction-patterns.html#per-session-child-actor" class="header">Per session child Actor</a></li>
+    <li><a href="../typed/interaction-patterns.html#general-purpose-response-aggregator" class="header">General purpose response aggregator</a></li>
+    <li><a href="../typed/interaction-patterns.html#latency-tail-chopping" class="header">Latency tail chopping</a></li>
+    <li><a href="../typed/interaction-patterns.html#scheduling-messages-to-self" class="header">Scheduling messages to self</a></li>
+    <li><a href="../typed/interaction-patterns.html#responding-to-a-sharded-actor" class="header">Responding to a sharded actor</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/interaction-patterns.html#interaction-patterns" class="header">Interaction Patterns</a>
+  <ul>
+    <li><a href="../typed/interaction-patterns.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../typed/interaction-patterns.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/interaction-patterns.html#fire-and-forget" class="header">Fire and Forget</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response" class="header">Request-Response</a></li>
+    <li><a href="../typed/interaction-patterns.html#adapted-response" class="header">Adapted Response</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response-with-ask-between-two-actors" class="header">Request-Response with ask between two actors</a></li>
+    <li><a href="../typed/interaction-patterns.html#request-response-with-ask-from-outside-an-actor" class="header">Request-Response with ask from outside an Actor</a></li>
+    <li><a href="../typed/interaction-patterns.html#generic-response-wrapper" class="header">Generic response wrapper</a></li>
+    <li><a href="../typed/interaction-patterns.html#ignoring-replies" class="header">Ignoring replies</a></li>
+    <li><a href="../typed/interaction-patterns.html#send-future-result-to-self" class="header">Send Future result to self</a></li>
+    <li><a href="../typed/interaction-patterns.html#per-session-child-actor" class="header">Per session child Actor</a></li>
+    <li><a href="../typed/interaction-patterns.html#general-purpose-response-aggregator" class="header">General purpose response aggregator</a></li>
+    <li><a href="../typed/interaction-patterns.html#latency-tail-chopping" class="header">Latency tail chopping</a></li>
+    <li><a href="../typed/interaction-patterns.html#scheduling-messages-to-self" class="header">Scheduling messages to self</a></li>
+    <li><a href="../typed/interaction-patterns.html#responding-to-a-sharded-actor" class="header">Responding to a sharded actor</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#interaction-patterns" name="interaction-patterns" class="anchor"><span class="anchor-link"></span></a>Interaction Patterns</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../actors.html">Classic Actors</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Pekko Actor Typed, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Interacting with an Actor in Pekko is done through an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/ActorRef.html" title="pekko.actor.typed.ActorRef"><code>ActorRef[T]</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/ActorRef.html" title="pekko.actor.typed.ActorRef"><code>ActorRef&lt;T&gt;</code></a></span> where <code>T</code> is the type of messages the actor accepts, also known as the &ldquo;protocol&rdquo;. This ensures that only the right kind of messages can be sent to an actor and also that no one else but the Actor itself can access the Actor instance internals.</p>
+<p>Message exchange with Actors follow a few common patterns, let&rsquo;s go through each one of them. </p>
+<h2><a href="#fire-and-forget" name="fire-and-forget" class="anchor"><span class="anchor-link"></span></a>Fire and Forget</h2>
+<p>The fundamental way to interact with an actor is through <span class="group-scala">&ldquo;tell&rdquo;, which is so common that it has a special symbolic method name: <code>actorRef</code> <a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html#tell(msg:T):Unit" title="org.apache.pekko.actor.typed.ActorRef"><code>!</code></a> <code>message</code></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/ActorRef.html#tell(T)" title="pekko.actor.typed.ActorRef"><code>actorRef.tell(message)</code></a></span>. Sending a message with tell can safely be done from any thread.</p>
+<p>Tell is asynchronous which means that the method returns right away. After the statement is executed there is no guarantee that the message has been processed by the recipient yet. It also means there is no way to know if the message was received, the processing succeeded or failed.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/fire-forget.png" alt="fire-forget.png" /></p>
+<p>With the given protocol and actor behavior:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L42-L52" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Printer {
+
+  case class PrintMe(message: String)
+
+  def apply(): Behavior[PrintMe] =
+    Behaviors.receive {
+      case (context, PrintMe(message)) =&gt;
+        context.log.info(message)
+        Behaviors.same
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L44-L65" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Printer {
+  public static class PrintMe {
+    public final String message;
+
+    public PrintMe(String message) {
+      this.message = message;
+    }
+  }
+
+  public static Behavior&lt;PrintMe&gt; create() {
+    return Behaviors.setup(
+        context -&gt;
+            Behaviors.receive(PrintMe.class)
+                .onMessage(
+                    PrintMe.class,
+                    printMe -&gt; {
+                      context.getLog().info(printMe.message);
+                      return Behaviors.same();
+                    })
+                .build());
+  }
+}</code></pre></dd>
+</dl>
+<p>Fire and forget looks like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L56-L63" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val system = ActorSystem(Printer(), &quot;fire-and-forget-sample&quot;)
+
+// note how the system is also the top level actor ref
+val printer: ActorRef[Printer.PrintMe] = system
+
+// these are all fire and forget
+printer ! Printer.PrintMe(&quot;message 1&quot;)
+printer ! Printer.PrintMe(&quot;not message 2&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L885-L893" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem&lt;Printer.PrintMe&gt; system =
+    ActorSystem.create(Printer.create(), &quot;printer-sample-system&quot;);
+
+// note that system is also the ActorRef to the guardian actor
+final ActorRef&lt;Printer.PrintMe&gt; ref = system;
+
+// these are all fire and forget
+ref.tell(new Printer.PrintMe(&quot;message 1&quot;));
+ref.tell(new Printer.PrintMe(&quot;message 2&quot;));</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>It is not critical to be sure that the message was processed</li>
+  <li>There is no way to act on non successful delivery or processing</li>
+  <li>We want to minimize the number of messages created to get higher throughput (sending a response would require creating twice the number of messages)</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>If the inflow of messages is higher than the actor can process the inbox will fill up and can in the worst case cause the JVM crash with an <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/OutOfMemoryError.html" title="java.lang.OutOfMemoryError"><code>OutOfMemoryError</code></a></li>
+  <li>If the message gets lost, the sender will not know</li>
+</ul>
+<h2><a href="#request-response" name="request-response" class="anchor"><span class="anchor-link"></span></a>Request-Response</h2>
+<p>Many interactions between actors require one or more response message being sent back from the receiving actor. A response message can be a result of a query, some form of acknowledgment that the message was received and processed or events that the request subscribed to.</p>
+<p>In Pekko, the recipient of responses has to be encoded as a field in the message itself, which the recipient can then use to send (tell) a response back.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/request-response.png" alt="request-response.png" /></p>
+<p>With the following protocol:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L74-L75" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Request(query: String, replyTo: ActorRef[Response])
+case class Response(result: String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L70-L86" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class Request {
+  public final String query;
+  public final ActorRef&lt;Response&gt; replyTo;
+
+  public Request(String query, ActorRef&lt;Response&gt; replyTo) {
+    this.query = query;
+    this.replyTo = replyTo;
+  }
+}
+
+public static class Response {
+  public final String result;
+
+  public Response(String result) {
+    this.result = result;
+  }
+}</code></pre></dd>
+</dl>
+<p>The sender would use its own <span class="group-scala"><code>ActorRef[Response]</code></span><span class="group-java"><code>ActorRef&lt;Response&gt;</code></span>, which it can access through <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/actor/typed/scaladsl/ActorContext.html#self:org.apache.pekko.actor.typed.ActorRef[T]" title="actor.typed.scaladsl.ActorContext"><code>ActorContext.self</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getSelf()" title="pekko.actor.typed.javadsl.ActorContext"><code>ActorContext.getSelf()</code></a></span>, for the <code>replyTo</code>. </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L98" target="_blank" title="Go to snippet source">source</a><code class="language-scala">cookieFabric ! CookieFabric.Request(&quot;give me cookies&quot;, context.self)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L109" target="_blank" title="Go to snippet source">source</a><code class="language-java">cookieFabric.tell(new CookieFabric.Request(&quot;give me cookies&quot;, context.getSelf()));</code></pre></dd>
+</dl>
+<p>On the receiving side the <span class="group-scala"><code>ActorRef[Response]</code></span><span class="group-java"><code>ActorRef&lt;Response&gt;</code></span> can then be used to send one or more responses back:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L79-L85" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def apply(): Behaviors.Receive[Request] =
+  Behaviors.receiveMessage[Request] {
+    case Request(query, replyTo) =&gt;
+      // ... process query ...
+      replyTo ! Response(s&quot;Here are the cookies for [$query]!&quot;)
+      Behaviors.same
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L90-L101" target="_blank" title="Go to snippet source">source</a><code class="language-java">// actor behavior
+public static Behavior&lt;Request&gt; create() {
+  return Behaviors.receive(Request.class)
+      .onMessage(Request.class, CookieFabric::onRequest)
+      .build();
+}
+
+private static Behavior&lt;Request&gt; onRequest(Request request) {
+  // ... process request ...
+  request.replyTo.tell(new Response(&quot;Here are the cookies for &quot; + request.query));
+  return Behaviors.same();
+}</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Subscribing to an actor that will send many response messages back</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>Actors seldom have a response message from another actor as a part of their protocol (see <a href="interaction-patterns.html#adapted-response">adapted response</a>)</li>
+  <li>It is hard to detect that a message request was not delivered or processed (see <a href="interaction-patterns.html#request-response-with-ask-between-two-actors">ask</a>)</li>
+  <li>Unless the protocol already includes a way to provide context, for example a request id that is also sent in the  response, it is not possible to tie an interaction to some specific context without introducing a new,  separate, actor (see <a href="interaction-patterns.html#request-response-with-ask-between-two-actors">ask</a> or <a href="interaction-patterns.html#per-session-child-actor">per session child actor</a>)</li>
+</ul>
+<h2><a href="#adapted-response" name="adapted-response" class="anchor"><span class="anchor-link"></span></a>Adapted Response</h2>
+<p>Most often the sending actor does not, and should not, support receiving the response messages of another actor. In such cases we need to provide an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> of the right type and adapt the response message to a type that the sending actor can handle.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/adapted-response.png" alt="adapted-response.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L113-L160" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>object Backend {
+  sealed trait Request
+  final case class StartTranslationJob(taskId: Int, site: URI, replyTo: ActorRef[Response]) extends Request
+
+  sealed trait Response
+  final case class JobStarted(taskId: Int) extends Response
+  final case class JobProgress(taskId: Int, progress: Double) extends Response
+  final case class JobCompleted(taskId: Int, result: URI) extends Response
+}
+
+object Frontend {
+
+  sealed trait Command
+  final case class Translate(site: URI, replyTo: ActorRef[URI]) extends Command
+  private final case class WrappedBackendResponse(response: Backend.Response) extends Command
+
+  def apply(backend: ActorRef[Backend.Request]): Behavior[Command] =
+    Behaviors.setup[Command] { context =&gt;
+      val backendResponseMapper: ActorRef[Backend.Response] =
+        context.messageAdapter(rsp =&gt; WrappedBackendResponse(rsp))
+
+      def active(inProgress: Map[Int, ActorRef[URI]], count: Int): Behavior[Command] = {
+        Behaviors.receiveMessage[Command] {
+          case Translate(site, replyTo) =&gt;
+            val taskId = count + 1
+            backend ! Backend.StartTranslationJob(taskId, site, backendResponseMapper)
+            active(inProgress.updated(taskId, replyTo), taskId)
+
+          case wrapped: WrappedBackendResponse =&gt;
+            wrapped.response match {
+              case Backend.JobStarted(taskId) =&gt;
+                context.log.info(&quot;Started {}&quot;, taskId)
+                Behaviors.same
+              case Backend.JobProgress(taskId, progress) =&gt;
+                context.log.info2(&quot;Progress {}: {}&quot;, taskId, progress)
+                Behaviors.same
+              case Backend.JobCompleted(taskId, result) =&gt;
+                context.log.info2(&quot;Completed {}: {}&quot;, taskId, result)
+                inProgress(taskId) ! result
+                active(inProgress - taskId, count)
+            }
+        }
+      }
+
+      active(inProgress = Map.empty, count = 0)
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L120-L239" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>public class Backend {
+  public interface Request {}
+
+  public static class StartTranslationJob implements Request {
+    public final int taskId;
+    public final URI site;
+    public final ActorRef&lt;Response&gt; replyTo;
+
+    public StartTranslationJob(int taskId, URI site, ActorRef&lt;Response&gt; replyTo) {
+      this.taskId = taskId;
+      this.site = site;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public interface Response {}
+
+  public static class JobStarted implements Response {
+    public final int taskId;
+
+    public JobStarted(int taskId) {
+      this.taskId = taskId;
+    }
+  }
+
+  public static class JobProgress implements Response {
+    public final int taskId;
+    public final double progress;
+
+    public JobProgress(int taskId, double progress) {
+      this.taskId = taskId;
+      this.progress = progress;
+    }
+  }
+
+  public static class JobCompleted implements Response {
+    public final int taskId;
+    public final URI result;
+
+    public JobCompleted(int taskId, URI result) {
+      this.taskId = taskId;
+      this.result = result;
+    }
+  }
+}
+
+public class Frontend {
+
+  public interface Command {}
+
+  public static class Translate implements Command {
+    public final URI site;
+    public final ActorRef&lt;URI&gt; replyTo;
+
+    public Translate(URI site, ActorRef&lt;URI&gt; replyTo) {
+      this.site = site;
+      this.replyTo = replyTo;
+    }
+  }
+
+  private static class WrappedBackendResponse implements Command {
+    final Backend.Response response;
+
+    public WrappedBackendResponse(Backend.Response response) {
+      this.response = response;
+    }
+  }
+
+  public static class Translator extends AbstractBehavior&lt;Command&gt; {
+    private final ActorRef&lt;Backend.Request&gt; backend;
+    private final ActorRef&lt;Backend.Response&gt; backendResponseAdapter;
+
+    private int taskIdCounter = 0;
+    private Map&lt;Integer, ActorRef&lt;URI&gt;&gt; inProgress = new HashMap&lt;&gt;();
+
+    public Translator(ActorContext&lt;Command&gt; context, ActorRef&lt;Backend.Request&gt; backend) {
+      super(context);
+      this.backend = backend;
+      this.backendResponseAdapter =
+          context.messageAdapter(Backend.Response.class, WrappedBackendResponse::new);
+    }
+
+    @Override
+    public Receive&lt;Command&gt; createReceive() {
+      return newReceiveBuilder()
+          .onMessage(Translate.class, this::onTranslate)
+          .onMessage(WrappedBackendResponse.class, this::onWrappedBackendResponse)
+          .build();
+    }
+
+    private Behavior&lt;Command&gt; onTranslate(Translate cmd) {
+      taskIdCounter += 1;
+      inProgress.put(taskIdCounter, cmd.replyTo);
+      backend.tell(
+          new Backend.StartTranslationJob(taskIdCounter, cmd.site, backendResponseAdapter));
+      return this;
+    }
+
+    private Behavior&lt;Command&gt; onWrappedBackendResponse(WrappedBackendResponse wrapped) {
+      Backend.Response response = wrapped.response;
+      if (response instanceof Backend.JobStarted) {
+        Backend.JobStarted rsp = (Backend.JobStarted) response;
+        getContext().getLog().info(&quot;Started {}&quot;, rsp.taskId);
+      } else if (response instanceof Backend.JobProgress) {
+        Backend.JobProgress rsp = (Backend.JobProgress) response;
+        getContext().getLog().info(&quot;Progress {}&quot;, rsp.taskId);
+      } else if (response instanceof Backend.JobCompleted) {
+        Backend.JobCompleted rsp = (Backend.JobCompleted) response;
+        getContext().getLog().info(&quot;Completed {}&quot;, rsp.taskId);
+        inProgress.get(rsp.taskId).tell(rsp.result);
+        inProgress.remove(rsp.taskId);
+      } else {
+        return Behaviors.unhandled();
+      }
+
+      return this;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>You can register several message adapters for different message classes. It&rsquo;s only possible to have one message adapter per message class to make sure that the number of adapters are not growing unbounded if registered repeatedly. That also means that a registered adapter will replace an existing adapter for the same message class.</p>
+<p>A message adapter will be used if the message class matches the given class or is a subclass thereof. The registered adapters are tried in reverse order of their registration order, i.e. the last registered first.</p>
+<p>A message adapter (and the returned <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>) has the same lifecycle as the receiving actor. It&rsquo;s recommended to register the adapters in a top level <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span> or constructor of <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.javadsl.AbstractBehavior"><code>AbstractBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.scaladsl.AbstractBehavior"><code>AbstractBehavior</code></a></span> but it&rsquo;s possible to register them later if needed.</p>
+<p>The adapter function is running in the receiving actor and can safely access its state, but if it throws an exception the actor is stopped.</p>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Translating between different actor message protocols</li>
+  <li>Subscribing to an actor that will send many response messages back</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>It is hard to detect that a message request was not delivered or processed (see <a href="interaction-patterns.html#request-response-with-ask-between-two-actors">ask</a>)</li>
+  <li>Only one adaption can be made per response message type, if a new one is registered the old one is replaced,  for example different target actors can&rsquo;t have different adaption if they use the same response types, unless some  correlation is encoded in the messages</li>
+  <li>Unless the protocol already includes a way to provide context, for example a request id that is also sent in the  response, it is not possible to tie an interaction to some specific context without introducing a new,  separate, actor</li>
+</ul>
+<h2><a href="#request-response-with-ask-between-two-actors" name="request-response-with-ask-between-two-actors" class="anchor"><span class="anchor-link"></span></a>Request-Response with ask between two actors</h2>
+<p>In an interaction where there is a 1:1 mapping between a request and a response we can use <code>ask</code> on the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span> to interact with another actor.</p>
+<p>The interaction has two steps, first we need to construct the outgoing message, to do that we need an <span class="group-scala"><code>ActorRef[Response]</code></span><span class="group-java"><code>ActorRef&lt;Response&gt;</code></span> to put as recipient in the outgoing message. The second step is to transform the successful <code>Response</code> or failure into a message that is part of the protocol of the sending actor. See also the <a href="#generic-response-wrapper">Generic response wrapper</a> for replies that are either a success or an error.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/ask-from-actor.png" alt="ask-from-actor.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L243-L295" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Hal {
+  sealed trait Command
+  case class OpenThePodBayDoorsPlease(replyTo: ActorRef[Response]) extends Command
+  case class Response(message: String)
+
+  def apply(): Behaviors.Receive[Hal.Command] =
+    Behaviors.receiveMessage[Command] {
+      case OpenThePodBayDoorsPlease(replyTo) =&gt;
+        replyTo ! Response(&quot;I&#39;m sorry, Dave. I&#39;m afraid I can&#39;t do that.&quot;)
+        Behaviors.same
+    }
+}
+
+object Dave {
+
+  sealed trait Command
+  // this is a part of the protocol that is internal to the actor itself
+  private case class AdaptedResponse(message: String) extends Command
+
+  def apply(hal: ActorRef[Hal.Command]): Behavior[Dave.Command] =
+    Behaviors.setup[Command] { context =&gt;
+      // asking someone requires a timeout, if the timeout hits without response
+      // the ask is failed with a TimeoutException
+      implicit val timeout: Timeout = 3.seconds
+
+      // Note: The second parameter list takes a function `ActorRef[T] =&gt; Message`,
+      // as OpenThePodBayDoorsPlease is a case class it has a factory apply method
+      // that is what we are passing as the second parameter here it could also be written
+      // as `ref =&gt; OpenThePodBayDoorsPlease(ref)`
+      context.ask(hal, Hal.OpenThePodBayDoorsPlease.apply) {
+        case Success(Hal.Response(message)) =&gt; AdaptedResponse(message)
+        case Failure(_)                     =&gt; AdaptedResponse(&quot;Request failed&quot;)
+      }
+
+      // we can also tie in request context into an interaction, it is safe to look at
+      // actor internal state from the transformation function, but remember that it may have
+      // changed at the time the response arrives and the transformation is done, best is to
+      // use immutable state we have closed over like here.
+      val requestId = 1
+      context.ask(hal, Hal.OpenThePodBayDoorsPlease.apply) {
+        case Success(Hal.Response(message)) =&gt; AdaptedResponse(s&quot;$requestId: $message&quot;)
+        case Failure(_)                     =&gt; AdaptedResponse(s&quot;$requestId: Request failed&quot;)
+      }
+
+      Behaviors.receiveMessage {
+        // the adapted message ends up being processed like any other
+        // message sent to the actor
+        case AdaptedResponse(message) =&gt;
+          context.log.info(&quot;Got response from hal: {}&quot;, message)
+          Behaviors.same
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L351-L465" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Hal extends AbstractBehavior&lt;Hal.Command&gt; {
+
+  public static Behavior&lt;Hal.Command&gt; create() {
+    return Behaviors.setup(Hal::new);
+  }
+
+  private Hal(ActorContext&lt;Command&gt; context) {
+    super(context);
+  }
+
+  public interface Command {}
+
+  public static final class OpenThePodBayDoorsPlease implements Command {
+    public final ActorRef&lt;HalResponse&gt; respondTo;
+
+    public OpenThePodBayDoorsPlease(ActorRef&lt;HalResponse&gt; respondTo) {
+      this.respondTo = respondTo;
+    }
+  }
+
+  public static final class HalResponse {
+    public final String message;
+
+    public HalResponse(String message) {
+      this.message = message;
+    }
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(OpenThePodBayDoorsPlease.class, this::onOpenThePodBayDoorsPlease)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onOpenThePodBayDoorsPlease(OpenThePodBayDoorsPlease message) {
+    message.respondTo.tell(new HalResponse(&quot;I&#39;m sorry, Dave. I&#39;m afraid I can&#39;t do that.&quot;));
+    return this;
+  }
+}
+
+public class Dave extends AbstractBehavior&lt;Dave.Command&gt; {
+
+  public interface Command {}
+
+  // this is a part of the protocol that is internal to the actor itself
+  private static final class AdaptedResponse implements Command {
+    public final String message;
+
+    public AdaptedResponse(String message) {
+      this.message = message;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(ActorRef&lt;Hal.Command&gt; hal) {
+    return Behaviors.setup(context -&gt; new Dave(context, hal));
+  }
+
+  private Dave(ActorContext&lt;Command&gt; context, ActorRef&lt;Hal.Command&gt; hal) {
+    super(context);
+
+    // asking someone requires a timeout, if the timeout hits without response
+    // the ask is failed with a TimeoutException
+    final Duration timeout = Duration.ofSeconds(3);
+
+    context.ask(
+        Hal.HalResponse.class,
+        hal,
+        timeout,
+        // construct the outgoing message
+        (ActorRef&lt;Hal.HalResponse&gt; ref) -&gt; new Hal.OpenThePodBayDoorsPlease(ref),
+        // adapt the response (or failure to respond)
+        (response, throwable) -&gt; {
+          if (response != null) {
+            return new AdaptedResponse(response.message);
+          } else {
+            return new AdaptedResponse(&quot;Request failed&quot;);
+          }
+        });
+
+    // we can also tie in request context into an interaction, it is safe to look at
+    // actor internal state from the transformation function, but remember that it may have
+    // changed at the time the response arrives and the transformation is done, best is to
+    // use immutable state we have closed over like here.
+    final int requestId = 1;
+    context.ask(
+        Hal.HalResponse.class,
+        hal,
+        timeout,
+        // construct the outgoing message
+        (ActorRef&lt;Hal.HalResponse&gt; ref) -&gt; new Hal.OpenThePodBayDoorsPlease(ref),
+        // adapt the response (or failure to respond)
+        (response, throwable) -&gt; {
+          if (response != null) {
+            return new AdaptedResponse(requestId + &quot;: &quot; + response.message);
+          } else {
+            return new AdaptedResponse(requestId + &quot;: Request failed&quot;);
+          }
+        });
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        // the adapted message ends up being processed like any other
+        // message sent to the actor
+        .onMessage(AdaptedResponse.class, this::onAdaptedResponse)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onAdaptedResponse(AdaptedResponse response) {
+    getContext().getLog().info(&quot;Got response from HAL: {}&quot;, response.message);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>The response adapting function is running in the receiving actor and can safely access its state, but if it throws an exception the actor is stopped.</p>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Single response queries</li>
+  <li>An actor needs to know that the message was processed before continuing</li>
+  <li>To allow an actor to resend if a timely response is not produced</li>
+  <li>To keep track of outstanding requests and not overwhelm a recipient with messages (&ldquo;backpressure&rdquo;)</li>
+  <li>Context should be attached to the interaction but the protocol does not support that (request id, what query the response was for)</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>There can only be a single response to one <code>ask</code> (see <a href="interaction-patterns.html#per-session-child-actor">per session child Actor</a>)</li>
+  <li>When <code>ask</code> times out, the receiving actor does not know and may still process it to completion, or even start processing it after the fact</li>
+  <li>Finding a good value for the timeout, especially when <code>ask</code> triggers chained <code>ask</code>s in the receiving actor. You want a short timeout to be responsive and answer back to the requester, but at the same time you do not want to have many false positives</li>
+</ul>
+<a id="outside-ask"></a>
+<h2><a href="#request-response-with-ask-from-outside-an-actor" name="request-response-with-ask-from-outside-an-actor" class="anchor"><span class="anchor-link"></span></a>Request-Response with ask from outside an Actor</h2>
+<p>Sometimes, you need to interact with actors from the outside of the actor system, this can be done with fire-and-forget as described above or through another version of <code>ask</code> that returns a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future[Response]</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage&lt;Response&gt;</code></a></span> that is either completed with a successful response or failed with a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/TimeoutException.html" title="java.util.concurrent.TimeoutException"><code>TimeoutException</code></a> if there was no response within the specified timeout.</p>
+<p><span class="group-scala">To do this we use <code>ask</code> (or the symbolic <code>?</code>) implicitly added to <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/ActorRef.html" title="pekko.actor.typed.ActorRef"><code>ActorRef</code></a> by <code>org.apache.pekko.actor.typed.scaladsl.AskPattern._</code> to send a message to an actor and get a <code>Future[Response]</code> back. <code>ask</code> takes implicit <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/util/Timeout.html" title="pekko.util.Timeout"><code>Timeout</code></a> and <a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a> parameters.</span> <span class="group-java">To do this we use <code>org.apache.pekko.actor.typed.javadsl.AskPattern.ask</code> to send a message to an actor and get a <code>CompletionState[Response]</code> back.</span></p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/ask-from-outside.png" alt="ask-from-outside.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L465-L510" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object CookieFabric {
+  sealed trait Command
+  case class GiveMeCookies(count: Int, replyTo: ActorRef[Reply]) extends Command
+
+  sealed trait Reply
+  case class Cookies(count: Int) extends Reply
+  case class InvalidRequest(reason: String) extends Reply
+
+  def apply(): Behaviors.Receive[CookieFabric.GiveMeCookies] =
+    Behaviors.receiveMessage { message =&gt;
+      if (message.count &gt;= 5)
+        message.replyTo ! InvalidRequest(&quot;Too many cookies.&quot;)
+      else
+        message.replyTo ! Cookies(message.count)
+      Behaviors.same
+    }
+}
+
+import org.apache.pekko
+import pekko.actor.typed.scaladsl.AskPattern._
+import pekko.util.Timeout
+
+// asking someone requires a timeout if the timeout hits without response
+// the ask is failed with a TimeoutException
+implicit val timeout: Timeout = 3.seconds
+// implicit ActorSystem in scope
+implicit val system: ActorSystem[_] = theSystem
+
+val result: Future[CookieFabric.Reply] = cookieFabric.ask(ref =&gt; CookieFabric.GiveMeCookies(3, ref))
+
+// the response callback will be executed on this execution context
+implicit val ec = system.executionContext
+
+result.onComplete {
+  case Success(CookieFabric.Cookies(count))         =&gt; println(s&quot;Yay, $count cookies!&quot;)
+  case Success(CookieFabric.InvalidRequest(reason)) =&gt; println(s&quot;No cookies for me. $reason&quot;)
+  case Failure(ex)                                  =&gt; println(s&quot;Boo! didn&#39;t get cookies: ${ex.getMessage}&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L637-L715" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class CookieFabric extends AbstractBehavior&lt;CookieFabric.Command&gt; {
+
+  interface Command {}
+
+  public static class GiveMeCookies implements Command {
+    public final int count;
+    public final ActorRef&lt;Reply&gt; replyTo;
+
+    public GiveMeCookies(int count, ActorRef&lt;Reply&gt; replyTo) {
+      this.count = count;
+      this.replyTo = replyTo;
+    }
+  }
+
+  interface Reply {}
+
+  public static class Cookies implements Reply {
+    public final int count;
+
+    public Cookies(int count) {
+      this.count = count;
+    }
+  }
+
+  public static class InvalidRequest implements Reply {
+    public final String reason;
+
+    public InvalidRequest(String reason) {
+      this.reason = reason;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(CookieFabric::new);
+  }
+
+  private CookieFabric(ActorContext&lt;Command&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder().onMessage(GiveMeCookies.class, this::onGiveMeCookies).build();
+  }
+
+  private Behavior&lt;Command&gt; onGiveMeCookies(GiveMeCookies request) {
+    if (request.count &gt;= 5) request.replyTo.tell(new InvalidRequest(&quot;Too many cookies.&quot;));
+    else request.replyTo.tell(new Cookies(request.count));
+
+    return this;
+  }
+}
+
+  public void askAndPrint(
+      ActorSystem&lt;Void&gt; system, ActorRef&lt;CookieFabric.Command&gt; cookieFabric) {
+    CompletionStage&lt;CookieFabric.Reply&gt; result =
+        AskPattern.ask(
+            cookieFabric,
+            replyTo -&gt; new CookieFabric.GiveMeCookies(3, replyTo),
+            // asking someone requires a timeout and a scheduler, if the timeout hits without
+            // response the ask is failed with a TimeoutException
+            Duration.ofSeconds(3),
+            system.scheduler());
+
+    result.whenComplete(
+        (reply, failure) -&gt; {
+          if (reply instanceof CookieFabric.Cookies)
+            System.out.println(&quot;Yay, &quot; + ((CookieFabric.Cookies) reply).count + &quot; cookies!&quot;);
+          else if (reply instanceof CookieFabric.InvalidRequest)
+            System.out.println(
+                &quot;No cookies for me. &quot; + ((CookieFabric.InvalidRequest) reply).reason);
+          else System.out.println(&quot;Boo! didn&#39;t get cookies in time. &quot; + failure);
+        });
+  }</code></pre></dd>
+</dl>
+<p>Note that validation errors are also explicit in the message protocol. The <code>GiveMeCookies</code> request can reply with <code>Cookies</code> or <code>InvalidRequest</code>. The requestor has to decide how to handle an <code>InvalidRequest</code> reply. Sometimes it should be treated as a failed <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> and for that the reply can be mapped on the requestor side. See also the <a href="#generic-response-wrapper">Generic response wrapper</a> for replies that are either a success or an error.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L516-L525" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val cookies: Future[CookieFabric.Cookies] =
+  cookieFabric.ask[CookieFabric.Reply](ref =&gt; CookieFabric.GiveMeCookies(3, ref)).flatMap {
+    case c: CookieFabric.Cookies             =&gt; Future.successful(c)
+    case CookieFabric.InvalidRequest(reason) =&gt; Future.failed(new IllegalArgumentException(reason))
+  }
+
+cookies.onComplete {
+  case Success(CookieFabric.Cookies(count)) =&gt; println(s&quot;Yay, $count cookies!&quot;)
+  case Failure(ex)                          =&gt; println(s&quot;Boo! didn&#39;t get cookies: ${ex.getMessage}&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L721-L748" target="_blank" title="Go to snippet source">source</a><code class="language-java">CompletionStage&lt;CookieFabric.Reply&gt; result =
+    AskPattern.ask(
+        cookieFabric,
+        replyTo -&gt; new CookieFabric.GiveMeCookies(3, replyTo),
+        Duration.ofSeconds(3),
+        system.scheduler());
+
+CompletionStage&lt;CookieFabric.Cookies&gt; cookies =
+    result.thenCompose(
+        (CookieFabric.Reply reply) -&gt; {
+          if (reply instanceof CookieFabric.Cookies) {
+            return CompletableFuture.completedFuture((CookieFabric.Cookies) reply);
+          } else if (reply instanceof CookieFabric.InvalidRequest) {
+            CompletableFuture&lt;CookieFabric.Cookies&gt; failed = new CompletableFuture&lt;&gt;();
+            failed.completeExceptionally(
+                new IllegalArgumentException(((CookieFabric.InvalidRequest) reply).reason));
+            return failed;
+          } else {
+            throw new IllegalStateException(&quot;Unexpected reply: &quot; + reply.getClass());
+          }
+        });
+
+cookies.whenComplete(
+    (cookiesReply, failure) -&gt; {
+      if (cookiesReply != null)
+        System.out.println(&quot;Yay, &quot; + cookiesReply.count + &quot; cookies!&quot;);
+      else System.out.println(&quot;Boo! didn&#39;t get cookies in time. &quot; + failure);
+    });</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Querying an actor from outside of the actor system</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>It is easy to accidentally close over and unsafely mutable state with the callbacks on the returned <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> as those will be executed on a different thread</li>
+  <li>There can only be a single response to one <code>ask</code> (see <a href="interaction-patterns.html#per-session-child-actor">per session child Actor</a>)</li>
+  <li>When <code>ask</code> times out, the receiving actor does not know and may still process it to completion, or even start processing it after the fact</li>
+</ul>
+<h2><a href="#generic-response-wrapper" name="generic-response-wrapper" class="anchor"><span class="anchor-link"></span></a>Generic response wrapper</h2>
+<p>In many cases the response can either be a successful result or an error (a validation error that the command was invalid for example). Having to define two response classes and a shared supertype for every request type can be repetitive, especially in a cluster context where you also have to make sure the messages can be serialized to be sent over the network.</p>
+<p>To help with this a generic status-response type is included in Pekko: <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/StatusReply.html" title="org.apache.pekko.pattern.StatusReply"><code>StatusReply</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/StatusReply.html" title="org.apache.pekko.pattern.StatusReply"><code>StatusReply</code></a></span>, everywhere where <code>ask</code> can be used there is also a second method <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/typed/javadsl/ActorFlow$.html#askWithStatus(int,org.apache.pekko.actor.typed.ActorRef,java.time.Duration,java.util.function.BiFunction)" title="org.apache.pekko.stream.typed.javadsl.ActorFlow"><code>askWithStatus</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/typed/scaladsl/ActorFlow$.html#askWithStatus[I,Q,A](parallelism:Int)(ref:org.apache.pekko.actor.typed.ActorRef[Q])(makeMessage:(I,org.apache.pekko.actor.typed.ActorRef[org.apache.pekko.pattern.StatusReply[A]])=%3EQ)(implicittimeout:org.apache.pekko.util.Timeout):org.apache.pekko.stream.scaladsl.Flow[I,A,org.apache.pekko.NotUsed]" title="org.apache.pekko.stream.typed.scaladsl.ActorFlow"><code>askWithStatus</code></a></span> which, given that the response is a <code>StatusReply</code> will unwrap successful responses and help with handling validation errors. Pekko includes pre-built serializers for the type, so in the normal use case a clustered application only needs to provide a serializer for the successful result.</p>
+<p>For the case where the successful reply does not contain an actual value but is more of an acknowledgment there is a pre defined <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/StatusReply$.html#Ack:org.apache.pekko.pattern.StatusReply[org.apache.pekko.Done]" title="pekko.pattern.StatusReply"><code>StatusReply.Ack</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/StatusReply$.html#ack()" title="pekko.pattern.StatusReply"><code>StatusReply.ack()</code></a></span> of type <span class="group-scala"><code>StatusReply[Done]</code></span><span class="group-java"><code>StatusReply&lt;Done&gt;</code></span>.</p>
+<p>Errors are preferably sent as a text describing what is wrong, but using exceptions to attach a type is also possible.</p>
+<p><strong>Example actor to actor ask:</strong></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L310-L351" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Hal {
+  sealed trait Command
+  case class OpenThePodBayDoorsPlease(replyTo: ActorRef[StatusReply[String]]) extends Command
+
+  def apply(): Behaviors.Receive[Hal.Command] =
+    Behaviors.receiveMessage[Command] {
+      case OpenThePodBayDoorsPlease(replyTo) =&gt;
+        // reply with a validation error description
+        replyTo ! StatusReply.Error(&quot;I&#39;m sorry, Dave. I&#39;m afraid I can&#39;t do that.&quot;)
+        Behaviors.same
+    }
+}
+
+object Dave {
+
+  sealed trait Command
+  // this is a part of the protocol that is internal to the actor itself
+  private case class AdaptedResponse(message: String) extends Command
+
+  def apply(hal: ActorRef[Hal.Command]): Behavior[Dave.Command] =
+    Behaviors.setup[Command] { context =&gt;
+      // asking someone requires a timeout, if the timeout hits without response
+      // the ask is failed with a TimeoutException
+      implicit val timeout: Timeout = 3.seconds
+
+      // A StatusReply.Success(m) ends up as a Success(m) here, while a
+      // StatusReply.Error(text) becomes a Failure(ErrorMessage(text))
+      context.askWithStatus(hal, Hal.OpenThePodBayDoorsPlease.apply) {
+        case Success(message)                        =&gt; AdaptedResponse(message)
+        case Failure(StatusReply.ErrorMessage(text)) =&gt; AdaptedResponse(s&quot;Request denied: $text&quot;)
+        case Failure(_)                              =&gt; AdaptedResponse(&quot;Request failed&quot;)
+      }
+
+      Behaviors.receiveMessage {
+        // the adapted message ends up being processed like any other
+        // message sent to the actor
+        case AdaptedResponse(message) =&gt;
+          context.log.info(&quot;Got response from hal: {}&quot;, message)
+          Behaviors.same
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsAskWithStatusTest.java#L24-L135" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.pattern.StatusReply;
+
+public class Hal extends AbstractBehavior&lt;Hal.Command&gt; {
+
+  public static Behavior&lt;Hal.Command&gt; create() {
+    return Behaviors.setup(Hal::new);
+  }
+
+  private Hal(ActorContext&lt;Hal.Command&gt; context) {
+    super(context);
+  }
+
+  public interface Command {}
+
+  public static final class OpenThePodBayDoorsPlease implements Hal.Command {
+    public final ActorRef&lt;StatusReply&lt;String&gt;&gt; respondTo;
+
+    public OpenThePodBayDoorsPlease(ActorRef&lt;StatusReply&lt;String&gt;&gt; respondTo) {
+      this.respondTo = respondTo;
+    }
+  }
+
+  @Override
+  public Receive&lt;Hal.Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Hal.OpenThePodBayDoorsPlease.class, this::onOpenThePodBayDoorsPlease)
+        .build();
+  }
+
+  private Behavior&lt;Hal.Command&gt; onOpenThePodBayDoorsPlease(
+      Hal.OpenThePodBayDoorsPlease message) {
+    message.respondTo.tell(StatusReply.error(&quot;I&#39;m sorry, Dave. I&#39;m afraid I can&#39;t do that.&quot;));
+    return this;
+  }
+}
+
+public class Dave extends AbstractBehavior&lt;Dave.Command&gt; {
+
+  public interface Command {}
+
+  // this is a part of the protocol that is internal to the actor itself
+  private static final class AdaptedResponse implements Dave.Command {
+    public final String message;
+
+    public AdaptedResponse(String message) {
+      this.message = message;
+    }
+  }
+
+  public static Behavior&lt;Dave.Command&gt; create(ActorRef&lt;Hal.Command&gt; hal) {
+    return Behaviors.setup(context -&gt; new Dave(context, hal));
+  }
+
+  private Dave(ActorContext&lt;Dave.Command&gt; context, ActorRef&lt;Hal.Command&gt; hal) {
+    super(context);
+
+    // asking someone requires a timeout, if the timeout hits without response
+    // the ask is failed with a TimeoutException
+    final Duration timeout = Duration.ofSeconds(3);
+
+    context.askWithStatus(
+        String.class,
+        hal,
+        timeout,
+        // construct the outgoing message
+        (ActorRef&lt;StatusReply&lt;String&gt;&gt; ref) -&gt; new Hal.OpenThePodBayDoorsPlease(ref),
+        // adapt the response (or failure to respond)
+        (response, throwable) -&gt; {
+          if (response != null) {
+            // a ReponseWithStatus.success(m) is unwrapped and passed as response
+            return new Dave.AdaptedResponse(response);
+          } else {
+            // a ResponseWithStatus.error will end up as a StatusReply.ErrorMessage()
+            // exception here
+            return new Dave.AdaptedResponse(&quot;Request failed: &quot; + throwable.getMessage());
+          }
+        });
+  }
+
+  @Override
+  public Receive&lt;Dave.Command&gt; createReceive() {
+    return newReceiveBuilder()
+        // the adapted message ends up being processed like any other
+        // message sent to the actor
+        .onMessage(Dave.AdaptedResponse.class, this::onAdaptedResponse)
+        .build();
+  }
+
+  private Behavior&lt;Dave.Command&gt; onAdaptedResponse(Dave.AdaptedResponse response) {
+    getContext().getLog().info(&quot;Got response from HAL: {}&quot;, response.message);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>A validation error is turned into a <code>Failure</code> for the message adapter. In this case we are explicitly handling the validation error separately from other ask failures.</p>
+<p><strong>Example ask from the outside:</strong></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L533-L575" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object CookieFabric {
+  sealed trait Command
+  case class GiveMeCookies(count: Int, replyTo: ActorRef[StatusReply[Cookies]]) extends Command
+  case class Cookies(count: Int)
+
+  def apply(): Behaviors.Receive[CookieFabric.GiveMeCookies] =
+    Behaviors.receiveMessage { message =&gt;
+      if (message.count &gt;= 5)
+        message.replyTo ! StatusReply.Error(&quot;Too many cookies.&quot;)
+      else
+        message.replyTo ! StatusReply.Success(Cookies(message.count))
+      Behaviors.same
+    }
+}
+
+import org.apache.pekko
+import pekko.actor.typed.scaladsl.AskPattern._
+import pekko.util.Timeout
+
+// asking someone requires a timeout if the timeout hits without response
+// the ask is failed with a TimeoutException
+implicit val timeout: Timeout = 3.seconds
+// implicit ActorSystem in scope
+implicit val system: ActorSystem[_] = theSystem
+
+val result: Future[CookieFabric.Cookies] = cookieFabric.askWithStatus(ref =&gt; CookieFabric.GiveMeCookies(3, ref))
+
+// the response callback will be executed on this execution context
+implicit val ec = system.executionContext
+
+result.onComplete {
+  case Success(CookieFabric.Cookies(count))      =&gt; println(s&quot;Yay, $count cookies!&quot;)
+  case Failure(StatusReply.ErrorMessage(reason)) =&gt; println(s&quot;No cookies for me. $reason&quot;)
+  case Failure(ex)                               =&gt; println(s&quot;Boo! didn&#39;t get cookies: ${ex.getMessage}&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsAskWithStatusTest.java#L142-L210" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class CookieFabric extends AbstractBehavior&lt;CookieFabric.Command&gt; {
+
+  interface Command {}
+
+  public static class GiveMeCookies implements CookieFabric.Command {
+    public final int count;
+    public final ActorRef&lt;StatusReply&lt;CookieFabric.Cookies&gt;&gt; replyTo;
+
+    public GiveMeCookies(int count, ActorRef&lt;StatusReply&lt;CookieFabric.Cookies&gt;&gt; replyTo) {
+      this.count = count;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Cookies {
+    public final int count;
+
+    public Cookies(int count) {
+      this.count = count;
+    }
+  }
+
+  public static Behavior&lt;CookieFabric.Command&gt; create() {
+    return Behaviors.setup(CookieFabric::new);
+  }
+
+  private CookieFabric(ActorContext&lt;CookieFabric.Command&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;CookieFabric.Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(CookieFabric.GiveMeCookies.class, this::onGiveMeCookies)
+        .build();
+  }
+
+  private Behavior&lt;CookieFabric.Command&gt; onGiveMeCookies(CookieFabric.GiveMeCookies request) {
+    if (request.count &gt;= 5) request.replyTo.tell(StatusReply.error(&quot;Too many cookies.&quot;));
+    else request.replyTo.tell(StatusReply.success(new CookieFabric.Cookies(request.count)));
+
+    return this;
+  }
+}
+
+  public void askAndPrint(
+      ActorSystem&lt;Void&gt; system, ActorRef&lt;CookieFabric.Command&gt; cookieFabric) {
+    CompletionStage&lt;CookieFabric.Cookies&gt; result =
+        AskPattern.askWithStatus(
+            cookieFabric,
+            replyTo -&gt; new CookieFabric.GiveMeCookies(3, replyTo),
+            // asking someone requires a timeout and a scheduler, if the timeout hits without
+            // response the ask is failed with a TimeoutException
+            Duration.ofSeconds(3),
+            system.scheduler());
+
+    result.whenComplete(
+        (reply, failure) -&gt; {
+          if (reply != null) System.out.println(&quot;Yay, &quot; + reply.count + &quot; cookies!&quot;);
+          else if (failure instanceof StatusReply.ErrorMessage)
+            System.out.println(&quot;No cookies for me. &quot; + failure.getMessage());
+          else System.out.println(&quot;Boo! didn&#39;t get cookies in time. &quot; + failure);
+        });
+  }</code></pre></dd>
+</dl>
+<p>Note that validation errors are also explicit in the message protocol, but encoded as the wrapper type, constructed using <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/StatusReply$$Error$.html#apply[T](errorMessage:String):org.apache.pekko.pattern.StatusReply[T]" title="pekko.pattern.StatusReply$$Error"><code>StatusReply.Error(text)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/StatusReply$.html#error(java.lang.String)" title="pekko.pattern.StatusReply"><code>StatusReply.error(text)</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L581-L589" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val cookies: Future[CookieFabric.Cookies] =
+  cookieFabric.askWithStatus[CookieFabric.Cookies](ref =&gt; CookieFabric.GiveMeCookies(3, ref)).flatMap {
+    case c: CookieFabric.Cookies =&gt; Future.successful(c)
+  }
+
+cookies.onComplete {
+  case Success(CookieFabric.Cookies(count)) =&gt; println(s&quot;Yay, $count cookies!&quot;)
+  case Failure(ex)                          =&gt; println(s&quot;Boo! didn&#39;t get cookies: ${ex.getMessage}&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsAskWithStatusTest.java#L216-L228" target="_blank" title="Go to snippet source">source</a><code class="language-java">CompletionStage&lt;CookieFabric.Cookies&gt; cookies =
+    AskPattern.askWithStatus(
+        cookieFabric,
+        replyTo -&gt; new CookieFabric.GiveMeCookies(3, replyTo),
+        Duration.ofSeconds(3),
+        system.scheduler());
+
+cookies.whenComplete(
+    (cookiesReply, failure) -&gt; {
+      if (cookiesReply != null)
+        System.out.println(&quot;Yay, &quot; + cookiesReply.count + &quot; cookies!&quot;);
+      else System.out.println(&quot;Boo! didn&#39;t get cookies in time. &quot; + failure);
+    });</code></pre></dd>
+</dl>
+<h2><a href="#ignoring-replies" name="ignoring-replies" class="anchor"><span class="anchor-link"></span></a>Ignoring replies</h2>
+<p>In some situations an actor has a response for a particular request message but you are not interested in the response. In this case you can pass <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/ActorSystem.html#ignoreRef[U]:org.apache.pekko.actor.typed.ActorRef[U]" title="pekko.actor.typed.ActorSystem"><code>system.ignoreRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/ActorSystem.html#ignoreRef()" title="pekko.actor.typed.ActorSystem"><code>system.ignoreRef()</code></a></span> turning the request-response into a fire-and-forget.</p>
+<p><span class="group-scala"><code>system.ignoreRef</code></span><span class="group-java"><code>system.ignoreRef()</code></span>, as the name indicates, returns an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that ignores any message sent to it.</p>
+<p>With the same protocol as the <a href="interaction-patterns.html#request-response">request response</a> above, if the sender would prefer to ignore the reply it could pass <span class="group-scala"><code>system.ignoreRef</code></span><span class="group-java"><code>system.ignoreRef()</code></span> for the <code>replyTo</code>, which it can access through <span class="group-scala"><code>ActorContext.system.ignoreRef</code></span><span class="group-java"><code>ActorContext.getSystem().ignoreRef()</code></span>. </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L105" target="_blank" title="Go to snippet source">source</a><code class="language-scala">cookieFabric ! CookieFabric.Request(&quot;don&#39;t send cookies back&quot;, context.system.ignoreRef)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L113-L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">cookieFabric.tell(
+    new CookieFabric.Request(&quot;don&#39;t send cookies back&quot;, context.getSystem().ignoreRef()));</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Sending a message for which the protocol defines a reply, but you are not interested in getting the reply</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<p>The returned <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> ignores all messages sent to it, therefore it should be used carefully.</p>
+<ul>
+  <li>Passing it around inadvertently as if it was a normal <code>ActorRef</code> may result in broken actor-to-actor interactions.</li>
+  <li>Using it when performing an <code>ask</code> from outside the Actor System will cause the <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> returned by the <code>ask</code> to timeout since it will never complete.</li>
+  <li>Finally, it&rsquo;s legal to <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#watch(org.apache.pekko.actor.typed.ActorRef)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>watch</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#watch[U](other:org.apache.pekko.actor.typed.ActorRef[U]):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>watch</code></a></span> it, but since it&rsquo;s of a special kind, it never terminates and therefore you will never receive a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span> signal from it.</li>
+</ul>
+<h2><a href="#send-future-result-to-self" name="send-future-result-to-self" class="anchor"><span class="anchor-link"></span></a>Send Future result to self</h2>
+<p>When using an API that returns a <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> from an actor it&rsquo;s common that you would like to use the value of the response in the actor when the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> is completed. For this purpose the <code>ActorContext</code> provides a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#pipeToSelf(java.util.concurrent.CompletionStage,org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>pipeToSelf</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#pipeToSelf[Value](future:scala.concurrent.Future[Value])(mapResult:scala.util.Try[Value]=%3ET):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>pipeToSelf</code></a></span> method.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/pipe-to-self.png" alt="pipe-to-self.png" /></p>
+<p>An actor, <code>CustomerRepository</code>, is invoking a method on <code>CustomerDataAccess</code> that returns a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L597-L646" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>trait CustomerDataAccess {
+  def update(value: Customer): Future[Done]
+}
+
+final case class Customer(id: String, version: Long, name: String, address: String)
+
+object CustomerRepository {
+  sealed trait Command
+
+  final case class Update(value: Customer, replyTo: ActorRef[UpdateResult]) extends Command
+  sealed trait UpdateResult
+  final case class UpdateSuccess(id: String) extends UpdateResult
+  final case class UpdateFailure(id: String, reason: String) extends UpdateResult
+  private final case class WrappedUpdateResult(result: UpdateResult, replyTo: ActorRef[UpdateResult])
+      extends Command
+
+  private val MaxOperationsInProgress = 10
+
+  def apply(dataAccess: CustomerDataAccess): Behavior[Command] = {
+    next(dataAccess, operationsInProgress = 0)
+  }
+
+  private def next(dataAccess: CustomerDataAccess, operationsInProgress: Int): Behavior[Command] = {
+    Behaviors.receive { (context, command) =&gt;
+      command match {
+        case Update(value, replyTo) =&gt;
+          if (operationsInProgress == MaxOperationsInProgress) {
+            replyTo ! UpdateFailure(value.id, s&quot;Max $MaxOperationsInProgress concurrent operations supported&quot;)
+            Behaviors.same
+          } else {
+            val futureResult = dataAccess.update(value)
+            context.pipeToSelf(futureResult) {
+              // map the Future value to a message, handled by this actor
+              case Success(_) =&gt; WrappedUpdateResult(UpdateSuccess(value.id), replyTo)
+              case Failure(e) =&gt; WrappedUpdateResult(UpdateFailure(value.id, e.getMessage), replyTo)
+            }
+            // increase operationsInProgress counter
+            next(dataAccess, operationsInProgress + 1)
+          }
+
+        case WrappedUpdateResult(result, replyTo) =&gt;
+          // send result to original requestor
+          replyTo ! result
+          // decrease operationsInProgress counter
+          next(dataAccess, operationsInProgress - 1)
+      }
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L756-L873" target="_blank" title="Go to snippet source">source</a><code class="language-java">public interface CustomerDataAccess {
+  CompletionStage&lt;Done&gt; update(Customer customer);
+}
+
+public class Customer {
+  public final String id;
+  public final long version;
+  public final String name;
+  public final String address;
+
+  public Customer(String id, long version, String name, String address) {
+    this.id = id;
+    this.version = version;
+    this.name = name;
+    this.address = address;
+  }
+}
+
+public class CustomerRepository extends AbstractBehavior&lt;CustomerRepository.Command&gt; {
+
+  private static final int MAX_OPERATIONS_IN_PROGRESS = 10;
+
+  interface Command {}
+
+  public static class Update implements Command {
+    public final Customer customer;
+    public final ActorRef&lt;OperationResult&gt; replyTo;
+
+    public Update(Customer customer, ActorRef&lt;OperationResult&gt; replyTo) {
+      this.customer = customer;
+      this.replyTo = replyTo;
+    }
+  }
+
+  interface OperationResult {}
+
+  public static class UpdateSuccess implements OperationResult {
+    public final String id;
+
+    public UpdateSuccess(String id) {
+      this.id = id;
+    }
+  }
+
+  public static class UpdateFailure implements OperationResult {
+    public final String id;
+    public final String reason;
+
+    public UpdateFailure(String id, String reason) {
+      this.id = id;
+      this.reason = reason;
+    }
+  }
+
+  private static class WrappedUpdateResult implements Command {
+    public final OperationResult result;
+    public final ActorRef&lt;OperationResult&gt; replyTo;
+
+    private WrappedUpdateResult(OperationResult result, ActorRef&lt;OperationResult&gt; replyTo) {
+      this.result = result;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(CustomerDataAccess dataAccess) {
+    return Behaviors.setup(context -&gt; new CustomerRepository(context, dataAccess));
+  }
+
+  private final CustomerDataAccess dataAccess;
+  private int operationsInProgress = 0;
+
+  private CustomerRepository(ActorContext&lt;Command&gt; context, CustomerDataAccess dataAccess) {
+    super(context);
+    this.dataAccess = dataAccess;
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Update.class, this::onUpdate)
+        .onMessage(WrappedUpdateResult.class, this::onUpdateResult)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onUpdate(Update command) {
+    if (operationsInProgress == MAX_OPERATIONS_IN_PROGRESS) {
+      command.replyTo.tell(
+          new UpdateFailure(
+              command.customer.id,
+              &quot;Max &quot; + MAX_OPERATIONS_IN_PROGRESS + &quot; concurrent operations supported&quot;));
+    } else {
+      // increase operationsInProgress counter
+      operationsInProgress++;
+      CompletionStage&lt;Done&gt; futureResult = dataAccess.update(command.customer);
+      getContext()
+          .pipeToSelf(
+              futureResult,
+              (ok, exc) -&gt; {
+                if (exc == null)
+                  return new WrappedUpdateResult(
+                      new UpdateSuccess(command.customer.id), command.replyTo);
+                else
+                  return new WrappedUpdateResult(
+                      new UpdateFailure(command.customer.id, exc.getMessage()),
+                      command.replyTo);
+              });
+    }
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onUpdateResult(WrappedUpdateResult wrapped) {
+    // decrease operationsInProgress counter
+    operationsInProgress--;
+    // send result to original requestor
+    wrapped.replyTo.tell(wrapped.result);
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>It could be tempting to just use <span class="group-scala"><code>onComplete on the Future</code></span><span class="group-java"><code>a callback on the CompletionStage</code></span>, but that introduces the risk of accessing internal state of the actor that is not thread-safe from an external thread. For example, the <code>numberOfPendingOperations</code> counter in above example can&rsquo;t be accessed from such callback. Therefore it is better to map the result to a message and perform further processing when receiving that message.</p>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Accessing APIs that are returning <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> from an actor, such as a database or  an external service</li>
+  <li>The actor needs to continue processing when the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> has completed</li>
+  <li>Keep context from the original request and use that when the <span class="group-scala"><code>Future</code></span><span class="group-java"><code>CompletionStage</code></span> has completed,  for example an <code>replyTo</code> actor reference</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>Boilerplate of adding wrapper messages for the results</li>
+</ul>
+<h2><a href="#per-session-child-actor" name="per-session-child-actor" class="anchor"><span class="anchor-link"></span></a>Per session child Actor</h2>
+<p>In some cases a complete response to a request can only be created and sent back after collecting multiple answers from other actors. For these kinds of interaction it can be good to delegate the work to a per &ldquo;session&rdquo; child actor. The child could also contain arbitrary logic to implement retrying, failing on timeout, tail chopping, progress inspection etc.</p>
+<p>Note that this is essentially how <code>ask</code> is implemented, if all you need is a single response with a timeout it is better to use <code>ask</code>.</p>
+<p>The child is created with the context it needs to do the work, including an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that it can respond to. When the complete result is there the child responds with the result and stops itself.</p>
+<p>As the protocol of the session actor is not a public API but rather an implementation detail of the parent actor, it may not always make sense to have an explicit protocol and adapt the messages of the actors that the session actor interacts with. For this use case it is possible to express that the actor can receive any message (<span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/Any.html" title="scala.Any"><code>Any</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="java.lang.Object"><code>Object</code></a></span>).</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/per-session-child.png" alt="per-session-child.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L363-L453" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// dummy data types just for this sample
+case class Keys()
+case class Wallet()
+
+
+object Home {
+  sealed trait Command
+  case class LeaveHome(who: String, replyTo: ActorRef[ReadyToLeaveHome]) extends Command
+  case class ReadyToLeaveHome(who: String, keys: Keys, wallet: Wallet)
+
+  def apply(): Behavior[Command] = {
+    Behaviors.setup[Command] { context =&gt;
+      val keyCabinet: ActorRef[KeyCabinet.GetKeys] = context.spawn(KeyCabinet(), &quot;key-cabinet&quot;)
+      val drawer: ActorRef[Drawer.GetWallet] = context.spawn(Drawer(), &quot;drawer&quot;)
+
+      Behaviors.receiveMessage[Command] {
+        case LeaveHome(who, replyTo) =&gt;
+          context.spawn(prepareToLeaveHome(who, replyTo, keyCabinet, drawer), s&quot;leaving-$who&quot;)
+          Behaviors.same
+      }
+    }
+  }
+
+  // per session actor behavior
+  def prepareToLeaveHome(
+      whoIsLeaving: String,
+      replyTo: ActorRef[ReadyToLeaveHome],
+      keyCabinet: ActorRef[KeyCabinet.GetKeys],
+      drawer: ActorRef[Drawer.GetWallet]): Behavior[NotUsed] = {
+    // we don&#39;t _really_ care about the actor protocol here as nobody will send us
+    // messages except for responses to our queries, so we just accept any kind of message
+    // but narrow that to more limited types when we interact
+    Behaviors
+      .setup[AnyRef] { context =&gt;
+        var wallet: Option[Wallet] = None
+        var keys: Option[Keys] = None
+
+        // we narrow the ActorRef type to any subtype of the actual type we accept
+        keyCabinet ! KeyCabinet.GetKeys(whoIsLeaving, context.self.narrow[Keys])
+        drawer ! Drawer.GetWallet(whoIsLeaving, context.self.narrow[Wallet])
+
+        def nextBehavior(): Behavior[AnyRef] =
+          (keys, wallet) match {
+            case (Some(w), Some(k)) =&gt;
+              // we got both, &quot;session&quot; is completed!
+              replyTo ! ReadyToLeaveHome(whoIsLeaving, w, k)
+              Behaviors.stopped
+
+            case _ =&gt;
+              Behaviors.same
+          }
+
+        Behaviors.receiveMessage {
+          case w: Wallet =&gt;
+            wallet = Some(w)
+            nextBehavior()
+          case k: Keys =&gt;
+            keys = Some(k)
+            nextBehavior()
+          case _ =&gt;
+            Behaviors.unhandled
+        }
+      }
+      .narrow[NotUsed] // we don&#39;t let anyone else know we accept anything
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L469-L630" target="_blank" title="Go to snippet source">source</a><code class="language-java">// dummy data types just for this sample
+public class Keys {}
+
+public class Wallet {}
+
+public class KeyCabinet {
+  public static class GetKeys {
+    public final String whoseKeys;
+    public final ActorRef&lt;Keys&gt; replyTo;
+
+    public GetKeys(String whoseKeys, ActorRef&lt;Keys&gt; respondTo) {
+      this.whoseKeys = whoseKeys;
+      this.replyTo = respondTo;
+    }
+  }
+
+  public static Behavior&lt;GetKeys&gt; create() {
+    return Behaviors.receiveMessage(KeyCabinet::onGetKeys);
+  }
+
+  private static Behavior&lt;GetKeys&gt; onGetKeys(GetKeys message) {
+    message.replyTo.tell(new Keys());
+    return Behaviors.same();
+  }
+}
+
+public class Drawer {
+
+  public static class GetWallet {
+    public final String whoseWallet;
+    public final ActorRef&lt;Wallet&gt; replyTo;
+
+    public GetWallet(String whoseWallet, ActorRef&lt;Wallet&gt; replyTo) {
+      this.whoseWallet = whoseWallet;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static Behavior&lt;GetWallet&gt; create() {
+    return Behaviors.receiveMessage(Drawer::onGetWallet);
+  }
+
+  private static Behavior&lt;GetWallet&gt; onGetWallet(GetWallet message) {
+    message.replyTo.tell(new Wallet());
+    return Behaviors.same();
+  }
+}
+
+public class Home {
+
+  public interface Command {}
+
+  public static class LeaveHome implements Command {
+    public final String who;
+    public final ActorRef&lt;ReadyToLeaveHome&gt; respondTo;
+
+    public LeaveHome(String who, ActorRef&lt;ReadyToLeaveHome&gt; respondTo) {
+      this.who = who;
+      this.respondTo = respondTo;
+    }
+  }
+
+  public static class ReadyToLeaveHome {
+    public final String who;
+    public final Keys keys;
+    public final Wallet wallet;
+
+    public ReadyToLeaveHome(String who, Keys keys, Wallet wallet) {
+      this.who = who;
+      this.keys = keys;
+      this.wallet = wallet;
+    }
+  }
+
+  private final ActorContext&lt;Command&gt; context;
+
+  private final ActorRef&lt;KeyCabinet.GetKeys&gt; keyCabinet;
+  private final ActorRef&lt;Drawer.GetWallet&gt; drawer;
+
+  private Home(ActorContext&lt;Command&gt; context) {
+    this.context = context;
+    this.keyCabinet = context.spawn(KeyCabinet.create(), &quot;key-cabinet&quot;);
+    this.drawer = context.spawn(Drawer.create(), &quot;drawer&quot;);
+  }
+
+  private Behavior&lt;Command&gt; behavior() {
+    return Behaviors.receive(Command.class)
+        .onMessage(LeaveHome.class, this::onLeaveHome)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onLeaveHome(LeaveHome message) {
+    context.spawn(
+        PrepareToLeaveHome.create(message.who, message.respondTo, keyCabinet, drawer),
+        &quot;leaving&quot; + message.who);
+    return Behaviors.same();
+  }
+
+  // actor behavior
+  public static Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(context -&gt; new Home(context).behavior());
+  }
+}
+
+// per session actor behavior
+class PrepareToLeaveHome extends AbstractBehavior&lt;Object&gt; {
+  static Behavior&lt;Object&gt; create(
+      String whoIsLeaving,
+      ActorRef&lt;Home.ReadyToLeaveHome&gt; replyTo,
+      ActorRef&lt;KeyCabinet.GetKeys&gt; keyCabinet,
+      ActorRef&lt;Drawer.GetWallet&gt; drawer) {
+    return Behaviors.setup(
+        context -&gt; new PrepareToLeaveHome(context, whoIsLeaving, replyTo, keyCabinet, drawer));
+  }
+
+  private final String whoIsLeaving;
+  private final ActorRef&lt;Home.ReadyToLeaveHome&gt; replyTo;
+  private final ActorRef&lt;KeyCabinet.GetKeys&gt; keyCabinet;
+  private final ActorRef&lt;Drawer.GetWallet&gt; drawer;
+  private Optional&lt;Wallet&gt; wallet = Optional.empty();
+  private Optional&lt;Keys&gt; keys = Optional.empty();
+
+  private PrepareToLeaveHome(
+      ActorContext&lt;Object&gt; context,
+      String whoIsLeaving,
+      ActorRef&lt;Home.ReadyToLeaveHome&gt; replyTo,
+      ActorRef&lt;KeyCabinet.GetKeys&gt; keyCabinet,
+      ActorRef&lt;Drawer.GetWallet&gt; drawer) {
+    super(context);
+    this.whoIsLeaving = whoIsLeaving;
+    this.replyTo = replyTo;
+    this.keyCabinet = keyCabinet;
+    this.drawer = drawer;
+  }
+
+  @Override
+  public Receive&lt;Object&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Wallet.class, this::onWallet)
+        .onMessage(Keys.class, this::onKeys)
+        .build();
+  }
+
+  private Behavior&lt;Object&gt; onWallet(Wallet wallet) {
+    this.wallet = Optional.of(wallet);
+    return completeOrContinue();
+  }
+
+  private Behavior&lt;Object&gt; onKeys(Keys keys) {
+    this.keys = Optional.of(keys);
+    return completeOrContinue();
+  }
+
+  private Behavior&lt;Object&gt; completeOrContinue() {
+    if (wallet.isPresent() &amp;&amp; keys.isPresent()) {
+      replyTo.tell(new Home.ReadyToLeaveHome(whoIsLeaving, keys.get(), wallet.get()));
+      return Behaviors.stopped();
+    } else {
+      return this;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>In an actual session child you would likely want to include some form of timeout as well (see <a href="interaction-patterns.html#scheduling-messages-to-self">scheduling messages to self</a>).</p>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>A single incoming request should result in multiple interactions with other actors before a result can be built,  for example aggregation of several results</li>
+  <li>You need to handle acknowledgement and retry messages for at-least-once delivery</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>Children have life cycles that must be managed to not create a resource leak, it can be easy to miss a scenario where the session actor is not stopped</li>
+  <li>It increases complexity, since each such child can execute concurrently with other children and the parent</li>
+</ul>
+<h2><a href="#general-purpose-response-aggregator" name="general-purpose-response-aggregator" class="anchor"><span class="anchor-link"></span></a>General purpose response aggregator</h2>
+<p>This is similar to above <a href="interaction-patterns.html#per-session-child-actor">Per session child Actor</a> pattern. Sometimes, you might end up repeating the same way of aggregating replies and want to extract that to a reusable actor.</p>
+<p>There are many variations of this pattern and that is the reason this is provided as a documentation example rather than a built in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> in Pekko. It is intended to be adjusted to your specific needs.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/aggregator.png" alt="aggregator.png" /></p>
+<p>This example is an aggregator of expected number of replies. Requests for quotes are sent with the given <code>sendRequests</code> function to the two hotel actors, which both speak different protocols. When both expected replies have been collected they are aggregated with the given <code>aggregateReplies</code> function and sent back to the <code>replyTo</code>. If replies don&rsquo;t arrive within the <code>timeout</code> the replies so far are aggregated and sent back to the <code>replyTo</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/AggregatorSpec.scala#L28-L77" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Hotel1 {
+  final case class RequestQuote(replyTo: ActorRef[Quote])
+  final case class Quote(hotel: String, price: BigDecimal)
+}
+object Hotel2 {
+  final case class RequestPrice(replyTo: ActorRef[Price])
+  final case class Price(hotel: String, price: BigDecimal)
+}
+
+// Any since no common type between Hotel1 and Hotel2
+type Reply = Any
+
+object HotelCustomer {
+  sealed trait Command
+  final case class Quote(hotel: String, price: BigDecimal)
+  final case class AggregatedQuotes(quotes: List[Quote]) extends Command
+
+  def apply(hotel1: ActorRef[Hotel1.RequestQuote], hotel2: ActorRef[Hotel2.RequestPrice]): Behavior[Command] = {
+
+    Behaviors.setup[Command] { context =&gt;
+      context.spawnAnonymous(
+        Aggregator[Reply, AggregatedQuotes](
+          sendRequests = { replyTo =&gt;
+            hotel1 ! Hotel1.RequestQuote(replyTo)
+            hotel2 ! Hotel2.RequestPrice(replyTo)
+          },
+          expectedReplies = 2,
+          context.self,
+          aggregateReplies = replies =&gt;
+            // The hotels have different protocols with different replies,
+            // convert them to `HotelCustomer.Quote` that this actor understands.
+            AggregatedQuotes(
+              replies
+                .map {
+                  case Hotel1.Quote(hotel, price) =&gt; Quote(hotel, price)
+                  case Hotel2.Price(hotel, price) =&gt; Quote(hotel, price)
+                  case unknown                    =&gt; throw new RuntimeException(s&quot;Unknown reply $unknown&quot;)
+                }
+                .sortBy(_.price)
+                .toList),
+          timeout = 5.seconds))
+
+      Behaviors.receiveMessage {
+        case AggregatedQuotes(quotes) =&gt;
+          context.log.info(&quot;Best {}&quot;, quotes.headOption.getOrElse(&quot;Quote N/A&quot;))
+          Behaviors.same
+      }
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/AggregatorTest.java#L97-L223" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Hotel1 {
+  public static class RequestQuote {
+    public final ActorRef&lt;Quote&gt; replyTo;
+
+    public RequestQuote(ActorRef&lt;Quote&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Quote {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Quote(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+}
+
+public class Hotel2 {
+  public static class RequestPrice {
+    public final ActorRef&lt;Price&gt; replyTo;
+
+    public RequestPrice(ActorRef&lt;Price&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static class Price {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Price(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+}
+
+public class HotelCustomer extends AbstractBehavior&lt;HotelCustomer.Command&gt; {
+
+  interface Command {}
+
+  public static class Quote {
+    public final String hotel;
+    public final BigDecimal price;
+
+    public Quote(String hotel, BigDecimal price) {
+      this.hotel = hotel;
+      this.price = price;
+    }
+  }
+
+  public static class AggregatedQuotes implements Command {
+    public final List&lt;Quote&gt; quotes;
+
+    public AggregatedQuotes(List&lt;Quote&gt; quotes) {
+      this.quotes = quotes;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(
+      ActorRef&lt;Hotel1.RequestQuote&gt; hotel1, ActorRef&lt;Hotel2.RequestPrice&gt; hotel2) {
+    return Behaviors.setup(context -&gt; new HotelCustomer(context, hotel1, hotel2));
+  }
+
+  public HotelCustomer(
+      ActorContext&lt;Command&gt; context,
+      ActorRef&lt;Hotel1.RequestQuote&gt; hotel1,
+      ActorRef&lt;Hotel2.RequestPrice&gt; hotel2) {
+    super(context);
+
+    Consumer&lt;ActorRef&lt;Object&gt;&gt; sendRequests =
+        replyTo -&gt; {
+          hotel1.tell(new Hotel1.RequestQuote(replyTo.narrow()));
+          hotel2.tell(new Hotel2.RequestPrice(replyTo.narrow()));
+        };
+
+    int expectedReplies = 2;
+    // Object since no common type between Hotel1 and Hotel2
+    context.spawnAnonymous(
+        Aggregator.create(
+            Object.class,
+            sendRequests,
+            expectedReplies,
+            context.getSelf(),
+            this::aggregateReplies,
+            Duration.ofSeconds(5)));
+  }
+
+  private AggregatedQuotes aggregateReplies(List&lt;Object&gt; replies) {
+    List&lt;Quote&gt; quotes =
+        replies.stream()
+            .map(
+                r -&gt; {
+                  // The hotels have different protocols with different replies,
+                  // convert them to `HotelCustomer.Quote` that this actor understands.
+                  if (r instanceof Hotel1.Quote) {
+                    Hotel1.Quote q = (Hotel1.Quote) r;
+                    return new Quote(q.hotel, q.price);
+                  } else if (r instanceof Hotel2.Price) {
+                    Hotel2.Price p = (Hotel2.Price) r;
+                    return new Quote(p.hotel, p.price);
+                  } else {
+                    throw new IllegalArgumentException(&quot;Unknown reply &quot; + r);
+                  }
+                })
+            .sorted((a, b) -&gt; a.price.compareTo(b.price))
+            .collect(Collectors.toList());
+
+    return new AggregatedQuotes(quotes);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(AggregatedQuotes.class, this::onAggregatedQuotes)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onAggregatedQuotes(AggregatedQuotes aggregated) {
+    if (aggregated.quotes.isEmpty()) getContext().getLog().info(&quot;Best Quote N/A&quot;);
+    else getContext().getLog().info(&quot;Best {}&quot;, aggregated.quotes.get(0));
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>The implementation of the <code>Aggregator</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/Aggregator.scala#L17-L65" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.collection.immutable
+import scala.concurrent.duration.FiniteDuration
+import scala.reflect.ClassTag
+
+import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.scaladsl.Behaviors
+
+object Aggregator {
+
+  sealed trait Command
+  private case object ReceiveTimeout extends Command
+  private case class WrappedReply[R](reply: R) extends Command
+
+  def apply[Reply: ClassTag, Aggregate](
+      sendRequests: ActorRef[Reply] =&gt; Unit,
+      expectedReplies: Int,
+      replyTo: ActorRef[Aggregate],
+      aggregateReplies: immutable.IndexedSeq[Reply] =&gt; Aggregate,
+      timeout: FiniteDuration): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      context.setReceiveTimeout(timeout, ReceiveTimeout)
+      val replyAdapter = context.messageAdapter[Reply](WrappedReply(_))
+      sendRequests(replyAdapter)
+
+      def collecting(replies: immutable.IndexedSeq[Reply]): Behavior[Command] = {
+        Behaviors.receiveMessage {
+          case WrappedReply(reply) =&gt;
+            val newReplies = replies :+ reply.asInstanceOf[Reply]
+            if (newReplies.size == expectedReplies) {
+              val result = aggregateReplies(newReplies)
+              replyTo ! result
+              Behaviors.stopped
+            } else
+              collecting(newReplies)
+
+          case ReceiveTimeout =&gt;
+            val aggregate = aggregateReplies(replies)
+            replyTo ! aggregate
+            Behaviors.stopped
+        }
+      }
+
+      collecting(Vector.empty)
+    }
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/Aggregator.java#L17-L114" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class Aggregator&lt;Reply, Aggregate&gt; extends AbstractBehavior&lt;Aggregator.Command&gt; {
+
+  interface Command {}
+
+  private enum ReceiveTimeout implements Command {
+    INSTANCE
+  }
+
+  private class WrappedReply implements Command {
+    final Reply reply;
+
+    private WrappedReply(Reply reply) {
+      this.reply = reply;
+    }
+  }
+
+  public static &lt;R, A&gt; Behavior&lt;Command&gt; create(
+      Class&lt;R&gt; replyClass,
+      Consumer&lt;ActorRef&lt;R&gt;&gt; sendRequests,
+      int expectedReplies,
+      ActorRef&lt;A&gt; replyTo,
+      Function&lt;List&lt;R&gt;, A&gt; aggregateReplies,
+      Duration timeout) {
+    return Behaviors.setup(
+        context -&gt;
+            new Aggregator&lt;R, A&gt;(
+                replyClass,
+                context,
+                sendRequests,
+                expectedReplies,
+                replyTo,
+                aggregateReplies,
+                timeout));
+  }
+
+  private final int expectedReplies;
+  private final ActorRef&lt;Aggregate&gt; replyTo;
+  private final Function&lt;List&lt;Reply&gt;, Aggregate&gt; aggregateReplies;
+  private final List&lt;Reply&gt; replies = new ArrayList&lt;&gt;();
+
+  private Aggregator(
+      Class&lt;Reply&gt; replyClass,
+      ActorContext&lt;Command&gt; context,
+      Consumer&lt;ActorRef&lt;Reply&gt;&gt; sendRequests,
+      int expectedReplies,
+      ActorRef&lt;Aggregate&gt; replyTo,
+      Function&lt;List&lt;Reply&gt;, Aggregate&gt; aggregateReplies,
+      Duration timeout) {
+    super(context);
+    this.expectedReplies = expectedReplies;
+    this.replyTo = replyTo;
+    this.aggregateReplies = aggregateReplies;
+
+    context.setReceiveTimeout(timeout, ReceiveTimeout.INSTANCE);
+
+    ActorRef&lt;Reply&gt; replyAdapter = context.messageAdapter(replyClass, WrappedReply::new);
+    sendRequests.accept(replyAdapter);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(WrappedReply.class, this::onReply)
+        .onMessage(ReceiveTimeout.class, notUsed -&gt; onReceiveTimeout())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onReply(WrappedReply wrappedReply) {
+    Reply reply = wrappedReply.reply;
+    replies.add(reply);
+    if (replies.size() == expectedReplies) {
+      Aggregate result = aggregateReplies.apply(replies);
+      replyTo.tell(result);
+      return Behaviors.stopped();
+    } else {
+      return this;
+    }
+  }
+
+  private Behavior&lt;Command&gt; onReceiveTimeout() {
+    Aggregate result = aggregateReplies.apply(replies);
+    replyTo.tell(result);
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Aggregating replies are performed in the same way at multiple places and should be extracted to a more general  purpose actor.</li>
+  <li>A single incoming request should result in multiple interactions with other actors before a result can be built,  for example aggregation of several results</li>
+  <li>You need to handle acknowledgement and retry messages for at-least-once delivery</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>Message protocols with generic types are difficult since the generic types are erased in runtime</li>
+  <li>Children have life cycles that must be managed to not create a resource leak, it can be easy to miss a scenario where the session actor is not stopped</li>
+  <li>It increases complexity, since each such child can execute concurrently with other children and the parent</li>
+</ul>
+<h2><a href="#latency-tail-chopping" name="latency-tail-chopping" class="anchor"><span class="anchor-link"></span></a>Latency tail chopping</h2>
+<p>This is a variation of above <a href="interaction-patterns.html#general-purpose-response-aggregator">General purpose response aggregator</a> pattern.</p>
+<p>The goal of this algorithm is to decrease tail latencies (&ldquo;chop off the tail latency&rdquo;) in situations where multiple destination actors can perform the same piece of work, and where an actor may occasionally respond more slowly than expected. In this case, sending the same work request (also known as a &ldquo;backup request&rdquo;) to another actor results in decreased response time - because it&rsquo;s less probable that multiple actors are under heavy load simultaneously. This technique is explained in depth in Jeff Dean&rsquo;s presentation on <a href="https://static.googleusercontent.com/media/research.google.com/en//people/jeff/Berkeley-Latency-Mar2012.pdf">Achieving Rapid Response Times in Large Online Services</a>.</p>
+<p>There are many variations of this pattern and that is the reason this is provided as a documentation example rather than a built in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> in Pekko. It is intended to be adjusted to your specific needs.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/tail-chopping.png" alt="tail-chopping.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/TailChopping.scala#L17-L71" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration.FiniteDuration
+import scala.reflect.ClassTag
+
+import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.scaladsl.Behaviors
+
+object TailChopping {
+
+  sealed trait Command
+  private case object RequestTimeout extends Command
+  private case object FinalTimeout extends Command
+  private case class WrappedReply[R](reply: R) extends Command
+
+  def apply[Reply: ClassTag](
+      sendRequest: (Int, ActorRef[Reply]) =&gt; Boolean,
+      nextRequestAfter: FiniteDuration,
+      replyTo: ActorRef[Reply],
+      finalTimeout: FiniteDuration,
+      timeoutReply: Reply): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      Behaviors.withTimers { timers =&gt;
+        val replyAdapter = context.messageAdapter[Reply](WrappedReply(_))
+
+        def waiting(requestCount: Int): Behavior[Command] = {
+          Behaviors.receiveMessage {
+            case WrappedReply(reply) =&gt;
+              replyTo ! reply.asInstanceOf[Reply]
+              Behaviors.stopped
+
+            case RequestTimeout =&gt;
+              sendNextRequest(requestCount + 1)
+
+            case FinalTimeout =&gt;
+              replyTo ! timeoutReply
+              Behaviors.stopped
+          }
+        }
+
+        def sendNextRequest(requestCount: Int): Behavior[Command] = {
+          if (sendRequest(requestCount, replyAdapter)) {
+            timers.startSingleTimer(RequestTimeout, nextRequestAfter)
+          } else {
+            timers.startSingleTimer(FinalTimeout, finalTimeout)
+          }
+          waiting(requestCount)
+        }
+
+        sendNextRequest(1)
+      }
+    }
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/TailChopping.java#L17-L135" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+import org.apache.pekko.actor.typed.javadsl.TimerScheduler;
+
+import java.time.Duration;
+import java.util.function.BiFunction;
+
+public class TailChopping&lt;Reply&gt; extends AbstractBehavior&lt;TailChopping.Command&gt; {
+
+  interface Command {}
+
+  private enum RequestTimeout implements Command {
+    INSTANCE
+  }
+
+  private enum FinalTimeout implements Command {
+    INSTANCE
+  }
+
+  private class WrappedReply implements Command {
+    final Reply reply;
+
+    private WrappedReply(Reply reply) {
+      this.reply = reply;
+    }
+  }
+
+  public static &lt;R&gt; Behavior&lt;Command&gt; create(
+      Class&lt;R&gt; replyClass,
+      BiFunction&lt;Integer, ActorRef&lt;R&gt;, Boolean&gt; sendRequest,
+      Duration nextRequestAfter,
+      ActorRef&lt;R&gt; replyTo,
+      Duration finalTimeout,
+      R timeoutReply) {
+    return Behaviors.setup(
+        context -&gt;
+            Behaviors.withTimers(
+                timers -&gt;
+                    new TailChopping&lt;R&gt;(
+                        replyClass,
+                        context,
+                        timers,
+                        sendRequest,
+                        nextRequestAfter,
+                        replyTo,
+                        finalTimeout,
+                        timeoutReply)));
+  }
+
+  private final TimerScheduler&lt;Command&gt; timers;
+  private final BiFunction&lt;Integer, ActorRef&lt;Reply&gt;, Boolean&gt; sendRequest;
+  private final Duration nextRequestAfter;
+  private final ActorRef&lt;Reply&gt; replyTo;
+  private final Duration finalTimeout;
+  private final Reply timeoutReply;
+  private final ActorRef&lt;Reply&gt; replyAdapter;
+
+  private int requestCount = 0;
+
+  private TailChopping(
+      Class&lt;Reply&gt; replyClass,
+      ActorContext&lt;Command&gt; context,
+      TimerScheduler&lt;Command&gt; timers,
+      BiFunction&lt;Integer, ActorRef&lt;Reply&gt;, Boolean&gt; sendRequest,
+      Duration nextRequestAfter,
+      ActorRef&lt;Reply&gt; replyTo,
+      Duration finalTimeout,
+      Reply timeoutReply) {
+    super(context);
+    this.timers = timers;
+    this.sendRequest = sendRequest;
+    this.nextRequestAfter = nextRequestAfter;
+    this.replyTo = replyTo;
+    this.finalTimeout = finalTimeout;
+    this.timeoutReply = timeoutReply;
+
+    replyAdapter = context.messageAdapter(replyClass, WrappedReply::new);
+
+    sendNextRequest();
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(WrappedReply.class, this::onReply)
+        .onMessage(RequestTimeout.class, notUsed -&gt; onRequestTimeout())
+        .onMessage(FinalTimeout.class, notUsed -&gt; onFinalTimeout())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onReply(WrappedReply wrappedReply) {
+    Reply reply = wrappedReply.reply;
+    replyTo.tell(reply);
+    return Behaviors.stopped();
+  }
+
+  private Behavior&lt;Command&gt; onRequestTimeout() {
+    sendNextRequest();
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onFinalTimeout() {
+    replyTo.tell(timeoutReply);
+    return Behaviors.stopped();
+  }
+
+  private void sendNextRequest() {
+    requestCount++;
+    if (sendRequest.apply(requestCount, replyAdapter)) {
+      timers.startSingleTimer(RequestTimeout.INSTANCE, RequestTimeout.INSTANCE, nextRequestAfter);
+    } else {
+      timers.startSingleTimer(FinalTimeout.INSTANCE, FinalTimeout.INSTANCE, finalTimeout);
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p><strong>Useful when:</strong></p>
+<ul>
+  <li>Reducing higher latency percentiles and variations of latency are important</li>
+  <li>The &ldquo;work&rdquo; can be done more than once with the same result, e.g. a request to retrieve information</li>
+</ul>
+<p><strong>Problems:</strong></p>
+<ul>
+  <li>Increased load since more messages are sent and &ldquo;work&rdquo; is performed more than once</li>
+  <li>Can&rsquo;t be used when the &ldquo;work&rdquo; is not idempotent and must only be performed once</li>
+  <li>Message protocols with generic types are difficult since the generic types are erased in runtime</li>
+  <li>Children have life cycles that must be managed to not create a resource leak, it can be easy to miss a scenario where the session actor is not stopped</li>
+</ul>
+<a id="typed-scheduling"></a>
+<h2><a href="#scheduling-messages-to-self" name="scheduling-messages-to-self" class="anchor"><span class="anchor-link"></span></a>Scheduling messages to self</h2>
+<p>The following example demonstrates how to use timers to schedule messages to an actor. </p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/timer.png" alt="timer.png" /></p>
+<p>The <code>Buncher</code> actor buffers a burst of incoming messages and delivers them as a batch after a timeout or when the number of batched messages exceeds a maximum size.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/InteractionPatternsSpec.scala#L184-L226" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Buncher {
+
+  sealed trait Command
+  final case class ExcitingMessage(message: String) extends Command
+  final case class Batch(messages: Vector[Command])
+  private case object Timeout extends Command
+  private case object TimerKey
+
+  def apply(target: ActorRef[Batch], after: FiniteDuration, maxSize: Int): Behavior[Command] = {
+    Behaviors.withTimers(timers =&gt; new Buncher(timers, target, after, maxSize).idle())
+  }
+}
+
+class Buncher(
+    timers: TimerScheduler[Buncher.Command],
+    target: ActorRef[Buncher.Batch],
+    after: FiniteDuration,
+    maxSize: Int) {
+  import Buncher._
+
+  private def idle(): Behavior[Command] = {
+    Behaviors.receiveMessage[Command] { message =&gt;
+      timers.startSingleTimer(TimerKey, Timeout, after)
+      active(Vector(message))
+    }
+  }
+
+  def active(buffer: Vector[Command]): Behavior[Command] = {
+    Behaviors.receiveMessage[Command] {
+      case Timeout =&gt;
+        target ! Batch(buffer)
+        idle()
+      case m =&gt;
+        val newBuffer = buffer :+ m
+        if (newBuffer.size == maxSize) {
+          timers.cancel(TimerKey)
+          target ! Batch(newBuffer)
+          idle()
+        } else
+          active(newBuffer)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/InteractionPatternsTest.java#L243-L347" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Buncher {
+
+  public interface Command {}
+
+  public static final class Batch {
+    private final List&lt;Command&gt; messages;
+
+    public Batch(List&lt;Command&gt; messages) {
+      this.messages = Collections.unmodifiableList(messages);
+    }
+
+    public List&lt;Command&gt; getMessages() {
+      return messages;
+    }
+  }
+
+  public static final class ExcitingMessage implements Command {
+    public final String message;
+
+    public ExcitingMessage(String message) {
+      this.message = message;
+    }
+  }
+
+  private static final Object TIMER_KEY = new Object();
+
+  private enum Timeout implements Command {
+    INSTANCE
+  }
+
+  public static Behavior&lt;Command&gt; create(ActorRef&lt;Batch&gt; target, Duration after, int maxSize) {
+    return Behaviors.withTimers(timers -&gt; new Buncher(timers, target, after, maxSize).idle());
+  }
+
+  private final TimerScheduler&lt;Command&gt; timers;
+  private final ActorRef&lt;Batch&gt; target;
+  private final Duration after;
+  private final int maxSize;
+
+  private Buncher(
+      TimerScheduler&lt;Command&gt; timers, ActorRef&lt;Batch&gt; target, Duration after, int maxSize) {
+    this.timers = timers;
+    this.target = target;
+    this.after = after;
+    this.maxSize = maxSize;
+  }
+
+  private Behavior&lt;Command&gt; idle() {
+    return Behaviors.receive(Command.class)
+        .onMessage(Command.class, this::onIdleCommand)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onIdleCommand(Command message) {
+    timers.startSingleTimer(TIMER_KEY, Timeout.INSTANCE, after);
+    return Behaviors.setup(context -&gt; new Active(context, message));
+  }
+
+  private class Active extends AbstractBehavior&lt;Command&gt; {
+
+    private final List&lt;Command&gt; buffer = new ArrayList&lt;&gt;();
+
+    Active(ActorContext&lt;Command&gt; context, Command firstCommand) {
+      super(context);
+      buffer.add(firstCommand);
+    }
+
+    @Override
+    public Receive&lt;Command&gt; createReceive() {
+      return newReceiveBuilder()
+          .onMessage(Timeout.class, message -&gt; onTimeout())
+          .onMessage(Command.class, this::onCommand)
+          .build();
+    }
+
+    private Behavior&lt;Command&gt; onTimeout() {
+      target.tell(new Batch(buffer));
+      return idle(); // switch to idle
+    }
+
+    private Behavior&lt;Command&gt; onCommand(Command message) {
+      buffer.add(message);
+      if (buffer.size() == maxSize) {
+        timers.cancel(TIMER_KEY);
+        target.tell(new Batch(buffer));
+        return idle(); // switch to idle
+      } else {
+        return this; // stay Active
+      }
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>There are a few things worth noting here:</p>
+<ul>
+  <li>To get access to the timers you start with <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#withTimers(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.withTimers</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#withTimers[T](factory:org.apache.pekko.actor.typed.scaladsl.TimerScheduler[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.withTimers</code></a></span> that will pass a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/TimerScheduler.html" title="org.apache.pekko.actor.typed.javadsl.TimerScheduler"><code>TimerScheduler</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/TimerScheduler.html" title="org.apache.pekko.actor.typed.scaladsl.TimerScheduler"><code>TimerScheduler</code></a></span> instance to the function. This can be used with any type of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span>, including <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2,org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>receive</code></a></span>, <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receiveMessage(org.apache.pekko.japi.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>receiveMessage</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receiveMessage[T](onMessage:T=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>receiveMessage</code></a></span>, but also <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>setup</code></a></span> or any other behavior.</li>
+  <li>Each timer has a key and if a new timer with the same key is started, the previous is cancelled. It is guaranteed that a message from the previous timer is not received, even if it was already enqueued in the mailbox when the new timer was started.</li>
+  <li>Both periodic and single message timers are supported.</li>
+  <li>The <code>TimerScheduler</code> is mutable in itself, because it performs and manages the side effects of registering the scheduled tasks.</li>
+  <li>The <code>TimerScheduler</code> is bound to the lifecycle of the actor that owns it and is cancelled automatically when the actor is stopped.</li>
+  <li><code>Behaviors.withTimers</code> can also be used inside <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#supervise(org.apache.pekko.actor.typed.Behavior)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.supervise</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#supervise[T](wrapped:actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Supervise[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.supervise</code></a></span> and it will automatically cancel the started timers correctly when the actor is restarted, so that the new incarnation will not receive scheduled messages from a previous incarnation.</li>
+</ul>
+<h3><a href="#schedule-periodically" name="schedule-periodically" class="anchor"><span class="anchor-link"></span></a>Schedule periodically</h3>
+<p>Scheduling of recurring messages can have two different characteristics:</p>
+<ul>
+  <li>fixed-delay - The delay between sending subsequent messages will always be (at least) the given <code>delay</code>.  Use <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/TimerScheduler.html#startTimerWithFixedDelay(key:Any,msg:Any,initialDelay:scala.concurrent.duration.FiniteDuration,delay:scala.concurrent.duration.FiniteDuration):Unit" title="org.apache.pekko.actor.TimerScheduler"><code>startTimerWithFixedDelay</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/TimerScheduler.html#startTimerWithFixedDelay(java.lang.Object,java.lang.Object,java.time.Duration,java.time.Duration)" title="org.apache.pekko.actor.TimerScheduler"><code>startTimerWithFixedDelay</code></a></span>.</li>
+  <li>fixed-rate - The frequency of execution over time will meet the given <code>interval</code>. Use <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/TimerScheduler.html#startTimerAtFixedRate(key:Any,msg:Any,interval:scala.concurrent.duration.FiniteDuration):Unit" title="org.apache.pekko.actor.TimerScheduler"><code>startTimerAtFixedRate</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/TimerScheduler.html#startTimerAtFixedRate(java.lang.Object,java.lang.Object,java.time.Duration,java.time.Duration)" title="org.apache.pekko.actor.TimerScheduler"><code>startTimerAtFixedRate</code></a></span>.</li>
+</ul>
+<p>If you are uncertain of which one to use you should pick <code>startTimerWithFixedDelay</code>.</p>
+<p>When using <strong>fixed-delay</strong> it will not compensate the delay between messages if the scheduling is delayed longer than specified for some reason. The delay between sending subsequent messages will always be (at least) the given <code>delay</code>. In the long run, the frequency of messages will generally be slightly lower than the reciprocal of the specified <code>delay</code>.</p>
+<p>Fixed-delay execution is appropriate for recurring activities that require &ldquo;smoothness.&rdquo; In other words, it is appropriate for activities where it is more important to keep the frequency accurate in the short run than in the long run.</p>
+<p>When using <strong>fixed-rate</strong> it will compensate the delay for a subsequent task if the previous messages were delayed too long. In such cases, the actual sending interval will differ from the interval passed to the <code>scheduleAtFixedRate</code> method.</p>
+<p>If the tasks are delayed longer than the <code>interval</code>, the subsequent message will be sent immediately after the prior one. This also has the consequence that after long garbage collection pauses or other reasons when the JVM was suspended all &ldquo;missed&rdquo; tasks will execute when the process wakes up again. For example, <code>scheduleAtFixedRate</code> with an interval of 1 second and the process is suspended for 30 seconds will result in 30 messages being sent in rapid succession to catch up. In the long run, the frequency of execution will be exactly the reciprocal of the specified <code>interval</code>.</p>
+<p>Fixed-rate execution is appropriate for recurring activities that are sensitive to absolute time or where the total time to perform a fixed number of executions is important, such as a countdown timer that ticks once every second for ten seconds.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p><code>scheduleAtFixedRate</code> can result in bursts of scheduled messages after long garbage collection pauses, which may in worst case cause undesired load on the system. <code>scheduleWithFixedDelay</code> is often preferred.</p></div>
+<h2><a href="#responding-to-a-sharded-actor" name="responding-to-a-sharded-actor" class="anchor"><span class="anchor-link"></span></a>Responding to a sharded actor</h2>
+<p>When <a href="cluster.html">Pekko Cluster</a> is used to <a href="cluster-sharding.html">shard actors</a> you need to take into account that an actor may move or get passivated.</p>
+<p>The normal pattern for expecting a reply is to include an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> in the message, typically a message adapter. This can be used for a sharded actor but if <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#self:org.apache.pekko.actor.typed.ActorRef[T]" title="pekko.actor.typed.scaladsl.ActorContext"><code>ctx.self</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getSelf()" title="pekko.actor.typed.javadsl.ActorContext"><code>ctx.getSelf()</code></a></span> is sent and the sharded actor is moved or passivated then the reply will sent to dead letters.</p>
+<p>An alternative is to send the <code>entityId</code> in the message and have the reply sent via sharding.</p>
+<p><strong>Example:</strong></p>
+<p><img src="./images/sharded-response.png" alt="sharded-response.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/ShardingCompileOnlySpec.scala#L155-L184" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// a sharded actor that needs counter updates
+object CounterConsumer {
+  sealed trait Command
+  final case class NewCount(count: Long) extends Command
+  val TypeKey: EntityTypeKey[Command] = EntityTypeKey[Command](&quot;example-sharded-response&quot;)
+}
+
+// a sharded counter that sends responses to another sharded actor
+object Counter {
+  trait Command
+  case object Increment extends Command
+  final case class GetValue(replyToEntityId: String) extends Command
+  val TypeKey: EntityTypeKey[Command] = EntityTypeKey[Command](&quot;example-sharded-counter&quot;)
+
+  private def apply(): Behavior[Command] =
+    Behaviors.setup { context =&gt;
+      counter(ClusterSharding(context.system), 0)
+    }
+
+  private def counter(sharding: ClusterSharding, value: Long): Behavior[Command] =
+    Behaviors.receiveMessage {
+      case Increment =&gt;
+        counter(sharding, value + 1)
+      case GetValue(replyToEntityId) =&gt;
+        val replyToEntityRef = sharding.entityRefFor(CounterConsumer.TypeKey, replyToEntityId)
+        replyToEntityRef ! CounterConsumer.NewCount(value)
+        Behaviors.same
+    }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/ShardingReplyCompileOnlyTest.java#L28-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">// a sharded actor that needs counter updates
+public class CounterConsumer {
+  public static EntityTypeKey&lt;Command&gt; typeKey =
+      EntityTypeKey.create(Command.class, &quot;example-sharded-response&quot;);
+
+  public interface Command {}
+
+  public static class NewCount implements Command {
+    public final long value;
+
+    public NewCount(long value) {
+      this.value = value;
+    }
+  }
+}
+
+// a sharded counter that sends responses to another sharded actor
+public class Counter extends AbstractBehavior&lt;Counter.Command&gt; {
+  public static EntityTypeKey&lt;Command&gt; typeKey =
+      EntityTypeKey.create(Command.class, &quot;example-sharded-counter&quot;);
+
+  public interface Command {}
+
+  public enum Increment implements Command {
+    INSTANCE
+  }
+
+  public static class GetValue implements Command {
+    public final String replyToEntityId;
+
+    public GetValue(String replyToEntityId) {
+      this.replyToEntityId = replyToEntityId;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create() {
+    return Behaviors.setup(Counter::new);
+  }
+
+  private final ClusterSharding sharding;
+  private int value = 0;
+
+  private Counter(ActorContext&lt;Command&gt; context) {
+    super(context);
+    this.sharding = ClusterSharding.get(context.getSystem());
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Increment.class, msg -&gt; onIncrement())
+        .onMessage(GetValue.class, this::onGetValue)
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onIncrement() {
+    value++;
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onGetValue(GetValue msg) {
+    EntityRef&lt;CounterConsumer.Command&gt; entityRef =
+        sharding.entityRefFor(CounterConsumer.typeKey, msg.replyToEntityId);
+    entityRef.tell(new CounterConsumer.NewCount(value));
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>A disadvantage is that a message adapter can&rsquo;t be used so the response has to be in the protocol of the actor being responded to. Additionally the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityTypeKey"><code>EntityTypeKey</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityTypeKey.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityTypeKey"><code>EntityTypeKey</code></a></span> could be included in the message if it is not known statically.</p>
+<p>As an &ldquo;alternative to the alternative&rdquo;, an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityRef"><code>EntityRef</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityRef.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityRef"><code>EntityRef</code></a></span> can be included in the messages. The <code>EntityRef</code> transparently wraps messages in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingEnvelope.html" title="org.apache.pekko.cluster.sharding.typed.ShardingEnvelope"><code>ShardingEnvelope</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/ShardingEnvelope.html" title="org.apache.pekko.cluster.sharding.typed.ShardingEnvelope"><code>ShardingEnvelope</code></a></span> and sends them via sharding. If the target sharded entity has been passivated, it will be delivered to a new incarnation of that entity; if the target sharded entity has been moved to a different cluster node, it will be routed to that new node. If using this approach, be aware that at this time, <a href="cluster-sharding.html#a-note-about-entityref-and-serialization">a custom serializer is required</a>.</p>
+<p>As with directly including the <code>entityId</code> and <code>EntityTypeKey</code> in the message, <code>EntityRef</code>s do not support message adaptation: the response has to be in the protocol of the entity being responded to.</p>
+<p>In some cases, it may be useful to define messages with a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/RecipientRef.html" title="org.apache.pekko.actor.typed.RecipientRef"><code>RecipientRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/RecipientRef.html" title="org.apache.pekko.actor.typed.RecipientRef"><code>RecipientRef</code></a></span> which is a common supertype of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> and <code>EntityRef</code>. At this time, serializing a <code>RecipientRef</code> requires a custom serializer.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/interaction-patterns.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/actor-lifecycle.html" title="Actor lifecycle" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Actor lifecycle
+</span>
+</div>
+</a>
+<a href="../typed/fault-tolerance.html" title="Fault Tolerance" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Fault Tolerance
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

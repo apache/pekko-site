@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Coordinated Shutdown · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Coordinated Shutdown
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html#coordinated-shutdown" class="active page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#coordinated-shutdown" name="coordinated-shutdown" class="anchor"><span class="anchor-link"></span></a>Coordinated Shutdown</h1>
+<p>Under normal conditions, when an <code>ActorSystem</code> is terminated or the JVM process is shut down, certain actors and services will be stopped in a specific order. </p>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/CoordinatedShutdown$.html" title="org.apache.pekko.actor.CoordinatedShutdown"><code>CoordinatedShutdown</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/CoordinatedShutdown$.html" title="org.apache.pekko.actor.CoordinatedShutdown"><code>CoordinatedShutdown</code></a></span> extension registers internal and user-defined tasks to be executed during the shutdown process. The tasks are grouped in configuration-defined &ldquo;phases&rdquo; which define the shutdown order.</p>
+<p>Especially the phases <code>before-service-unbind</code>, <code>before-cluster-shutdown</code> and <code>before-actor-system-terminate</code> are intended for application specific phases or tasks.</p>
+<p>The order of the shutdown phases is defined in configuration <code>pekko.coordinated-shutdown.phases</code>. See the default phases in the <code>reference.conf</code> tab:</p>
+<dl>
+  <dt>Most relevant default phases</dt>
+  <dd>
+  <table>
+    <thead>
+      <tr>
+        <th>Phase </th>
+        <th>Description </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>before-service-unbind </td>
+        <td>The first pre-defined phase during shutdown. </td>
+      </tr>
+      <tr>
+        <td>before-cluster-shutdown </td>
+        <td>Phase for custom application tasks that are to be run after service shutdown and before cluster shutdown. </td>
+      </tr>
+      <tr>
+        <td>before-actor-system-terminate </td>
+        <td>Phase for custom application tasks that are to be run after cluster shutdown and before <code>ActorSystem</code> termination. </td>
+      </tr>
+    </tbody>
+  </table></dd>
+  <dt>reference.conf (HOCON)
+  </dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor/src/main/resources/reference.conf#L1203-L1306" target="_blank" title="Go to snippet source">source</a><code class="language-conf"># CoordinatedShutdown is enabled by default and will run the tasks that
+# are added to these phases by individual Pekko modules and user logic.
+#
+# The phases are ordered as a DAG by defining the dependencies between the phases
+# to make sure shutdown tasks are run in the right order.
+#
+# In general user tasks belong in the first few phases, but there may be use
+# cases where you would want to hook in new phases or register tasks later in
+# the DAG.
+#
+# Each phase is defined as a named config section with the
+# following optional properties:
+# - timeout=15s: Override the default-phase-timeout for this phase.
+# - recover=off: If the phase fails the shutdown is aborted
+#                and depending phases will not be executed.
+# - enabled=off: Skip all tasks registered in this phase. DO NOT use
+#                this to disable phases unless you are absolutely sure what the
+#                consequences are. Many of the built in tasks depend on other tasks
+#                having been executed in earlier phases and may break if those are disabled.
+# depends-on=[]: Run the phase after the given phases
+phases {
+
+  # The first pre-defined phase that applications can add tasks to.
+  # Note that more phases can be added in the application&#39;s
+  # configuration by overriding this phase with an additional
+  # depends-on.
+  before-service-unbind {
+  }
+
+  # Stop accepting new incoming connections.
+  # This is where you can register tasks that makes a server stop accepting new connections. Already
+  # established connections should be allowed to continue and complete if possible.
+  service-unbind {
+    depends-on = [before-service-unbind]
+  }
+
+  # Wait for requests that are in progress to be completed.
+  # This is where you register tasks that will wait for already established connections to complete, potentially
+  # also first telling them that it is time to close down.
+  service-requests-done {
+    depends-on = [service-unbind]
+  }
+
+  # Final shutdown of service endpoints.
+  # This is where you would add tasks that forcefully kill connections that are still around.
+  service-stop {
+    depends-on = [service-requests-done]
+  }
+
+  # Phase for custom application tasks that are to be run
+  # after service shutdown and before cluster shutdown.
+  before-cluster-shutdown {
+    depends-on = [service-stop]
+  }
+
+  # Graceful shutdown of the Cluster Sharding regions.
+  # This phase is not meant for users to add tasks to.
+  cluster-sharding-shutdown-region {
+    timeout = 10 s
+    depends-on = [before-cluster-shutdown]
+  }
+
+  # Emit the leave command for the node that is shutting down.
+  # This phase is not meant for users to add tasks to.
+  cluster-leave {
+    depends-on = [cluster-sharding-shutdown-region]
+  }
+
+  # Shutdown cluster singletons
+  # This is done as late as possible to allow the shard region shutdown triggered in
+  # the &quot;cluster-sharding-shutdown-region&quot; phase to complete before the shard coordinator is shut down.
+  # This phase is not meant for users to add tasks to.
+  cluster-exiting {
+    timeout = 10 s
+    depends-on = [cluster-leave]
+  }
+
+  # Wait until exiting has been completed
+  # This phase is not meant for users to add tasks to.
+  cluster-exiting-done {
+    depends-on = [cluster-exiting]
+  }
+
+  # Shutdown the cluster extension
+  # This phase is not meant for users to add tasks to.
+  cluster-shutdown {
+    depends-on = [cluster-exiting-done]
+  }
+
+  # Phase for custom application tasks that are to be run
+  # after cluster shutdown and before ActorSystem termination.
+  before-actor-system-terminate {
+    depends-on = [cluster-shutdown]
+  }
+
+  # Last phase. See terminate-actor-system and exit-jvm above.
+  # Don&#39;t add phases that depends on this phase because the
+  # dispatcher and scheduler of the ActorSystem have been shutdown.
+  # This phase is not meant for users to add tasks to.
+  actor-system-terminate {
+    timeout = 10 s
+    depends-on = [before-actor-system-terminate]
+  }
+}</code></pre></dd>
+</dl>
+<p>More phases can be added in the application&rsquo;s <code>application.conf</code> if needed by overriding a phase with an additional <code>depends-on</code>.</p>
+<p>The default phases are defined in a single linear order, but the phases can be ordered as a directed acyclic graph (DAG) by defining the dependencies between the phases. The phases are ordered with <a href="https://en.wikipedia.org/wiki/Topological_sorting">topological</a> sort of the DAG.</p>
+<p>Tasks can be added to a phase like in this example which allows a certain actor to react before termination starts:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/typed/CoordinatedActorShutdownSpec.scala#L29-L56" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object MyActor {
+
+  trait Messages
+  case class Stop(replyTo: ActorRef[Done]) extends Messages
+
+  def behavior: Behavior[Messages] =
+    Behaviors.receiveMessage {
+      // ...
+      case Stop(replyTo) =&gt;
+        // shut down the actor internals
+        // ..
+        replyTo.tell(Done)
+        Behaviors.stopped
+    }
+}
+
+  CoordinatedShutdown(context.system).addTask(CoordinatedShutdown.PhaseBeforeServiceUnbind, &quot;someTaskName&quot;) { () =&gt;
+    implicit val timeout: Timeout = 5.seconds
+    myActor.ask(MyActor.Stop(_))
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/typed/CoordinatedActorShutdownTest.java#L24-L86" target="_blank" title="Go to snippet source">source</a><code class="language-java">import static org.apache.pekko.actor.typed.javadsl.AskPattern.ask;
+
+public static class MyActor extends AbstractBehavior&lt;MyActor.Messages&gt; {
+  interface Messages {}
+
+  // ...
+
+  static final class Stop implements Messages {
+    final ActorRef&lt;Done&gt; replyTo;
+
+    Stop(ActorRef&lt;Done&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+  @Override
+  public Receive&lt;Messages&gt; createReceive() {
+    return newReceiveBuilder().onMessage(Stop.class, this::stop).build();
+  }
+
+  private Behavior&lt;Messages&gt; stop(Stop stop) {
+    // shut down the actor internal
+    // ...
+    stop.replyTo.tell(Done.done());
+    return Behaviors.stopped();
+  }
+}
+
+          CoordinatedShutdown.get(system)
+              .addTask(
+                  CoordinatedShutdown.PhaseBeforeServiceUnbind(),
+                  &quot;someTaskName&quot;,
+                  () -&gt;
+                      ask(myActor, MyActor.Stop::new, Duration.ofSeconds(5), system.scheduler()));</code></pre></dd>
+</dl>
+<p>The returned <span class="group-scala"><code>Future[Done]</code></span> <span class="group-java"><code>CompletionStage&lt;Done&gt;</code></span> should be completed when the task is completed. The task name parameter is only used for debugging/logging.</p>
+<p>Tasks added to the same phase are executed in parallel without any ordering assumptions. Next phase will not start until all tasks of previous phase have been completed.</p>
+<p>If tasks are not completed within a configured timeout (see <a href="general/configuration-reference.html#config-pekko-actor">reference.conf</a>) the next phase will be started anyway. It is possible to configure <code>recover=off</code> for a phase to abort the rest of the shutdown process if a task fails or is not completed within the timeout.</p>
+<p>If cancellation of previously added tasks is required:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/typed/CoordinatedActorShutdownSpec.scala#L69-L78" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val c: Cancellable =
+  CoordinatedShutdown(system).addCancellableTask(CoordinatedShutdown.PhaseBeforeServiceUnbind, &quot;cleanup&quot;) { () =&gt;
+    Future {
+      cleanup()
+      Done
+    }
+  }
+
+// much later...
+c.cancel()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/typed/CoordinatedActorShutdownTest.java#L110-L115" target="_blank" title="Go to snippet source">source</a><code class="language-java">Cancellable cancellable =
+    CoordinatedShutdown.get(system)
+        .addCancellableTask(
+            CoordinatedShutdown.PhaseBeforeServiceUnbind(), &quot;someTaskCleanup&quot;, () -&gt; cleanup());
+// much later...
+cancellable.cancel();</code></pre></dd>
+</dl>
+<p>In the above example, it may be more convenient to simply stop the actor when it&rsquo;s done shutting down, rather than send back a done message, and for the shutdown task to not complete until the actor is terminated. A convenience method is provided that adds a task that sends a message to the actor and then watches its termination (there is currently no corresponding functionality for the new actors API <a href="https://github.com/apache/incubator-pekko/issues/29056">see #29056</a>):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/ActorDocSpec.scala#L744-L748" target="_blank" title="Go to snippet source">source</a><code class="language-scala">CoordinatedShutdown(system).addActorTerminationTask(
+  CoordinatedShutdown.PhaseBeforeServiceUnbind,
+  &quot;someTaskName&quot;,
+  someActor,
+  Some(&quot;stop&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/ActorDocTest.java#L900-L905" target="_blank" title="Go to snippet source">source</a><code class="language-java">CoordinatedShutdown.get(system)
+    .addActorTerminationTask(
+        CoordinatedShutdown.PhaseBeforeServiceUnbind(),
+        &quot;someTaskName&quot;,
+        someActor,
+        Optional.of(&quot;stop&quot;));</code></pre></dd>
+</dl>
+<p>Tasks should typically be registered as early as possible after system startup. When running the coordinated shutdown tasks that have been registered will be performed but tasks that are added too late will not be run.</p>
+<p>To start the coordinated shutdown process you can either invoke <code>terminate()</code> on the <code>ActorSystem</code>, or <span class="group-scala"><code>run</code></span> <span class="group-java"><code>runAll</code></span> on the <code>CoordinatedShutdown</code> extension and pass it a class implementing <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/CoordinatedShutdown$$Reason.html" title="org.apache.pekko.actor.CoordinatedShutdown.Reason"><code>CoordinatedShutdown.Reason</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/CoordinatedShutdown$$Reason.html" title="org.apache.pekko.actor.CoordinatedShutdown.Reason"><code>CoordinatedShutdown.Reason</code></a></span> for informational purposes:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/typed/CoordinatedActorShutdownSpec.scala#L90-L96" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// shut down with `ActorSystemTerminateReason`
+system.terminate()
+
+// or define a specific reason
+case object UserInitiatedShutdown extends CoordinatedShutdown.Reason
+
+val done: Future[Done] = CoordinatedShutdown(system).run(UserInitiatedShutdown)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/typed/CoordinatedActorShutdownTest.java#L126-L138" target="_blank" title="Go to snippet source">source</a><code class="language-java">// shut down with `ActorSystemTerminateReason`
+system.terminate();
+
+// or define a specific reason
+class UserInitiatedShutdown implements CoordinatedShutdown.Reason {
+  @Override
+  public String toString() {
+    return &quot;UserInitiatedShutdown&quot;;
+  }
+}
+
+CompletionStage&lt;Done&gt; done =
+    CoordinatedShutdown.get(system).runAll(new UserInitiatedShutdown());</code></pre></dd>
+</dl>
+<p>It&rsquo;s safe to call the <span class="group-scala"><code>run</code></span> <span class="group-java"><code>runAll</code></span> method multiple times. It will only run once.</p>
+<p>That also means that the <code>ActorSystem</code> will be terminated in the last phase. By default, the JVM is not forcefully stopped (it will be stopped if all non-daemon threads have been terminated). To enable a hard <code>System.exit</code> as a final action you can configure:</p>
+<pre><code>pekko.coordinated-shutdown.exit-jvm = on
+</code></pre>
+<p>The coordinated shutdown process is also started once the actor system&rsquo;s root actor is stopped.</p>
+<p>When using <a href="cluster-usage.html">Pekko Cluster</a> the <code>CoordinatedShutdown</code> will automatically run when the cluster node sees itself as <code>Exiting</code>, i.e. leaving from another node will trigger the shutdown process on the leaving node. Tasks for graceful leaving of cluster including graceful shutdown of Cluster Singletons and Cluster Sharding are added automatically when Pekko Cluster is used, i.e. running the shutdown process will also trigger the graceful leaving if it&rsquo;s not already in progress.</p>
+<p>By default, the <code>CoordinatedShutdown</code> will be run when the JVM process exits, e.g. via <code>kill SIGTERM</code> signal (<code>SIGINT</code> ctrl-c doesn&rsquo;t work). This behavior can be disabled with:</p>
+<pre><code>pekko.coordinated-shutdown.run-by-jvm-shutdown-hook=off
+</code></pre>
+<p>If you have application specific JVM shutdown hooks it&rsquo;s recommended that you register them via the <code>CoordinatedShutdown</code> so that they are running before Pekko internal shutdown hooks, e.g. those shutting down Pekko Remoting (Artery).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/typed/CoordinatedActorShutdownSpec.scala#L82-L84" target="_blank" title="Go to snippet source">source</a><code class="language-scala">CoordinatedShutdown(system).addJvmShutdownHook {
+  println(&quot;custom JVM shutdown hook...&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/typed/CoordinatedActorShutdownTest.java#L119-L120" target="_blank" title="Go to snippet source">source</a><code class="language-java">CoordinatedShutdown.get(system)
+    .addJvmShutdownHook(() -&gt; System.out.println(&quot;custom JVM shutdown hook...&quot;));</code></pre></dd>
+</dl>
+<p>For some tests it might be undesired to terminate the <code>ActorSystem</code> via <code>CoordinatedShutdown</code>. You can disable that by adding the following to the configuration of the <code>ActorSystem</code> that is used in the test:</p>
+<pre><code># Don&#39;t terminate ActorSystem via CoordinatedShutdown in tests
+pekko.coordinated-shutdown.terminate-actor-system = off
+pekko.coordinated-shutdown.run-by-actor-system-terminate = off
+pekko.coordinated-shutdown.run-by-jvm-shutdown-hook = off
+pekko.cluster.run-coordinated-shutdown-when-down = off
+</code></pre>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/coordinated-shutdown.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="typed/fsm.html" title="Behaviors as finite state machines" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Behaviors as finite state machines
+</span>
+</div>
+</a>
+<a href="typed/dispatchers.html" title="Dispatchers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Dispatchers
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

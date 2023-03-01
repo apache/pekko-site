@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Split Brain Resolver · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Split Brain Resolver
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html#split-brain-resolver" class="active page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="split-brain-resolver.html#split-brain-resolver" class="header">Split Brain Resolver</a>
+  <ul>
+    <li><a href="split-brain-resolver.html#module-info" class="header">Module info</a></li>
+    <li><a href="split-brain-resolver.html#enable-the-split-brain-resolver" class="header">Enable the Split Brain Resolver</a></li>
+    <li><a href="split-brain-resolver.html#the-problem" class="header">The Problem</a></li>
+    <li><a href="split-brain-resolver.html#strategies" class="header">Strategies</a></li>
+    <li><a href="split-brain-resolver.html#indirectly-connected-nodes" class="header">Indirectly connected nodes</a></li>
+    <li><a href="split-brain-resolver.html#down-all-when-unstable" class="header">Down all when unstable</a></li>
+    <li><a href="split-brain-resolver.html#multiple-data-centers" class="header">Multiple data centers</a></li>
+    <li><a href="split-brain-resolver.html#cluster-singleton-and-cluster-sharding" class="header">Cluster Singleton and Cluster Sharding</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="split-brain-resolver.html#split-brain-resolver" class="header">Split Brain Resolver</a>
+  <ul>
+    <li><a href="split-brain-resolver.html#module-info" class="header">Module info</a></li>
+    <li><a href="split-brain-resolver.html#enable-the-split-brain-resolver" class="header">Enable the Split Brain Resolver</a></li>
+    <li><a href="split-brain-resolver.html#the-problem" class="header">The Problem</a></li>
+    <li><a href="split-brain-resolver.html#strategies" class="header">Strategies</a></li>
+    <li><a href="split-brain-resolver.html#indirectly-connected-nodes" class="header">Indirectly connected nodes</a></li>
+    <li><a href="split-brain-resolver.html#down-all-when-unstable" class="header">Down all when unstable</a></li>
+    <li><a href="split-brain-resolver.html#multiple-data-centers" class="header">Multiple data centers</a></li>
+    <li><a href="split-brain-resolver.html#cluster-singleton-and-cluster-sharding" class="header">Cluster Singleton and Cluster Sharding</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#split-brain-resolver" name="split-brain-resolver" class="anchor"><span class="anchor-link"></span></a>Split Brain Resolver</h1>
+<p>When operating a Pekko cluster you must consider how to handle <a href="https://en.wikipedia.org/wiki/Network_partition">network partitions</a> (a.k.a. split brain scenarios) and machine crashes (including JVM and hardware failures). This is crucial for correct behavior if you use <a href="typed/cluster-singleton.html">Cluster Singleton</a> or <a href="typed/cluster-sharding.html">Cluster Sharding</a>, especially together with Pekko Persistence.</p>
+<p>The <a href="https://akka.io/blog/news/2020/06/08/akka-split-brain-resolver-video">Split Brain Resolver video</a> is a good starting point for learning why it is important to use a correct downing provider and how the Split Brain Resolver works.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Pekko Split Brain Resolver is part of <code>pekko-cluster</code> and you probably already have that dependency included. Otherwise, add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-cluster" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-cluster_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-cluster_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Cluster (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-cluster</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.cluster</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/cluster/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/cluster/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#enable-the-split-brain-resolver" name="enable-the-split-brain-resolver" class="anchor"><span class="anchor-link"></span></a>Enable the Split Brain Resolver</h2>
+
+<p>You need to enable the Split Brain Resolver by configuring it as downing provider in the configuration of the <code>ActorSystem</code> (<code>application.conf</code>):</p>
+
+<pre><code>pekko.cluster.downing-provider-class = &quot;org.apache.pekko.cluster.sbr.SplitBrainResolverProvider&quot;
+</code></pre>
+<p>You should also consider the different available <a href="split-brain-resolver.html#strategies">downing strategies</a>.</p>
+<h2><a href="#the-problem" name="the-problem" class="anchor"><span class="anchor-link"></span></a>The Problem</h2>
+<p>A fundamental problem in distributed systems is that network partitions (split brain scenarios) and machine crashes are indistinguishable for the observer, i.e. a node can observe that there is a problem with another node, but it cannot tell if it has crashed and will never be available again or if there is a network issue that might or might not heal again after a while. Temporary and permanent failures are indistinguishable because decisions must be made in finite time, and there always exists a temporary failure that lasts longer than the time limit for the decision.</p>
+<p>A third type of problem is if a process is unresponsive, e.g. because of overload, CPU starvation or long garbage collection pauses. This is also indistinguishable from network partitions and crashes. The only signal we have for decision is &ldquo;no reply in given time for heartbeats&rdquo; and this means that phenomena causing delays or lost heartbeats are indistinguishable from each other and must be handled in the same way.</p>
+<p>When there is a crash, we would like to remove the affected node immediately from the cluster membership. When there is a network partition or unresponsive process we would like to wait for a while in the hope that it is a transient problem that will heal again, but at some point, we must give up and continue with the nodes on one side of the partition and shut down nodes on the other side. Also, certain features are not fully available during partitions so it might not matter that the partition is transient or not if it just takes too long. Those two goals are in conflict with each other and there is a trade-off between how quickly we can remove a crashed node and premature action on transient network partitions.</p>
+<p>This is a difficult problem to solve given that the nodes on the different sides of the network partition cannot communicate with each other. We must ensure that both sides can make this decision by themselves and that they take the same decision about which part will keep running and which part will shut itself down.</p>
+<p>Another type of problem that makes it difficult to see the &ldquo;right&rdquo; picture is when some nodes are not fully connected and cannot communicate directly to each other but information can be disseminated between them via other nodes.</p>
+<p>The Pekko cluster has a failure detector that will notice network partitions and machine crashes (but it cannot distinguish the two). It uses periodic heartbeat messages to check if other nodes are available and healthy. These observations by the failure detector are referred to as a node being <em>unreachable</em> and it may become <em>reachable</em> again if the failure detector observes that it can communicate with it again. </p>
+<p>The failure detector in itself is not enough for making the right decision in all situations. The naive approach is to remove an unreachable node from the cluster membership after a timeout. This works great for crashes and short transient network partitions, but not for long network partitions. Both sides of the network partition will see the other side as unreachable and after a while remove it from its cluster membership. Since this happens on both sides the result is that two separate disconnected clusters have been created. This approach is provided by the opt-in (off by default) auto-down feature in the OSS version of Pekko Cluster.</p>
+<p>If you use the timeout based auto-down feature in combination with Cluster Singleton or Cluster Sharding that would mean that two singleton instances or two sharded entities with the same identifier would be running. One would be running: one in each cluster. For example when used together with Pekko Persistence that could result in that two instances of a persistent actor with the same <code>persistenceId</code> are running and writing concurrently to the same stream of persistent events, which will have fatal consequences when replaying these events.</p>
+<p>The default setting in Pekko Cluster is to not remove unreachable nodes automatically and the recommendation is that the decision of what to do should be taken by a human operator or an external monitoring system. This is a valid solution, but not very convenient if you do not have this staff or external system for other reasons.</p>
+<p>If the unreachable nodes are not downed at all they will still be part of the cluster membership. Meaning that Cluster Singleton and Cluster Sharding will not failover to another node. While there are unreachable nodes new nodes that are joining the cluster will not be promoted to full worthy members (with status Up). Similarly, leaving members will not be removed until all unreachable nodes have been resolved. In other words, keeping unreachable members for an unbounded time is undesirable.</p>
+<p>With that introduction of the problem domain, it is time to look at the provided strategies for handling network partition, unresponsive nodes and crashed nodes.</p>
+<h2><a href="#strategies" name="strategies" class="anchor"><span class="anchor-link"></span></a>Strategies</h2>
+<p>By default the <a href="split-brain-resolver.html#keep-majority">Keep Majority</a> strategy will be used because it works well for most systems. However, it&rsquo;s worth considering the other available strategies and pick a strategy that fits the characteristics of your system. For example, in a Kubernetes environment the <a href="split-brain-resolver.html#lease">Lease</a> strategy can be a good choice.</p>
+<p>Every strategy has a failure scenario where it makes a &ldquo;wrong&rdquo; decision. This section describes the different strategies and guidelines of when to use what.</p>
+<p>When there is uncertainty it selects to down more nodes than necessary, or even downing of all nodes. Therefore Split Brain Resolver should always be combined with a mechanism to automatically start up nodes that have been shutdown, and join them to the existing cluster or form a new cluster again.</p>
+<p>You enable a strategy with the configuration property <code>pekko.cluster.split-brain-resolver.active-strategy</code>.</p>
+<h3><a href="#stable-after" name="stable-after" class="anchor"><span class="anchor-link"></span></a>Stable after</h3>
+<p>All strategies are inactive until the cluster membership and the information about unreachable nodes have been stable for a certain time period. Continuously adding more nodes while there is a network partition does not influence this timeout, since the status of those nodes will not be changed to Up while there are unreachable nodes. Joining nodes are not counted in the logic of the strategies. </p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster/src/main/resources/reference.conf#L389-L424" target="_blank" title="Go to snippet source">source</a><code class="language-conf"><br/># To enable the split brain resolver you first need to enable the provider in your application.conf:
+# pekko.cluster.downing-provider-class = &quot;org.apache.pekko.cluster.sbr.SplitBrainResolverProvider&quot;
+
+pekko.cluster.split-brain-resolver {
+  # Select one of the available strategies (see descriptions below):
+  # static-quorum, keep-majority, keep-oldest, down-all, lease-majority
+  active-strategy = keep-majority
+
+  # Time margin after which shards or singletons that belonged to a downed/removed
+  # partition are created in surviving partition. The purpose of this margin is that
+  # in case of a network partition the persistent actors in the non-surviving partitions
+  # must be stopped before corresponding persistent actors are started somewhere else.
+  # This is useful if you implement downing strategies that handle network partitions,
+  # e.g. by keeping the larger side of the partition and shutting down the smaller side.
+  # Decision is taken by the strategy when there has been no membership or
+  # reachability changes for this duration, i.e. the cluster state is stable.
+  stable-after = 20s
+
+  # When reachability observations by the failure detector are changed the SBR decisions
+  # are deferred until there are no changes within the &#39;stable-after&#39; duration.
+  # If this continues for too long it might be an indication of an unstable system/network
+  # and it could result in delayed or conflicting decisions on separate sides of a network
+  # partition.
+  # As a precaution for that scenario all nodes are downed if no decision is made within
+  # `stable-after + down-all-when-unstable` from the first unreachability event.
+  # The measurement is reset if all unreachable have been healed, downed or removed, or
+  # if there are no changes within `stable-after * 2`.
+  # The value can be on, off, or a duration.
+  # By default it is &#39;on&#39; and then it is derived to be 3/4 of stable-after, but not less than
+  # 4 seconds.
+  down-all-when-unstable = on
+
+}</code></pre>
+<p>Set <code>pekko.cluster.split-brain-resolver.stable-after</code> to a shorter duration to have quicker removal of crashed nodes, at the price of risking too early action on transient network partitions that otherwise would have healed. Do not set this to a shorter duration than the membership dissemination time in the cluster, which depends on the cluster size. Recommended minimum duration for different cluster sizes:</p>
+<table>
+  <thead>
+    <tr>
+      <th>cluster size </th>
+      <th>stable-after</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5 </td>
+      <td>7 s </td>
+    </tr>
+    <tr>
+      <td>10 </td>
+      <td>10 s</td>
+    </tr>
+    <tr>
+      <td>20 </td>
+      <td>13 s</td>
+    </tr>
+    <tr>
+      <td>50 </td>
+      <td>17 s</td>
+    </tr>
+    <tr>
+      <td>100 </td>
+      <td>20 s</td>
+    </tr>
+    <tr>
+      <td>1000 </td>
+      <td>30 s</td>
+    </tr>
+  </tbody>
+</table>
+<p>The different strategies may have additional settings that are described below.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It is important that you use the same configuration on all nodes.</p></div>
+<p>The side of the split that decides to shut itself down will use the cluster <em>down</em> command to initiate the removal of a cluster member. When that has been spread among the reachable nodes it will be removed from the cluster membership.</p>
+<p>It&rsquo;s good to terminate the <code>ActorSystem</code> and exit the JVM when the node is removed from the cluster.</p>
+<p>That is handled by <a href="coordinated-shutdown.html">Coordinated Shutdown</a> but to exit the JVM it&rsquo;s recommended that you enable:</p>
+<pre><code>pekko.coordinated-shutdown.exit-jvm = on
+</code></pre><div class="callout note "><div class="callout-title">Note</div>
+<p>Some legacy containers may block calls to System.exit(..) and you may have to find an alternate way to shut the app down. For example, when running Pekko on top of a Spring / Tomcat setup, you could replace the call to <code>System.exit(..)</code> with a call to Spring&rsquo;s ApplicationContext .close() method (or with a HTTP call to Tomcat Manager&rsquo;s API to un-deploy the app).</p></div>
+<h3><a href="#keep-majority" name="keep-majority" class="anchor"><span class="anchor-link"></span></a>Keep Majority</h3>
+<p>The strategy named <code>keep-majority</code> will down the unreachable nodes if the current node is in the majority part based on the last known membership information. Otherwise down the reachable nodes, i.e. the own part. If the parts are of equal size the part containing the node with the lowest address is kept.</p>
+<p>This strategy is a good choice when the number of nodes in the cluster change dynamically and you can therefore not use <code>static-quorum</code>.</p>
+<p>This strategy also handles the edge case that may occur when there are membership changes at the same time as the network partition occurs. For example, the status of two members are changed to <code>Up</code> on one side but that information is not disseminated to the other side before the connection is broken. Then one side sees two more nodes and both sides might consider themselves having a majority. It will detect this situation and make the safe decision to down all nodes on the side that could be in minority if the joining nodes were changed to <code>Up</code> on the other side. Note that this has the drawback that if the joining nodes were not changed to <code>Up</code> and becoming a majority on the other side then each part will shut down itself, terminating the whole cluster.</p>
+<p>Note that if there are more than two partitions and none is in majority each part will shut down itself, terminating the whole cluster.</p>
+<p>If more than half of the nodes crash at the same time the other running nodes will down themselves because they think that they are not in majority, and thereby the whole cluster is terminated. </p>
+<p>The decision can be based on nodes with a configured <code>role</code> instead of all nodes in the cluster. This can be useful when some types of nodes are more valuable than others. You might for example have some nodes responsible for persistent data and some nodes with stateless worker services. Then it probably more important to keep as many persistent data nodes as possible even though it means shutting down more worker nodes.</p>
+<p>Configuration:</p>
+<pre><code>pekko.cluster.split-brain-resolver.active-strategy=keep-majority
+</code></pre>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster/src/main/resources/reference.conf#L455-L458" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.split-brain-resolver.keep-majority {
+  # if the &#39;role&#39; is defined the decision is based only on members with that &#39;role&#39;
+  role = &quot;&quot;
+}</code></pre>
+<h3><a href="#static-quorum" name="static-quorum" class="anchor"><span class="anchor-link"></span></a>Static Quorum</h3>
+<p>The strategy named <code>static-quorum</code> will down the unreachable nodes if the number of remaining nodes are greater than or equal to a configured <code>quorum-size</code>. Otherwise, it will down the reachable nodes, i.e. it will shut down that side of the partition. In other words, the <code>quorum-size</code> defines the minimum number of nodes that the cluster must have to be operational.</p>
+<p>This strategy is a good choice when you have a fixed number of nodes in the cluster, or when you can define a fixed number of nodes with a certain role.</p>
+<p>For example, in a 9 node cluster you will configure the <code>quorum-size</code> to 5. If there is a network split of 4 and 5 nodes the side with 5 nodes will survive and the other 4 nodes will be downed. After that, in the 5 node cluster, no more failures can be handled, because the remaining cluster size would be less than 5. In the case of another failure in that 5 node cluster all nodes will be downed.</p>
+<p>Therefore it is important that you join new nodes when old nodes have been removed.</p>
+<p>Another consequence of this is that if there are unreachable nodes when starting up the cluster, before reaching this limit, the cluster may shut itself down immediately. This is not an issue if you start all nodes at approximately the same time or use the <code>pekko.cluster.min-nr-of-members</code> to define required number of members before the leader changes member status of &lsquo;Joining&rsquo; members to &lsquo;Up&rsquo; You can tune the timeout after which downing decisions are made using the <code>stable-after</code> setting.</p>
+<p>You should not add more members to the cluster than <strong>quorum-size * 2 - 1</strong>. A warning is logged if this recommendation is violated. If the exceeded cluster size remains when a SBR decision is needed it will down all nodes because otherwise there is a risk that both sides may down each other and thereby form two separate clusters.</p>
+<p>For rolling updates it&rsquo;s best to leave the cluster gracefully via <a href="coordinated-shutdown.html">Coordinated Shutdown</a> (SIGTERM). For successful leaving SBR will not be used (no downing) but if there is an unreachability problem at the same time as the rolling update is in progress there could be an SBR decision. To avoid that the total number of members limit is not exceeded during the rolling update it&rsquo;s recommended to leave and fully remove one node before adding a new one, when using <code>static-quorum</code>.</p>
+<p>If the cluster is split into 3 (or more) parts each part that is smaller than then configured <code>quorum-size</code> will down itself and possibly shutdown the whole cluster.</p>
+<p>If more nodes than the configured <code>quorum-size</code> crash at the same time the other running nodes will down themselves because they think that they are not in the majority, and thereby the whole cluster is terminated.</p>
+<p>The decision can be based on nodes with a configured <code>role</code> instead of all nodes in the cluster. This can be useful when some types of nodes are more valuable than others. You might, for example, have some nodes responsible for persistent data and some nodes with stateless worker services. Then it probably more important to keep as many persistent data nodes as possible even though it means shutting down more worker nodes.</p>
+<p>There is another use of the <code>role</code> as well. By defining a <code>role</code> for a few (e.g. 7) stable nodes in the cluster and using that in the configuration of <code>static-quorum</code> you will be able to dynamically add and remove other nodes without this role and still have good decisions of what nodes to keep running and what nodes to shut down in the case of network partitions. The advantage of this approach compared to <code>keep-majority</code> (described below) is that you <em>do not</em> risk splitting the cluster into two separate clusters, i.e. <em>a split brain</em>*. You must still obey the rule of not starting too many nodes with this <code>role</code> as described above. It also suffers the risk of shutting down all nodes if there is a failure when there are not enough nodes with this <code>role</code> remaining in the cluster, as described above.</p>
+<p>Configuration:</p>
+<pre><code>pekko.cluster.split-brain-resolver.active-strategy=static-quorum
+</code></pre>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster/src/main/resources/reference.conf#L440-L446" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.split-brain-resolver.static-quorum {
+  # minimum number of nodes that the cluster must have
+  quorum-size = undefined
+
+  # if the &#39;role&#39; is defined the decision is based only on members with that &#39;role&#39;
+  role = &quot;&quot;
+}</code></pre>
+<h3><a href="#keep-oldest" name="keep-oldest" class="anchor"><span class="anchor-link"></span></a>Keep Oldest</h3>
+<p>The strategy named <code>keep-oldest</code> will down the part that does not contain the oldest member. The oldest member is interesting because the active Cluster Singleton instance is running on the oldest member.</p>
+<p>There is one exception to this rule if <code>down-if-alone</code> is configured to <code>on</code>. Then, if the oldest node has partitioned from all other nodes the oldest will down itself and keep all other nodes running. The strategy will not down the single oldest node when it is the only remaining node in the cluster.</p>
+<p>Note that if the oldest node crashes the others will remove it from the cluster when <code>down-if-alone</code> is <code>on</code>, otherwise they will down themselves if the oldest node crashes, i.e. shut down the whole cluster together with the oldest node.</p>
+<p>This strategy is good to use if you use Cluster Singleton and do not want to shut down the node where the singleton instance runs. If the oldest node crashes a new singleton instance will be started on the next oldest node. The drawback is that the strategy may keep only a few nodes in a large cluster. For example, if one part with the oldest consists of 2 nodes and the other part consists of 98 nodes then it will keep 2 nodes and shut down 98 nodes.</p>
+<p>This strategy also handles the edge case that may occur when there are membership changes at the same time as the network partition occurs. For example, the status of the oldest member is changed to <code>Exiting</code> on one side but that information is not disseminated to the other side before the connection is broken. It will detect this situation and make the safe decision to down all nodes on the side that sees the oldest as <code>Leaving</code>. Note that this has the drawback that if the oldest was <code>Leaving</code> and not changed to <code>Exiting</code> then each part will shut down itself, terminating the whole cluster.</p>
+<p>The decision can be based on nodes with a configured <code>role</code> instead of all nodes in the cluster, i.e. using the oldest member (singleton) within the nodes with that role.</p>
+<p>Configuration:</p>
+<pre><code>pekko.cluster.split-brain-resolver.active-strategy=keep-oldest
+</code></pre>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster/src/main/resources/reference.conf#L472-L479" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.split-brain-resolver.keep-oldest {
+  # Enable downing of the oldest node when it is partitioned from all other nodes
+  down-if-alone = on
+
+  # if the &#39;role&#39; is defined the decision is based only on members with that &#39;role&#39;,
+  # i.e. using the oldest member (singleton) within the nodes with that role
+  role = &quot;&quot;
+}</code></pre>
+<h3><a href="#down-all" name="down-all" class="anchor"><span class="anchor-link"></span></a>Down All</h3>
+<p>The strategy named <code>down-all</code> will down all nodes.</p>
+<p>This strategy can be a safe alternative if the network environment is highly unstable with unreachability observations that can&rsquo;t be fully trusted, and including frequent occurrences of <a href="split-brain-resolver.html#indirectly-connected-nodes">indirectly connected nodes</a>. Due to the instability there is an increased risk of different information on different sides of partitions and therefore the other strategies may result in conflicting decisions. In such environments it can be better to shutdown all nodes and start up a new fresh cluster.</p>
+<p>Shutting down all nodes means that the system will be completely unavailable until nodes have been restarted and formed a new cluster. This strategy is not recommended for large clusters (&gt; 10 nodes) because any minor problem will shutdown all nodes, and that is more likely to happen in larger clusters since there are more nodes that may fail.</p>
+<p>See also <a href="split-brain-resolver.html#down-all-when-unstable">Down all when unstable</a> and <a href="split-brain-resolver.html#indirectly-connected-nodes">indirectly connected nodes</a>.</p>
+<h3><a href="#lease" name="lease" class="anchor"><span class="anchor-link"></span></a>Lease</h3>
+<p>The strategy named <code>lease-majority</code> is using a distributed lease (lock) to decide what nodes that are allowed to survive. Only one SBR instance can acquire the lease make the decision to remain up. The other side will not be able to aquire the lease and will therefore down itself.</p>
+<p>Best effort is to keep the side that has most nodes, i.e. the majority side. This is achieved by adding a delay before trying to acquire the lease on the minority side.</p>
+<p>There is currently one supported implementation of the lease which is backed by a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resource Definition (CRD)</a> in Kubernetes. It is described in the <a href="https://pekko.apache.org/docs/pekko-management/current/kubernetes-lease.html">Kubernetes Lease</a> documentation.</p>
+<p>This strategy is very safe since coordination is added by an external arbiter. The trade-off compared to other strategies is that it requires additional infrastructure for implementing the lease and it reduces the availability of a decision to that of the system backing the lease store.</p>
+<p>Similar to other strategies it is important that decisions are not deferred for too long because the nodes that couldn&rsquo;t acquire the lease must decide to down themselves, see <a href="split-brain-resolver.html#down-all-when-unstable">Down all when unstable</a>.</p>
+<p>In some cases the lease will be unavailable when needed for a decision from all SBR instances, e.g. because it is on another side of a network partition, and then all nodes will be downed.</p>
+<p>Configuration:</p>
+<pre><code>pekko {
+  cluster {
+    downing-provider-class = &quot;org.apache.pekko.cluster.sbr.SplitBrainResolverProvider&quot;
+    split-brain-resolver {
+      active-strategy = &quot;lease-majority&quot;
+      lease-majority {
+        lease-implementation = &quot;pekko.coordination.lease.kubernetes&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster/src/main/resources/reference.conf#L487-L503" target="_blank" title="Go to snippet source">source</a><code class="language-conf">pekko.cluster.split-brain-resolver.lease-majority {
+  lease-implementation = &quot;&quot;
+
+  # The recommended format for the lease name is &quot;&lt;service-name&gt;-pekko-sbr&quot;.
+  # When lease-name is not defined, the name will be set to &quot;&lt;actor-system-name&gt;-pekko-sbr&quot;
+  lease-name = &quot;&quot;
+
+  # This delay is used on the minority side before trying to acquire the lease,
+  # as an best effort to try to keep the majority side.
+  acquire-lease-delay-for-minority = 2s
+
+  # Release the lease after this duration.
+  release-after = 40s
+
+  # If the &#39;role&#39; is defined the majority/minority is based only on members with that &#39;role&#39;.
+  role = &quot;&quot;
+}</code></pre>
+<p>See also configuration and additional dependency in <a href="https://pekko.apache.org/docs/pekko-management/current/kubernetes-lease.html">Kubernetes Lease</a></p>
+<h2><a href="#indirectly-connected-nodes" name="indirectly-connected-nodes" class="anchor"><span class="anchor-link"></span></a>Indirectly connected nodes</h2>
+<p>In a malfunctional network there can be situations where nodes are observed as unreachable via some network links but they are still indirectly connected via other nodes, i.e. it&rsquo;s not a clean network partition (or node crash).</p>
+<p>When this situation is detected the Split Brain Resolvers will keep fully connected nodes and down all the indirectly connected nodes.</p>
+<p>If there is a combination of indirectly connected nodes and a clean network partition it will combine the above decision with the ordinary decision, e.g. keep majority, after excluding suspicious failure detection observations.</p>
+<h2><a href="#down-all-when-unstable" name="down-all-when-unstable" class="anchor"><span class="anchor-link"></span></a>Down all when unstable</h2>
+<p>When reachability observations by the failure detector are changed the SBR decisions are deferred until there are no changes within the <code>stable-after</code> duration. If this continues for too long it might be an indication of an unstable system/network and it could result in delayed or conflicting decisions on separate sides of a network partition.</p>
+<p>As a precaution for that scenario all nodes are downed if no decision is made within <code>stable-after + down-all-when-unstable</code> from the first unreachability event. The measurement is reset if all unreachable have been healed, downed or removed, or if there are no changes within <code>stable-after * 2</code>.</p>
+<p>This is enabled by default for all strategies and by default the duration is derived to be 3/4 of <code>stable-after</code>.</p>
+<p>The below property can be defined as a duration of for how long the changes are acceptable to continue after the <code>stable-after</code> or it can be set to <code>off</code> to disable this feature.</p>
+<pre><code>pekko.cluster.split-brain-resolver {
+  down-all-when-unstable = 15s
+  stable-after = 20s
+}
+</code></pre><div class="callout warning "><div class="callout-title">Warning</div>
+<p>It is recommended to keep <code>down-all-when-unstable</code> enabled and not set it to a longer duration than <code>stable-after</code> (<code>down-removal-margin</code>) because that can result in delayed decisions on the side that should have been downed, e.g. in the case of a clean network partition followed by continued instability on the side that should be downed. That could result in that members are removed from one side but are still running on the other side.</p></div>
+<h2><a href="#multiple-data-centers" name="multiple-data-centers" class="anchor"><span class="anchor-link"></span></a>Multiple data centers</h2>
+<p>Pekko Cluster has <a href="cluster-dc.html">support for multiple data centers</a>, where the cluster membership is managed by each data center separately and independently of network partitions across different data centers. The Split Brain Resolver is embracing that strategy and will not count nodes or down nodes in another data center.</p>
+<p>When there is a network partition across data centers the typical solution is to wait the partition out until it heals, i.e. do nothing. Other decisions should be performed by an external monitoring tool or human operator.</p>
+<h2><a href="#cluster-singleton-and-cluster-sharding" name="cluster-singleton-and-cluster-sharding" class="anchor"><span class="anchor-link"></span></a>Cluster Singleton and Cluster Sharding</h2>
+<p>The purpose of Cluster Singleton and Cluster Sharding is to run at most one instance of a given actor at any point in time. When such an instance is shut down a new instance is supposed to be started elsewhere in the cluster. It is important that the new instance is not started before the old instance has been stopped. This is especially important when the singleton or the sharded instance is persistent, since there must only be one active writer of the journaled events of a persistent actor instance.</p>
+<p>Since the strategies on different sides of a network partition cannot communicate with each other and they may take the decision at slightly different points in time there must be a time based margin that makes sure that the new instance is not started before the old has been stopped.</p>
+<p>You would like to configure this to a short duration to have quick failover, but that will increase the risk of having multiple singleton/sharded instances running at the same time and it may take a different amount of time to act on the decision (dissemination of the down/removal). The duration is by default the same as the <code>stable-after</code> property (see <a href="split-brain-resolver.html#stable-after">Stable after</a> above). It is recommended to leave this value as is, but it can also be separately overriden with the <code>pekko.cluster.down-removal-margin</code> property.</p>
+<p>Another concern for setting this <code>stable-after</code>/<code>pekko.cluster.down-removal-margin</code> is dealing with JVM pauses e.g. garbage collection. When a node is unresponsive it is not known if it is due to a pause, overload, a crash or a network partition. If it is pause that lasts longer than <code>stable-after</code> * 2 it gives time for SBR to down the node and for singletons and shards to be started on other nodes. When the node un-pauses there will be a short time before it sees its self as down where singletons and sharded actors are still running. It is therefore important to understand the max pause time your application is likely to incur and make sure it is smaller than <code>stable-margin</code>.</p>
+<p>If you choose to set a separate value for <code>down-removal-margin</code>, the recommended minimum duration for different cluster sizes are:</p>
+<table>
+  <thead>
+    <tr>
+      <th>cluster size </th>
+      <th>down-removal-margin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5 </td>
+      <td>7 s </td>
+    </tr>
+    <tr>
+      <td>10 </td>
+      <td>10 s</td>
+    </tr>
+    <tr>
+      <td>20 </td>
+      <td>13 s</td>
+    </tr>
+    <tr>
+      <td>50 </td>
+      <td>17 s</td>
+    </tr>
+    <tr>
+      <td>100 </td>
+      <td>20 s</td>
+    </tr>
+    <tr>
+      <td>1000 </td>
+      <td>30 s</td>
+    </tr>
+  </tbody>
+</table>
+<h3><a href="#expected-failover-time" name="expected-failover-time" class="anchor"><span class="anchor-link"></span></a>Expected Failover Time</h3>
+<p>As you have seen, there are several configured timeouts that add to the total failover latency. With default configuration those are:</p>
+<ul>
+  <li>failure detection 5 seconds</li>
+  <li>stable-after 20 seconds</li>
+  <li>down-removal-margin (by default the same as stable-after) 20 seconds</li>
+</ul>
+<p>In total, you can expect the failover time of a singleton or sharded instance to be around 45 seconds with default configuration. The default configuration is sized for a cluster of 100 nodes. If you have around 10 nodes you can reduce the <code>stable-after</code> to around 10 seconds, resulting in an expected failover time of around 25 seconds. </p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/split-brain-resolver.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="remoting.html" title="Classic Remoting (Deprecated)" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Remoting (Deprecated)
+</span>
+</div>
+</a>
+<a href="coordination.html" title="Coordination" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Coordination
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Testing Classic Actors · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Testing Classic Actors
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="testing.html#testing-classic-actors" class="header">Testing Classic Actors</a>
+  <ul>
+    <li><a href="testing.html#module-info" class="header">Module info</a></li>
+    <li><a href="testing.html#introduction" class="header">Introduction</a></li>
+    <li><a href="testing.html#asynchronous-testing-testkit" class="header">Asynchronous Testing: <code>TestKit</code></a></li>
+    <li><a href="testing.html#callingthreaddispatcher" class="header">CallingThreadDispatcher</a></li>
+    <li><a href="testing.html#tracing-actor-invocations" class="header">Tracing Actor Invocations</a></li>
+    <li><a href="testing.html#different-testing-frameworks" class="header group-scala">Different Testing Frameworks</a></li>
+    <li><a href="testing.html#configuration" class="header">Configuration</a></li>
+    <li><a href="testing.html#example" class="header group-scala">Example</a></li>
+    <li><a href="testing.html#synchronous-testing-testactorref" class="header">Synchronous Testing: <code>TestActorRef</code></a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="testing.html#testing-classic-actors" class="header">Testing Classic Actors</a>
+  <ul>
+    <li><a href="testing.html#module-info" class="header">Module info</a></li>
+    <li><a href="testing.html#introduction" class="header">Introduction</a></li>
+    <li><a href="testing.html#asynchronous-testing-testkit" class="header">Asynchronous Testing: <code>TestKit</code></a></li>
+    <li><a href="testing.html#callingthreaddispatcher" class="header">CallingThreadDispatcher</a></li>
+    <li><a href="testing.html#tracing-actor-invocations" class="header">Tracing Actor Invocations</a></li>
+    <li><a href="testing.html#different-testing-frameworks" class="header group-scala">Different Testing Frameworks</a></li>
+    <li><a href="testing.html#configuration" class="header">Configuration</a></li>
+    <li><a href="testing.html#example" class="header group-scala">Example</a></li>
+    <li><a href="testing.html#synchronous-testing-testactorref" class="header">Synchronous Testing: <code>TestActorRef</code></a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#testing-classic-actors" name="testing-classic-actors" class="anchor"><span class="anchor-link"></span></a>Testing Classic Actors</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the new API see <a href="typed/testing.html">testing</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Pekko Testkit, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-testkit" % PekkoVersion % Test</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  testImplementation "org.apache.pekko:pekko-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Actor Testkit (classic)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-testkit</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.actor.testkit</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/testkit/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/testkit/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>As with any piece of software, automated tests are a very important part of the development cycle. The actor model presents a different view on how units of code are delimited and how they interact, which influences how to perform tests.</p>
+
+<p>Pekko comes with a dedicated module <code>pekko-testkit</code> for supporting tests.</p>
+
+<a id="async-integration-testing"></a>
+<h2><a href="#asynchronous-testing-testkit" name="asynchronous-testing-testkit" class="anchor"><span class="anchor-link"></span></a>Asynchronous Testing: <code>TestKit</code></h2>
+<p>Testkit allows you to test your actors in a controlled but realistic environment. The definition of the environment depends very much on the problem at hand and the level at which you intend to test, ranging from simple checks to full system tests.</p>
+<p>The minimal setup consists of the test procedure, which provides the desired stimuli, the actor under test, and an actor receiving replies. Bigger systems replace the actor under test with a network of actors, apply stimuli at varying injection points and arrange results to be sent from different emission points, but the basic principle stays the same in that a single procedure drives the test.</p>
+<p>The <code>TestKit</code> class contains a collection of tools which makes this common task easy.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/PlainWordSpec.scala#L17-L46" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.ActorSystem
+import pekko.testkit.{ ImplicitSender, TestActors, TestKit }
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class MySpec()
+    extends TestKit(ActorSystem(&quot;MySpec&quot;))
+    with ImplicitSender
+    with AnyWordSpecLike
+    with Matchers
+    with BeforeAndAfterAll {
+
+  override def afterAll(): Unit = {
+    TestKit.shutdownActorSystem(system)
+  }
+
+  &quot;An Echo actor&quot; must {
+
+    &quot;send back messages unchanged&quot; in {
+      val echo = system.actorOf(TestActors.echoActorProps)
+      echo ! &quot;hello world&quot;
+      expectMsg(&quot;hello world&quot;)
+    }
+
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitSampleTest.java#L17-L110" target="_blank" title="Go to snippet source">source</a><code class="language-java">import jdocs.AbstractJavaTest;
+import org.apache.pekko.testkit.javadsl.TestKit;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.actor.Props;
+import org.apache.pekko.actor.AbstractActor;
+
+import java.time.Duration;
+
+public class TestKitSampleTest extends AbstractJavaTest {
+
+  public static class SomeActor extends AbstractActor {
+    ActorRef target = null;
+
+    @Override
+    public Receive createReceive() {
+      return receiveBuilder()
+          .matchEquals(
+              &quot;hello&quot;,
+              message -&gt; {
+                getSender().tell(&quot;world&quot;, getSelf());
+                if (target != null) target.forward(message, getContext());
+              })
+          .match(
+              ActorRef.class,
+              actorRef -&gt; {
+                target = actorRef;
+                getSender().tell(&quot;done&quot;, getSelf());
+              })
+          .build();
+    }
+  }
+
+  static ActorSystem system;
+
+  @BeforeClass
+  public static void setup() {
+    system = ActorSystem.create();
+  }
+
+  @AfterClass
+  public static void teardown() {
+    TestKit.shutdownActorSystem(system);
+    system = null;
+  }
+
+  @Test
+  public void testIt() {
+    /*
+     * Wrap the whole test procedure within a testkit constructor
+     * if you want to receive actor replies or use Within(), etc.
+     */
+    new TestKit(system) {
+      {
+        final Props props = Props.create(SomeActor.class);
+        final ActorRef subject = system.actorOf(props);
+
+        // can also use JavaTestKit “from the outside”
+        final TestKit probe = new TestKit(system);
+        // “inject” the probe by passing it to the test subject
+        // like a real resource would be passed in production
+        subject.tell(probe.getRef(), getRef());
+        // await the correct response
+        expectMsg(Duration.ofSeconds(1), &quot;done&quot;);
+
+        // the run() method needs to finish within 3 seconds
+        within(
+            Duration.ofSeconds(3),
+            () -&gt; {
+              subject.tell(&quot;hello&quot;, getRef());
+
+              // This is a demo: would normally use expectMsgEquals().
+              // Wait time is bounded by 3-second deadline above.
+              awaitCond(probe::msgAvailable);
+
+              // response must have been enqueued to us before probe
+              expectMsg(Duration.ZERO, &quot;world&quot;);
+              // check that the probe we injected earlier got the msg
+              probe.expectMsg(Duration.ZERO, &quot;hello&quot;);
+              Assert.assertEquals(getRef(), probe.getLastSender());
+
+              // Will wait for the rest of the 3 seconds
+              expectNoMessage();
+              return null;
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>The <code>TestKit</code> contains an actor named <code>testActor</code> which is the entry point for messages to be examined with the various <code>expectMsg...</code> assertions detailed below. <span class="group-scala">When mixing in the trait <code>ImplicitSender</code> this test actor is implicitly used as sender reference when dispatching messages from the test procedure.</span> <span class="group-java">The test actor’s reference is obtained using the <code>getRef()</code> method as demonstrated above.</span> The <code>testActor</code> may also be passed to other actors, as usual, usually subscribing it as notification listener. There is a whole set of examination methods, e.g. receiving all consecutive messages matching certain criteria, receiving a whole sequence of fixed messages or classes, receiving nothing for some time, etc.</p>
+<p>The ActorSystem passed to the constructor of TestKit is accessible via the <span class="group-scala"><code>system</code> member</span><span class="group-java"><code>getSystem()</code> method</span>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Remember to shut down the actor system after the test is finished (also in case of failure) so that all actors—including the test actor—are stopped.</p></div>
+<h3><a href="#built-in-assertions" name="built-in-assertions" class="anchor"><span class="anchor-link"></span></a>Built-In Assertions</h3>
+<p>The above-mentioned <span class="group-scala"><code>expectMsg</code></span><span class="group-java"><code>expectMsgEquals</code></span> is not the only method for formulating assertions concerning received messages, the full set is this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L132-L141" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val hello: String = expectMsg(&quot;hello&quot;)
+val any: String = expectMsgAnyOf(&quot;hello&quot;, &quot;world&quot;)
+val all: immutable.Seq[String] = expectMsgAllOf(&quot;hello&quot;, &quot;world&quot;)
+val i: Int = expectMsgType[Int]
+expectNoMessage(200.millis)
+val two: immutable.Seq[AnyRef] = receiveN(2)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L262-L272" target="_blank" title="Go to snippet source">source</a><code class="language-java">final String hello = expectMsgEquals(&quot;hello&quot;);
+final String any = expectMsgAnyOf(&quot;hello&quot;, &quot;world&quot;);
+final List&lt;String&gt; all = expectMsgAllOf(&quot;hello&quot;, &quot;world&quot;);
+final int i = expectMsgClass(Integer.class);
+final Number j = expectMsgAnyClassOf(Integer.class, Long.class);
+expectNoMessage();
+final List&lt;Object&gt; two = receiveN(2);</code></pre></dd>
+</dl>
+<p>In these examples, the maximum durations you will find mentioned below are left out, in which case they use the default value from the configuration item <code>pekko.test.single-expect-default</code> which itself defaults to 3 seconds (or they obey the innermost enclosing <code>Within</code> as detailed <a href="testing.html#testkit-within">below</a>). The full signatures are:</p>
+<ul>
+  <li><span class="group-scala"><code>expectMsg[T](d: Duration, msg: T): T</code></span><span class="group-java"><code>public &lt;T&gt; T expectMsgEquals(Duration max, T msg)</code></span>  The given message object must be received within the specified time; the object will be returned.</li>
+  <li><span class="group-scala"><code>expectMsgPF[T](d: Duration)(pf: PartialFunction[Any, T]): T</code></span><span class="group-java"><code>public &lt;T&gt; T expectMsgPF(Duration max, String hint, Function&lt;Object, T&gt; f)</code></span>  Within the given time, a message must be received and the given <span class="group-scala">partial</span> function must be defined for that message; the result from applying the <span class="group-scala">partial</span> function to the received message is returned. <span class="group-scala">The duration may be left unspecified (empty parentheses are required in this case) to use the deadline from the innermost enclosing <a href="testing.html#testkit-within">within</a> block instead.</span></li>
+  <li><span class="group-scala"><code>expectMsgClass[T](d: Duration, c: Class[T]): T</code></span><span class="group-java"><code>public &lt;T&gt; T expectMsgClass(Duration max, Class&lt;T&gt; c)</code></span>  An object which is an instance of the given <code>Class</code> must be received within the allotted time frame; the object will be returned. Note that this does a conformance check; if you need the class to be equal, <span class="group-scala">have a look at <code>expectMsgAllClassOf</code> with a single given class argument</span><span class="group-java">you need to verify that afterwards</span>.</li>
+</ul><div class="group-scala">
+<ul>
+  <li><code>expectMsgType[T: Manifest](d: Duration)</code>  An object which is an instance of the given type (after erasure) must be received within the allotted time frame; the object will be returned. This method is approximately equivalent to <code>expectMsgClass(implicitly[ClassTag[T]].runtimeClass)</code>.</li>
+</ul></div>
+<ul>
+  <li><span class="group-scala"><code>expectMsgAnyOf[T](d: Duration, obj: T*): T</code></span><span class="group-java"><code>public Object expectMsgAnyOf(Duration max, Object... msg)</code></span>  An object must be received within the given time, and it must be equal ( compared with <span class="group-scala"><code>==</code></span><span class="group-java"><code>equals()</code></span>) to at least one of the passed reference objects; the received object will be returned.</li>
+  <li><span class="group-scala"><code>expectMsgAnyClassOf[T](d: Duration, obj: Class[_ &lt;: T]*): T</code></span><span class="group-java"><code>public &lt;T&gt; T expectMsgAnyClassOf(Duration max, Class&lt;? extends T&gt;... c)</code></span>  An object must be received within the given time, and it must be an instance of at least one of the supplied <code>Class</code> objects; the received object will be returned. Note that this does a conformance check, if you need the class to be equal you need to verify that afterwards.</li>
+  <li><span class="group-scala"><code>expectMsgAllOf[T](d: Duration, obj: T*): Seq[T]</code></span><span class="group-java"><code>public List&lt;Object&gt; expectMsgAllOf(Duration max, Object... msg)</code></span>  Several objects matching the size of the supplied object array must be received within the given time, and for each of the given objects there must exist at least one among the received ones which equals (compared with <span class="group-scala"><code>==</code></span><span class="group-java"><code>equals()</code></span>) it. The full sequence of received objects is returned in the order received.</li>
+</ul><div class="group-scala">
+<ul>
+  <li><code>expectMsgAllClassOf[T](d: Duration, c: Class[_ &lt;: T]*): Seq[T]</code>  Several objects matching the size of the supplied <code>Class</code> array must be received within the given time, and for each of the given classes there must exist at least one among the received objects whose class equals (compared with <code>==</code>) it (this is <em>not</em> a conformance check). The full sequence of received objects is returned.</li>
+  <li><code>expectMsgAllConformingOf[T](d: Duration, c: Class[_ &lt;: T]*): Seq[T]</code>  Several objects matching the size of the supplied <code>Class</code> array must be received within the given time, and for each of the given classes there must exist at least one among the received objects which is an instance of this class. The full sequence of received objects is returned.</li>
+</ul></div>
+<ul>
+  <li><span class="group-scala"><code>expectNoMessage(d: Duration)</code></span><span class="group-java"><code>public void expectNoMessage(Duration max)</code></span>  No message must be received within the given time. This also fails if a message has been received before calling this method which has not been removed from the queue using one of the other methods.</li>
+  <li><span class="group-scala"><code>receiveN(n: Int, d: Duration): Seq[AnyRef]</code></span><span class="group-java"><code>List&lt;Object&gt; receiveN(int n, Duration max)</code></span>  <code>n</code> messages must be received within the given time; the received messages are returned.</li>
+</ul><div class="group-scala">
+<ul>
+  <li><code>fishForMessage(max: Duration, hint: String)(pf: PartialFunction[Any, Boolean]): Any</code>  Keep receiving messages as long as the time is not used up and the partial function matches and returns <code>false</code>. Returns the message received for which it returned <code>true</code> or throws an exception, which will include the provided hint for easier debugging.</li>
+</ul></div>
+<p>In addition to message reception assertions there are also methods which help with message flows:</p><div class="group-scala">
+<ul>
+  <li><code>receiveOne(d: Duration): AnyRef</code> Tries to receive one message for at most the given time interval and returns <code>null</code> in case of failure. If the given Duration is zero, the call is non-blocking (polling mode).</li>
+</ul></div>
+<ul>
+  <li>
+    <p><span class="group-scala"><code>receiveWhile[T](max: Duration, idle: Duration, messages: Int)(pf: PartialFunction[Any, T]): Seq[T]</code></span><span class="group-java"><code>public &lt;T&gt; List&lt;T&gt; receiveWhile(Duration max, Duration idle, Int messages, Function&lt;Object, T&gt; f)</code></span> Collect messages as long as</p>
+    <ul>
+      <li>they are matching the given partial function</li>
+      <li>the given time interval is not used up</li>
+      <li>the next message is received within the idle timeout</li>
+      <li>the number of messages has not yet reached the maximum All collected messages are returned. <span class="group-scala">The maximum duration defaults to the time remaining in the innermost enclosing <a href="testing.html#testkit-within">within</a> block and the idle duration defaults to infinity (thereby disabling the idle-timeout feature). The number of expected messages defaults to <code>Int.MaxValue</code>, which effectively disables this limit.</span></li>
+    </ul>
+  </li>
+  <li>
+  <p><span class="group-scala"><code>awaitCond(p: =&gt; Boolean, max: Duration, interval: Duration)</code></span><span class="group-java"><code>public void awaitCond(Duration max, Duration interval, Supplier&lt;Boolean&gt; p)</code></span>  Poll the given condition every <code>interval</code> until it returns <code>true</code> or the <code>max</code> duration is used up. <span class="group-scala">The interval defaults to 100 ms and the maximum defaults to the time remaining in the innermost enclosing <a href="#testkit-within">within</a> block.</span></p></li>
+  <li>
+  <p><span class="group-scala"><code>awaitAssert(a: =&gt; Any, max: Duration, interval: Duration)</code></span><span class="group-java"><code>public void awaitAssert(Duration max, Duration interval, Supplier&lt;Object&gt; a)</code></span> Poll the given assert function every <code>interval</code> until it does not throw an exception or the <code>max</code> duration is used up. If the timeout expires the last exception is thrown. <span class="group-scala">The interval defaults to 100 ms and the maximum defaults to the time remaining in the innermost enclosing <a href="testing.html#testkit-within">within</a> block. The interval defaults to 100 ms and the maximum defaults to the time remaining in the innermost enclosing <a href="testing.html#testkit-within">within</a> block.</span> Return an arbitrary value that would be returned from awaitAssert if successful, if not interested in such value you can return null.</p></li>
+  <li>
+  <p><span class="group-scala"><code>ignoreMsg(pf: PartialFunction[AnyRef, Boolean])</code></span><span class="group-java"><code>public void ignoreMsg(Function&lt;Object, Boolean&gt; f)</code></span> <span class="group-scala"><code>ignoreMsg</code></span><span class="group-java"><code>public void ignoreMsg()</code></span> <span class="group-java">There are also cases where not all messages sent to the test kit are actually relevant to the test, but removing them would mean altering the actors under test. For this purpose it is possible to ignore certain messages.</span> <span class="group-scala">The internal <code>testActor</code> contains a partial function for ignoring messages: it will only enqueue messages which do not match the function or for which the function returns <code>false</code>. This function can be set and reset using the methods given above; each invocation replaces the previous function, they are not composed.  This feature is useful e.g. when testing a logging system, where you want to ignore regular messages and are only interested in your specific ones.</span></p></li>
+</ul>
+<h3><a href="#expecting-log-messages" name="expecting-log-messages" class="anchor"><span class="anchor-link"></span></a>Expecting Log Messages</h3>
+<p>Since an integration test does not allow observing the internal processing of the participating actors, verifying expected exceptions cannot be done directly. Instead, use the logging system for this purpose: replacing the normal event handler with the <code>TestEventListener</code> and using an <code>EventFilter</code> allows assertions on log messages, including those which are generated by exceptions:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L333-L348" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.EventFilter
+import com.typesafe.config.ConfigFactory
+
+implicit val system: ActorSystem = ActorSystem(
+  &quot;testsystem&quot;,
+  ConfigFactory.parseString(&quot;&quot;&quot;
+  pekko.loggers = [&quot;org.apache.pekko.testkit.TestEventListener&quot;]
+  &quot;&quot;&quot;))
+try {
+  val actor = system.actorOf(Props.empty)
+  EventFilter[ActorKilledException](occurrences = 1).intercept {
+    actor ! Kill
+  }
+} finally {
+  shutdown(system)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L514-L530" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    assertEquals(&quot;TestKitDocTest&quot;, system.name());
+    final ActorRef victim = system.actorOf(Props.empty(), &quot;victim&quot;);
+
+    final int result =
+        new EventFilter(ActorKilledException.class, system)
+            .from(&quot;pekko://TestKitDocTest/user/victim&quot;)
+            .occurrences(1)
+            .intercept(
+                () -&gt; {
+                  victim.tell(Kill.getInstance(), ActorRef.noSender());
+                  return 42;
+                });
+    assertEquals(42, result);
+  }
+};</code></pre></dd>
+</dl>
+<p>If the number of occurrences is specific—as demonstrated above—then <code>intercept</code> will block until that number of matching messages have been received or the timeout configured in <code>pekko.test.filter-leeway</code> is used up (time starts counting after the passed-in block of code returns). In case of a timeout the test fails.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Be sure to exchange the default logger with the <code>TestEventListener</code> in your <code>application.conf</code> to enable this function:</p>
+<pre><code>pekko.loggers = [org.apache.pekko.testkit.TestEventListener]
+</code></pre></div>
+<h3><a href="#overriding-behavior" name="overriding-behavior" class="anchor"><span class="anchor-link"></span></a>Overriding behavior</h3>
+<p>Sometimes, you want to &lsquo;hook into&rsquo; your actor to be able to test some internals. Usually, it is better to test an actors&rsquo; external interface, but for example if you want to test timing-sensitive behavior this can come in handy. Say for instance you want to test an actor that schedules a task:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L84-L96" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class TriggerScheduling(foo: String)
+
+object SchedKey
+case class ScheduledMessage(foo: String)
+
+class TestTimerActor extends Actor with Timers {
+  override def receive = {
+    case TriggerScheduling(foo) =&gt; triggerScheduling(ScheduledMessage(foo))
+  }
+
+  def triggerScheduling(msg: ScheduledMessage) =
+    timers.startSingleTimer(SchedKey, msg, 500.millis)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L94-L109" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class TestTimerActor extends AbstractActorWithTimers {
+  private static Object SCHED_KEY = &quot;SchedKey&quot;;
+
+  static final class TriggerScheduling {}
+
+  static final class ScheduledMessage {}
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder().match(TriggerScheduling.class, msg -&gt; triggerScheduling()).build();
+  }
+
+  void triggerScheduling() {
+    getTimers().startSingleTimer(SCHED_KEY, new ScheduledMessage(), Duration.ofMillis(500));
+  }
+}</code></pre></dd>
+</dl>
+<p>You can override the method that does the scheduling in your test:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L309-L320" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.testkit.TestProbe
+import pekko.actor.Props
+
+val probe = TestProbe()
+val actor = system.actorOf(Props(new TestTimerActor() {
+  override def triggerScheduling(msg: ScheduledMessage) =
+    probe.ref ! msg
+}))
+
+actor ! TriggerScheduling(&quot;abc&quot;)
+probe.expectMsg(ScheduledMessage(&quot;abc&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L442-L459" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    final ActorRef target =
+        system.actorOf(
+            Props.create(
+                TestTimerActor.class,
+                () -&gt;
+                    new TestTimerActor() {
+                      @Override
+                      void triggerScheduling() {
+                        probe.getRef().tell(new ScheduledMessage(), getSelf());
+                      }
+                    }));
+    target.tell(new TestTimerActor.TriggerScheduling(), ActorRef.noSender());
+    probe.expectMsgClass(TestTimerActor.ScheduledMessage.class);
+  }
+};</code></pre></dd>
+</dl>
+<a id="testkit-within"></a>
+<h3><a href="#timing-assertions" name="timing-assertions" class="anchor"><span class="anchor-link"></span></a>Timing Assertions</h3>
+<p>Another important part of functional testing concerns timing: certain events must not happen immediately (like a timer), others need to happen before a deadline. Therefore, all examination methods accept an upper time limit within the positive or negative result must be obtained. Lower time limits need to be checked external to the examination, which is facilitated by a new construct for managing time constraints:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L214-L223" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.Props
+import scala.concurrent.duration._
+
+val worker = system.actorOf(Props[Worker]())
+within(200 millis) {
+  worker ! &quot;some work&quot;
+  expectMsg(&quot;some result&quot;)
+  expectNoMessage() // will block for the rest of the 200ms
+  Thread.sleep(300) // will NOT make this block fail
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L141-L152" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    getRef().tell(42, ActorRef.noSender());
+    within(
+        Duration.ZERO,
+        Duration.ofSeconds(1),
+        () -&gt; {
+          assertEquals((Integer) 42, expectMsgClass(Integer.class));
+          return null;
+        });
+  }
+};</code></pre></dd>
+</dl>
+<p>The block <span class="group-scala">given to</span><span class="group-java">in</span> <code>within</code> must complete after a duration which is between <code>min</code> and <code>max</code>, where the former defaults to zero. The deadline calculated by adding the <code>max</code> parameter to the block&rsquo;s start time is implicitly available within the block to all examination methods, if you do not specify it, it is inherited from the innermost enclosing <code>within</code> block.</p>
+<p>It should be noted that if the last message-receiving assertion of the block is <code>expectNoMessage</code> or <code>receiveWhile</code>, the final check of the <code>within</code> is skipped to avoid false positives due to wake-up latencies. This means that while individual contained assertions still use the maximum time bound, the overall block may take arbitrarily longer in this case.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>All times are measured using <code>System.nanoTime</code>, meaning that they describe wall time, not CPU time or system time.</p></div><div class="group-scala">
+<p>Ray Roestenburg has written a great article on using the TestKit: <a href="https://web.archive.org/web/20180114133958/http://roestenburg.agilesquad.com/2011/02/unit-testing-akka-actors-with-testkit_12.html">https://web.archive.org/web/20180114133958/http://roestenburg.agilesquad.com/2011/02/unit-testing-akka-actors-with-testkit_12.html</a>. His full example is also available <a href="testing.html#example">here</a>.</p></div>
+<h4><a href="#accounting-for-slow-test-systems" name="accounting-for-slow-test-systems" class="anchor"><span class="anchor-link"></span></a>Accounting for Slow Test Systems</h4>
+<p>The tight timeouts you use during testing on your lightning-fast notebook will invariably lead to spurious test failures on the heavily loaded Jenkins server (or similar). To account for this situation, all maximum durations are internally scaled by a factor taken from the <a href="general/configuration-reference.html#config-pekko-testkit">Configuration</a>, <code>pekko.test.timefactor</code>, which defaults to 1.</p>
+<p>You can scale other durations with the same factor by using the <span class="group-scala">implicit conversion in <code>pekko.testkit</code> package object to add dilated function to <code>Duration</code></span><span class="group-java"><code>dilated</code> method in <code>TestKit</code></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L229-L231" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration._
+import org.apache.pekko.testkit._
+10.milliseconds.dilated</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L305-L311" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final Duration original = Duration.ofSeconds(1);
+    final Duration stretched = dilated(original);
+    assertTrue(&quot;dilated&quot;, stretched.compareTo(original) &gt;= 0);
+  }
+};</code></pre></dd>
+</dl><div class="group-scala">
+<h3><a href="#resolving-conflicts-with-implicit-actorref" name="resolving-conflicts-with-implicit-actorref" class="anchor"><span class="anchor-link"></span></a>Resolving Conflicts with Implicit ActorRef</h3>
+<p>If you want the sender of messages inside your TestKit-based tests to be the <code>testActor</code>  mix in <code>ImplicitSender</code> into your test.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/PlainWordSpec.scala#L25-L30" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MySpec()
+    extends TestKit(ActorSystem(&quot;MySpec&quot;))
+    with ImplicitSender
+    with AnyWordSpecLike
+    with Matchers
+    with BeforeAndAfterAll {</code></pre></div>
+<h3><a href="#using-multiple-probe-actors" name="using-multiple-probe-actors" class="anchor"><span class="anchor-link"></span></a>Using Multiple Probe Actors</h3>
+<p>When the actors under test are supposed to send various messages to different destinations, it may be difficult distinguishing the message streams arriving at the <code>testActor</code> when using the <code>TestKit</code> as <span class="group-scala">a mixin</span><span class="group-java">shown until now</span>. Another approach is to use it for the creation of simple probe actors to be inserted in the message flows. <span class="group-scala">To make this more powerful and convenient, there is a concrete implementation called <code>TestProbe</code>.</span> The functionality is best explained using a small example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L21-L24" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.concurrent.duration._
+import org.apache.pekko.actor._
+import org.apache.pekko.testkit.TestProbe
+</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L53-L65" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class MyDoubleEcho extends Actor {
+  var dest1: ActorRef = _
+  var dest2: ActorRef = _
+  def receive = {
+    case (d1: ActorRef, d2: ActorRef) =&gt;
+      dest1 = d1
+      dest2 = d2
+    case x =&gt;
+      dest1 ! x
+      dest2 ! x
+  }
+}
+</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L237-L243" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe1 = TestProbe()
+val probe2 = TestProbe()
+val actor = system.actorOf(Props[MyDoubleEcho]())
+actor ! ((probe1.ref, probe2.ref))
+actor ! &quot;hello&quot;
+probe1.expectMsg(500 millis, &quot;hello&quot;)
+probe2.expectMsg(500 millis, &quot;hello&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L318-L349" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    // simple actor which only forwards messages
+    class Forwarder extends AbstractActor {
+      final ActorRef target;
+
+      @SuppressWarnings(&quot;unused&quot;)
+      public Forwarder(ActorRef target) {
+        this.target = target;
+      }
+
+      @Override
+      public Receive createReceive() {
+        return receiveBuilder()
+            .matchAny(message -&gt; target.forward(message, getContext()))
+            .build();
+      }
+    }
+
+    // create a test probe
+    final TestKit probe = new TestKit(system);
+
+    // create a forwarder, injecting the probe’s testActor
+    final Props props = Props.create(Forwarder.class, this, probe.getRef());
+    final ActorRef forwarder = system.actorOf(props, &quot;forwarder&quot;);
+
+    // verify correct forwarding
+    forwarder.tell(42, getRef());
+    probe.expectMsgEquals(42);
+    assertEquals(getRef(), probe.getLastSender());
+  }
+};</code></pre></dd>
+</dl>
+<p><span class="group-scala">Here the system under test is simulated by <code>MyDoubleEcho</code>, which is supposed to mirror its input to two outputs. Attaching two test probes enables verification of the (simplistic) behavior</span><span class="group-java">This simple test verifies an equally simple Forwarder actor by injecting a probe as the forwarder’s target</span>. Another example would be two actors A and B which collaborate by A sending messages to B. To verify this message flow, a <code>TestProbe</code> could be inserted as a target of A, using the forwarding capabilities or auto-pilot described below to include a real B in the test setup.</p>
+<p>If you have many test probes, you can name them to get meaningful actor names in test logs and assertions:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L262-L266" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val worker = TestProbe(&quot;worker&quot;)
+val aggregator = TestProbe(&quot;aggregator&quot;)
+
+worker.ref.path.name should startWith(&quot;worker&quot;)
+aggregator.ref.path.name should startWith(&quot;aggregator&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L356-L364" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestProbe worker = new TestProbe(system, &quot;worker&quot;);
+    final TestProbe aggregator = new TestProbe(system, &quot;aggregator&quot;);
+
+    assertTrue(worker.ref().path().name().startsWith(&quot;worker&quot;));
+    assertTrue(aggregator.ref().path().name().startsWith(&quot;aggregator&quot;));
+  }
+};</code></pre></dd>
+</dl>
+<p>Probes may also be equipped with custom assertions to make your test code even more concise and clear:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L247-L256" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class Update(id: Int, value: String)
+
+val probe = new TestProbe(system) {
+  def expectUpdate(x: Int) = {
+    expectMsgPF() {
+      case Update(id, _) if id == x =&gt; ()
+    }
+    sender() ! &quot;ACK&quot;
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L371-L387" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    class MyProbe extends TestKit {
+      public MyProbe() {
+        super(system);
+      }
+
+      public void assertHello() {
+        expectMsgEquals(&quot;hello&quot;);
+      }
+    }
+
+    final MyProbe probe = new MyProbe();
+    probe.getRef().tell(&quot;hello&quot;, ActorRef.noSender());
+    probe.assertHello();
+  }
+};</code></pre></dd>
+</dl>
+<p>You have complete flexibility here in mixing and matching the <code>TestKit</code> facilities with your checks and choosing an intuitive name for it. In real life your code will probably be a bit more complicated than the example given above; just use the power!</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Any message sent from a <code>TestProbe</code> to another actor which runs on the CallingThreadDispatcher runs the risk of dead-lock if that other actor might also send to this probe. The implementation of <code>TestProbe.watch</code> and <code>TestProbe.unwatch</code> will also send a message to the actor being watched, which means that it is dangerous to try watching e.g. <code>TestActorRef</code> from a <code>TestProbe</code>.</p></div>
+<h4><a href="#watching-other-actors-from-probes" name="watching-other-actors-from-probes" class="anchor"><span class="anchor-link"></span></a>Watching Other Actors from Probes</h4>
+<p>A <span class="group-scala"><code>TestProbe</code></span><span class="group-java"><code>TestKit</code></span> can register itself for DeathWatch of any other actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L274-L277" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe = TestProbe()
+probe.watch(target)
+target ! PoisonPill
+probe.expectTerminated(target)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L395-L403" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    probe.watch(target);
+    target.tell(PoisonPill.getInstance(), ActorRef.noSender());
+    final Terminated msg = probe.expectMsgClass(Terminated.class);
+    assertEquals(msg.getActor(), target);
+  }
+};</code></pre></dd>
+</dl>
+<h4><a href="#replying-to-messages-received-by-probes" name="replying-to-messages-received-by-probes" class="anchor"><span class="anchor-link"></span></a>Replying to Messages Received by Probes</h4>
+<p><span class="group-scala">The probes keep track of the communications channel for replies, if possible, so they can also reply</span><span class="group-java">The probe stores the sender of the last dequeued message (i.e. after its <code>expectMsg*</code> reception), which may be retrieved using the <code>getLastSender()</code> method. This information can also implicitly be used for having the probe reply to the last received message</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L286-L290" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe = TestProbe()
+val future = probe.ref ? &quot;hello&quot;
+probe.expectMsg(0 millis, &quot;hello&quot;) // TestActor runs on CallingThreadDispatcher
+probe.reply(&quot;world&quot;)
+assert(future.isCompleted &amp;&amp; future.value.contains(Success(&quot;world&quot;)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L410-L419" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    probe.getRef().tell(&quot;hello&quot;, getRef());
+    probe.expectMsgEquals(&quot;hello&quot;);
+    probe.reply(&quot;world&quot;);
+    expectMsgEquals(&quot;world&quot;);
+    assertEquals(probe.getRef(), getLastSender());
+  }
+};</code></pre></dd>
+</dl>
+<h4><a href="#forwarding-messages-received-by-probes" name="forwarding-messages-received-by-probes" class="anchor"><span class="anchor-link"></span></a>Forwarding Messages Received by Probes</h4>
+<p><span class="group-scala">Given a destination actor <code>dest</code> which in the nominal actor network would receive a message from actor <code>source</code>. If you arrange for the message to be sent to a <code>TestProbe</code> <code>probe</code> instead, you can make assertions concerning volume and timing of the message flow while still keeping the network functioning</span><span class="group-java">The probe can also forward a received message (i.e. after its <code>expectMsg*</code> reception), retaining the original sender</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L69-L80" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Source(target: ActorRef) extends Actor {
+  def receive = {
+    case &quot;start&quot; =&gt; target ! &quot;work&quot;
+  }
+}
+
+class Destination extends Actor {
+  def receive = {
+    case x =&gt; // Do something..
+  }
+}
+</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L298-L303" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe = TestProbe()
+val source = system.actorOf(Props(classOf[Source], probe.ref))
+val dest = system.actorOf(Props[Destination]())
+source ! &quot;start&quot;
+probe.expectMsg(&quot;work&quot;)
+probe.forward(dest)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L426-L435" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    probe.getRef().tell(&quot;hello&quot;, getRef());
+    probe.expectMsgEquals(&quot;hello&quot;);
+    probe.forward(getRef());
+    expectMsgEquals(&quot;hello&quot;);
+    assertEquals(getRef(), getLastSender());
+  }
+};</code></pre></dd>
+</dl>
+<p><span class="group-scala">The <code>dest</code> actor will receive the same message invocation as if no test probe had intervened.</span></p>
+<h4><a href="#auto-pilot" name="auto-pilot" class="anchor"><span class="anchor-link"></span></a>Auto-Pilot</h4>
+<p>Receiving messages in a queue for later inspection is nice, but to keep a test running and verify traces later you can also install an <code>AutoPilot</code> in the participating test probes (actually in any <code>TestKit</code>) which is invoked before enqueueing to the inspection queue. This code can be used to forward messages, e.g. in a chain <code>A --&gt; Probe --&gt;
+B</code>, as long as a certain protocol is obeyed.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/testkit/src/test/scala/org/apache/pekko/testkit/TestProbeSpec.scala#L129-L136" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe = TestProbe()
+probe.setAutoPilot(new TestActor.AutoPilot {
+  def run(sender: ActorRef, msg: Any): TestActor.AutoPilot =
+    msg match {
+      case &quot;stop&quot; =&gt; TestActor.NoAutoPilot
+      case x      =&gt; testActor.tell(x, sender); TestActor.KeepRunning
+    }
+})</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L482-L500" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    // install auto-pilot
+    probe.setAutoPilot(
+        new TestActor.AutoPilot() {
+          public AutoPilot run(ActorRef sender, Object msg) {
+            sender.tell(msg, ActorRef.noSender());
+            return noAutoPilot();
+          }
+        });
+    // first one is replied to directly ...
+    probe.getRef().tell(&quot;hello&quot;, getRef());
+    expectMsgEquals(&quot;hello&quot;);
+    // ... but then the auto-pilot switched itself off
+    probe.getRef().tell(&quot;world&quot;, getRef());
+    expectNoMessage();
+  }
+};</code></pre></dd>
+</dl>
+<p>The <code>run</code> method must return the auto-pilot for the next message, <span class="group-scala">which can be <code>KeepRunning</code> to retain the current one or <code>NoAutoPilot</code> to switch it off</span><span class="group-java">wrapped in an <code>Option</code>; setting it to <code>None</code> terminates the auto-pilot</span>.</p>
+<h4><a href="#caution-about-timing-assertions" name="caution-about-timing-assertions" class="anchor"><span class="anchor-link"></span></a>Caution about Timing Assertions</h4>
+<p>The behavior of <code>within</code> blocks when using test probes might be perceived as counter-intuitive: you need to remember that the nicely scoped deadline as described <a href="testing.html#testkit-within">above</a> is local to each probe. Hence, probes do not react to each other&rsquo;s deadlines or the deadline set in an enclosing <code>TestKit</code> instance:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L374-L377" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val probe = TestProbe()
+within(1 second) {
+  probe.expectMsg(&quot;hello&quot;)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L467-L472" target="_blank" title="Go to snippet source">source</a><code class="language-java">new TestKit(system) {
+  {
+    final TestKit probe = new TestKit(system);
+    within(Duration.ofSeconds(1), () -&gt; probe.expectMsgEquals(&quot;hello&quot;));
+  }
+};</code></pre></dd>
+</dl>
+<p>Here, the <span class="group-scala"><code>expectMsg</code></span><span class="group-java"><code>expectMsgEquals</code></span> call will use the default timeout.</p>
+<h3><a href="#testing-parent-child-relationships" name="testing-parent-child-relationships" class="anchor"><span class="anchor-link"></span></a>Testing parent-child relationships</h3>
+<p>The parent of an actor is always the actor that created it. At times this leads to a coupling between the two that may not be straightforward to test. There are several approaches to improve the testability of a child actor that needs to refer to its parent:</p>
+<ol>
+  <li>when creating a child, pass an explicit reference to its parent</li>
+  <li>create the child with a <code>TestProbe</code> as parent</li>
+  <li>create a fabricated parent when testing</li>
+</ol>
+<p>Conversely, a parent&rsquo;s binding to its child can be lessened as follows:</p>
+<ol>
+  <li>when creating a parent, tell the parent how to create its child</li>
+</ol>
+<p>For example, the structure of the code you want to test may follow this pattern:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L32-L46" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Parent extends Actor {
+  val child = context.actorOf(Props[Child](), &quot;child&quot;)
+  var ponged = false
+
+  def receive = {
+    case &quot;pingit&quot; =&gt; child ! &quot;ping&quot;
+    case &quot;pong&quot;   =&gt; ponged = true
+  }
+}
+
+class Child extends Actor {
+  def receive = {
+    case &quot;ping&quot; =&gt; context.parent ! &quot;pong&quot;
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L39-L63" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Parent extends AbstractActor {
+  final ActorRef child = getContext().actorOf(Props.create(Child.class), &quot;child&quot;);
+  boolean ponged = false;
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(&quot;pingit&quot;, message -&gt; child.tell(&quot;ping&quot;, getSelf()))
+        .matchEquals(&quot;pong&quot;, message -&gt; ponged = true)
+        .build();
+  }
+}
+
+static class Child extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(
+            &quot;ping&quot;,
+            message -&gt; {
+              getContext().getParent().tell(&quot;pong&quot;, getSelf());
+            })
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<h4><a href="#introduce-a-child-to-its-parent" name="introduce-a-child-to-its-parent" class="anchor"><span class="anchor-link"></span></a>Introduce a child to its parent</h4>
+<p>The first option is to avoid the use of the <code>context.parent</code> function and create a child with a custom parent by passing an explicit reference to its parent instead.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L50-L54" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class DependentChild(parent: ActorRef) extends Actor {
+  def receive = {
+    case &quot;ping&quot; =&gt; parent ! &quot;pong&quot;
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L68-L81" target="_blank" title="Go to snippet source">source</a><code class="language-java">class DependentChild extends AbstractActor {
+  private final ActorRef parent;
+
+  public DependentChild(ActorRef parent) {
+    this.parent = parent;
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(&quot;ping&quot;, message -&gt; parent.tell(&quot;pong&quot;, getSelf()))
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<h4><a href="#create-the-child-using-" name="create-the-child-using-" class="anchor"><span class="anchor-link"></span></a>Create the child using <span class="group-scala">TestProbe</span><span class="group-java">TestKit</span></h4>
+<p>The <span class="group-scala"><code>TestProbe</code></span><span class="group-java"><code>TestKit</code></span> class can create actors that will run with the test probe as a parent. This will cause any messages the child actor sends to <span class="group-scala"><em>context.parent</em></span><span class="group-java"><em>getContext().getParent()</em></span> to end up in the test probe.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L134-L141" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;A TestProbe serving as parent&quot; should {
+  &quot;test its child responses&quot; in {
+    val parent = TestProbe()
+    val child = parent.childActorOf(Props(new Child))
+    parent.send(child, &quot;ping&quot;)
+    parent.expectMsg(&quot;pong&quot;)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L198-L202" target="_blank" title="Go to snippet source">source</a><code class="language-java">TestKit parent = new TestKit(system);
+ActorRef child = parent.childActorOf(Props.create(Child.class));
+
+parent.send(child, &quot;ping&quot;);
+parent.expectMsgEquals(&quot;pong&quot;);</code></pre></dd>
+</dl>
+<h4><a href="#using-a-fabricated-parent" name="using-a-fabricated-parent" class="anchor"><span class="anchor-link"></span></a>Using a fabricated parent</h4>
+<p>If you prefer to avoid modifying the parent or child constructor you can create a fabricated parent in your test. This, however, does not enable you to test the parent actor in isolation.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L145-L159" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;A fabricated parent&quot; should {
+  &quot;test its child responses&quot; in {
+    val proxy = TestProbe()
+    val parent = system.actorOf(Props(new Actor {
+      val child = context.actorOf(Props(new Child), &quot;child&quot;)
+      def receive = {
+        case x if sender() == child =&gt; proxy.ref.forward(x)
+        case x                      =&gt; child.forward(x)
+      }
+    }))
+
+    proxy.send(parent, &quot;ping&quot;)
+    proxy.expectMsg(&quot;pong&quot;)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L165-L192" target="_blank" title="Go to snippet source">source</a><code class="language-java">class FabricatedParentCreator implements Creator&lt;Actor&gt; {
+  private final TestProbe proxy;
+
+  public FabricatedParentCreator(TestProbe proxy) {
+    this.proxy = proxy;
+  }
+
+  @Override
+  public Actor create() throws Exception {
+    return new AbstractActor() {
+      final ActorRef child = getContext().actorOf(Props.create(Child.class), &quot;child&quot;);
+
+      @Override
+      public Receive createReceive() {
+        return receiveBuilder()
+            .matchAny(
+                message -&gt; {
+                  if (getSender().equals(child)) {
+                    proxy.ref().forward(message, getContext());
+                  } else {
+                    child.forward(message, getContext());
+                  }
+                })
+            .build();
+      }
+    };
+  }
+}</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L210-L214" target="_blank" title="Go to snippet source">source</a><code class="language-java">TestProbe proxy = new TestProbe(system);
+ActorRef parent = system.actorOf(Props.create(Actor.class, new FabricatedParentCreator(proxy)));
+
+proxy.send(parent, &quot;ping&quot;);
+proxy.expectMsg(&quot;pong&quot;);</code></pre></dd>
+</dl>
+<h4><a href="#externalize-child-making-from-the-parent" name="externalize-child-making-from-the-parent" class="anchor"><span class="anchor-link"></span></a>Externalize child making from the parent</h4>
+<p>Alternatively, you can tell the parent how to create its child. There are two ways to do this: by giving it a <code>Props</code> object or by giving it a function which takes care of creating the child actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L58-L75" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class DependentParent(childProps: Props, probe: ActorRef) extends Actor {
+  val child = context.actorOf(childProps, &quot;child&quot;)
+
+  def receive = {
+    case &quot;pingit&quot; =&gt; child ! &quot;ping&quot;
+    case &quot;pong&quot;   =&gt; probe ! &quot;ponged&quot;
+  }
+}
+
+class GenericDependentParent(childMaker: ActorRefFactory =&gt; ActorRef) extends Actor {
+  val child = childMaker(context)
+  var ponged = false
+
+  def receive = {
+    case &quot;pingit&quot; =&gt; child ! &quot;ping&quot;
+    case &quot;pong&quot;   =&gt; ponged = true
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L86-L102" target="_blank" title="Go to snippet source">source</a><code class="language-java">class DependentParent extends AbstractActor {
+  final ActorRef child;
+  final ActorRef probe;
+
+  public DependentParent(Props childProps, ActorRef probe) {
+    child = getContext().actorOf(childProps, &quot;child&quot;);
+    this.probe = probe;
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(&quot;pingit&quot;, message -&gt; child.tell(&quot;ping&quot;, getSelf()))
+        .matchEquals(&quot;pong&quot;, message -&gt; probe.tell(&quot;ponged&quot;, getSelf()))
+        .build();
+  }
+}</code></pre>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L107-L122" target="_blank" title="Go to snippet source">source</a><code class="language-java">class GenericDependentParent extends AbstractActor {
+  final ActorRef child;
+  boolean ponged = false;
+
+  public GenericDependentParent(Function&lt;ActorRefFactory, ActorRef&gt; childMaker) throws Exception {
+    child = childMaker.apply(getContext());
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(&quot;pingit&quot;, message -&gt; child.tell(&quot;ping&quot;, getSelf()))
+        .matchEquals(&quot;pong&quot;, message -&gt; ponged = true)
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>Creating the <span class="group-scala"><code>Props</code></span><span class="group-java"><code>Actor</code></span> is straightforward and the function may look like this in your test code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L118-L119" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val maker = (_: ActorRefFactory) =&gt; probe.ref
+val parent = system.actorOf(Props(new GenericDependentParent(maker)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L149-L150" target="_blank" title="Go to snippet source">source</a><code class="language-java">Function&lt;ActorRefFactory, ActorRef&gt; maker = param -&gt; probe.ref();
+ActorRef parent = system.actorOf(Props.create(GenericDependentParent.class, maker));</code></pre></dd>
+</dl>
+<p>And like this in your application code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/ParentChildSpec.scala#L127-L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val maker = (f: ActorRefFactory) =&gt; f.actorOf(Props(new Child))
+val parent = system.actorOf(Props(new GenericDependentParent(maker)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/ParentChildTest.java#L158-L159" target="_blank" title="Go to snippet source">source</a><code class="language-java">Function&lt;ActorRefFactory, ActorRef&gt; maker = f -&gt; f.actorOf(Props.create(Child.class));
+ActorRef parent = system.actorOf(Props.create(GenericDependentParent.class, maker));</code></pre></dd>
+</dl>
+<p>Which of these methods is the best depends on what is most important to test. The most generic option is to create the parent actor by passing it a function that is responsible for the Actor creation, but <span class="group-scala">the</span><span class="group-java">using <code>TestProbe</code> or having a</span> fabricated parent is often sufficient.</p>
+<h2><a href="#callingthreaddispatcher" name="callingthreaddispatcher" class="anchor"><span class="anchor-link"></span></a>CallingThreadDispatcher</h2>
+<p>The <code>CallingThreadDispatcher</code> runs invocations on the current thread only. This dispatcher does not create any new threads.</p>
+<p>It is possible to use the <code>CallingThreadDispatcher</code> in unit testing, as described above, but originally it was conceived to allow uninterrupted stack traces to be generated in case of an error. As this special dispatcher runs everything which would normally be queued directly on the current thread, the full history of a message&rsquo;s processing chain is recorded on the call stack, so long as all intervening actors run on this dispatcher.</p>
+<h3><a href="#how-to-use-it" name="how-to-use-it" class="anchor"><span class="anchor-link"></span></a>How to use it</h3>
+<p>Just set the dispatcher as you normally would:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L326-L327" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.CallingThreadDispatcher
+val ref = system.actorOf(Props[MyActor]().withDispatcher(CallingThreadDispatcher.Id))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L507" target="_blank" title="Go to snippet source">source</a><code class="language-java">system.actorOf(Props.create(MyActor.class).withDispatcher(CallingThreadDispatcher.Id()));</code></pre></dd>
+</dl>
+<h3><a href="#how-it-works" name="how-it-works" class="anchor"><span class="anchor-link"></span></a>How it works</h3>
+<p>When receiving an invocation, the <code>CallingThreadDispatcher</code> checks whether the receiving actor is already active on the current thread. The simplest example of this situation is an actor which sends a message to itself. In this case, processing cannot continue immediately as that would violate the actor model, so the invocation is queued and will be processed when the active invocation on that actor finishes its processing; thus, it will be processed on the calling thread, but after the actor finishes its previous work. In the other case, the invocation is processed immediately on the current thread. Futures scheduled via this dispatcher are also executed immediately.</p>
+<p>This scheme makes the <code>CallingThreadDispatcher</code> work like a general purpose dispatcher for any actors which never block on external events.</p>
+<p>In the presence of multiple threads, it may happen that two invocations of an actor running on this dispatcher happen on two different threads at the same time. In this case, both will be processed directly on their respective threads, where both compete for the actor&rsquo;s lock and the loser has to wait. Thus, the actor model is left intact, but the price is the loss of concurrency due to limited scheduling. In a sense, this is equivalent to traditional mutex style concurrency.</p>
+<p>The other remaining difficulty is correct handling of suspend and resume: when an actor is suspended, subsequent invocations will be queued in thread-local queues (the same ones used for queuing in the normal case). The call to <code>resume</code>, however, is done by one specific thread, and all other threads in the system will probably not be executing this specific actor, which leads to the problem that the thread-local queues cannot be emptied by their native threads. Hence, the thread calling <code>resume</code> will collect all currently queued invocations from all threads into its queue and process them.</p>
+<h3><a href="#limitations" name="limitations" class="anchor"><span class="anchor-link"></span></a>Limitations</h3><div class="callout warning "><div class="callout-title">Warning</div>
+<p>In case the CallingThreadDispatcher is used for top-level actors, without going through TestActorRef, then there is a time window during which the actor is awaiting construction by the user guardian actor. Sending messages to the actor during this time will result in them being enqueued and then executed on the guardian’s thread instead of the caller’s thread. To avoid this, use TestActorRef.</p></div>
+<p>If an actor&rsquo;s behavior blocks on something which would normally be affected by the calling actor after having sent the message, this will dead-lock when using this dispatcher. This is a common scenario in actor tests based on <code>CountDownLatch</code> for synchronization:</p>
+<pre class="prettyprint"><code class="language-scala">val latch = new CountDownLatch(1)
+actor ! startWorkAfter(latch)   // actor will call latch.await() before proceeding
+doSomeSetupStuff()
+latch.countDown()
+</code></pre>
+<p>The example would hang indefinitely within the message processing initiated on the second line and never reach the fourth line, which would unblock it on a normal dispatcher.</p>
+<p>Thus, keep in mind that the <code>CallingThreadDispatcher</code> is not a general-purpose replacement for the normal dispatchers. If you are looking for a tool to help you debug dead-locks, the <code>CallingThreadDispatcher</code> may help with some error scenarios, but keep in mind that it may give false negatives as well as false positives.</p>
+<h3><a href="#thread-interruptions" name="thread-interruptions" class="anchor"><span class="anchor-link"></span></a>Thread Interruptions</h3>
+<p>If the CallingThreadDispatcher sees that the current thread has its <code>isInterrupted()</code> flag set when message processing returns, it will throw an <code>InterruptedException</code> after finishing all its processing (i.e. all messages which need processing as described above are processed before this happens). As <code>tell</code> cannot throw exceptions due to its contract, this exception will then be caught and logged, and the thread’s interrupted status will be set again.</p>
+<p>If during message processing an <code>InterruptedException</code> is thrown then it will be caught inside the CallingThreadDispatcher’s message handling loop, the thread’s interrupted flag will be set and processing continues normally.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>In summary, if the current thread is interrupted while doing work under the CallingThreadDispatcher, then that will result in the <code>isInterrupted</code> flag to be <code>true</code> when the message send returns and no <code>InterruptedException</code> will be thrown.</p></div>
+<h3><a href="#benefits" name="benefits" class="anchor"><span class="anchor-link"></span></a>Benefits</h3>
+<p>To summarize, these are the features that <code>CallingThreadDispatcher</code> has to offer:</p>
+<ul>
+  <li>Deterministic execution of single-threaded tests while retaining nearly full actor semantics</li>
+  <li>Full message processing history leading up to the point of failure in exception stack traces</li>
+  <li>Exclusion of certain classes of dead-lock scenarios</li>
+</ul>
+<a id="actor-logging"></a>
+<h2><a href="#tracing-actor-invocations" name="tracing-actor-invocations" class="anchor"><span class="anchor-link"></span></a>Tracing Actor Invocations</h2>
+<p>The testing facilities described up to this point were aiming at formulating assertions about a system’s behavior. If a test fails, it is usually your job to find the cause, fix it and verify the test again. This process is supported by debuggers as well as logging, where the Pekko toolkit offers the following options:</p>
+<ul>
+  <li><em>Logging of exceptions thrown within Actor instances</em>  It is always on; in contrast to the other logging mechanisms, this logs at <code>ERROR</code> level.</li>
+</ul><div class="group-scala">
+<ul>
+  <li><em>Logging of message invocations on certain actors</em>  This is enabled by a setting in the <a href="general/configuration-reference.html#config-pekko-actor">Configuration</a> — namely <code>pekko.actor.debug.receive</code> — which enables the <code>loggable</code> statement to be applied to an actor’s <code>receive</code> function:</li>
+</ul>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L101-L107" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.event.LoggingReceive
+def receive = LoggingReceive {
+  case msg =&gt; // Do something ...
+}
+def otherState: Receive = LoggingReceive.withLabel(&quot;other&quot;) {
+  case msg =&gt; // Do something else ...
+}</code></pre>
+<p>If the aforementioned setting is not given in the <a href="general/configuration-reference.html#config-pekko-actor">Configuration</a>, this method will pass through the given <code>Receive</code> function unmodified, meaning that there is no runtime cost unless enabled.</p>
+<p>The logging feature is coupled to this specific local mark-up because enabling it uniformly on all actors is not usually what you need, and it would lead to endless loops if it were applied to event bus logger listeners.</p></div>
+<ul>
+  <li><em>Logging of special messages</em>  Actors handle certain special messages automatically, e.g. <code>Kill</code>, <code>PoisonPill</code>, etc. Tracing of these message invocations is enabled by the setting <code>pekko.actor.debug.autoreceive</code>, which enables this on all actors.</li>
+  <li><em>Logging of the actor lifecycle</em>  Actor creation, start, restart, monitor start, monitor stop and stop may be traced by enabling the setting <code>pekko.actor.debug.lifecycle</code>; this, too, is enabled uniformly on all actors.</li>
+</ul>
+<p>Logging of these messages is at <code>DEBUG</code> level. To summarize, you can enable full logging of actor activities using this configuration fragment:</p>
+<pre><code>pekko {
+  loglevel = &quot;DEBUG&quot;
+  actor {
+    debug {
+      receive = on
+      autoreceive = on
+      lifecycle = on
+    }
+  }
+}
+</code></pre><div class="group-scala">
+<h2><a href="#different-testing-frameworks" name="different-testing-frameworks" class="anchor"><span class="anchor-link"></span></a>Different Testing Frameworks</h2>
+<p>Pekko’s test suite is written using <a href="https://www.scalatest.org">ScalaTest</a>, which also shines through in documentation examples. However, the TestKit and its facilities do not depend on that framework, so you can essentially use whichever suits your development style best.</p>
+<p>This section contains a collection of known gotchas with some other frameworks, which is by no means exhaustive and does not imply an endorsement or special support.</p>
+<h3><a href="#when-you-need-it-to-be-a-trait" name="when-you-need-it-to-be-a-trait" class="anchor"><span class="anchor-link"></span></a>When you need it to be a trait</h3>
+<p>If for some reason it is a problem to inherit from <code>TestKit</code> due to it being a concrete class instead of a trait, there’s <code>TestKitBase</code>:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L354-L367" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.TestKitBase
+
+class MyTest extends TestKitBase {
+  implicit lazy val system: ActorSystem = ActorSystem()
+
+  val probe = TestProbe()
+  probe.send(testActor, &quot;hello&quot;)
+  try expectMsg(&quot;hello&quot;)
+  catch { case NonFatal(e) =&gt; system.terminate(); throw e }
+
+  shutdown(system)
+}</code></pre>
+<p>The <code>implicit lazy val system</code> must be declared exactly like that (you can of course pass arguments to the actor system factory as needed) because trait <code>TestKitBase</code> needs the system during its construction.</p>
+<p>Warning: use of the trait is discouraged because of potential issues with binary backwards compatibility in the future, use at own risk.</p>
+<h3><a href="#specs2" name="specs2" class="anchor"><span class="anchor-link"></span></a>Specs2</h3>
+<p>Some <a href="https://etorreborre.github.io/specs2/">Specs2</a> users have contributed examples of how to work around some clashes which may arise:</p>
+<ul>
+  <li>Mixing TestKit into <code>org.specs2.mutable.Specification</code> results in a  name clash involving the <code>end</code> method (which is a private variable in  TestKit and an abstract method in Specification); if mixing in TestKit first,  the code may compile but might then fail at runtime. The workaround—which is  beneficial also for the third point—is to apply the TestKit together  with <code>org.specs2.specification.Scope</code>.</li>
+  <li>The Specification traits provide a <code>Duration</code> DSL which uses partly the same method names as <code>scala.concurrent.duration.Duration</code>, resulting in ambiguous implicits if <code>scala.concurrent.duration._</code> is imported. There are two workarounds:
+    <ul>
+      <li>either use the Specification variant of Duration and supply an implicit conversion to the Pekko Duration. This conversion is not supplied with the  Pekko distribution because that would mean that our JAR files would depend on  Specs2, which is not justified by this little feature.</li>
+      <li>or mix <code>org.specs2.time.NoTimeConversions</code> into the Specification.</li>
+    </ul>
+  </li>
+  <li>Specifications are by default executed concurrently, which requires some care when writing the tests or the <code>sequential</code> keyword.</li>
+</ul></div>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>There are several configuration properties for the TestKit module, please refer to the <a href="general/configuration-reference.html#config-pekko-testkit">reference configuration</a>.</p><div class="group-scala">
+<h2><a href="#example" name="example" class="anchor"><span class="anchor-link"></span></a>Example</h2>
+<p>Ray Roestenburg&rsquo;s example code from his blog, which unfortunately is only available on <a href="https://web.archive.org/web/20180114133958/http://roestenburg.agilesquad.com/2011/02/unit-testing-pekko-actors-with-testkit_12.html">web archive</a>, adapted to work with Pekko 2.x.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestKitUsageSpec.scala#L19-L160" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.util.Random
+
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.wordspec.AnyWordSpecLike
+import org.scalatest.matchers.should.Matchers
+
+import com.typesafe.config.ConfigFactory
+
+import org.apache.pekko
+import pekko.actor.Actor
+import pekko.actor.ActorRef
+import pekko.actor.ActorSystem
+import pekko.actor.Props
+import pekko.testkit.{ DefaultTimeout, ImplicitSender, TestActors, TestKit }
+import scala.concurrent.duration._
+import scala.collection.immutable
+
+/**
+ * a Test to show some TestKit examples
+ */
+class TestKitUsageSpec
+    extends TestKit(ActorSystem(&quot;TestKitUsageSpec&quot;, ConfigFactory.parseString(TestKitUsageSpec.config)))
+    with DefaultTimeout
+    with ImplicitSender
+    with AnyWordSpecLike
+    with Matchers
+    with BeforeAndAfterAll {
+  import TestKitUsageSpec._
+
+  val echoRef = system.actorOf(TestActors.echoActorProps)
+  val forwardRef = system.actorOf(Props(classOf[ForwardingActor], testActor))
+  val filterRef = system.actorOf(Props(classOf[FilteringActor], testActor))
+  val randomHead = Random.nextInt(6)
+  val randomTail = Random.nextInt(10)
+  val headList = immutable.Seq().padTo(randomHead, &quot;0&quot;)
+  val tailList = immutable.Seq().padTo(randomTail, &quot;1&quot;)
+  val seqRef =
+    system.actorOf(Props(classOf[SequencingActor], testActor, headList, tailList))
+
+  override def afterAll(): Unit = {
+    shutdown()
+  }
+
+  &quot;An EchoActor&quot; should {
+    &quot;Respond with the same message it receives&quot; in {
+      within(500 millis) {
+        echoRef ! &quot;test&quot;
+        expectMsg(&quot;test&quot;)
+      }
+    }
+  }
+  &quot;A ForwardingActor&quot; should {
+    &quot;Forward a message it receives&quot; in {
+      within(500 millis) {
+        forwardRef ! &quot;test&quot;
+        expectMsg(&quot;test&quot;)
+      }
+    }
+  }
+  &quot;A FilteringActor&quot; should {
+    &quot;Filter all messages, except expected messagetypes it receives&quot; in {
+      var messages = Seq[String]()
+      within(500 millis) {
+        filterRef ! &quot;test&quot;
+        expectMsg(&quot;test&quot;)
+        filterRef ! 1
+        expectNoMessage()
+        filterRef ! &quot;some&quot;
+        filterRef ! &quot;more&quot;
+        filterRef ! 1
+        filterRef ! &quot;text&quot;
+        filterRef ! 1
+
+        receiveWhile(500 millis) {
+          case msg: String =&gt; messages = msg +: messages
+        }
+      }
+      messages.length should be(3)
+      messages.reverse should be(Seq(&quot;some&quot;, &quot;more&quot;, &quot;text&quot;))
+    }
+  }
+  &quot;A SequencingActor&quot; should {
+    &quot;receive an interesting message at some point &quot; in {
+      within(500 millis) {
+        ignoreMsg {
+          case msg: String =&gt; msg != &quot;something&quot;
+        }
+        seqRef ! &quot;something&quot;
+        expectMsg(&quot;something&quot;)
+        ignoreMsg {
+          case msg: String =&gt; msg == &quot;1&quot;
+        }
+        expectNoMessage()
+        ignoreNoMsg()
+      }
+    }
+  }
+}
+
+object TestKitUsageSpec {
+  // Define your test specific configuration here
+  val config = &quot;&quot;&quot;
+    pekko {
+      loglevel = &quot;WARNING&quot;
+    }
+    &quot;&quot;&quot;
+
+  /**
+   * An Actor that forwards every message to a next Actor
+   */
+  class ForwardingActor(next: ActorRef) extends Actor {
+    def receive = {
+      case msg =&gt; next ! msg
+    }
+  }
+
+  /**
+   * An Actor that only forwards certain messages to a next Actor
+   */
+  class FilteringActor(next: ActorRef) extends Actor {
+    def receive = {
+      case msg: String =&gt; next ! msg
+      case _           =&gt; None
+    }
+  }
+
+  /**
+   * An actor that sends a sequence of messages with a random head list, an
+   * interesting value and a random tail list. The idea is that you would
+   * like to test that the interesting value is received and that you cant
+   * be bothered with the rest
+   */
+  class SequencingActor(next: ActorRef, head: immutable.Seq[String], tail: immutable.Seq[String]) extends Actor {
+    def receive = {
+      case msg =&gt; {
+        head.foreach { next ! _ }
+        next ! msg
+        tail.foreach { next ! _ }
+      }
+    }
+  }
+}</code></pre></div>
+<a id="sync-testing"></a>
+<h2><a href="#synchronous-testing-testactorref" name="synchronous-testing-testactorref" class="anchor"><span class="anchor-link"></span></a>Synchronous Testing: <code>TestActorRef</code></h2>
+<p>Testing the business logic inside <code>Actor</code> classes can be divided into two parts: first, each atomic operation must work in isolation, then sequences of incoming events must be processed correctly, even in the presence of some possible variability in the ordering of events. The former is the primary use case for single-threaded unit testing, while the latter can only be verified in integration tests.</p>
+<p>Normally, the <code>ActorRef</code> shields the underlying <code>Actor</code> instance from the outside, the only communications channel is the actor&rsquo;s mailbox. This restriction impedes unit testing, which led to the inception of the <code>TestActorRef</code>. This special type of reference is designed specifically for test purposes and allows access to the actor in two ways: either by obtaining a reference to the underlying actor instance or by invoking or querying the actor&rsquo;s behavior (<code>receive</code>). Each one warrants its section below.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It is highly recommended to stick to traditional behavioral testing (using messaging to ask the Actor to reply with the state you want to run assertions against), instead of using <code>TestActorRef</code> whenever possible.</p></div><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Due to the synchronous nature of <code>TestActorRef</code>, it will <strong>not</strong> work with some support traits that Pekko provides as they require asynchronous behaviors to function properly. Examples of traits that do not mix well with test actor refs are <a href="persistence.html#example">PersistentActor</a> and <a href="persistence.html#at-least-once-delivery">AtLeastOnceDelivery</a> provided by <a href="persistence.html">Pekko Persistence</a>.</p></div>
+<h3><a href="#obtaining-a-reference-to-an-actor" name="obtaining-a-reference-to-an-actor" class="anchor"><span class="anchor-link"></span></a>Obtaining a Reference to an <code>Actor</code></h3>
+<p>Having access to the actual <code>Actor</code> object allows the application of all traditional unit testing techniques on the contained methods. Obtaining a reference is done like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L117-L120" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.TestActorRef
+
+val actorRef = TestActorRef[MyActor]
+val actor = actorRef.underlyingActor</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L62-L90" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class MyActor extends AbstractActor {
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .matchEquals(
+            &quot;say42&quot;,
+            message -&gt; {
+              getSender().tell(42, getSelf());
+            })
+        .match(
+            Exception.class,
+            (Exception ex) -&gt; {
+              throw ex;
+            })
+        .build();
+  }
+
+  public boolean testMe() {
+    return true;
+  }
+}
+
+@Test
+public void demonstrateTestActorRef() {
+  final Props props = Props.create(MyActor.class);
+  final TestActorRef&lt;MyActor&gt; ref = TestActorRef.create(system, props, &quot;testA&quot;);
+  final MyActor actor = ref.underlyingActor();
+  assertTrue(actor.testMe());
+}</code></pre></dd>
+</dl>
+<p>Since <code>TestActorRef</code> is generic in the actor type it returns the underlying actor with its proper static type. From this point on you may bring any unit testing tool to bear on your actor as usual.</p><div class="group-scala">
+<a id="testfsmref"></a>
+<h3><a href="#testing-finite-state-machines" name="testing-finite-state-machines" class="anchor"><span class="anchor-link"></span></a>Testing Finite State Machines</h3>
+<p>If your actor under test is an <code>FSM</code>, you may use the special <code>TestFSMRef</code> which offers all features of a normal <code>TestActorRef</code> and besides allows access to the internal state:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L150-L170" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.TestFSMRef
+import scala.concurrent.duration._
+
+val fsm = TestFSMRef(new TestFsmActor)
+
+val mustBeTypedProperly: TestActorRef[TestFsmActor] = fsm
+
+assert(fsm.stateName == 1)
+assert(fsm.stateData == &quot;&quot;)
+fsm ! &quot;go&quot; // being a TestActorRef, this runs also on the CallingThreadDispatcher
+assert(fsm.stateName == 2)
+assert(fsm.stateData == &quot;go&quot;)
+
+fsm.setState(stateName = 1)
+assert(fsm.stateName == 1)
+
+assert(fsm.isTimerActive(&quot;test&quot;) == false)
+fsm.startTimerWithFixedDelay(&quot;test&quot;, 12, 10 millis)
+assert(fsm.isTimerActive(&quot;test&quot;) == true)
+fsm.cancelTimer(&quot;test&quot;)
+assert(fsm.isTimerActive(&quot;test&quot;) == false)</code></pre>
+<p>Due to a limitation in Scala’s type inference, there is only the factory method shown above, so you will probably write code like <code>TestFSMRef(new MyFSM)</code> instead of the hypothetical <code>ActorRef</code>-inspired <code>TestFSMRef[MyFSM]</code>. All methods shown above directly access the FSM state without any synchronization; this is perfectly alright if the <code>CallingThreadDispatcher</code> is used and no other threads are involved, but it may lead to surprises if you were to exercise timer events, because those are executed on the <code>Scheduler</code> thread.</p></div>
+<h3><a href="#testing-the-actors-behavior" name="testing-the-actors-behavior" class="anchor"><span class="anchor-link"></span></a>Testing the Actor&rsquo;s Behavior</h3>
+<p>When the dispatcher invokes the processing behavior of an actor on a message, it calls <code>apply</code> on the current behavior registered for the actor. This starts with the return value of the declared <code>receive</code> method, but it may also be changed using <code>become</code> and <code>unbecome</code> in response to external messages. All of this contributes to the overall actor behavior and it does not lend itself to easy testing on the <code>Actor</code> itself. Therefore the <code>TestActorRef</code> offers a different mode of operation to complement the <code>Actor</code> testing: it supports all operations also valid on normal <code>ActorRef</code>. Messages sent to the actor are processed synchronously on the current thread and answers may be sent back as usual. This trick is made possible by the <code>CallingThreadDispatcher</code> described below (see <a href="testing.html#callingthreaddispatcher">CallingThreadDispatcher</a>); this dispatcher is set implicitly for any actor instantiated into a <code>TestActorRef</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L177-L184" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.testkit.TestActorRef
+import pekko.pattern.ask
+
+val actorRef = TestActorRef(new MyActor)
+// hypothetical message stimulating a &#39;42&#39; answer
+val future: Future[Any] = actorRef ? Say42
+future.futureValue should be(42)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L115-L120" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Props props = Props.create(MyActor.class);
+final TestActorRef&lt;MyActor&gt; ref = TestActorRef.create(system, props, &quot;testB&quot;);
+final CompletableFuture&lt;Object&gt; future =
+    Patterns.ask(ref, &quot;say42&quot;, Duration.ofMillis(3000)).toCompletableFuture();
+assertTrue(future.isDone());
+assertEquals(42, future.get());</code></pre></dd>
+</dl>
+<p>As the <code>TestActorRef</code> is a subclass of <code>LocalActorRef</code> with a few special extras, also aspects like supervision and restarting work properly, but beware that execution is only strictly synchronous as long as all actors involved use the <code>CallingThreadDispatcher</code>. As soon as you add elements which include more sophisticated scheduling you leave the realm of unit testing as you then need to think about asynchronicity again (in most cases the problem will be to wait until the desired effect had a chance to happen).</p>
+<p>One more special aspect which is overridden for single-threaded tests is the <code>receiveTimeout</code>, as including that would entail asynchronous queuing of <code>ReceiveTimeout</code> messages, violating the synchronous contract.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>To summarize: <code>TestActorRef</code> overwrites two fields: it sets the dispatcher to <code>CallingThreadDispatcher.global</code> and it sets the <code>receiveTimeout</code> to None.</p></div>
+<h3><a href="#the-way-in-between-expecting-exceptions" name="the-way-in-between-expecting-exceptions" class="anchor"><span class="anchor-link"></span></a>The Way In-Between: Expecting Exceptions</h3>
+<p>If you want to test the actor behavior, including hot swapping, but without involving a dispatcher and without having the <code>TestActorRef</code> swallow any thrown exceptions, then there is another mode available for you: use the <code>receive</code> method on <code>TestActorRef</code>, which will be forwarded to the underlying actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/testkit/TestkitDocSpec.scala#L200-L207" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.testkit.TestActorRef
+
+val actorRef = TestActorRef(new Actor {
+  def receive = {
+    case &quot;hello&quot; =&gt; throw new IllegalArgumentException(&quot;boom&quot;)
+  }
+})
+intercept[IllegalArgumentException] { actorRef.receive(&quot;hello&quot;) }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/testkit/TestKitDocTest.java#L127-L134" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Props props = Props.create(MyActor.class);
+final TestActorRef&lt;MyActor&gt; ref = TestActorRef.create(system, props, &quot;myActor&quot;);
+try {
+  ref.receive(new Exception(&quot;expected&quot;));
+  Assert.fail(&quot;expected an exception to be thrown&quot;);
+} catch (Exception e) {
+  assertEquals(&quot;expected&quot;, e.getMessage());
+}</code></pre></dd>
+</dl>
+<h3><a href="#use-cases" name="use-cases" class="anchor"><span class="anchor-link"></span></a>Use Cases</h3>
+<p>You may mix and match both modi operandi of <code>TestActorRef</code> as suits your test needs:</p>
+<ul>
+  <li>one common use case is setting up the actor into a specific internal state before sending the test message</li>
+  <li>another is to verify correct internal state transitions after having sent the test message</li>
+</ul>
+<p>Feel free to experiment with the possibilities, and if you find useful patterns, don&rsquo;t hesitate to let the Pekko forums know about them! Who knows, common operations might even be worked into nice DSLs.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/testing.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="persistence-fsm.html" title="Classic Persistent FSM" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Persistent FSM
+</span>
+</div>
+</a>
+<a href="index-cluster.html" title="Classic Clustering" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Clustering
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

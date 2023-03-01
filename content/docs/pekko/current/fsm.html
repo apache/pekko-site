@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic FSM · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic FSM
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="fsm.html#classic-fsm" class="header">Classic FSM</a>
+  <ul>
+    <li><a href="fsm.html#dependency" class="header">Dependency</a></li>
+    <li><a href="fsm.html#overview" class="header">Overview</a></li>
+    <li><a href="fsm.html#a-simple-example" class="header">A Simple Example</a></li>
+    <li><a href="fsm.html#reference" class="header">Reference</a></li>
+    <li><a href="fsm.html#testing-and-debugging-finite-state-machines" class="header">Testing and Debugging Finite State Machines</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="fsm.html#classic-fsm" class="header">Classic FSM</a>
+  <ul>
+    <li><a href="fsm.html#dependency" class="header">Dependency</a></li>
+    <li><a href="fsm.html#overview" class="header">Overview</a></li>
+    <li><a href="fsm.html#a-simple-example" class="header">A Simple Example</a></li>
+    <li><a href="fsm.html#reference" class="header">Reference</a></li>
+    <li><a href="fsm.html#testing-and-debugging-finite-state-machines" class="header">Testing and Debugging Finite State Machines</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-fsm" name="classic-fsm" class="anchor"><span class="anchor-link"></span></a>Classic FSM</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the documentation of the new API of this feature and for new projects see <a href="typed/fsm.html">fsm</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Finite State Machine actors, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#overview" name="overview" class="anchor"><span class="anchor-link"></span></a>Overview</h2>
+<p>The FSM (Finite State Machine) is available as <span class="group-scala">a mixin for the</span> <span class="group-java">an abstract base class that implements an</span> Pekko Actor and is best described in the <a href="https://www.erlang.org/documentation/doc-4.8.2/doc/design_principles/fsm.html">Erlang design principles</a></p>
+<p>A FSM can be described as a set of relations of the form:</p>
+<blockquote>
+  <p><strong>State(S) x Event(E) -&gt; Actions (A), State(S&rsquo;)</strong></p>
+</blockquote>
+<p>These relations are interpreted as meaning:</p>
+<blockquote>
+  <p><em>If we are in state S and the event E occurs, we should perform the actions A and make a transition to the state S&rsquo;.</em></p>
+</blockquote>
+<h2><a href="#a-simple-example" name="a-simple-example" class="anchor"><span class="anchor-link"></span></a>A Simple Example</h2>
+<p>To demonstrate most of the features of the <span class="group-scala"><code>FSM</code> trait</span><span class="group-java"><code>AbstractFSM</code> class</span>, consider an actor which shall receive and queue messages while they arrive in a burst and send them on after the burst ended or a flush request is received.</p>
+<p>First, consider all of the below to use these import statements:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L57-L58" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import pekko.actor.{ ActorRef, FSM }
+import scala.concurrent.duration._</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L17-L23" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.AbstractFSM;
+import org.apache.pekko.actor.ActorRef;
+import org.apache.pekko.japi.pf.UnitMatch;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.time.Duration;</code></pre></dd>
+</dl>
+<p>The contract of our “Buncher” actor is that it accepts or produces the following messages:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L31-L37" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// received events
+final case class SetTarget(ref: ActorRef)
+final case class Queue(obj: Any)
+case object Flush
+
+// sent events
+final case class Batch(obj: immutable.Seq[Any])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Events.java#L23-L116" target="_blank" title="Go to snippet source">source</a><code class="language-java">static final class SetTarget {
+  private final ActorRef ref;
+
+  public SetTarget(ActorRef ref) {
+    this.ref = ref;
+  }
+
+  public ActorRef getRef() {
+    return ref;
+  }
+
+  @Override
+  public String toString() {
+    return &quot;SetTarget{&quot; + &quot;ref=&quot; + ref + &#39;}&#39;;
+  }
+}
+
+static final class Queue {
+  private final Object obj;
+
+  public Queue(Object obj) {
+    this.obj = obj;
+  }
+
+  public Object getObj() {
+    return obj;
+  }
+
+  @Override
+  public String toString() {
+    return &quot;Queue{&quot; + &quot;obj=&quot; + obj + &#39;}&#39;;
+  }
+}
+
+static final class Batch {
+  private final List&lt;Object&gt; list;
+
+  public Batch(List&lt;Object&gt; list) {
+    this.list = list;
+  }
+
+  public List&lt;Object&gt; getList() {
+    return list;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Batch batch = (Batch) o;
+
+    return list.equals(batch.list);
+  }
+
+  @Override
+  public int hashCode() {
+    return list.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append(&quot;Batch{list=&quot;);
+    list.stream()
+        .forEachOrdered(
+            e -&gt; {
+              builder.append(e);
+              builder.append(&quot;,&quot;);
+            });
+    int len = builder.length();
+    builder.replace(len, len, &quot;}&quot;);
+    return builder.toString();
+  }
+}
+
+static enum Flush {
+  Flush
+}</code></pre></dd>
+</dl>
+<p><code>SetTarget</code> is needed for starting it up, setting the destination for the <code>Batches</code> to be passed on; <code>Queue</code> will add to the internal queue while <code>Flush</code> will mark the end of a burst.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L40-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// states
+sealed trait State
+case object Idle extends State
+case object Active extends State
+
+sealed trait Data
+case object Uninitialized extends Data
+final case class Todo(target: ActorRef, queue: immutable.Seq[Any]) extends Data</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L104-L163" target="_blank" title="Go to snippet source">source</a><code class="language-java">// states
+enum State {
+  Idle,
+  Active
+}
+
+// state data
+interface Data {}
+
+enum Uninitialized implements Data {
+  Uninitialized
+}
+
+final class Todo implements Data {
+  private final ActorRef target;
+  private final List&lt;Object&gt; queue;
+
+  public Todo(ActorRef target, List&lt;Object&gt; queue) {
+    this.target = target;
+    this.queue = queue;
+  }
+
+  public ActorRef getTarget() {
+    return target;
+  }
+
+  public List&lt;Object&gt; getQueue() {
+    return queue;
+  }
+
+  @Override
+  public String toString() {
+    return &quot;Todo{&quot; + &quot;target=&quot; + target + &quot;, queue=&quot; + queue + &#39;}&#39;;
+  }
+
+  public Todo addElement(Object element) {
+    List&lt;Object&gt; nQueue = new LinkedList&lt;&gt;(queue);
+    nQueue.add(element);
+    return new Todo(this.target, nQueue);
+  }
+
+  public Todo copy(List&lt;Object&gt; queue) {
+    return new Todo(this.target, queue);
+  }
+
+  public Todo copy(ActorRef target) {
+    return new Todo(target, this.queue);
+  }
+}</code></pre></dd>
+</dl>
+<p>The actor can be in two states: no message queued (aka <code>Idle</code>) or some message queued (aka <code>Active</code>). It will stay in the <code>Active</code> state as long as messages keep arriving and no flush is requested. The internal state data of the actor is made up of the target actor reference to send the batches to and the actual queue of messages.</p>
+<p>Now let’s take a look at the skeleton for our FSM actor:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L61-L104" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Buncher extends FSM[State, Data] {
+
+  startWith(Idle, Uninitialized)
+
+  when(Idle) {
+    case Event(SetTarget(ref), Uninitialized) =&gt;
+      stay().using(Todo(ref, Vector.empty))
+  }
+
+  onTransition {
+    case Active -&gt; Idle =&gt;
+      stateData match {
+        case Todo(ref, queue) =&gt; ref ! Batch(queue)
+        case _                =&gt; // nothing to do
+      }
+  }
+
+  when(Active, stateTimeout = 1 second) {
+    case Event(Flush | StateTimeout, t: Todo) =&gt;
+      goto(Idle).using(t.copy(queue = Vector.empty))
+  }
+
+  whenUnhandled {
+    // common code for both states
+    case Event(Queue(obj), t @ Todo(_, v)) =&gt;
+      goto(Active).using(t.copy(queue = v :+ obj))
+
+    case Event(e, s) =&gt;
+      log.warning(&quot;received unhandled request {} in state {}/{}&quot;, e, stateName, s)
+      stay()
+  }
+
+  initialize()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L33-L166" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Buncher extends AbstractFSM&lt;State, Data&gt; {
+  {
+    startWith(Idle, Uninitialized);
+
+    when(
+        Idle,
+        matchEvent(
+            SetTarget.class,
+            Uninitialized.class,
+            (setTarget, uninitialized) -&gt;
+                stay().using(new Todo(setTarget.getRef(), new LinkedList&lt;&gt;()))));
+
+    onTransition(
+        matchState(
+                Active,
+                Idle,
+                () -&gt; {
+                  // reuse this matcher
+                  final UnitMatch&lt;Data&gt; m =
+                      UnitMatch.create(
+                          matchData(
+                              Todo.class,
+                              todo -&gt;
+                                  todo.getTarget().tell(new Batch(todo.getQueue()), getSelf())));
+                  m.match(stateData());
+                })
+            .state(
+                Idle,
+                Active,
+                () -&gt; {
+                  /* Do something here */
+                }));
+
+    when(
+        Active,
+        Duration.ofSeconds(1L),
+        matchEvent(
+            Arrays.asList(Flush.class, StateTimeout()),
+            Todo.class,
+            (event, todo) -&gt; goTo(Idle).using(todo.copy(new LinkedList&lt;&gt;()))));
+
+    whenUnhandled(
+        matchEvent(
+                Queue.class,
+                Todo.class,
+                (queue, todo) -&gt; goTo(Active).using(todo.addElement(queue.getObj())))
+            .anyEvent(
+                (event, state) -&gt; {
+                  log()
+                      .warning(
+                          &quot;received unhandled request {} in state {}/{}&quot;,
+                          event,
+                          stateName(),
+                          state);
+                  return stay();
+                }));
+
+    initialize();
+  }
+}</code></pre></dd>
+</dl>
+<p>The basic strategy is to declare the actor, <span class="group-scala">mixing in the <code>FSM</code> trait</span><span class="group-java">by inheriting the <code>AbstractFSM</code> class</span> and specifying the possible states and data values as type parameters. Within the body of the actor a DSL is used for declaring the state machine:</p>
+<ul>
+  <li><code>startWith</code> defines the initial state and initial data</li>
+  <li>then there is one <code>when(&lt;state&gt;) { ... }</code> declaration per state to be handled (could potentially be multiple ones, the passed <code>PartialFunction</code> will be concatenated using <code>orElse</code>)</li>
+  <li>finally starting it up using <code>initialize</code>, which performs the transition into the initial state and sets up timers (if required).</li>
+</ul>
+<p>In this case, we start out in the <code>Idle</code> state with <code>Uninitialized</code> data, where only the <code>SetTarget()</code> message is handled; <code>stay</code> prepares to end this event’s processing for not leaving the current state, while the <code>using</code> modifier makes the FSM replace the internal state (which is <code>Uninitialized</code> at this point) with a fresh <code>Todo()</code> object containing the target actor reference. The <code>Active</code> state has a state timeout declared, which means that if no message is received for 1 second, a <code>FSM.StateTimeout</code> message will be generated. This has the same effect as receiving the <code>Flush</code> command in this case, namely to transition back into the <code>Idle</code> state and resetting the internal queue to the empty vector. But how do messages get queued? Since this shall work identically in both states, we make use of the fact that any event which is not handled by the <code>when()</code> block is passed to the <code>whenUnhandled()</code> block:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L91-L99" target="_blank" title="Go to snippet source">source</a><code class="language-scala">whenUnhandled {
+  // common code for both states
+  case Event(Queue(obj), t @ Todo(_, v)) =&gt;
+    goto(Active).using(t.copy(queue = v :+ obj))
+
+  case Event(e, s) =&gt;
+    log.warning(&quot;received unhandled request {} in state {}/{}&quot;, e, stateName, s)
+    stay()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L80-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">whenUnhandled(
+    matchEvent(
+            Queue.class,
+            Todo.class,
+            (queue, todo) -&gt; goTo(Active).using(todo.addElement(queue.getObj())))
+        .anyEvent(
+            (event, state) -&gt; {
+              log()
+                  .warning(
+                      &quot;received unhandled request {} in state {}/{}&quot;,
+                      event,
+                      stateName(),
+                      state);
+              return stay();
+            }));</code></pre></dd>
+</dl>
+<p>The first case handled here is adding <code>Queue()</code> requests to the internal queue and going to the <code>Active</code> state (this does the obvious thing of staying in the <code>Active</code> state if already there), but only if the FSM data are not <code>Uninitialized</code> when the <code>Queue()</code> event is received. Otherwise—and in all other non-handled cases—the second case just logs a warning and does not change the internal state.</p>
+<p>The only missing piece is where the <code>Batches</code> are actually sent to the target, for which we use the <code>onTransition</code> mechanism: you can declare multiple such blocks and all of them will be tried for matching behavior in case a state transition occurs (i.e. only when the state actually changes).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L74-L80" target="_blank" title="Go to snippet source">source</a><code class="language-scala">onTransition {
+  case Active -&gt; Idle =&gt;
+    stateData match {
+      case Todo(ref, queue) =&gt; ref ! Batch(queue)
+      case _                =&gt; // nothing to do
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L49-L68" target="_blank" title="Go to snippet source">source</a><code class="language-java">onTransition(
+    matchState(
+            Active,
+            Idle,
+            () -&gt; {
+              // reuse this matcher
+              final UnitMatch&lt;Data&gt; m =
+                  UnitMatch.create(
+                      matchData(
+                          Todo.class,
+                          todo -&gt;
+                              todo.getTarget().tell(new Batch(todo.getQueue()), getSelf())));
+              m.match(stateData());
+            })
+        .state(
+            Idle,
+            Active,
+            () -&gt; {
+              /* Do something here */
+            }));</code></pre></dd>
+</dl>
+<p>The transition callback is a <span class="group-scala">partial function</span><span class="group-java">builder constructed by <code>matchState</code>, followed by zero or multiple <code>state</code></span>, which takes as input a pair of states—the current and the next state. <span class="group-scala">The FSM trait includes a convenience extractor for these in form of an arrow operator, which conveniently reminds you of the direction of the state change which is being matched.</span> During the state change, the old state data is available via <span class="group-scala"><code>stateData</code></span><span class="group-java"><code>stateData()</code></span> as shown, and the new state data would be available as <span class="group-scala"><code>nextStateData</code></span><span class="group-java"><code>nextStateData()</code></span>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Same-state transitions can be implemented (when currently in state <code>S</code>) using <code>goto(S)</code> or <code>stay()</code>. The difference between those being that <code>goto(S)</code> will emit an event <code>S-&gt;S</code> event that can be handled by <code>onTransition</code>, whereas <code>stay()</code> will <em>not</em>.</p></div>
+<p>To verify that this buncher actually works, it is quite easy to write a test using the <span class="group-scala"><a href="testing.html">Testing Actor Systems which is conveniently bundled with ScalaTest traits into <code>PekkoSpec</code></a></span><span class="group-java"><a href="testing.html">TestKit</a>, here using JUnit as an example</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L22-L242" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.Props
+import scala.collection.immutable
+
+object FSMDocSpec {
+  // messages and data types
+}
+
+class FSMDocSpec extends MyFavoriteTestFrameWorkPlusPekkoTestKit {
+  import FSMDocSpec._
+
+  import pekko.actor.{ ActorRef, FSM }
+  import scala.concurrent.duration._
+  class Buncher extends FSM[State, Data] {
+
+    startWith(Idle, Uninitialized)
+
+    when(Idle) {
+      case Event(SetTarget(ref), Uninitialized) =&gt;
+        stay().using(Todo(ref, Vector.empty))
+    }
+
+    onTransition {
+      case Active -&gt; Idle =&gt;
+        stateData match {
+          case Todo(ref, queue) =&gt; ref ! Batch(queue)
+          case _                =&gt; // nothing to do
+        }
+    }
+
+    when(Active, stateTimeout = 1 second) {
+      case Event(Flush | StateTimeout, t: Todo) =&gt;
+        goto(Idle).using(t.copy(queue = Vector.empty))
+    }
+
+    whenUnhandled {
+      // common code for both states
+      case Event(Queue(obj), t @ Todo(_, v)) =&gt;
+        goto(Active).using(t.copy(queue = v :+ obj))
+
+      case Event(e, s) =&gt;
+        log.warning(&quot;received unhandled request {} in state {}/{}&quot;, e, stateName, s)
+        stay()
+    }
+
+    initialize()
+  }
+  object DemoCode {
+    trait StateType
+    case object SomeState extends StateType
+    case object Processing extends StateType
+    case object Error extends StateType
+    case object Idle extends StateType
+    case object Active extends StateType
+
+    class Dummy extends FSM[StateType, Int] {
+      class X
+      val newData = 42
+      object WillDo
+      object Tick
+
+      when(SomeState) {
+        case Event(msg, _) =&gt;
+          goto(Processing).using(newData).forMax(5 seconds).replying(WillDo)
+      }
+
+      onTransition {
+        case Idle -&gt; Active =&gt; startTimerWithFixedDelay(&quot;timeout&quot;, Tick, 1 second)
+        case Active -&gt; _    =&gt; cancelTimer(&quot;timeout&quot;)
+        case x -&gt; Idle      =&gt; log.info(&quot;entering Idle from &quot; + x)
+      }
+
+      onTransition(handler _)
+
+      def handler(from: StateType, to: StateType): Unit = {
+        // handle it here ...
+      }
+
+      when(Error) {
+        case Event(&quot;stop&quot;, _) =&gt;
+          // do cleanup ...
+          stop()
+      }
+
+      when(SomeState)(transform {
+        case Event(bytes: ByteString, read) =&gt; stay().using(read + bytes.length)
+      }.using {
+        case s @ FSM.State(state, read, timeout, stopReason, replies) if read &gt; 1000 =&gt;
+          goto(Processing)
+      })
+
+      val processingTrigger: PartialFunction[State, State] = {
+        case s @ FSM.State(state, read, timeout, stopReason, replies) if read &gt; 1000 =&gt;
+          goto(Processing)
+      }
+
+      when(SomeState)(transform {
+        case Event(bytes: ByteString, read) =&gt; stay().using(read + bytes.length)
+      }.using(processingTrigger))
+
+      onTermination {
+        case StopEvent(FSM.Normal, state, data)         =&gt; // ...
+        case StopEvent(FSM.Shutdown, state, data)       =&gt; // ...
+        case StopEvent(FSM.Failure(cause), state, data) =&gt; // ...
+      }
+
+      whenUnhandled {
+        case Event(x: X, data) =&gt;
+          log.info(&quot;Received unhandled event: &quot; + x)
+          stay()
+        case Event(msg, _) =&gt;
+          log.warning(&quot;Received unknown event: &quot; + msg)
+          goto(Error)
+      }
+
+    }
+
+    import org.apache.pekko.actor.LoggingFSM
+    class MyFSM extends LoggingFSM[StateType, Data] {
+      override def logDepth = 12
+      onTermination {
+        case StopEvent(FSM.Failure(_), state, data) =&gt;
+          val lastEvents = getLog.mkString(&quot;\n\t&quot;)
+          log.warning(
+            &quot;Failure in state &quot; + state + &quot; with data &quot; + data + &quot;\n&quot; +
+            &quot;Events leading up to this point:\n\t&quot; + lastEvents)
+      }
+      // ...
+    }
+
+  }
+
+  &quot;simple finite state machine&quot; must {
+
+    &quot;demonstrate NullFunction&quot; in {
+      class A extends FSM[Int, Null] {
+        val SomeState = 0
+        when(SomeState)(FSM.NullFunction)
+      }
+    }
+
+    &quot;batch correctly&quot; in {
+      val buncher = system.actorOf(Props(classOf[Buncher], this))
+      buncher ! SetTarget(testActor)
+      buncher ! Queue(42)
+      buncher ! Queue(43)
+      expectMsg(Batch(immutable.Seq(42, 43)))
+      buncher ! Queue(44)
+      buncher ! Flush
+      buncher ! Queue(45)
+      expectMsg(Batch(immutable.Seq(44)))
+      expectMsg(Batch(immutable.Seq(45)))
+    }
+
+    &quot;not batch if uninitialized&quot; in {
+      val buncher = system.actorOf(Props(classOf[Buncher], this))
+      buncher ! Queue(42)
+      expectNoMessage()
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/BuncherTest.java#L32-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class BuncherTest extends AbstractJavaTest {
+
+  static ActorSystem system;
+
+  @BeforeClass
+  public static void setup() {
+    system = ActorSystem.create(&quot;BuncherTest&quot;);
+  }
+
+  @AfterClass
+  public static void tearDown() {
+    TestKit.shutdownActorSystem(system);
+    system = null;
+  }
+
+  @Test
+  public void testBuncherActorBatchesCorrectly() {
+    new TestKit(system) {
+      {
+        final ActorRef buncher = system.actorOf(Props.create(Buncher.class));
+        final ActorRef probe = getRef();
+
+        buncher.tell(new SetTarget(probe), probe);
+        buncher.tell(new Queue(42), probe);
+        buncher.tell(new Queue(43), probe);
+        LinkedList&lt;Object&gt; list1 = new LinkedList&lt;&gt;();
+        list1.add(42);
+        list1.add(43);
+        expectMsgEquals(new Batch(list1));
+        buncher.tell(new Queue(44), probe);
+        buncher.tell(Flush, probe);
+        buncher.tell(new Queue(45), probe);
+        LinkedList&lt;Object&gt; list2 = new LinkedList&lt;&gt;();
+        list2.add(44);
+        expectMsgEquals(new Batch(list2));
+        LinkedList&lt;Object&gt; list3 = new LinkedList&lt;&gt;();
+        list3.add(45);
+        expectMsgEquals(new Batch(list3));
+        system.stop(buncher);
+      }
+    };
+  }
+
+  @Test
+  public void testBuncherActorDoesntBatchUninitialized() {
+    new TestKit(system) {
+      {
+        final ActorRef buncher = system.actorOf(Props.create(Buncher.class));
+        final ActorRef probe = getRef();
+
+        buncher.tell(new Queue(42), probe);
+        expectNoMessage();
+        system.stop(buncher);
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#reference" name="reference" class="anchor"><span class="anchor-link"></span></a>Reference</h2>
+<h3><a href="#the-" name="the-" class="anchor"><span class="anchor-link"></span></a>The <span class="group-scala">FSM Trait and Object</span><span class="group-java">AbstractFSM Class</span></h3>
+<p><span class="group-scala"> The <code>FSM</code> trait inherits directly from <code>Actor</code>, when you extend <code>FSM</code> you must be aware that an actor is actually created: </span> <span class="group-java"> The <code>AbstractFSM</code> abstract class is the base class used to implement an FSM. It implements Actor since an Actor is created to drive the FSM. </span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L61-L104" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Buncher extends FSM[State, Data] {
+
+  startWith(Idle, Uninitialized)
+
+  when(Idle) {
+    case Event(SetTarget(ref), Uninitialized) =&gt;
+      stay().using(Todo(ref, Vector.empty))
+  }
+
+  onTransition {
+    case Active -&gt; Idle =&gt;
+      stateData match {
+        case Todo(ref, queue) =&gt; ref ! Batch(queue)
+        case _                =&gt; // nothing to do
+      }
+  }
+
+  when(Active, stateTimeout = 1 second) {
+    case Event(Flush | StateTimeout, t: Todo) =&gt;
+      goto(Idle).using(t.copy(queue = Vector.empty))
+  }
+
+  whenUnhandled {
+    // common code for both states
+    case Event(Queue(obj), t @ Todo(_, v)) =&gt;
+      goto(Active).using(t.copy(queue = v :+ obj))
+
+    case Event(e, s) =&gt;
+      log.warning(&quot;received unhandled request {} in state {}/{}&quot;, e, stateName, s)
+      stay()
+  }
+
+  initialize()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L33-L166" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Buncher extends AbstractFSM&lt;State, Data&gt; {
+  {
+    startWith(Idle, Uninitialized);
+
+    when(
+        Idle,
+        matchEvent(
+            SetTarget.class,
+            Uninitialized.class,
+            (setTarget, uninitialized) -&gt;
+                stay().using(new Todo(setTarget.getRef(), new LinkedList&lt;&gt;()))));
+
+    onTransition(
+        matchState(
+                Active,
+                Idle,
+                () -&gt; {
+                  // reuse this matcher
+                  final UnitMatch&lt;Data&gt; m =
+                      UnitMatch.create(
+                          matchData(
+                              Todo.class,
+                              todo -&gt;
+                                  todo.getTarget().tell(new Batch(todo.getQueue()), getSelf())));
+                  m.match(stateData());
+                })
+            .state(
+                Idle,
+                Active,
+                () -&gt; {
+                  /* Do something here */
+                }));
+
+    when(
+        Active,
+        Duration.ofSeconds(1L),
+        matchEvent(
+            Arrays.asList(Flush.class, StateTimeout()),
+            Todo.class,
+            (event, todo) -&gt; goTo(Idle).using(todo.copy(new LinkedList&lt;&gt;()))));
+
+    whenUnhandled(
+        matchEvent(
+                Queue.class,
+                Todo.class,
+                (queue, todo) -&gt; goTo(Active).using(todo.addElement(queue.getObj())))
+            .anyEvent(
+                (event, state) -&gt; {
+                  log()
+                      .warning(
+                          &quot;received unhandled request {} in state {}/{}&quot;,
+                          event,
+                          stateName(),
+                          state);
+                  return stay();
+                }));
+
+    initialize();
+  }
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>The <span class="group-scala"><code>FSM</code> trait</span><span class="group-java"><code>AbstractFSM</code> class</span> defines a <code>receive</code> method which handles internal messages and passes everything else through to the FSM logic (according to the current state). When overriding the <code>receive</code> method, keep in mind that e.g. state timeout handling depends on actually passing the messages through the FSM logic.</p></div>
+<p>The <span class="group-scala"><code>FSM</code> trait</span><span class="group-java"><code>AbstractFSM</code> class</span> takes two type parameters:</p>
+<ol>
+  <li>the supertype of all state names, usually <span class="group-scala">a sealed trait with case objects extending it</span><span class="group-java">an enum</span></li>
+  <li>the type of the state data which are tracked by the <span class="group-scala"><code>FSM</code></span><span class="group-java"><code>AbstractFSM</code></span> module itself.</li>
+</ol><div class="callout note "><div class="callout-title">Note</div>
+<p>The state data together with the state name describe the internal state of the state machine; if you stick to this scheme and do not add mutable fields to the FSM class you have the advantage of making all changes of the internal state explicit in a few well-known places.</p></div>
+<h3><a href="#defining-states" name="defining-states" class="anchor"><span class="anchor-link"></span></a>Defining States</h3>
+<p>A state is defined by one or more invocations of the method</p>
+<pre><code>when(&lt;name&gt;[, stateTimeout = &lt;timeout&gt;])(stateFunction)
+</code></pre>
+<p>The given name must be an object which is type-compatible with the first type parameter given to the <span class="group-scala"><code>FSM</code> trait</span><span class="group-java"><code>AbstractFSM</code> class</span>. This object is used as a hash key, so you must ensure that it properly implements <code>equals</code> and <code>hashCode</code>; in particular it must not be mutable. The easiest fit for these requirements are case objects.</p>
+<p>If the <code>stateTimeout</code> parameter is given, then all transitions into this state, including staying, receive this timeout by default. Initiating the transition with an explicit timeout may be used to override this default, see <a href="#initiating-transitions">Initiating Transitions</a> for more information. The state timeout of any state may be changed during action processing with <code>setStateTimeout(state, duration)</code>. This enables runtime configuration e.g. via external message.</p>
+<p>The <code>stateFunction</code> argument is a <code>PartialFunction[Event, State]</code>, which is conveniently given using the <span class="group-scala">partial function literal</span><span class="group-java">state function builder</span> syntax as demonstrated below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L67-L87" target="_blank" title="Go to snippet source">source</a><code class="language-scala">when(Idle) {
+  case Event(SetTarget(ref), Uninitialized) =&gt;
+    stay().using(Todo(ref, Vector.empty))
+}
+
+when(Active, stateTimeout = 1 second) {
+  case Event(Flush | StateTimeout, t: Todo) =&gt;
+    goto(Idle).using(t.copy(queue = Vector.empty))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/Buncher.java#L39-L45" target="_blank" title="Go to snippet source">source</a><code class="language-java">when(
+    Idle,
+    matchEvent(
+        SetTarget.class,
+        Uninitialized.class,
+        (setTarget, uninitialized) -&gt;
+            stay().using(new Todo(setTarget.getRef(), new LinkedList&lt;&gt;()))));</code></pre></dd>
+</dl><div class="group-scala">
+<p>The <code>Event(msg: Any, data: D)</code> case class is parameterized with the data type held by the FSM for convenient pattern matching.</p></div><div class="callout warning "><div class="callout-title">Warning</div>
+<p>It is required that you define handlers for each of the possible FSM states, otherwise there will be failures when trying to switch to undeclared states.</p></div>
+<p>It is recommended practice to declare the states as <span class="group-scala">objects extending a sealed trait</span><span class="group-java">an enum</span> and then verify that there is a <code>when</code> clause for each of the states. If you want to leave the handling of a state “unhandled” (more below), it still needs to be declared like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L218" target="_blank" title="Go to snippet source">source</a><code class="language-scala">when(SomeState)(FSM.NullFunction)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L86" target="_blank" title="Go to snippet source">source</a><code class="language-java">when(SomeState, AbstractFSM.NullFunction());</code></pre></dd>
+</dl>
+<h3><a href="#defining-the-initial-state" name="defining-the-initial-state" class="anchor"><span class="anchor-link"></span></a>Defining the Initial State</h3>
+<p>Each FSM needs a starting point, which is declared using</p>
+<pre><code>startWith(state, data[, timeout])
+</code></pre>
+<p>The optionally given timeout argument overrides any specification given for the desired initial state. If you want to cancel a default timeout, use <span class="group-scala"><code>None</code></span><span class="group-java"><code>Duration.Inf</code></span>.</p>
+<h3><a href="#unhandled-events" name="unhandled-events" class="anchor"><span class="anchor-link"></span></a>Unhandled Events</h3>
+<p>If a state doesn&rsquo;t handle a received event a warning is logged. If you want to do something else in this case you can specify that with <code>whenUnhandled(stateFunction)</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L180-L187" target="_blank" title="Go to snippet source">source</a><code class="language-scala">whenUnhandled {
+  case Event(x: X, data) =&gt;
+    log.info(&quot;Received unhandled event: &quot; + x)
+    stay()
+  case Event(msg, _) =&gt;
+    log.warning(&quot;Received unknown event: &quot; + msg)
+    goto(Error)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L134-L146" target="_blank" title="Go to snippet source">source</a><code class="language-java">  whenUnhandled(
+      matchEvent(
+              X.class,
+              (x, data) -&gt; {
+                log().info(&quot;Received unhandled event: &quot; + x);
+                return stay();
+              })
+          .anyEvent(
+              (event, data) -&gt; {
+                log().warning(&quot;Received unknown event: &quot; + event);
+                return goTo(Error);
+              }));
+}</code></pre></dd>
+</dl>
+<p>Within this handler the state of the FSM may be queried using the <code>stateName</code> method.</p>
+<p><strong>IMPORTANT</strong>: This handler is not stacked, meaning that each invocation of <code>whenUnhandled</code> replaces the previously installed handler.</p>
+<h3><a href="#initiating-transitions" name="initiating-transitions" class="anchor"><span class="anchor-link"></span></a>Initiating Transitions</h3>
+<p>The result of any <code>stateFunction</code> must be a definition of the next state unless terminating the FSM, which is described in <a href="fsm.html#termination-from-inside">Termination from Inside</a>. The state definition can either be the current state, as described by the <code>stay</code> directive, or it is a different state as given by <code>goto(state)</code>. The resulting object allows further qualification by way of the modifiers described in the following:</p>
+<ul>
+  <li> <code>forMax(duration)</code>  This modifier sets a state timeout on the next state. This means that a timer is started which upon expiry sends a <code>StateTimeout</code> message to the FSM. This timer is canceled upon reception of any other message in the meantime; you can rely on the fact that the <code>StateTimeout</code> message will not be processed after an intervening message.  This modifier can also be used to override any default timeout which is specified for the target state. If you want to cancel the default timeout, use <code>Duration.Inf</code>.</li>
+  <li> <code>using(data)</code>  This modifier replaces the old state data with the new data given. If you follow the advice <a href="fsm.html#defining-states">above</a>, this is the only place where internal state data are ever modified.</li>
+  <li> <code>replying(msg)</code>  This modifier sends a reply to the currently processed message and otherwise does not modify the state transition.</li>
+</ul>
+<p>All modifiers can be chained to achieve a nice and concise description:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L121-L124" target="_blank" title="Go to snippet source">source</a><code class="language-scala">when(SomeState) {
+  case Event(msg, _) =&gt;
+    goto(Processing).using(newData).forMax(5 seconds).replying(WillDo)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L74-L82" target="_blank" title="Go to snippet source">source</a><code class="language-java">when(
+    SomeState,
+    matchAnyEvent(
+        (msg, data) -&gt; {
+          return goTo(Processing)
+              .using(newData)
+              .forMax(Duration.ofSeconds(5))
+              .replying(WillDo);
+        }));</code></pre></dd>
+</dl>
+<p>The parentheses are not actually needed in all cases, but they visually distinguish between modifiers and their arguments and therefore make the code even more pleasant to read.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Please note that the <code>return</code> statement may not be used in <code>when</code> blocks or similar; this is a Scala restriction. Either refactor your code using <code>if () ... else ...</code> or move it into a method definition.</p></div>
+<h3><a href="#monitoring-transitions" name="monitoring-transitions" class="anchor"><span class="anchor-link"></span></a>Monitoring Transitions</h3>
+<p>Transitions occur &ldquo;between states&rdquo; conceptually, which means after any actions you have put into the event handling block; this is obvious since the next state is only defined by the value returned by the event handling logic. You do not need to worry about the exact order with respect to setting the internal state variable, as everything within the FSM actor is running single-threaded anyway.</p>
+<h4><a href="#internal-monitoring" name="internal-monitoring" class="anchor"><span class="anchor-link"></span></a>Internal Monitoring</h4>
+<p>Up to this point, the FSM DSL has been centered on states and events. The dual view is to describe it as a series of transitions. This is enabled by the method</p>
+<pre><code>onTransition(handler)
+</code></pre>
+<p>which associates actions with a transition instead of with a state and event. The handler is a partial function which takes a pair of states as input; no resulting state is needed as it is not possible to modify the transition in progress.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L128-L132" target="_blank" title="Go to snippet source">source</a><code class="language-scala">onTransition {
+  case Idle -&gt; Active =&gt; startTimerWithFixedDelay(&quot;timeout&quot;, Tick, 1 second)
+  case Active -&gt; _    =&gt; cancelTimer(&quot;timeout&quot;)
+  case x -&gt; Idle      =&gt; log.info(&quot;entering Idle from &quot; + x)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L90-L96" target="_blank" title="Go to snippet source">source</a><code class="language-java">onTransition(
+    matchState(
+            Idle,
+            Active,
+            () -&gt; startTimerWithFixedDelay(&quot;timeout&quot;, Tick, Duration.ofSeconds(1L)))
+        .state(Active, null, () -&gt; cancelTimer(&quot;timeout&quot;))
+        .state(null, Idle, (f, t) -&gt; log().info(&quot;entering Idle from &quot; + f)));</code></pre></dd>
+</dl><div class="group-scala">
+<p>The convenience extractor <code>-&gt;</code> enables decomposition of the pair of states with a clear visual reminder of the transition&rsquo;s direction. As usual in pattern matches, an underscore may be used for irrelevant parts; alternatively you could bind the unconstrained state to a variable, e.g. for logging as shown in the last case.</p></div>
+<p>It is also possible to pass a function object accepting two states to <code>onTransition</code>, in case your transition handling logic is implemented as a method:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L136-L140" target="_blank" title="Go to snippet source">source</a><code class="language-scala">onTransition(handler _)
+
+def handler(from: StateType, to: StateType): Unit = {
+  // handle it here ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L67-L100" target="_blank" title="Go to snippet source">source</a><code class="language-java">public void handler(StateType from, StateType to) {
+  // handle transition here
+}
+
+  onTransition(this::handler);</code></pre></dd>
+</dl>
+<p>The handlers registered with this method are stacked, so you can intersperse <code>onTransition</code> blocks with <code>when</code> blocks as suits your design. It should be noted, however, that <em>all handlers will be invoked for each transition</em>, not only the first matching one. This is designed specifically so you can put all transition handling for a certain aspect into one place without having to worry about earlier declarations shadowing later ones; the actions are still executed in declaration order, though.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>This kind of internal monitoring may be used to structure your FSM according to transitions, so that for example the cancellation of a timer upon leaving a certain state cannot be forgot when adding new target states.</p></div>
+<h4><a href="#external-monitoring" name="external-monitoring" class="anchor"><span class="anchor-link"></span></a>External Monitoring</h4>
+<p>External actors may be registered to be notified of state transitions by sending a message <code>SubscribeTransitionCallBack(actorRef)</code>. The named actor will be sent a <code>CurrentState(self, stateName)</code> message immediately and will receive <code>Transition(actorRef, oldState, newState)</code> messages whenever a state change is triggered.</p><div class="group-scala">
+<p>Please note that a state change includes the action of performing an <code>goto(S)</code>, while already being state <code>S</code>. In that case the monitoring actor will be notified with an <code>Transition(ref,S,S)</code> message. This may be useful if your <code>FSM</code> should react on all (also same-state) transitions. In case you&rsquo;d rather not emit events for same-state transitions use <code>stay()</code> instead of <code>goto(S)</code>.</p></div>
+<p>External monitors may be unregistered by sending <code>UnsubscribeTransitionCallBack(actorRef)</code> to the <code>FSM</code> actor.</p>
+<p>Stopping a listener without unregistering will not remove the listener from the subscription list; use <code>UnsubscribeTransitionCallback</code> before stopping the listener.</p><div class="group-scala">
+<h3><a href="#transforming-state" name="transforming-state" class="anchor"><span class="anchor-link"></span></a>Transforming State</h3>
+<p>The partial functions supplied as argument to the <code>when()</code> blocks can be transformed using Scala’s full supplement of functional programming tools. In order to retain type inference, there is a helper function which may be used in case some common handling logic shall be applied to different clauses:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L152-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">when(SomeState)(transform {
+  case Event(bytes: ByteString, read) =&gt; stay().using(read + bytes.length)
+}.using {
+  case s @ FSM.State(state, read, timeout, stopReason, replies) if read &gt; 1000 =&gt;
+    goto(Processing)
+})</code></pre>
+<p>It goes without saying that the arguments to this method may also be stored, to be used several times, e.g. when applying the same transformation to several <code>when()</code> blocks:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L161-L168" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val processingTrigger: PartialFunction[State, State] = {
+  case s @ FSM.State(state, read, timeout, stopReason, replies) if read &gt; 1000 =&gt;
+    goto(Processing)
+}
+
+when(SomeState)(transform {
+  case Event(bytes: ByteString, read) =&gt; stay().using(read + bytes.length)
+}.using(processingTrigger))</code></pre></div>
+<h3><a href="#timers" name="timers" class="anchor"><span class="anchor-link"></span></a>Timers</h3>
+<p>Besides state timeouts, FSM manages timers identified by <code>String</code> names. You may set a timer using</p>
+<pre><code>startSingleTimer(name, msg, interval)
+startTimerWithFixedDelay(name, msg, interval)
+</code></pre>
+<p>where <code>msg</code> is the message object which will be sent after the duration <code>interval</code> has elapsed.</p>
+<p>Any existing timer with the same name will automatically be canceled before adding the new timer.</p>
+<p>The <a href="scheduler.html#schedule-periodically">Scheduler</a> documentation describes the difference between <code>fixed-delay</code> and <code>fixed-rate</code> scheduling. If you are uncertain of which one to use you should pick <code>startTimerWithFixedDelay</code>.</p>
+<p>Timers may be canceled using</p>
+<pre><code>cancelTimer(name)
+</code></pre>
+<p>which is guaranteed to work immediately, meaning that the scheduled message will not be processed after this call even if the timer already fired and queued it. The status of any timer may be inquired with</p>
+<pre><code>isTimerActive(name)
+</code></pre>
+<p>These named timers complement state timeouts because they are not affected by intervening reception of other messages.</p>
+<h3><a href="#termination-from-inside" name="termination-from-inside" class="anchor"><span class="anchor-link"></span></a>Termination from Inside</h3>
+<p>The FSM is stopped by specifying the result state as</p>
+<pre><code>stop([reason[, data]])
+</code></pre>
+<p>The reason must be one of <code>Normal</code> (which is the default), <code>Shutdown</code> or <code>Failure(reason)</code>, and the second argument may be given to change the state data which is available during termination handling.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It should be noted that <code>stop</code> does not abort the actions and stop the FSM immediately. The stop action must be returned from the event handler in the same way as a state transition (but note that the <code>return</code> statement may not be used within a <code>when</code> block).</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L144-L148" target="_blank" title="Go to snippet source">source</a><code class="language-scala">when(Error) {
+  case Event(&quot;stop&quot;, _) =&gt;
+    // do cleanup ...
+    stop()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L104-L111" target="_blank" title="Go to snippet source">source</a><code class="language-java">when(
+    Error,
+    matchEventEquals(
+        &quot;stop&quot;,
+        (event, data) -&gt; {
+          // do cleanup ...
+          return stop();
+        }));</code></pre></dd>
+</dl>
+<p>You can use <code>onTermination(handler)</code> to specify custom code that is executed when the FSM is stopped. The handler is a partial function which takes a <code>StopEvent(reason, stateName, stateData)</code> as argument:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L172-L176" target="_blank" title="Go to snippet source">source</a><code class="language-scala">onTermination {
+  case StopEvent(FSM.Normal, state, data)         =&gt; // ...
+  case StopEvent(FSM.Shutdown, state, data)       =&gt; // ...
+  case StopEvent(FSM.Failure(cause), state, data) =&gt; // ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L115-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">onTermination(
+    matchStop(
+            Normal(),
+            (state, data) -&gt; {
+              /* Do something here */
+            })
+        .stop(
+            Shutdown(),
+            (state, data) -&gt; {
+              /* Do something here */
+            })
+        .stop(
+            Failure.class,
+            (reason, state, data) -&gt; {
+              /* Do something here */
+            }));</code></pre></dd>
+</dl>
+<p>As for the <code>whenUnhandled</code> case, this handler is not stacked, so each invocation of <code>onTermination</code> replaces the previously installed handler.</p>
+<h3><a href="#termination-from-outside" name="termination-from-outside" class="anchor"><span class="anchor-link"></span></a>Termination from Outside</h3>
+<p>When an <code>ActorRef</code> associated to a FSM is stopped using the <code>stop()</code> method, its <code>postStop</code> hook will be executed. The default implementation by the <span class="group-scala"><code>FSM</code> trait</span><span class="group-java"><code>AbstractFSM</code> class</span> is to execute the <code>onTermination</code> handler if that is prepared to handle a <code>StopEvent(Shutdown, ...)</code>.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>In case you override <code>postStop</code> and want to have your <code>onTermination</code> handler called, do not forget to call <code>super.postStop</code>.</p></div>
+<h2><a href="#testing-and-debugging-finite-state-machines" name="testing-and-debugging-finite-state-machines" class="anchor"><span class="anchor-link"></span></a>Testing and Debugging Finite State Machines</h2>
+<p>During development and for trouble shooting FSMs need care just as any other actor. There are specialized tools available as described in <a href="testing.html#testfsmref">TestFSMRef</a> and in the following.</p>
+<h3><a href="#event-tracing" name="event-tracing" class="anchor"><span class="anchor-link"></span></a>Event Tracing</h3>
+<p>The setting <code>pekko.actor.debug.fsm</code> in <a href="general/configuration.html">configuration</a> enables logging of an event trace by <code>LoggingFSM</code> instances:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L193-L206" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.LoggingFSM
+class MyFSM extends LoggingFSM[StateType, Data] {
+  override def logDepth = 12
+  onTermination {
+    case StopEvent(FSM.Failure(_), state, data) =&gt;
+      val lastEvents = getLog.mkString(&quot;\n\t&quot;)
+      log.warning(
+        &quot;Failure in state &quot; + state + &quot; with data &quot; + data + &quot;\n&quot; +
+        &quot;Events leading up to this point:\n\t&quot; + lastEvents)
+  }
+  // ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L152-L209" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class MyFSM extends AbstractLoggingFSM&lt;StateType, Data&gt; {
+  @Override
+  public int logDepth() {
+    return 12;
+  }
+
+  {
+    onTermination(
+        matchStop(
+            Failure.class,
+            (reason, state, data) -&gt; {
+              String lastEvents = getLog().mkString(&quot;\n\t&quot;);
+              log()
+                  .warning(
+                      &quot;Failure in state &quot;
+                          + state
+                          + &quot; with data &quot;
+                          + data
+                          + &quot;\n&quot;
+                          + &quot;Events leading up to this point:\n\t&quot;
+                          + lastEvents);
+            }));
+    // ...
+  }
+}</code></pre></dd>
+</dl>
+<p>This FSM will log at DEBUG level:</p>
+<ul>
+  <li>all processed events, including <code>StateTimeout</code> and scheduled timer messages</li>
+  <li>every setting and cancellation of named timers</li>
+  <li>all state transitions</li>
+</ul>
+<p>Life cycle changes and special messages can be logged as described for <a href="testing.html#actor-logging">Actors</a>.</p>
+<h3><a href="#rolling-event-log" name="rolling-event-log" class="anchor"><span class="anchor-link"></span></a>Rolling Event Log</h3>
+<p>The <span class="group-scala"><code>LoggingFSM</code> trait</span><span class="group-java"><code>AbstractLoggingFSM</code> class</span> adds one more feature to the FSM: a rolling event log which may be used during debugging (for tracing how the FSM entered a certain failure state) or for other creative uses:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/FSMDocSpec.scala#L193-L206" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.LoggingFSM
+class MyFSM extends LoggingFSM[StateType, Data] {
+  override def logDepth = 12
+  onTermination {
+    case StopEvent(FSM.Failure(_), state, data) =&gt;
+      val lastEvents = getLog.mkString(&quot;\n\t&quot;)
+      log.warning(
+        &quot;Failure in state &quot; + state + &quot; with data &quot; + data + &quot;\n&quot; +
+        &quot;Events leading up to this point:\n\t&quot; + lastEvents)
+  }
+  // ...
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/actor/fsm/FSMDocTest.java#L152-L209" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class MyFSM extends AbstractLoggingFSM&lt;StateType, Data&gt; {
+  @Override
+  public int logDepth() {
+    return 12;
+  }
+
+  {
+    onTermination(
+        matchStop(
+            Failure.class,
+            (reason, state, data) -&gt; {
+              String lastEvents = getLog().mkString(&quot;\n\t&quot;);
+              log()
+                  .warning(
+                      &quot;Failure in state &quot;
+                          + state
+                          + &quot; with data &quot;
+                          + data
+                          + &quot;\n&quot;
+                          + &quot;Events leading up to this point:\n\t&quot;
+                          + lastEvents);
+            }));
+    // ...
+  }
+}</code></pre></dd>
+</dl>
+<p>The <code>logDepth</code> defaults to zero, which turns off the event log.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>The log buffer is allocated during actor creation, which is why the configuration is done using a virtual method call. If you want to override with a <code>val</code>, make sure that its initialization happens before the initializer of <code>LoggingFSM</code> runs, and do not change the value returned by <code>logDepth</code> after the buffer has been allocated.</p></div>
+<p>The contents of the event log are available using method <code>getLog</code>, which returns an <code>IndexedSeq[LogEntry]</code> where the oldest entry is at index zero.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/fsm.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="routing.html" title="Classic Routing" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Routing
+</span>
+</div>
+</a>
+<a href="persistence.html" title="Classic Persistence" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic Persistence
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

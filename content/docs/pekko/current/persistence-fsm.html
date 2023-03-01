@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic Persistent FSM · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic Persistent FSM
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="persistence-fsm.html#classic-persistent-fsm" class="header">Classic Persistent FSM</a>
+  <ul>
+    <li><a href="persistence-fsm.html#dependency" class="header">Dependency</a></li>
+    <li><a href="persistence-fsm.html#migration-to-eventsourcedbehavior" class="header">Migration to EventSourcedBehavior</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="persistence-fsm.html#classic-persistent-fsm" class="header">Classic Persistent FSM</a>
+  <ul>
+    <li><a href="persistence-fsm.html#dependency" class="header">Dependency</a></li>
+    <li><a href="persistence-fsm.html#migration-to-eventsourcedbehavior" class="header">Migration to EventSourcedBehavior</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-persistent-fsm" name="classic-persistent-fsm" class="anchor"><span class="anchor-link"></span></a>Classic Persistent FSM</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>Persistent FSMs are part of Pekko persistence, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-persistence" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence_${versions.ScalaBinary}"
+}</code></pre></dd></dl><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Persistent FSM is no longer actively developed and will be replaced by <a href="typed/persistence.html">Pekko Persistence Typed</a>. It is not advised to build new applications with Persistent FSM. Existing users of Persistent FSM <a href="persistence-fsm.html#migration-to-eventsourcedbehavior">should migrate</a>. </p></div>
+<p><span class="group-scala"><code>PersistentFSM</code></span><span class="group-java"><code>AbstractPersistentFSM</code></span> handles the incoming messages in an FSM like fashion. Its internal state is persisted as a sequence of changes, later referred to as domain events. Relationship between incoming messages, FSM&rsquo;s states and transitions, persistence of domain events is defined by a DSL.</p>
+<h3><a href="#a-simple-example" name="a-simple-example" class="anchor"><span class="anchor-link"></span></a>A Simple Example</h3>
+<p>To demonstrate the features of the <span class="group-scala"><code>PersistentFSM</code> trait</span><span class="group-java"><code>AbstractPersistentFSM</code></span>, consider an actor which represents a Web store customer. The contract of our &ldquo;WebStoreCustomerFSMActor&rdquo; is that it accepts the following commands:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L447-L451" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+case class AddItem(item: Item) extends Command
+case object Buy extends Command
+case object Leave extends Command
+case object GetCurrentCart extends Command</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L123-L145" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class AddItem implements Command {
+  private final Item item;
+
+  public AddItem(Item item) {
+    this.item = item;
+  }
+
+  public Item getItem() {
+    return item;
+  }
+}
+
+public enum Buy implements Command {
+  INSTANCE
+}
+
+public enum Leave implements Command {
+  INSTANCE
+}
+
+public enum GetCurrentCart implements Command {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<p><code>AddItem</code> sent when the customer adds an item to a shopping cart <code>Buy</code> - when the customer finishes the purchase <code>Leave</code> - when the customer leaves the store without purchasing anything <code>GetCurrentCart</code> allows to query the current state of customer&rsquo;s shopping cart</p>
+<p>The customer can be in one of the following states:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L414-L426" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait UserState extends FSMState
+case object LookingAround extends UserState {
+  override def identifier: String = &quot;Looking Around&quot;
+}
+case object Shopping extends UserState {
+  override def identifier: String = &quot;Shopping&quot;
+}
+case object Inactive extends UserState {
+  override def identifier: String = &quot;Inactive&quot;
+}
+case object Paid extends UserState {
+  override def identifier: String = &quot;Paid&quot;
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L37-L53" target="_blank" title="Go to snippet source">source</a><code class="language-java">enum UserState implements PersistentFSM.FSMState {
+  LOOKING_AROUND(&quot;Looking Around&quot;),
+  SHOPPING(&quot;Shopping&quot;),
+  INACTIVE(&quot;Inactive&quot;),
+  PAID(&quot;Paid&quot;);
+
+  private final String stateIdentifier;
+
+  UserState(String stateIdentifier) {
+    this.stateIdentifier = stateIdentifier;
+  }
+
+  @Override
+  public String identifier() {
+    return stateIdentifier;
+  }
+}</code></pre></dd>
+</dl>
+<p><code>LookingAround</code> customer is browsing the site, but hasn&rsquo;t added anything to the shopping cart <code>Shopping</code> customer has recently added items to the shopping cart <code>Inactive</code> customer has items in the shopping cart, but hasn&rsquo;t added anything recently <code>Paid</code> customer has purchased the items</p><div class="callout note "><div class="callout-title">Note</div>
+<p><span class="group-scala"><code>PersistentFSM</code></span><span class="group-java"><code>AbstractPersistentFSM</code></span> states must <span class="group-scala">inherit from trait</span><span class="group-java">implement interface</span> <code>PersistentFSM.FSMState</code> and implement the <span class="group-scala"><code>def identifier: String</code></span><span class="group-java"><code>String identifier()</code></span> method. This is required in order to simplify the serialization of FSM states. String identifiers should be unique!</p></div>
+<p>Customer&rsquo;s actions are &ldquo;recorded&rdquo; as a sequence of &ldquo;domain events&rdquo; which are persisted. Those events are replayed on an actor&rsquo;s start in order to restore the latest customer&rsquo;s state:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L455-L459" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait DomainEvent
+case class ItemAdded(item: Item) extends DomainEvent
+case object OrderExecuted extends DomainEvent
+case object OrderDiscarded extends DomainEvent
+case object CustomerInactive extends DomainEvent</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L151-L169" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class ItemAdded implements DomainEvent {
+  private final Item item;
+
+  public ItemAdded(Item item) {
+    this.item = item;
+  }
+
+  public Item getItem() {
+    return item;
+  }
+}
+
+public enum OrderExecuted implements DomainEvent {
+  INSTANCE
+}
+
+public enum OrderDiscarded implements DomainEvent {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<p>Customer state data represents the items in a customer&rsquo;s shopping cart:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L430-L443" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Item(id: String, name: String, price: Float)
+
+sealed trait ShoppingCart {
+  def addItem(item: Item): ShoppingCart
+  def empty(): ShoppingCart
+}
+case object EmptyShoppingCart extends ShoppingCart {
+  def addItem(item: Item) = NonEmptyShoppingCart(item :: Nil)
+  def empty() = this
+}
+case class NonEmptyShoppingCart(items: Seq[Item]) extends ShoppingCart {
+  def addItem(item: Item) = NonEmptyShoppingCart(items :+ item)
+  def empty() = EmptyShoppingCart
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L57-L117" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class ShoppingCart {
+  private final List&lt;Item&gt; items = new ArrayList&lt;&gt;();
+
+  public ShoppingCart(Item initialItem) {
+    items.add(initialItem);
+  }
+
+  public ShoppingCart() {}
+
+  public List&lt;Item&gt; getItems() {
+    return Collections.unmodifiableList(items);
+  }
+
+  public ShoppingCart addItem(Item item) {
+    items.add(item);
+    return this;
+  }
+
+  public void empty() {
+    items.clear();
+  }
+}
+
+public static class Item implements Serializable {
+  private final String id;
+  private final String name;
+  private final float price;
+
+  Item(String id, String name, float price) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public float getPrice() {
+    return price;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(&quot;Item{id=%s, name=%s, price=%s}&quot;, id, price, name);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Item item = (Item) o;
+
+    return item.price == price &amp;&amp; id.equals(item.id) &amp;&amp; name.equals(item.name);
+  }
+}</code></pre></dd>
+</dl>
+<p>Here is how everything is wired together:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L498-L548" target="_blank" title="Go to snippet source">source</a><code class="language-scala">startWith(LookingAround, EmptyShoppingCart)
+
+when(LookingAround) {
+  case Event(AddItem(item), _) =&gt;
+    goto(Shopping).applying(ItemAdded(item)).forMax(1 seconds)
+  case Event(GetCurrentCart, data) =&gt;
+    stay().replying(data)
+}
+
+when(Shopping) {
+  case Event(AddItem(item), _) =&gt;
+    stay().applying(ItemAdded(item)).forMax(1 seconds)
+  case Event(Buy, _) =&gt;
+    goto(Paid).applying(OrderExecuted).andThen {
+      case NonEmptyShoppingCart(items) =&gt;
+        reportActor ! PurchaseWasMade(items)
+        saveStateSnapshot()
+      case EmptyShoppingCart =&gt; saveStateSnapshot()
+    }
+  case Event(Leave, _) =&gt;
+    stop().applying(OrderDiscarded).andThen {
+      case _ =&gt;
+        reportActor ! ShoppingCardDiscarded
+        saveStateSnapshot()
+    }
+  case Event(GetCurrentCart, data) =&gt;
+    stay().replying(data)
+  case Event(StateTimeout, _) =&gt;
+    goto(Inactive).forMax(2 seconds)
+}
+
+when(Inactive) {
+  case Event(AddItem(item), _) =&gt;
+    goto(Shopping).applying(ItemAdded(item)).forMax(1 seconds)
+  case Event(StateTimeout, _) =&gt;
+    stop().applying(OrderDiscarded).andThen {
+      case _ =&gt; reportActor ! ShoppingCardDiscarded
+    }
+}
+
+when(Paid) {
+  case Event(Leave, _) =&gt; stop()
+  case Event(GetCurrentCart, data) =&gt;
+    stay().replying(data)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L215-L288" target="_blank" title="Go to snippet source">source</a><code class="language-java">startWith(UserState.LOOKING_AROUND, new ShoppingCart());
+
+when(
+    UserState.LOOKING_AROUND,
+    matchEvent(
+            AddItem.class,
+            (event, data) -&gt;
+                goTo(UserState.SHOPPING)
+                    .applying(new ItemAdded(event.getItem()))
+                    .forMax(Duration.ofSeconds(1)))
+        .event(GetCurrentCart.class, (event, data) -&gt; stay().replying(data)));
+
+when(
+    UserState.SHOPPING,
+    matchEvent(
+            AddItem.class,
+            (event, data) -&gt;
+                stay().applying(new ItemAdded(event.getItem())).forMax(Duration.ofSeconds(1)))
+        .event(
+            Buy.class,
+            (event, data) -&gt;
+                goTo(UserState.PAID)
+                    .applying(OrderExecuted.INSTANCE)
+                    .andThen(
+                        exec(
+                            cart -&gt; {
+                              reportActor.tell(new PurchaseWasMade(cart.getItems()), self());
+                              saveStateSnapshot();
+                            })))
+        .event(
+            Leave.class,
+            (event, data) -&gt;
+                stop()
+                    .applying(OrderDiscarded.INSTANCE)
+                    .andThen(
+                        exec(
+                            cart -&gt; {
+                              reportActor.tell(ShoppingCardDiscarded.INSTANCE, self());
+                              saveStateSnapshot();
+                            })))
+        .event(GetCurrentCart.class, (event, data) -&gt; stay().replying(data))
+        .event(
+            StateTimeout$.class,
+            (event, data) -&gt; goTo(UserState.INACTIVE).forMax(Duration.ofSeconds(2))));
+
+when(
+    UserState.INACTIVE,
+    matchEvent(
+            AddItem.class,
+            (event, data) -&gt;
+                goTo(UserState.SHOPPING)
+                    .applying(new ItemAdded(event.getItem()))
+                    .forMax(Duration.ofSeconds(1)))
+        .event(GetCurrentCart.class, (event, data) -&gt; stay().replying(data))
+        .event(
+            StateTimeout$.class,
+            (event, data) -&gt;
+                stop()
+                    .applying(OrderDiscarded.INSTANCE)
+                    .andThen(
+                        exec(
+                            cart -&gt;
+                                reportActor.tell(ShoppingCardDiscarded.INSTANCE, self())))));
+
+when(
+    UserState.PAID,
+    matchEvent(Leave.class, (event, data) -&gt; stop())
+        .event(GetCurrentCart.class, (event, data) -&gt; stay().replying(data)));</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>State data can only be modified directly on initialization. Later it&rsquo;s modified only as a result of applying domain events. Override the <code>applyEvent</code> method to define how state data is affected by domain events, see the example below</p></div>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L558-L565" target="_blank" title="Go to snippet source">source</a><code class="language-scala">override def applyEvent(event: DomainEvent, cartBeforeEvent: ShoppingCart): ShoppingCart = {
+  event match {
+    case ItemAdded(item)  =&gt; cartBeforeEvent.addItem(item)
+    case OrderExecuted    =&gt; cartBeforeEvent
+    case OrderDiscarded   =&gt; cartBeforeEvent.empty()
+    case CustomerInactive =&gt; cartBeforeEvent
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L299-L311" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public ShoppingCart applyEvent(DomainEvent event, ShoppingCart currentData) {
+  if (event instanceof ItemAdded) {
+    currentData.addItem(((ItemAdded) event).getItem());
+    return currentData;
+  } else if (event instanceof OrderExecuted) {
+    return currentData;
+  } else if (event instanceof OrderDiscarded) {
+    currentData.empty();
+    return currentData;
+  }
+  throw new RuntimeException(&quot;Unhandled&quot;);
+}</code></pre></dd>
+</dl>
+<p><code>andThen</code> can be used to define actions which will be executed following event&rsquo;s persistence - convenient for &ldquo;side effects&rdquo; like sending a message or logging. Notice that actions defined in <code>andThen</code> block are not executed on recovery:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L512-L519" target="_blank" title="Go to snippet source">source</a><code class="language-scala">goto(Paid).applying(OrderExecuted).andThen {
+  case NonEmptyShoppingCart(items) =&gt;
+    reportActor ! PurchaseWasMade(items)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L236-L246" target="_blank" title="Go to snippet source">source</a><code class="language-java">(event, data) -&gt;
+    goTo(UserState.PAID)
+        .applying(OrderExecuted.INSTANCE)
+        .andThen(
+            exec(
+                cart -&gt; {
+                  reportActor.tell(new PurchaseWasMade(cart.getItems()), self());
+                })))</code></pre></dd>
+</dl>
+<p>A snapshot of state data can be persisted by calling the <code>saveStateSnapshot()</code> method:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/scala/org/apache/pekko/persistence/fsm/PersistentFSMSpec.scala#L523-L527" target="_blank" title="Go to snippet source">source</a><code class="language-scala">stop().applying(OrderDiscarded).andThen {
+  case _ =&gt;
+    reportActor ! ShoppingCardDiscarded
+    saveStateSnapshot()
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence/src/test/java/org/apache/pekko/persistence/fsm/AbstractPersistentFSMTest.java#L251-L259" target="_blank" title="Go to snippet source">source</a><code class="language-java">(event, data) -&gt;
+    stop()
+        .applying(OrderDiscarded.INSTANCE)
+        .andThen(
+            exec(
+                cart -&gt; {
+                  reportActor.tell(ShoppingCardDiscarded.INSTANCE, self());
+                  saveStateSnapshot();
+                })))</code></pre></dd>
+</dl>
+<p>On recovery state data is initialized according to the latest available snapshot, then the remaining domain events are replayed, triggering the <code>applyEvent</code> method.</p>
+<h2><a href="#migration-to-eventsourcedbehavior" name="migration-to-eventsourcedbehavior" class="anchor"><span class="anchor-link"></span></a>Migration to EventSourcedBehavior</h2>
+<p>Persistent FSMs can be represented using <a href="typed/persistence.html">Persistence Typed</a>. The data stored by Persistence FSM can be read by an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> using a snapshot adapter and an event adapter. The adapters are required as Persistent FSM doesn&rsquo;t store snapshots and user data directly, it wraps them in internal types that include state transition information.</p>
+<p>Before reading the migration guide it is advised to understand <a href="typed/persistence.html">Persistence Typed</a>. </p>
+<h3><a href="#migration-steps" name="migration-steps" class="anchor"><span class="anchor-link"></span></a>Migration steps</h3>
+<ol>
+  <li>Modify or create new commands to include <code>replyTo</code> <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span></li>
+  <li>Typically persisted events will remain the same</li>
+  <li>Create an <code>EventSourcedBehavior</code> that mimics the old <code>PersistentFSM</code></li>
+  <li>Replace any state timeouts with <code>Behaviors.withTimers</code> either hard coded or stored in the state</li>
+  <li>Add an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventAdapter.html" title="org.apache.pekko.persistence.typed.EventAdapter"><code>EventAdapter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventAdapter.html" title="org.apache.pekko.persistence.typed.EventAdapter"><code>EventAdapter</code></a></span> to convert state transition events added by <code>PersistentFSM</code> into private events or filter them</li>
+  <li>If snapshots are used add a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/SnapshotAdapter.html" title="org.apache.pekko.persistence.typed.SnapshotAdapter"><code>SnapshotAdapter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/SnapshotAdapter.html" title="org.apache.pekko.persistence.typed.SnapshotAdapter"><code>SnapshotAdapter</code></a></span> to convert PersistentFSM snapshots into the <code>EventSourcedBehavior</code>s <code>State</code></li>
+</ol>
+<p>The following is the shopping cart example above converted to an <code>EventSourcedBehavior</code>. </p>
+<p>The new commands, note the replyTo field for getting the current cart.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L65-L70" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+case class AddItem(item: Item) extends Command
+case object Buy extends Command
+case object Leave extends Command
+case class GetCurrentCart(replyTo: ActorRef[ShoppingCart]) extends Command
+private case object Timeout extends Command</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L29-L57" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface Command {}
+
+public static class AddItem implements Command {
+  public final Item item;
+
+  public AddItem(Item item) {
+    this.item = item;
+  }
+}
+
+public static class GetCurrentCart implements Command {
+  public final ActorRef&lt;ShoppingCart&gt; replyTo;
+
+  public GetCurrentCart(ActorRef&lt;ShoppingCart&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+public enum Buy implements Command {
+  INSTANCE
+}
+
+public enum Leave implements Command {
+  INSTANCE
+}
+
+private enum Timeout implements Command {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<p>The states of the FSM are represented using the <code>EventSourcedBehavior</code>&rsquo;s state parameter along with the event and command handlers. Here are the states:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L74-L78" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait State
+case class LookingAround(cart: ShoppingCart) extends State
+case class Shopping(cart: ShoppingCart) extends State
+case class Inactive(cart: ShoppingCart) extends State
+case class Paid(cart: ShoppingCart) extends State</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L61-L91" target="_blank" title="Go to snippet source">source</a><code class="language-java">abstract static class State {
+  public final ShoppingCart cart;
+
+  protected State(ShoppingCart cart) {
+    this.cart = cart;
+  }
+}
+
+public static class LookingAround extends State {
+  public LookingAround(ShoppingCart cart) {
+    super(cart);
+  }
+}
+
+public static class Shopping extends State {
+  public Shopping(ShoppingCart cart) {
+    super(cart);
+  }
+}
+
+public static class Inactive extends State {
+  public Inactive(ShoppingCart cart) {
+    super(cart);
+  }
+}
+
+public static class Paid extends State {
+  public Paid(ShoppingCart cart) {
+    super(cart);
+  }
+}</code></pre></dd>
+</dl>
+<p>The command handler has a separate section for each of the PersistentFSM&rsquo;s states: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L119-L164" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def commandHandler(timers: TimerScheduler[Command])(state: State, command: Command): Effect[DomainEvent, State] =
+  state match {
+    case LookingAround(cart) =&gt;
+      command match {
+        case AddItem(item) =&gt;
+          Effect.persist(ItemAdded(item)).thenRun(_ =&gt; timers.startSingleTimer(StateTimeout, Timeout, 1.second))
+        case GetCurrentCart(replyTo) =&gt;
+          replyTo ! cart
+          Effect.none
+        case _ =&gt;
+          Effect.none
+      }
+    case Shopping(cart) =&gt;
+      command match {
+        case AddItem(item) =&gt;
+          Effect.persist(ItemAdded(item)).thenRun(_ =&gt; timers.startSingleTimer(StateTimeout, Timeout, 1.second))
+        case Buy =&gt;
+          Effect.persist(OrderExecuted).thenRun(_ =&gt; timers.cancel(StateTimeout))
+        case Leave =&gt;
+          Effect.persist(OrderDiscarded).thenStop()
+        case GetCurrentCart(replyTo) =&gt;
+          replyTo ! cart
+          Effect.none
+        case Timeout =&gt;
+          Effect.persist(CustomerInactive)
+      }
+    case Inactive(_) =&gt;
+      command match {
+        case AddItem(item) =&gt;
+          Effect.persist(ItemAdded(item)).thenRun(_ =&gt; timers.startSingleTimer(StateTimeout, Timeout, 1.second))
+        case Timeout =&gt;
+          Effect.persist(OrderDiscarded)
+        case _ =&gt;
+          Effect.none
+      }
+    case Paid(cart) =&gt;
+      command match {
+        case Leave =&gt;
+          Effect.stop()
+        case GetCurrentCart(replyTo) =&gt;
+          replyTo ! cart
+          Effect.none
+        case _ =&gt;
+          Effect.none
+      }
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L144-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">  CommandHandlerBuilder&lt;Command, DomainEvent, State&gt; builder = newCommandHandlerBuilder();
+
+  builder.forStateType(LookingAround.class).onCommand(AddItem.class, this::addItem);
+
+  builder
+      .forStateType(Shopping.class)
+      .onCommand(AddItem.class, this::addItem)
+      .onCommand(Buy.class, this::buy)
+      .onCommand(Leave.class, this::discardShoppingCart)
+      .onCommand(Timeout.class, this::timeoutShopping);
+
+  builder
+      .forStateType(Inactive.class)
+      .onCommand(AddItem.class, this::addItem)
+      .onCommand(Timeout.class, () -&gt; Effect().persist(OrderDiscarded.INSTANCE).thenStop());
+
+  builder.forStateType(Paid.class).onCommand(Leave.class, () -&gt; Effect().stop());
+
+  builder.forAnyState().onCommand(GetCurrentCart.class, this::getCurrentCart);
+  return builder.build();
+}</code></pre></dd>
+</dl>
+<p>Note that there is no explicit support for state timeout as with PersistentFSM but the same behavior can be achieved using <code>Behaviors.withTimers</code>. If the timer is the same for all events then it can be hard coded, otherwise the old PersistentFSM timeout can be taken from the <code>StateChangeEvent</code> in the event adapter and is also available when constructing a <code>SnapshotAdapter</code>. This can be added to an internal event and then stored in the <code>State</code>. Care must also be taken to restart timers on recovery in the signal handler:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L203-L210" target="_blank" title="Go to snippet source">source</a><code class="language-scala">.receiveSignal {
+  case (state, RecoveryCompleted) =&gt;
+    state match {
+      case _: Shopping | _: Inactive =&gt;
+        timers.startSingleTimer(StateTimeout, Timeout, 1.second)
+      case _ =&gt;
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L227-L238" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public SignalHandler&lt;State&gt; signalHandler() {
+  return newSignalHandlerBuilder()
+      .onSignal(
+          RecoveryCompleted.class,
+          (state, signal) -&gt; {
+            if (state instanceof Shopping || state instanceof Inactive) {
+              timers.startSingleTimer(TIMEOUT_KEY, Timeout.INSTANCE, Duration.ofSeconds(1));
+            }
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>Then the event handler:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L168-L190" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def eventHandler(state: State, event: DomainEvent): State = {
+  state match {
+    case la @ LookingAround(cart) =&gt;
+      event match {
+        case ItemAdded(item) =&gt; Shopping(cart.addItem(item))
+        case _               =&gt; la
+      }
+    case Shopping(cart) =&gt;
+      event match {
+        case ItemAdded(item)  =&gt; Shopping(cart.addItem(item))
+        case OrderExecuted    =&gt; Paid(cart)
+        case OrderDiscarded   =&gt; state // will be stopped
+        case CustomerInactive =&gt; Inactive(cart)
+      }
+    case i @ Inactive(cart) =&gt;
+      event match {
+        case ItemAdded(item) =&gt; Shopping(cart.addItem(item))
+        case OrderDiscarded  =&gt; i // will be stopped
+        case _               =&gt; i
+      }
+    case Paid(_) =&gt; state // no events after paid
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L195-L218" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public EventHandler&lt;State, DomainEvent&gt; eventHandler() {
+  EventHandlerBuilder&lt;State, DomainEvent&gt; eventHandlerBuilder = newEventHandlerBuilder();
+
+  eventHandlerBuilder
+      .forStateType(LookingAround.class)
+      .onEvent(ItemAdded.class, item -&gt; new Shopping(new ShoppingCart(item.getItem())));
+
+  eventHandlerBuilder
+      .forStateType(Shopping.class)
+      .onEvent(
+          ItemAdded.class, (state, item) -&gt; new Shopping(state.cart.addItem(item.getItem())))
+      .onEvent(OrderExecuted.class, (state, item) -&gt; new Paid(state.cart))
+      .onEvent(OrderDiscarded.class, (state, item) -&gt; state) // will be stopped
+      .onEvent(CustomerInactive.class, (state, event) -&gt; new Inactive(state.cart));
+
+  eventHandlerBuilder
+      .forStateType(Inactive.class)
+      .onEvent(
+          ItemAdded.class, (state, item) -&gt; new Shopping(state.cart.addItem(item.getItem())))
+      .onEvent(OrderDiscarded.class, (state, item) -&gt; state); // will be stopped
+
+  return eventHandlerBuilder.build();
+}</code></pre></dd>
+</dl>
+<p>The last step is the adapters that will allow the new <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> to read the old data:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L96-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class PersistentFsmEventAdapter extends EventAdapter[DomainEvent, Any] {
+  override def toJournal(e: DomainEvent): Any = e
+  override def manifest(event: DomainEvent): String = &quot;&quot;
+  override def fromJournal(journalEvent: Any, manifest: String): EventSeq[DomainEvent] = {
+    journalEvent match {
+      case _: StateChangeEvent =&gt;
+        // In this example the state transitions can be inferred from the events
+        // Alternatively the StateChangeEvent can be converted to a private event if either the StateChangeEvent.stateIdentifier
+        // or StateChangeEvent.timeout is required
+        // Many use cases have the same timeout so it can be hard coded, otherwise it cane be stored in the state
+        EventSeq.empty
+      case other =&gt;
+        // If using a new domain event model the conversion would happen here
+        EventSeq.single(other.asInstanceOf[DomainEvent])
+    }
+
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L95-L122" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class PersistentFSMEventAdapter extends EventAdapter&lt;DomainEvent, Object&gt; {
+
+  @Override
+  public Object toJournal(DomainEvent domainEvent) {
+    // leave events as is, can&#39;t roll back to PersistentFSM
+    return domainEvent;
+  }
+
+  @Override
+  public String manifest(DomainEvent event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public EventSeq&lt;DomainEvent&gt; fromJournal(Object event, String manifest) {
+    if (event instanceof org.apache.pekko.persistence.fsm.PersistentFSM.StateChangeEvent) {
+      // In this example the state transitions can be inferred from the events
+      // Alternatively the StateChangeEvent can be converted to a private event if either the
+      // StateChangeEvent.stateIdentifier
+      // or StateChangeEvent.timeout is required
+      // Many use cases have the same timeout so it can be hard coded, otherwise it cane be stored
+      // in the state
+      return EventSeq.empty();
+    } else {
+      // If using a new domain event model the conversion would happen here
+      return EventSeq.single((DomainEvent) event);
+    }
+  }</code></pre></dd>
+</dl>
+<p>The snapshot adapter needs to adapt an internal type of PersistentFSM so a helper function is provided to build the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/SnapshotAdapter.html" title="org.apache.pekko.persistence.typed.SnapshotAdapter"><code>SnapshotAdapter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/SnapshotAdapter.html" title="org.apache.pekko.persistence.typed.SnapshotAdapter"><code>SnapshotAdapter</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationSpec.scala#L82-L92" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val persistentFSMSnapshotAdapter: SnapshotAdapter[State] = PersistentFSMMigration.snapshotAdapter[State] {
+  case (stateIdentifier, data, _) =&gt;
+    val cart = data.asInstanceOf[ShoppingCart]
+    stateIdentifier match {
+      case &quot;Looking Around&quot; =&gt; LookingAround(cart)
+      case &quot;Shopping&quot;       =&gt; Shopping(cart)
+      case &quot;Inactive&quot;       =&gt; Inactive(cart)
+      case &quot;Paid&quot;           =&gt; Paid(cart)
+      case id               =&gt; throw new IllegalStateException(s&quot;Unexpected state identifier $id&quot;)
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/PersistentFsmToTypedMigrationCompileOnlyTest.java#L242-L260" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public SnapshotAdapter&lt;State&gt; snapshotAdapter() {
+  return PersistentFSMMigration.snapshotAdapter(
+      (stateIdentifier, snapshot, timeout) -&gt; {
+        ShoppingCart cart = (ShoppingCart) snapshot;
+        switch (stateIdentifier) {
+          case &quot;Looking Around&quot;:
+            return new LookingAround(cart);
+          case &quot;Shopping&quot;:
+            return new Shopping(cart);
+          case &quot;Inactive&quot;:
+            return new Inactive(cart);
+          case &quot;Paid&quot;:
+            return new Paid(cart);
+          default:
+            throw new IllegalStateException(&quot;Unexpected state identifier &quot; + stateIdentifier);
+        }
+      });
+}</code></pre></dd>
+</dl>
+<p>That concludes all the steps to allow an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> to read a <code>PersistentFSM</code>&rsquo;s data. Once the new code has been running you can not roll back as the PersistentFSM will not be able to read data written by Persistence Typed. </p><div class="callout note "><div class="callout-title">Note</div>
+<p>There is one case where <a href="additional/rolling-updates.html#migrating-from-persistentfsm-to-eventsourcedbehavior">a full shutdown and startup is required</a>.</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/persistence-fsm.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="persistence.html" title="Classic Persistence" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Persistence
+</span>
+</div>
+</a>
+<a href="testing.html" title="Testing Classic Actors" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Testing Classic Actors
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

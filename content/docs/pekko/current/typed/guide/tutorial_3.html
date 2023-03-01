@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../../assets/images/pekko_favicon.png">
+<title>Part 3: Working with Device Actors · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../../lib/prettify/prettify.css">
+<script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Part 3: Working with Device Actors
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#part-3-working-with-device-actors" class="active page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../typed/guide/tutorial_3.html#part-3-working-with-device-actors" class="header">Part 3: Working with Device Actors</a>
+  <ul>
+    <li><a href="../../typed/guide/tutorial_3.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#identifying-messages-for-devices" class="header">Identifying messages for devices</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#adding-flexibility-to-device-messages" class="header">Adding flexibility to device messages</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#implementing-the-device-actor-and-its-read-protocol" class="header">Implementing the device actor and its read protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#testing-the-actor" class="header">Testing the actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#adding-a-write-protocol" class="header">Adding a write protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#actor-with-read-and-write-messages" class="header">Actor with read and write messages</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#whats-next-" class="header">What&rsquo;s Next?</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../typed/guide/tutorial_3.html#part-3-working-with-device-actors" class="header">Part 3: Working with Device Actors</a>
+  <ul>
+    <li><a href="../../typed/guide/tutorial_3.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#identifying-messages-for-devices" class="header">Identifying messages for devices</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#adding-flexibility-to-device-messages" class="header">Adding flexibility to device messages</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#implementing-the-device-actor-and-its-read-protocol" class="header">Implementing the device actor and its read protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#testing-the-actor" class="header">Testing the actor</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#adding-a-write-protocol" class="header">Adding a write protocol</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#actor-with-read-and-write-messages" class="header">Actor with read and write messages</a></li>
+    <li><a href="../../typed/guide/tutorial_3.html#whats-next-" class="header">What&rsquo;s Next?</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#part-3-working-with-device-actors" name="part-3-working-with-device-actors" class="anchor"><span class="anchor-link"></span></a>Part 3: Working with Device Actors</h1>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>In the previous topics we explained how to view actor systems <em>in the large</em>, that is, how components should be represented, how actors should be arranged in the hierarchy. In this part, we will look at actors <em>in the small</em> by implementing the device actor.</p>
+<p>If we were working with objects, we would typically design the API as <em>interfaces</em>, a collection of abstract methods to be filled out by the actual implementation. In the world of actors, protocols take the place of interfaces. While it is not possible to formalize general protocols in the programming language, we can compose their most basic element, messages. So, we will start by identifying the messages we will want to send to device actors.</p>
+<p>Typically, messages fall into categories, or patterns. By identifying these patterns, you will find that it becomes easier to choose between them and to implement them. The first example demonstrates the <em>request-respond</em> message pattern.</p>
+<h2><a href="#identifying-messages-for-devices" name="identifying-messages-for-devices" class="anchor"><span class="anchor-link"></span></a>Identifying messages for devices</h2>
+<p>The tasks of a device actor will be simple:</p>
+<ul>
+  <li>Collect temperature measurements</li>
+  <li>When asked, report the last measured temperature</li>
+</ul>
+<p>However, a device might start without immediately having a temperature measurement. Hence, we need to account for the case where a temperature is not present. This also allows us to test the query part of the actor without the write part present, as the device actor can report an empty result.</p>
+<p>The protocol for obtaining the current temperature from the device actor is simple. The actor:</p>
+<ol>
+  <li>Waits for a request for the current temperature.</li>
+  <li>Responds to the request with a reply that either:
+    <ul>
+      <li>contains the current temperature or,</li>
+      <li>indicates that a temperature is not yet available.</li>
+    </ul>
+  </li>
+</ol>
+<p>We need two messages, one for the request, and one for the reply. Our first attempt might look like the following:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceInProgress.scala#L18-L35" target="_blank" title="Go to snippet source">source</a><code class="language-scala">package com.example
+
+  import org.apache.pekko.actor.typed.ActorRef
+
+  object Device {
+    sealed trait Command
+    final case class ReadTemperature(replyTo: ActorRef[RespondTemperature]) extends Command
+    final case class RespondTemperature(value: Option[Double])
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/inprogress1/Device.java#L18-L46" target="_blank" title="Go to snippet source">source</a><code class="language-java">package com.example;
+
+import org.apache.pekko.actor.typed.ActorRef;
+import java.util.Optional;
+
+public class Device {
+
+  public interface Command {}
+
+  public static final class ReadTemperature implements Command {
+    final ActorRef&lt;RespondTemperature&gt; replyTo;
+
+    public ReadTemperature(ActorRef&lt;RespondTemperature&gt; replyTo) {
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class RespondTemperature {
+    final Optional&lt;Double&gt; value;
+
+    public RespondTemperature(Optional&lt;Double&gt; value) {
+      this.value = value;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>Note that the <code>ReadTemperature</code> message contains the <span class="group-scala"><code>ActorRef[RespondTemperature]</code></span><span class="group-java"><code>ActorRef&lt;RespondTemperature&gt;</code></span> that the device actor will use when replying to the request.</p>
+<p>These two messages seem to cover the required functionality. However, the approach we choose must take into account the distributed nature of the application. While the basic mechanism is the same for communicating with an actor on the local JVM as with a remote actor, we need to keep the following in mind:</p>
+<ul>
+  <li>There will be observable differences in the latency of delivery between local and remote messages, because factors like network link bandwidth and the message size also come into play.</li>
+  <li>Reliability is a concern because a remote message send involves more steps, which means that more can go wrong.</li>
+  <li>A local send will pass a reference to the message inside the same JVM, without any restrictions on the underlying object which is sent, whereas a remote transport will place a limit on the message size.</li>
+</ul>
+<p>In addition, while sending inside the same JVM is significantly more reliable, if an actor fails due to a programmer error while processing the message, the effect is the same as if a remote network request fails due to the remote host crashing while processing the message. Even though in both cases, the service recovers after a while (the actor is restarted by its supervisor, the host is restarted by an operator or by a monitoring system) individual requests are lost during the crash. <strong>Therefore, writing your actors such that every message could possibly be lost is the safe, pessimistic bet.</strong></p>
+<p>But to further understand the need for flexibility in the protocol, it will help to consider Pekko message ordering and message delivery guarantees. Pekko provides the following behavior for message sends:</p>
+<ul>
+  <li>At-most-once delivery, that is, no guaranteed delivery.</li>
+  <li>Message ordering is maintained per sender, receiver pair.</li>
+</ul>
+<p>The following sections discuss this behavior in more detail:</p>
+<ul>
+  <li><a href="tutorial_3.html#message-delivery">Message delivery</a></li>
+  <li><a href="tutorial_3.html#message-ordering">Message ordering</a></li>
+</ul>
+<h3><a href="#message-delivery" name="message-delivery" class="anchor"><span class="anchor-link"></span></a>Message delivery</h3>
+<p>The delivery semantics provided by messaging subsystems typically fall into the following categories:</p>
+<ul>
+  <li><strong>At-most-once delivery</strong> &#8212; each message is delivered zero or one time; in more causal terms it means that messages can be lost, but are never duplicated.</li>
+  <li><strong>At-least-once delivery</strong> &#8212; potentially multiple attempts are made to deliver each message, until at least one succeeds; again, in more causal terms this means that messages can be duplicated but are never lost.</li>
+  <li><strong>Exactly-once delivery</strong> &#8212; each message is delivered exactly once to the recipient; the message can neither be lost nor be duplicated.</li>
+</ul>
+<p>The first behavior, the one used by Pekko, is the cheapest and results in the highest performance. It has the least implementation overhead because it can be done in a fire-and-forget fashion without keeping the state at the sending end or in the transport mechanism. The second, at-least-once, requires retries to counter transport losses. This adds the overhead of keeping the state at the sending end and having an acknowledgment mechanism at the receiving end. Exactly-once delivery is most expensive, and results in the worst performance: in addition to the overhead added by at-least-once delivery, it requires the state to be kept at the receiving end in order to filter out duplicate deliveries.</p>
+<p>In an actor system, we need to determine exact meaning of a guarantee &#8212; at which point does the system consider the delivery as accomplished:</p>
+<ol>
+  <li>When the message is sent out on the network?</li>
+  <li>When the message is received by the target actor&rsquo;s host?</li>
+  <li>When the message is put into the target actor&rsquo;s mailbox?</li>
+  <li>When the message target actor starts to process the message?</li>
+  <li>When the target actor has successfully processed the message?</li>
+</ol>
+<p>Most frameworks and protocols that claim guaranteed delivery actually provide something similar to points 4 and 5. While this sounds reasonable, <strong>is it actually useful?</strong> To understand the implications, consider a simple, practical example: a user attempts to place an order and we only want to claim that it has successfully processed once it is actually on disk in the orders database.</p>
+<p>If we rely on the successful processing of the message, the actor will report success as soon as the order has been submitted to the internal API that has the responsibility to validate it, process it and put it into the database. Unfortunately, immediately after the API has been invoked any of the following can happen:</p>
+<ul>
+  <li>The host can crash.</li>
+  <li>Deserialization can fail.</li>
+  <li>Validation can fail.</li>
+  <li>The database might be unavailable.</li>
+  <li>A programming error might occur.</li>
+</ul>
+<p>This illustrates that the <strong>guarantee of delivery</strong> does not translate to the <strong>domain level guarantee</strong>. We only want to report success once the order has been actually fully processed and persisted. <strong>The only entity that can report success is the application itself, since only it has any understanding of the domain guarantees required. No generalized framework can figure out the specifics of a particular domain and what is considered a success in that domain</strong>.</p>
+<p>In this particular example, we only want to signal success after a successful database write, where the database acknowledged that the order is now safely stored. <strong>For these reasons Pekko lifts the responsibilities of guarantees to the application itself, i.e. you have to implement them yourself with the tools that Pekko provides. This gives you full control of the guarantees that you want to provide</strong>. Now, let&rsquo;s consider the message ordering that Pekko provides to make it easy to reason about application logic.</p>
+<h3><a href="#message-ordering" name="message-ordering" class="anchor"><span class="anchor-link"></span></a>Message Ordering</h3>
+<p>In Pekko, for a given pair of actors, messages sent directly from the first to the second will not be received out-of-order. The word directly emphasizes that this guarantee only applies when sending with the tell operator directly to the final destination, but not when employing mediators.</p>
+<p>If:</p>
+<ul>
+  <li>Actor <code>A1</code> sends messages <code>M1</code>, <code>M2</code>, <code>M3</code> to <code>A2</code>.</li>
+  <li>Actor <code>A3</code> sends messages <code>M4</code>, <code>M5</code>, <code>M6</code> to <code>A2</code>.</li>
+</ul>
+<p>This means that, for Pekko messages:</p>
+<ul>
+  <li>If <code>M1</code> is delivered it must be delivered before <code>M2</code> and <code>M3</code>.</li>
+  <li>If <code>M2</code> is delivered it must be delivered before <code>M3</code>.</li>
+  <li>If <code>M4</code> is delivered it must be delivered before <code>M5</code> and <code>M6</code>.</li>
+  <li>If <code>M5</code> is delivered it must be delivered before <code>M6</code>.</li>
+  <li><code>A2</code> can see messages from <code>A1</code> interleaved with messages from <code>A3</code>.</li>
+  <li>Since there is no guaranteed delivery, any of the messages may be dropped, i.e. not arrive at <code>A2</code>.</li>
+</ul>
+<p>These guarantees strike a good balance: having messages from one actor arrive in-order is convenient for building systems that can be easily reasoned about, while on the other hand allowing messages from different actors to arrive interleaved provides sufficient freedom for an efficient implementation of the actor system.</p>
+<p>For the full details on delivery guarantees please refer to the <a href="../../general/message-delivery-reliability.html">reference page</a>.</p>
+<h2><a href="#adding-flexibility-to-device-messages" name="adding-flexibility-to-device-messages" class="anchor"><span class="anchor-link"></span></a>Adding flexibility to device messages</h2>
+<p>Our first query protocol was correct, but did not take into account distributed application execution. If we want to implement resends in the actor that queries a device actor (because of timed out requests), or if we want to query multiple actors, we need to be able to correlate requests and responses. Hence, we add one more field to our messages, so that an ID can be provided by the requester (we will add this code to our app in a later step):</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceInProgress.scala#L56-L58" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+final case class ReadTemperature(requestId: Long, replyTo: ActorRef[RespondTemperature]) extends Command
+final case class RespondTemperature(requestId: Long, value: Option[Double])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/inprogress2/Device.java#L29-L88" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Device extends AbstractBehavior&lt;Device.Command&gt; {
+  public interface Command {}
+
+  public static final class ReadTemperature implements Command {
+    final long requestId;
+    final ActorRef&lt;RespondTemperature&gt; replyTo;
+
+    public ReadTemperature(long requestId, ActorRef&lt;RespondTemperature&gt; replyTo) {
+      this.requestId = requestId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class RespondTemperature {
+    final long requestId;
+    final Optional&lt;Double&gt; value;
+
+    public RespondTemperature(long requestId, Optional&lt;Double&gt; value) {
+      this.requestId = requestId;
+      this.value = value;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#implementing-the-device-actor-and-its-read-protocol" name="implementing-the-device-actor-and-its-read-protocol" class="anchor"><span class="anchor-link"></span></a>Implementing the device actor and its read protocol</h2>
+<p>As we learned in the Hello World example, each actor defines the type of messages it will accept. Our device actor has the responsibility to use the same ID parameter for the response of a given query, which would make it look like the following.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceInProgress.scala#L44-L84" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.scaladsl.AbstractBehavior
+import pekko.actor.typed.scaladsl.ActorContext
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.scaladsl.LoggerOps
+
+object Device {
+  def apply(groupId: String, deviceId: String): Behavior[Command] =
+    Behaviors.setup(context =&gt; new Device(context, groupId, deviceId))
+
+  sealed trait Command
+  final case class ReadTemperature(requestId: Long, replyTo: ActorRef[RespondTemperature]) extends Command
+  final case class RespondTemperature(requestId: Long, value: Option[Double])
+}
+
+class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String)
+    extends AbstractBehavior[Device.Command](context) {
+  import Device._
+
+  var lastTemperatureReading: Option[Double] = None
+
+  context.log.info2(&quot;Device actor {}-{} started&quot;, groupId, deviceId)
+
+  override def onMessage(msg: Command): Behavior[Command] = {
+    msg match {
+      case ReadTemperature(id, replyTo) =&gt;
+        replyTo ! RespondTemperature(id, lastTemperatureReading)
+        this
+    }
+  }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info2(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId)
+      this
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/inprogress2/Device.java#L17-L90" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.PostStop;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+
+import java.util.Optional;
+
+public class Device extends AbstractBehavior&lt;Device.Command&gt; {
+  public interface Command {}
+
+  public static final class ReadTemperature implements Command {
+    final long requestId;
+    final ActorRef&lt;RespondTemperature&gt; replyTo;
+
+    public ReadTemperature(long requestId, ActorRef&lt;RespondTemperature&gt; replyTo) {
+      this.requestId = requestId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class RespondTemperature {
+    final long requestId;
+    final Optional&lt;Double&gt; value;
+
+    public RespondTemperature(long requestId, Optional&lt;Double&gt; value) {
+      this.requestId = requestId;
+      this.value = value;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId, String deviceId) {
+    return Behaviors.setup(context -&gt; new Device(context, groupId, deviceId));
+  }
+
+  private final String groupId;
+  private final String deviceId;
+
+  private Optional&lt;Double&gt; lastTemperatureReading = Optional.empty();
+
+  private Device(ActorContext&lt;Command&gt; context, String groupId, String deviceId) {
+    super(context);
+    this.groupId = groupId;
+    this.deviceId = deviceId;
+
+    context.getLog().info(&quot;Device actor {}-{} started&quot;, groupId, deviceId);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(ReadTemperature.class, this::onReadTemperature)
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onReadTemperature(ReadTemperature r) {
+    r.replyTo.tell(new RespondTemperature(r.requestId, lastTemperatureReading));
+    return this;
+  }
+
+  private Device onPostStop() {
+    getContext().getLog().info(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId);
+    return this;
+  }
+}
+</code></pre></dd>
+</dl>
+<p>Note in the code that:</p>
+<ul>
+  <li>The <span class="group-scala"><code>apply</code> method in the companion object</span><span class="group-java">static <code>create</code> method</span> defines how to construct the <code>Behavior</code> for the <code>Device</code> actor. The parameters include an ID for the device and the group to which it belongs, which we will use later.</li>
+  <li>The messages we reasoned about previously are defined in <span class="group-scala">the companion object.</span><span class="group-java">Device class that was shown earlier.</span></li>
+  <li>In the <code>Device</code> class, the value of <code>lastTemperatureReading</code> is initially set to <span class="group-scala"><code>None</code></span><span class="group-java"><code>Optional.empty()</code></span>, and the actor will report it back if queried.</li>
+</ul>
+<h2><a href="#testing-the-actor" name="testing-the-actor" class="anchor"><span class="anchor-link"></span></a>Testing the actor</h2>
+<p>Based on the actor above, we could write a test. In the <code>com.example</code> package in the test tree of your project, add the following code to a <span class="group-scala"><code>DeviceSpec.scala</code></span><span class="group-java"><code>DeviceTest.java</code></span> file. <span class="group-scala">(We use ScalaTest but any other test framework can be used with the Pekko Testkit)</span>.</p>
+<p>You can run this test <span class="group-scala">by running <code>test</code> at the sbt prompt</span><span class="group-java">by running <code>mvn test</code></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceSpec.scala#L17-L62" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.scalatest.wordspec.AnyWordSpecLike
+
+class DeviceSpec extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+  import Device._
+
+  &quot;Device actor&quot; must {
+
+    &quot;reply with empty reading if no temperature is known&quot; in {
+      val probe = createTestProbe[RespondTemperature]()
+      val deviceActor = spawn(Device(&quot;group&quot;, &quot;device&quot;))
+
+      deviceActor ! Device.ReadTemperature(requestId = 42, probe.ref)
+      val response = probe.receiveMessage()
+      response.requestId should ===(42)
+      response.value should ===(None)
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/DeviceTest.java#L17-L78" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.testkit.typed.javadsl.TestKitJunitResource;
+import org.apache.pekko.actor.testkit.typed.javadsl.TestProbe;
+import org.apache.pekko.actor.typed.ActorRef;
+import org.junit.ClassRule;
+import org.junit.Test;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+
+
+public class DeviceTest {
+
+  @ClassRule public static final TestKitJunitResource testKit = new TestKitJunitResource();
+
+  @Test
+  public void testReplyWithEmptyReadingIfNoTemperatureIsKnown() {
+    TestProbe&lt;Device.RespondTemperature&gt; probe =
+        testKit.createTestProbe(Device.RespondTemperature.class);
+    ActorRef&lt;Device.Command&gt; deviceActor = testKit.spawn(Device.create(&quot;group&quot;, &quot;device&quot;));
+    deviceActor.tell(new Device.ReadTemperature(42L, probe.getRef()));
+    Device.RespondTemperature response = probe.receiveMessage();
+    assertEquals(42L, response.requestId);
+    assertEquals(Optional.empty(), response.value);
+  }
+}</code></pre></dd>
+</dl>
+<p>Now, the actor needs a way to change the state of the temperature when it receives a message from the sensor.</p>
+<h2><a href="#adding-a-write-protocol" name="adding-a-write-protocol" class="anchor"><span class="anchor-link"></span></a>Adding a write protocol</h2>
+<p>The purpose of the write protocol is to update the <code>currentTemperature</code> field when the actor receives a message that contains the temperature. Again, it is tempting to define the write protocol as a very simple message, something like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceInProgress.scala#L93-L94" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+final case class RecordTemperature(value: Double) extends Command</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/inprogress3/Device.java#L21-L27" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class RecordTemperature implements Command {
+  final double value;
+
+  public RecordTemperature(double value) {
+    this.value = value;
+  }
+}</code></pre></dd>
+</dl>
+<p>However, this approach does not take into account that the sender of the record temperature message can never be sure if the message was processed or not. We have seen that Pekko does not guarantee delivery of these messages and leaves it to the application to provide success notifications. In our case, we would like to send an acknowledgment to the sender once we have updated our last temperature recording, e.g. replying with a <code>TemperatureRecorded</code> message. Just like in the case of temperature queries and responses, it is also a good idea to include an ID field to provide maximum flexibility.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/Device.scala#L37-L39" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class RecordTemperature(requestId: Long, value: Double, replyTo: ActorRef[TemperatureRecorded])
+    extends Command
+final case class TemperatureRecorded(requestId: Long)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/Device.java#L33-L51" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static final class RecordTemperature implements Command {
+  final long requestId;
+  final double value;
+  final ActorRef&lt;TemperatureRecorded&gt; replyTo;
+
+  public RecordTemperature(long requestId, double value, ActorRef&lt;TemperatureRecorded&gt; replyTo) {
+    this.requestId = requestId;
+    this.value = value;
+    this.replyTo = replyTo;
+  }
+}
+
+public static final class TemperatureRecorded {
+  final long requestId;
+
+  public TemperatureRecorded(long requestId) {
+    this.requestId = requestId;
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#actor-with-read-and-write-messages" name="actor-with-read-and-write-messages" class="anchor"><span class="anchor-link"></span></a>Actor with read and write messages</h2>
+<p>Putting the read and write protocol together, the device actor looks like the following example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/Device.scala#L17-L71" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.ActorRef
+import pekko.actor.typed.Behavior
+import pekko.actor.typed.PostStop
+import pekko.actor.typed.Signal
+import pekko.actor.typed.scaladsl.AbstractBehavior
+import pekko.actor.typed.scaladsl.ActorContext
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.scaladsl.LoggerOps
+
+object Device {
+  def apply(groupId: String, deviceId: String): Behavior[Command] =
+    Behaviors.setup(context =&gt; new Device(context, groupId, deviceId))
+
+  sealed trait Command
+
+  final case class ReadTemperature(requestId: Long, replyTo: ActorRef[RespondTemperature]) extends Command
+  final case class RespondTemperature(requestId: Long, value: Option[Double])
+
+  final case class RecordTemperature(requestId: Long, value: Double, replyTo: ActorRef[TemperatureRecorded])
+      extends Command
+  final case class TemperatureRecorded(requestId: Long)
+}
+
+class Device(context: ActorContext[Device.Command], groupId: String, deviceId: String)
+    extends AbstractBehavior[Device.Command](context) {
+  import Device._
+
+  var lastTemperatureReading: Option[Double] = None
+
+  context.log.info2(&quot;Device actor {}-{} started&quot;, groupId, deviceId)
+
+  override def onMessage(msg: Command): Behavior[Command] = {
+    msg match {
+      case RecordTemperature(id, value, replyTo) =&gt;
+        context.log.info2(&quot;Recorded temperature reading {} with {}&quot;, value, id)
+        lastTemperatureReading = Some(value)
+        replyTo ! TemperatureRecorded(id)
+        this
+
+      case ReadTemperature(id, replyTo) =&gt;
+        replyTo ! RespondTemperature(id, lastTemperatureReading)
+        this
+    }
+  }
+
+  override def onSignal: PartialFunction[Signal, Behavior[Command]] = {
+    case PostStop =&gt;
+      context.log.info2(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId)
+      this
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/Device.java#L17-L116" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import java.util.Optional;
+
+import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.PostStop;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+
+public class Device extends AbstractBehavior&lt;Device.Command&gt; {
+
+  public interface Command {}
+
+  public static final class RecordTemperature implements Command {
+    final long requestId;
+    final double value;
+    final ActorRef&lt;TemperatureRecorded&gt; replyTo;
+
+    public RecordTemperature(long requestId, double value, ActorRef&lt;TemperatureRecorded&gt; replyTo) {
+      this.requestId = requestId;
+      this.value = value;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class TemperatureRecorded {
+    final long requestId;
+
+    public TemperatureRecorded(long requestId) {
+      this.requestId = requestId;
+    }
+  }
+
+  public static final class ReadTemperature implements Command {
+    final long requestId;
+    final ActorRef&lt;RespondTemperature&gt; replyTo;
+
+    public ReadTemperature(long requestId, ActorRef&lt;RespondTemperature&gt; replyTo) {
+      this.requestId = requestId;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class RespondTemperature {
+    final long requestId;
+    final Optional&lt;Double&gt; value;
+
+    public RespondTemperature(long requestId, Optional&lt;Double&gt; value) {
+      this.requestId = requestId;
+      this.value = value;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(String groupId, String deviceId) {
+    return Behaviors.setup(context -&gt; new Device(context, groupId, deviceId));
+  }
+
+  private final String groupId;
+  private final String deviceId;
+
+  private Optional&lt;Double&gt; lastTemperatureReading = Optional.empty();
+
+  private Device(ActorContext&lt;Command&gt; context, String groupId, String deviceId) {
+    super(context);
+    this.groupId = groupId;
+    this.deviceId = deviceId;
+
+    context.getLog().info(&quot;Device actor {}-{} started&quot;, groupId, deviceId);
+  }
+
+  @Override
+  public Receive&lt;Command&gt; createReceive() {
+    return newReceiveBuilder()
+        .onMessage(RecordTemperature.class, this::onRecordTemperature)
+        .onMessage(ReadTemperature.class, this::onReadTemperature)
+        .onSignal(PostStop.class, signal -&gt; onPostStop())
+        .build();
+  }
+
+  private Behavior&lt;Command&gt; onRecordTemperature(RecordTemperature r) {
+    getContext().getLog().info(&quot;Recorded temperature reading {} with {}&quot;, r.value, r.requestId);
+    lastTemperatureReading = Optional.of(r.value);
+    r.replyTo.tell(new TemperatureRecorded(r.requestId));
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onReadTemperature(ReadTemperature r) {
+    r.replyTo.tell(new RespondTemperature(r.requestId, lastTemperatureReading));
+    return this;
+  }
+
+  private Behavior&lt;Command&gt; onPostStop() {
+    getContext().getLog().info(&quot;Device actor {}-{} stopped&quot;, groupId, deviceId);
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p>We should also write a new test case now, exercising both the read/query and write/record functionality together:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/typed/tutorial_3/DeviceSpec.scala#L37-L57" target="_blank" title="Go to snippet source">source</a><code class="language-scala">&quot;reply with latest temperature reading&quot; in {
+  val recordProbe = createTestProbe[TemperatureRecorded]()
+  val readProbe = createTestProbe[RespondTemperature]()
+  val deviceActor = spawn(Device(&quot;group&quot;, &quot;device&quot;))
+
+  deviceActor ! Device.RecordTemperature(requestId = 1, 24.0, recordProbe.ref)
+  recordProbe.expectMessage(Device.TemperatureRecorded(requestId = 1))
+
+  deviceActor ! Device.ReadTemperature(requestId = 2, readProbe.ref)
+  val response1 = readProbe.receiveMessage()
+  response1.requestId should ===(2)
+  response1.value should ===(Some(24.0))
+
+  deviceActor ! Device.RecordTemperature(requestId = 3, 55.0, recordProbe.ref)
+  recordProbe.expectMessage(Device.TemperatureRecorded(requestId = 3))
+
+  deviceActor ! Device.ReadTemperature(requestId = 4, readProbe.ref)
+  val response2 = readProbe.receiveMessage()
+  response2.requestId should ===(4)
+  response2.value should ===(Some(55.0))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/typed/tutorial_3/DeviceTest.java#L51-L74" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Test
+public void testReplyWithLatestTemperatureReading() {
+  TestProbe&lt;Device.TemperatureRecorded&gt; recordProbe =
+      testKit.createTestProbe(Device.TemperatureRecorded.class);
+  TestProbe&lt;Device.RespondTemperature&gt; readProbe =
+      testKit.createTestProbe(Device.RespondTemperature.class);
+  ActorRef&lt;Device.Command&gt; deviceActor = testKit.spawn(Device.create(&quot;group&quot;, &quot;device&quot;));
+
+  deviceActor.tell(new Device.RecordTemperature(1L, 24.0, recordProbe.getRef()));
+  assertEquals(1L, recordProbe.receiveMessage().requestId);
+
+  deviceActor.tell(new Device.ReadTemperature(2L, readProbe.getRef()));
+  Device.RespondTemperature response1 = readProbe.receiveMessage();
+  assertEquals(2L, response1.requestId);
+  assertEquals(Optional.of(24.0), response1.value);
+
+  deviceActor.tell(new Device.RecordTemperature(3L, 55.0, recordProbe.getRef()));
+  assertEquals(3L, recordProbe.receiveMessage().requestId);
+
+  deviceActor.tell(new Device.ReadTemperature(4L, readProbe.getRef()));
+  Device.RespondTemperature response2 = readProbe.receiveMessage();
+  assertEquals(4L, response2.requestId);
+  assertEquals(Optional.of(55.0), response2.value);
+}</code></pre></dd>
+</dl>
+<h2><a href="#whats-next-" name="whats-next-" class="anchor"><span class="anchor-link"></span></a>What&rsquo;s Next?</h2>
+<p>So far, we have started designing our overall architecture, and we wrote the first actor that directly corresponds to the domain. We now have to create the component that is responsible for maintaining groups of devices and the device actors themselves.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/guide/tutorial_3.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../../typed/guide/tutorial_2.html" title="Part 2: Creating the First Actor" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Part 2: Creating the First Actor
+</span>
+</div>
+</a>
+<a href="../../typed/guide/tutorial_4.html" title="Part 4: Working with Device Groups" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Part 4: Working with Device Groups
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../../assets/javascripts/application.583bbe55.js"></script>
+<script src="../../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../../."}})</script>
+<script type="text/javascript" src="../../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

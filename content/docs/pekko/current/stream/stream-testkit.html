@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Testing streams · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Testing streams
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html#testing-streams" class="active page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-testkit.html#testing-streams" class="header">Testing streams</a>
+  <ul>
+    <li><a href="../stream/stream-testkit.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-testkit.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-testkit.html#built-in-sources-sinks-and-operators" class="header">Built-in sources, sinks and operators</a></li>
+    <li><a href="../stream/stream-testkit.html#testkit" class="header">TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#streams-testkit" class="header">Streams TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#fuzzing-mode" class="header">Fuzzing Mode</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-testkit.html#testing-streams" class="header">Testing streams</a>
+  <ul>
+    <li><a href="../stream/stream-testkit.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-testkit.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-testkit.html#built-in-sources-sinks-and-operators" class="header">Built-in sources, sinks and operators</a></li>
+    <li><a href="../stream/stream-testkit.html#testkit" class="header">TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#streams-testkit" class="header">Streams TestKit</a></li>
+    <li><a href="../stream/stream-testkit.html#fuzzing-mode" class="header">Fuzzing Mode</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#testing-streams" name="testing-streams" class="anchor"><span class="anchor-link"></span></a>Testing streams</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Pekko Stream TestKit, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-stream-testkit" % PekkoVersion % Test</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-stream-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  testImplementation "org.apache.pekko:pekko-stream-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Verifying behavior of Pekko Stream sources, flows and sinks can be done using various code patterns and libraries. Here we will discuss testing these elements using:</p>
+<ul>
+  <li>simple sources, sinks and flows;</li>
+  <li>sources and sinks in combination with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> from the <code>pekko-testkit</code> module;</li>
+  <li>sources and sinks specifically crafted for writing tests from the <code>pekko-stream-testkit</code> module.</li>
+</ul>
+<p>It is important to keep your data processing pipeline as separate sources, flows and sinks. This makes them testable by wiring them up to other sources or sinks, or some test harnesses that <code>pekko-testkit</code> or <code>pekko-stream-testkit</code> provide.</p>
+<h2><a href="#built-in-sources-sinks-and-operators" name="built-in-sources-sinks-and-operators" class="anchor"><span class="anchor-link"></span></a>Built-in sources, sinks and operators</h2>
+<p>Testing a custom sink can be as simple as attaching a source that emits elements from a predefined collection, running a constructed test flow and asserting on the results that sink produced. Here is an example of a test for a sink:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L31-L36" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest =
+  Flow[Int].map(_ * 2).toMat(Sink.fold(0)(_ + _))(Keep.right)
+
+val future = Source(1 to 4).runWith(sinkUnderTest)
+val result = Await.result(future, 3.seconds)
+assert(result == 20)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L59-L67" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sinkUnderTest =
+    Flow.of(Integer.class)
+        .map(i -&gt; i * 2)
+        .toMat(Sink.fold(0, (agg, next) -&gt; agg + next), Keep.right());
+
+final CompletionStage&lt;Integer&gt; future =
+    Source.from(Arrays.asList(1, 2, 3, 4)).runWith(sinkUnderTest, system);
+final Integer result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(20, result.intValue());</code></pre></dd>
+</dl>
+<p>The same strategy can be applied for sources as well. In the next example we have a source that produces an infinite stream of elements. Such source can be tested by asserting that first arbitrary number of elements hold some condition. Here the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#take(long)" title="org.apache.pekko.stream.javadsl.Source"><code>take</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#take(n:Long):FlowOps.this.Repr[Out]" title="org.apache.pekko.stream.scaladsl.Source"><code>take</code></a></span> operator and <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink$.html#seq()" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink.seq</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink$.html#seq[T]:org.apache.pekko.stream.scaladsl.Sink[T,scala.concurrent.Future[Seq[T]]]" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink.seq</code></a></span> are very useful.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L42-L49" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import system.dispatcher
+import org.apache.pekko.pattern.pipe
+
+val sourceUnderTest = Source.repeat(1).map(_ * 2)
+
+val future = sourceUnderTest.take(10).runWith(Sink.seq)
+val result = Await.result(future, 3.seconds)
+assert(result == Seq.fill(10)(2))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L74-L79" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; sourceUnderTest = Source.repeat(1).map(i -&gt; i * 2);
+
+final CompletionStage&lt;List&lt;Integer&gt;&gt; future =
+    sourceUnderTest.take(10).runWith(Sink.seq(), system);
+final List&lt;Integer&gt; result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(Collections.nCopies(10, 2), result);</code></pre></dd>
+</dl>
+<p>When testing a flow we need to attach a source and a sink. As both stream ends are under our control, we can choose sources that tests various edge cases of the flow and sinks that ease assertions.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L55-L59" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val flowUnderTest = Flow[Int].takeWhile(_ &lt; 5)
+
+val future = Source(1 to 10).via(flowUnderTest).runWith(Sink.fold(Seq.empty[Int])(_ :+ _))
+val result = Await.result(future, 3.seconds)
+assert(result == (1 to 4))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L86-L94" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Integer, Integer, NotUsed&gt; flowUnderTest =
+    Flow.of(Integer.class).takeWhile(i -&gt; i &lt; 5);
+
+final CompletionStage&lt;Integer&gt; future =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5, 6))
+        .via(flowUnderTest)
+        .runWith(Sink.fold(0, (agg, next) -&gt; agg + next), system);
+final Integer result = future.toCompletableFuture().get(3, TimeUnit.SECONDS);
+assertEquals(10, result.intValue());</code></pre></dd>
+</dl>
+<h2><a href="#testkit" name="testkit" class="anchor"><span class="anchor-link"></span></a>TestKit</h2>
+<p>Pekko Stream offers integration with Actors out of the box. This support can be used for writing stream tests that use familiar <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> from the <code>pekko-testkit</code> API.</p>
+<p>One of the more straightforward tests would be to materialize stream to a <span class="group-scala"><a href="http://www.scala-lang.org/api/2.13.8/scala/concurrent/Future.html" title="scala.concurrent.Future"><code>Future</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletionStage.html" title="java.util.concurrent.CompletionStage"><code>CompletionStage</code></a></span> and then use <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/PipeToSupport.html#pipe[T](future:scala.concurrent.Future[T])(implicitexecutionContext:scala.concurrent.ExecutionContext):PipeToSupport.this.PipeableFuture[T]" title="pekko.pattern.PipeToSupport"><code>pipe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/Patterns$.html#pipe[T](future:java.util.concurrent.CompletionStage[T],context:scala.concurrent.ExecutionContext):org.apache.pekko.pattern.PipeableCompletionStage[T]" title="org.apache.pekko.pattern.Patterns"><code>Patterns.pipe</code></a></span> pattern to pipe the result of that future to the probe.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L65-L72" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import system.dispatcher
+import org.apache.pekko.pattern.pipe
+
+val sourceUnderTest = Source(1 to 4).grouped(2)
+
+val probe = TestProbe()
+sourceUnderTest.runWith(Sink.seq).pipeTo(probe.ref)
+probe.expectMsg(3.seconds, Seq(Seq(1, 2), Seq(3, 4)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L101-L108" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;List&lt;Integer&gt;, NotUsed&gt; sourceUnderTest =
+    Source.from(Arrays.asList(1, 2, 3, 4)).grouped(2);
+
+final TestKit probe = new TestKit(system);
+final CompletionStage&lt;List&lt;List&lt;Integer&gt;&gt;&gt; future =
+    sourceUnderTest.grouped(2).runWith(Sink.head(), system);
+org.apache.pekko.pattern.Patterns.pipe(future, system.dispatcher()).to(probe.getRef());
+probe.expectMsg(Duration.ofSeconds(3), Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4)));</code></pre></dd>
+</dl>
+<p>Instead of materializing to a future, we can use a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink$.html#actorRef(org.apache.pekko.actor.ActorRef,java.lang.Object)" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink.actorRef</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink$.html#actorRef[T](ref:org.apache.pekko.actor.ActorRef,onCompleteMessage:Any,onFailureMessage:Throwable=%3EAny):org.apache.pekko.stream.scaladsl.Sink[T,org.apache.pekko.NotUsed]" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink.actorRef</code></a></span> that sends all incoming elements to the given <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span>. Now we can use assertion methods on <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/testkit/TestProbe.html" title="org.apache.pekko.testkit.TestProbe"><code>TestProbe</code></a></span> and expect elements one by one as they arrive. We can also assert stream completion by expecting for <code>onCompleteMessage</code> which was given to <code>Sink.actorRef</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L78-L90" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case object Tick
+val sourceUnderTest = Source.tick(0.seconds, 200.millis, Tick)
+
+val probe = TestProbe()
+val cancellable = sourceUnderTest
+  .to(Sink.actorRef(probe.ref, onCompleteMessage = &quot;completed&quot;, onFailureMessage = _ =&gt; &quot;failed&quot;))
+  .run()
+
+probe.expectMsg(1.second, Tick)
+probe.expectNoMessage(100.millis)
+probe.expectMsg(3.seconds, Tick)
+cancellable.cancel()
+probe.expectMsg(3.seconds, &quot;completed&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L120-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Tick, Cancellable&gt; sourceUnderTest =
+    Source.tick(Duration.ZERO, Duration.ofMillis(200), Tick.TOCK);
+
+final TestKit probe = new TestKit(system);
+final Cancellable cancellable =
+    sourceUnderTest.to(Sink.actorRef(probe.getRef(), Tick.COMPLETED)).run(system);
+probe.expectMsg(Duration.ofSeconds(3), Tick.TOCK);
+probe.expectNoMessage(Duration.ofMillis(100));
+probe.expectMsg(Duration.ofSeconds(3), Tick.TOCK);
+cancellable.cancel();
+probe.expectMsg(Duration.ofSeconds(3), Tick.COMPLETED);</code></pre></dd>
+</dl>
+<p>Similarly to <code>Sink.actorRef</code> that provides control over received elements, we can use <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source$.html#actorRef(int,org.apache.pekko.stream.OverflowStrategy)" title="org.apache.pekko.stream.javadsl.Source"><code>Source.actorRef</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source$.html#actorRef[T](completionMatcher:PartialFunction[Any,org.apache.pekko.stream.CompletionStrategy],failureMatcher:PartialFunction[Any,Throwable],bufferSize:Int,overflowStrategy:org.apache.pekko.stream.OverflowStrategy):org.apache.pekko.stream.scaladsl.Source[T,org.apache.pekko.actor.ActorRef]" title="org.apache.pekko.stream.scaladsl.Source"><code>Source.actorRef</code></a></span> and have full control over elements to be sent.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L96-L117" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Flow[Int].map(_.toString).toMat(Sink.fold(&quot;&quot;)(_ + _))(Keep.right)
+
+val (ref, future) = Source
+  .actorRef(
+    completionMatcher = {
+      case Done =&gt;
+        CompletionStrategy.draining
+    },
+    // Never fail the stream because of a message:
+    failureMatcher = PartialFunction.empty,
+    bufferSize = 8,
+    overflowStrategy = OverflowStrategy.fail)
+  .toMat(sinkUnderTest)(Keep.both)
+  .run()
+
+ref ! 1
+ref ! 2
+ref ! 3
+ref ! Done
+
+val result = Await.result(future, 3.seconds)
+assert(result == &quot;123&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L137-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;String&gt;&gt; sinkUnderTest =
+    Flow.of(Integer.class)
+        .map(i -&gt; i.toString())
+        .toMat(Sink.fold(&quot;&quot;, (agg, next) -&gt; agg + next), Keep.right());
+
+final Pair&lt;ActorRef, CompletionStage&lt;String&gt;&gt; refAndCompletionStage =
+    Source.&lt;Integer&gt;actorRef(
+            elem -&gt; {
+              // complete stream immediately if we send it Done
+              if (elem == Done.done()) return Optional.of(CompletionStrategy.immediately());
+              else return Optional.empty();
+            },
+            // never fail the stream because of a message
+            elem -&gt; Optional.empty(),
+            8,
+            OverflowStrategy.fail())
+        .toMat(sinkUnderTest, Keep.both())
+        .run(system);
+final ActorRef ref = refAndCompletionStage.first();
+final CompletionStage&lt;String&gt; future = refAndCompletionStage.second();
+
+ref.tell(1, ActorRef.noSender());
+ref.tell(2, ActorRef.noSender());
+ref.tell(3, ActorRef.noSender());
+ref.tell(Done.getInstance(), ActorRef.noSender());
+
+final String result = future.toCompletableFuture().get(1, TimeUnit.SECONDS);
+assertEquals(&quot;123&quot;, result);</code></pre></dd>
+</dl>
+<h2><a href="#streams-testkit" name="streams-testkit" class="anchor"><span class="anchor-link"></span></a>Streams TestKit</h2>
+<p>You may have noticed various code patterns that emerge when testing stream pipelines. Pekko Stream has a separate <code>pekko-stream-testkit</code> module that provides tools specifically for writing stream tests. This module comes with two main components that are <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSource$.html" title="org.apache.pekko.stream.testkit.javadsl.TestSource"><code>TestSource</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSource$.html" title="org.apache.pekko.stream.testkit.scaladsl.TestSource"><code>TestSource</code></a></span> and <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSink$.html" title="org.apache.pekko.stream.testkit.javadsl.TestSink"><code>TestSink</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSink$.html" title="org.apache.pekko.stream.testkit.scaladsl.TestSink"><code>TestSink</code></a></span> which provide sources and sinks that materialize to probes that allow fluent API.</p>
+<h3><a href="#using-the-testkit" name="using-the-testkit" class="anchor"><span class="anchor-link"></span></a>Using the TestKit</h3>
+<p>A sink returned by <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSink$.html#probe(org.apache.pekko.actor.ActorSystem)" title="org.apache.pekko.stream.testkit.javadsl.TestSink"><code>TestSink.probe</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSink$.html#probe[T](implicitsystem:org.apache.pekko.actor.ActorSystem):org.apache.pekko.stream.scaladsl.Sink[T,org.apache.pekko.stream.testkit.TestSubscriber.Probe[T]]" title="org.apache.pekko.stream.testkit.scaladsl.TestSink"><code>TestSink.probe</code></a></span> allows manual control over demand and assertions over elements coming downstream.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L123-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sourceUnderTest = Source(1 to 4).filter(_ % 2 == 0).map(_ * 2)
+
+sourceUnderTest.runWith(TestSink[Int]()).request(2).expectNext(4, 8).expectComplete()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L171-L178" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Source&lt;Integer, NotUsed&gt; sourceUnderTest =
+    Source.from(Arrays.asList(1, 2, 3, 4)).filter(elem -&gt; elem % 2 == 0).map(elem -&gt; elem * 2);
+
+sourceUnderTest
+    .runWith(TestSink.probe(system), system)
+    .request(2)
+    .expectNext(4, 8)
+    .expectComplete();</code></pre></dd>
+</dl>
+<p>A source returned by <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/javadsl/TestSource$.html#probe(org.apache.pekko.actor.ActorSystem)" title="org.apache.pekko.stream.testkit.javadsl.TestSource"><code>TestSource.probe</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/testkit/scaladsl/TestSource$.html#probe[T](implicitsystem:org.apache.pekko.actor.ActorSystem):org.apache.pekko.stream.scaladsl.Source[T,org.apache.pekko.stream.testkit.TestPublisher.Probe[T]]" title="org.apache.pekko.stream.testkit.scaladsl.TestSource"><code>TestSource.probe</code></a></span> can be used for asserting demand or controlling when stream is completed or ended with an error.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L131-L133" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Sink.cancelled
+
+TestSource.probe[Int].toMat(sinkUnderTest)(Keep.left).run().expectCancellation()</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L185-L190" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, NotUsed&gt; sinkUnderTest = Sink.cancelled();
+
+TestSource.&lt;Integer&gt;probe(system)
+    .toMat(sinkUnderTest, Keep.left())
+    .run(system)
+    .expectCancellation();</code></pre></dd>
+</dl>
+<p>You can also inject exceptions and test sink behavior on error conditions.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L139-L144" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val sinkUnderTest = Sink.head[Int]
+
+val (probe, future) = TestSource.probe[Int].toMat(sinkUnderTest)(Keep.both).run()
+probe.sendError(new Exception(&quot;boom&quot;))
+
+assert(future.failed.futureValue.getMessage == &quot;boom&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L197-L208" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Sink&lt;Integer, CompletionStage&lt;Integer&gt;&gt; sinkUnderTest = Sink.head();
+
+final Pair&lt;TestPublisher.Probe&lt;Integer&gt;, CompletionStage&lt;Integer&gt;&gt; probeAndCompletionStage =
+    TestSource.&lt;Integer&gt;probe(system).toMat(sinkUnderTest, Keep.both()).run(system);
+final TestPublisher.Probe&lt;Integer&gt; probe = probeAndCompletionStage.first();
+final CompletionStage&lt;Integer&gt; future = probeAndCompletionStage.second();
+probe.sendError(new Exception(&quot;boom&quot;));
+
+ExecutionException exception =
+    Assert.assertThrows(
+        ExecutionException.class, () -&gt; future.toCompletableFuture().get(3, TimeUnit.SECONDS));
+assertEquals(&quot;boom&quot;, exception.getCause().getMessage());</code></pre></dd>
+</dl>
+<p>Test source and sink can be used together in combination when testing flows.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/StreamTestKitDocSpec.scala#L151-L165" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val flowUnderTest = Flow[Int].mapAsyncUnordered(2) { sleep =&gt;
+  pattern.after(10.millis * sleep, using = system.scheduler)(Future.successful(sleep))
+}
+
+val (pub, sub) = TestSource.probe[Int].via(flowUnderTest).toMat(TestSink[Int]())(Keep.both).run()
+
+sub.request(n = 3)
+pub.sendNext(3)
+pub.sendNext(2)
+pub.sendNext(1)
+sub.expectNextUnordered(1, 2, 3)
+
+pub.sendError(new Exception(&quot;Power surge in the linear subroutine C-47!&quot;))
+val ex = sub.expectError()
+assert(ex.getMessage.contains(&quot;C-47&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/StreamTestKitDocTest.java#L215-L242" target="_blank" title="Go to snippet source">source</a><code class="language-java">final Flow&lt;Integer, Integer, NotUsed&gt; flowUnderTest =
+    Flow.of(Integer.class)
+        .mapAsyncUnordered(
+            2,
+            sleep -&gt;
+                org.apache.pekko.pattern.Patterns.after(
+                    Duration.ofMillis(10),
+                    system.scheduler(),
+                    system.dispatcher(),
+                    () -&gt; CompletableFuture.completedFuture(sleep)));
+
+final Pair&lt;TestPublisher.Probe&lt;Integer&gt;, TestSubscriber.Probe&lt;Integer&gt;&gt; pubAndSub =
+    TestSource.&lt;Integer&gt;probe(system)
+        .via(flowUnderTest)
+        .toMat(TestSink.&lt;Integer&gt;probe(system), Keep.both())
+        .run(system);
+final TestPublisher.Probe&lt;Integer&gt; pub = pubAndSub.first();
+final TestSubscriber.Probe&lt;Integer&gt; sub = pubAndSub.second();
+
+sub.request(3);
+pub.sendNext(3);
+pub.sendNext(2);
+pub.sendNext(1);
+sub.expectNextUnordered(1, 2, 3);
+
+pub.sendError(new Exception(&quot;Power surge in the linear subroutine C-47!&quot;));
+final Throwable ex = sub.expectError();
+assertTrue(ex.getMessage().contains(&quot;C-47&quot;));</code></pre></dd>
+</dl>
+<h2><a href="#fuzzing-mode" name="fuzzing-mode" class="anchor"><span class="anchor-link"></span></a>Fuzzing Mode</h2>
+<p>For testing, it is possible to enable a special stream execution mode that exercises concurrent execution paths more aggressively (at the cost of reduced performance) and therefore helps exposing race conditions in tests. To enable this setting add the following line to your configuration:</p>
+<pre><code>pekko.stream.materializer.debug.fuzzing-mode = on
+</code></pre><div class="callout warning "><div class="callout-title">Warning</div>
+<p>Never use this setting in production or benchmarks. This is a testing tool to provide more coverage of your code during tests, but it reduces the throughput of streams. A warning message will be logged if you have this setting enabled.</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/stream/stream-testkit.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../stream/stream-parallelism.html" title="Pipelining and Parallelism" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Pipelining and Parallelism
+</span>
+</div>
+</a>
+<a href="../stream/stream-substream.html" title="Substreams" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Substreams
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

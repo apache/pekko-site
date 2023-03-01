@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Custom stream processing · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Custom stream processing
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html#custom-stream-processing" class="active page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-customize.html#custom-stream-processing" class="header">Custom stream processing</a>
+  <ul>
+    <li><a href="../stream/stream-customize.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-customize.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-customize.html#custom-processing-with-graphstage" class="header">Custom processing with GraphStage</a></li>
+    <li><a href="../stream/stream-customize.html#thread-safety-of-custom-operators" class="header">Thread safety of custom operators</a></li>
+    <li><a href="../stream/stream-customize.html#resources-and-the-operator-lifecycle" class="header">Resources and the operator lifecycle</a></li>
+    <li><a href="../stream/stream-customize.html#extending-flow-operators-with-custom-operators" class="header group-scala">Extending Flow Operators with Custom Operators</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../stream/stream-customize.html#custom-stream-processing" class="header">Custom stream processing</a>
+  <ul>
+    <li><a href="../stream/stream-customize.html#dependency" class="header">Dependency</a></li>
+    <li><a href="../stream/stream-customize.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../stream/stream-customize.html#custom-processing-with-graphstage" class="header">Custom processing with GraphStage</a></li>
+    <li><a href="../stream/stream-customize.html#thread-safety-of-custom-operators" class="header">Thread safety of custom operators</a></li>
+    <li><a href="../stream/stream-customize.html#resources-and-the-operator-lifecycle" class="header">Resources and the operator lifecycle</a></li>
+    <li><a href="../stream/stream-customize.html#extending-flow-operators-with-custom-operators" class="header group-scala">Extending Flow Operators with Custom Operators</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#custom-stream-processing" name="custom-stream-processing" class="anchor"><span class="anchor-link"></span></a>Custom stream processing</h1>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Pekko Streams, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-stream" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-stream_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-stream_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>While the processing vocabulary of Pekko Streams is quite rich (see the <a href="stream-cookbook.html">Streams Cookbook</a> for examples) it is sometimes necessary to define new transformation operators either because some functionality is missing from the stock operations, or for performance reasons. In this part we show how to build custom operators and graph junctions of various kinds.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>A custom operator should not be the first tool you reach for, defining operators using flows and the graph DSL is in general easier and does to a larger extent protect you from mistakes that might be easy to make with a custom <a href="stream-customize.html"><code>GraphStage</code></a></p></div>
+<a id="graphstage"></a>
+<h2><a href="#custom-processing-with-graphstage" name="custom-processing-with-graphstage" class="anchor"><span class="anchor-link"></span></a>Custom processing with GraphStage</h2>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> abstraction can be used to create arbitrary operators with any number of input or output ports. It is a counterpart of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/GraphDSL$.html#create(java.util.List,org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.stream.javadsl.GraphDSL"><code>GraphDSL.create()</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/GraphDSL$.html#create[S%3C:org.apache.pekko.stream.Shape,IS%3C:org.apache.pekko.stream.Shape,Mat](graphs:Seq[org.apache.pekko.stream.Graph[IS,Mat]])(buildBlock:org.apache.pekko.stream.scaladsl.GraphDSL.Builder[Seq[Mat]]=%3E(Seq[IS]=%3ES)):org.apache.pekko.stream.Graph[S,Seq[Mat]]" title="org.apache.pekko.stream.scaladsl.GraphDSL"><code>GraphDSL.create()</code></a></span> method which creates new stream processing operators by composing others. Where <code>GraphStage</code> differs is that it creates an operator that is itself not divisible into smaller ones, and allows state to be maintained inside it in a safe way.</p>
+<p>As a first motivating example, we will build a new <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> that will emit numbers from 1 until it is cancelled. To start, we need to define the &ldquo;interface&rdquo; of our operator, which is called <em>shape</em> in Pekko Streams terminology (this is explained in more detail in the section <a href="stream-composition.html">Modularity, Composition and Hierarchy</a>). This is how it looks:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L32-L43" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream.stage.GraphStage
+
+class NumbersSource extends GraphStage[SourceShape[Int]] {
+  // Define the (sole) output port of this stage
+  val out: Outlet[Int] = Outlet(&quot;NumbersSource&quot;)
+  // Define the shape of this stage, which is SourceShape with the port we defined above
+  override val shape: SourceShape[Int] = SourceShape(out)
+
+  // This is where the actual (possibly stateful) logic will live
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic = ???
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L61-L97" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class NumbersSource extends GraphStage&lt;SourceShape&lt;Integer&gt;&gt; {
+  // Define the (sole) output port of this stage
+  public final Outlet&lt;Integer&gt; out = Outlet.create(&quot;NumbersSource.out&quot;);
+
+  // Define the shape of this stage, which is SourceShape with the port we defined above
+  private final SourceShape&lt;Integer&gt; shape = SourceShape.of(out);
+
+  @Override
+  public SourceShape&lt;Integer&gt; shape() {
+    return shape;
+  }
+
+  // This is where the actual (possibly stateful) logic is created
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape()) {
+      // All state MUST be inside the GraphStageLogic,
+      // never inside the enclosing GraphStage.
+      // This state is safe to access and modify from all the
+      // callbacks that are provided by GraphStageLogic and the
+      // registered handlers.
+      private int counter = 1;
+
+      {
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                push(out, counter);
+                counter += 1;
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>As you see, in itself the <code>GraphStage</code> only defines the ports of this operator and a shape that contains the ports. It also has, a currently unimplemented method called <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html#createLogic(inheritedAttributes:org.apache.pekko.stream.Attributes):org.apache.pekko.stream.stage.GraphStageLogic" title="org.apache.pekko.stream.stage.GraphStage"><code>createLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html#createLogic(org.apache.pekko.stream.Attributes)" title="org.apache.pekko.stream.stage.GraphStage"><code>createLogic</code></a></span>. If you recall, operators are reusable in multiple materializations, each resulting in a different executing entity. In the case of <code>GraphStage</code> the actual running logic is modeled as an instance of a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span> which will be created by the materializer by calling the <code>createLogic</code> method. In other words, all we need to do is to create a suitable logic that will emit the numbers we want.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>It is very important to keep the GraphStage object itself immutable and reusable. All mutable state needs to be confined to the GraphStageLogic that is created for every materialization.</p></div>
+<p>In order to emit from a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span> in a backpressured stream one needs first to have demand from downstream. To receive the necessary events one needs to register a subclass of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/OutHandler.html" title="pekko.stream.stage.OutHandler"><code>OutHandler</code></a></span> <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractOutHandler.html" title="pekko.stream.stage.AbstractOutHandler"><code>AbstractOutHandler</code></a></span> with the output port (<span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Outlet.html" title="org.apache.pekko.stream.Outlet"><code>Outlet</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Outlet.html" title="org.apache.pekko.stream.Outlet"><code>Outlet</code></a></span>). This handler will receive events related to the lifecycle of the port. In our case we need to override <code>onPull()</code> which indicates that we are free to emit a single element. There is another callback, <code>onDownstreamFinish()</code> which is called if the downstream cancelled. Since the default behavior of that callback is to stop the operator, we don&rsquo;t need to override it. In the <code>onPull</code> callback we will emit the next number. This is how it looks like in the end:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L50-L79" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream.Attributes
+import pekko.stream.Outlet
+import pekko.stream.SourceShape
+import pekko.stream.stage.GraphStage
+import pekko.stream.stage.GraphStageLogic
+import pekko.stream.stage.OutHandler
+
+class NumbersSource extends GraphStage[SourceShape[Int]] {
+  val out: Outlet[Int] = Outlet(&quot;NumbersSource&quot;)
+  override val shape: SourceShape[Int] = SourceShape(out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+      // All state MUST be inside the GraphStageLogic,
+      // never inside the enclosing GraphStage.
+      // This state is safe to access and modify from all the
+      // callbacks that are provided by GraphStageLogic and the
+      // registered handlers.
+      private var counter = 1
+
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            push(out, counter)
+            counter += 1
+          }
+        })
+    }
+}</code></pre></dd>
+</dl>
+<p>Instances of the above <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> are subclasses of <span class="group-scala"><code>Graph[SourceShape[Int],NotUsed]</code></span> <span class="group-java"><code>Graph&lt;SourceShape&lt;Integer&gt;,NotUsed&gt;</code></span> which means that they are already usable in many situations, but do not provide the DSL methods we usually have for other <code>Source</code> s. In order to convert this <code>Graph</code> to a proper <code>Source</code> we need to wrap it using <code>Source.fromGraph</code> (see <a href="stream-composition.html">Modularity, Composition and Hierarchy</a> for more details about operators and DSLs). Now we can use the source as any other built-in one:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L83-L93" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// A GraphStage is a proper Graph, just like what GraphDSL.create would return
+val sourceGraph: Graph[SourceShape[Int], NotUsed] = new NumbersSource
+
+// Create a Source from the Graph to access the DSL
+val mySource: Source[Int, NotUsed] = Source.fromGraph(sourceGraph)
+
+// Returns 55
+val result1: Future[Int] = mySource.take(10).runFold(0)(_ + _)
+
+// The source is reusable. This returns 5050
+val result2: Future[Int] = mySource.take(100).runFold(0)(_ + _)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L141-L153" target="_blank" title="Go to snippet source">source</a><code class="language-java">// A GraphStage is a proper Graph, just like what GraphDSL.create would return
+Graph&lt;SourceShape&lt;Integer&gt;, NotUsed&gt; sourceGraph = new NumbersSource();
+
+// Create a Source from the Graph to access the DSL
+Source&lt;Integer, NotUsed&gt; mySource = Source.fromGraph(sourceGraph);
+
+// Returns 55
+CompletionStage&lt;Integer&gt; result1 =
+    mySource.take(10).runFold(0, (sum, next) -&gt; sum + next, system);
+
+// The source is reusable. This returns 5050
+CompletionStage&lt;Integer&gt; result2 =
+    mySource.take(100).runFold(0, (sum, next) -&gt; sum + next, system);</code></pre></dd>
+</dl>
+<p>Similarly, to create a custom <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Sink.html" title="org.apache.pekko.stream.javadsl.Sink"><code>Sink</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Sink.html" title="org.apache.pekko.stream.scaladsl.Sink"><code>Sink</code></a></span> one can register a subclass <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/InHandler.html" title="org.apache.pekko.stream.stage.InHandler"><code>InHandler</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/InHandler.html" title="org.apache.pekko.stream.stage.InHandler"><code>InHandler</code></a></span> with the operator <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Inlet.html" title="org.apache.pekko.stream.Inlet"><code>Inlet</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Inlet.html" title="org.apache.pekko.stream.Inlet"><code>Inlet</code></a></span>. The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/InHandler.html#onPush():Unit" title="org.apache.pekko.stream.stage.InHandler"><code>onPush()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/InHandler.html#onPush()" title="org.apache.pekko.stream.stage.InHandler"><code>onPush()</code></a></span> callback is used to signal the handler a new element has been pushed to the operator, and can hence be grabbed and used. <code>onPush()</code> can be overridden to provide custom behavior. Please note, most Sinks would need to request upstream elements as soon as they are created: this can be done by calling <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html#onPull():Unit" title="org.apache.pekko.stream.stage.OutHandler"><code>pull(inlet)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html#onPull()" title="org.apache.pekko.stream.stage.OutHandler"><code>pull(inlet)</code></a></span> in the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#preStart():Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>preStart()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#preStart()" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>preStart()</code></a></span> callback.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L102-L128" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.stream.Attributes
+import pekko.stream.Inlet
+import pekko.stream.SinkShape
+import pekko.stream.stage.GraphStage
+import pekko.stream.stage.GraphStageLogic
+import pekko.stream.stage.InHandler
+
+class StdoutSink extends GraphStage[SinkShape[Int]] {
+  val in: Inlet[Int] = Inlet(&quot;StdoutSink&quot;)
+  override val shape: SinkShape[Int] = SinkShape(in)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+
+      // This requests one element at the Sink startup.
+      override def preStart(): Unit = pull(in)
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            println(grab(in))
+            pull(in)
+          }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L101-L135" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class StdoutSink extends GraphStage&lt;SinkShape&lt;Integer&gt;&gt; {
+  public final Inlet&lt;Integer&gt; in = Inlet.create(&quot;StdoutSink.in&quot;);
+
+  private final SinkShape&lt;Integer&gt; shape = SinkShape.of(in);
+
+  @Override
+  public SinkShape&lt;Integer&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape()) {
+
+      // This requests one element at the Sink startup.
+      @Override
+      public void preStart() {
+        pull(in);
+      }
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                Integer element = grab(in);
+                System.out.println(element);
+                pull(in);
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#port-states-and-" name="port-states-and-" class="anchor"><span class="anchor-link"></span></a>Port states, <span class="group-scala">InHandler</span> <span class="group-java">AbstractInHandler</span> and <span class="group-scala">OutHandler</span> <span class="group-java">AbstractOutHandler</span></h3>
+<p>In order to interact with a port (<span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Inlet.html" title="org.apache.pekko.stream.Inlet"><code>Inlet</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Inlet.html" title="org.apache.pekko.stream.Inlet"><code>Inlet</code></a></span> or <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Outlet.html" title="org.apache.pekko.stream.Outlet"><code>Outlet</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Outlet.html" title="org.apache.pekko.stream.Outlet"><code>Outlet</code></a></span>) of the operator we need to be able to receive events and generate new events belonging to the port.</p>
+<h4><a href="#output-port" name="output-port" class="anchor"><span class="anchor-link"></span></a>Output port</h4>
+<p>From the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span> the following operations are available on an output port:</p>
+<ul>
+  <li><code>push(out,elem)</code> pushes an element to the output port. Only possible after the port has been pulled by downstream.</li>
+  <li><code>complete(out)</code> closes the output port normally.</li>
+  <li><code>fail(out,exception)</code> closes the port with a failure signal.</li>
+</ul>
+<p>The events corresponding to an <em>output</em> port can be received in an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/OutHandler.html" title="pekko.stream.stage.OutHandler"><code>OutHandler</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractOutHandler.html" title="pekko.stream.stage.AbstractOutHandler"><code>AbstractOutHandler</code></a></span> instance registered to the output port using <code>setHandler(out,handler)</code>. This handler has two callbacks:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html" title="org.apache.pekko.stream.stage.OutHandler"><code>onPull()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html" title="org.apache.pekko.stream.stage.OutHandler"><code>onPull()</code></a></span> {scala=&ldquo;#onPull():Unit&rdquo; java=&ldquo;#onPull()&rdquo;] is called when the output port is ready to emit the next element, <code>push(out, elem)</code> is now allowed to be called on this port.</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html#onDownstreamFinish(cause:Throwable):Unit" title="org.apache.pekko.stream.stage.OutHandler"><code>onDownstreamFinish()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/OutHandler.html#onDownstreamFinish(java.lang.Throwable)" title="org.apache.pekko.stream.stage.OutHandler"><code>onDownstreamFinish()</code></a></span> is called once the downstream has cancelled and no longer allows messages to be pushed to it. No more <code>onPull()</code> will arrive after this event. If not overridden this will default to stopping the operator.</li>
+</ul>
+<p>Also, there are two query methods available for output ports:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#isAvailable[T](out:org.apache.pekko.stream.Outlet[T]):Boolean" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>isAvailable(out)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#isAvailable(org.apache.pekko.stream.Outlet)" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>isAvailable(out)</code></a></span> returns true if the port can be pushed</li>
+  <li><code>isClosed(out)</code> returns true if the port is closed. At this point the port can not be pushed and will not be pulled anymore.</li>
+</ul>
+<p>The relationship of the above operations, events and queries are summarized in the state machine below. Green shows the initial state while orange indicates the end state. If an operation is not listed for a state, then it is invalid to call it while the port is in that state. If an event is not listed for a state, then that event cannot happen in that state.</p>
+<p><img src="../images/outport_transitions.png" alt="outport_transitions.png" /></p>
+<h4><a href="#input-port" name="input-port" class="anchor"><span class="anchor-link"></span></a>Input port</h4>
+<p>The following operations are available for <em>input</em> ports:</p>
+<ul>
+  <li><code>pull(in)</code> requests a new element from an input port. This is only possible after the port has been pushed by upstream.</li>
+  <li><code>grab(in)</code> acquires the element that has been received during an <code>onPush()</code>. It cannot be called again until the port is pushed again by the upstream.</li>
+  <li><code>cancel(in)</code> closes the input port.</li>
+</ul>
+<p>The events corresponding to an <em>input</em> port can be received in an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/InHandler.html" title="pekko.stream.stage.InHandler"><code>InHandler</code></a></span> <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractInHandler.html" title="pekko.stream.stage.AbstractInHandler"><code>AbstractInHandler</code></a></span> instance registered to the input port using <code>setHandler(in, handler)</code>. This handler has three callbacks:</p>
+<ul>
+  <li><code>onPush()</code> is called when the input port has now a new element. Now it is possible to acquire this element using <code>grab(in)</code> and/or call <code>pull(in)</code> on the port to request the next element. It is not mandatory to grab the element, but if it is pulled while the element has not been grabbed it will drop the buffered element.</li>
+  <li><code>onUpstreamFinish()</code> is called once the upstream has completed and no longer can be pulled for new elements. No more <code>onPush()</code> will arrive after this event. If not overridden this will default to stopping the operator.</li>
+  <li><code>onUpstreamFailure()</code> is called if the upstream failed with an exception and no longer can be pulled for new elements. No more <code>onPush()</code> will arrive after this event. If not overridden this will default to failing the operator.</li>
+</ul>
+<p>Also, there are three query methods available for input ports:</p>
+<ul>
+  <li><code>isAvailable(in)</code> returns true if the port can be grabbed.</li>
+  <li><code>hasBeenPulled(in)</code> returns true if the port has been already pulled. Calling <code>pull(in)</code> in this state is illegal.</li>
+  <li><code>isClosed(in)</code> returns true if the port is closed. At this point the port can not be pulled and will not be pushed anymore.</li>
+</ul>
+<p>The relationship of the above operations, events and queries are summarized in the state machine below. Green shows the initial state while orange indicates the end state. If an operation is not listed for a state, then it is invalid to call it while the port is in that state. If an event is not listed for a state, then that event cannot happen in that state.</p>
+<p><img src="../images/inport_transitions.png" alt="inport_transitions.png" /></p>
+<h4><a href="#complete-and-fail" name="complete-and-fail" class="anchor"><span class="anchor-link"></span></a>Complete and fail</h4>
+<p>Finally, there are two methods available for convenience to complete the operator and all of its ports:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#completeStage():Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>completeStage()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#completeStage()" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>completeStage()</code></a></span> is equivalent to closing all output ports and cancelling all input ports.</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#failStage(ex:Throwable):Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>failStage(exception)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#failStage(java.lang.Throwable)" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>failStage(exception)</code></a></span> is equivalent to failing all output ports and cancelling all input ports.</li>
+</ul>
+<h4><a href="#emit" name="emit" class="anchor"><span class="anchor-link"></span></a>Emit</h4>
+<p>In some cases it is inconvenient and error prone to react on the regular state machine events with the signal based API described above. For those cases there is an API which allows for a more declarative sequencing of actions which will greatly simplify some use cases at the cost of some extra allocations. The difference between the two APIs could be described as that the first one is signal driven from the outside, while this API is more active and drives its surroundings.</p>
+<p>The operations of this part of the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> API are:</p>
+<ul>
+  <li><code>emit(out, elem)</code> and <code>emitMultiple(out, Iterable(elem1, elem2))</code> replaces the <code>OutHandler</code> with a handler that emits one or more elements when there is demand, and then reinstalls the current handlers</li>
+  <li><code>read(in)(andThen)</code> and <code>readN(in, n)(andThen)</code> replaces the <code>InHandler</code> with a handler that reads one or more elements as they are pushed and allows the handler to react once the requested number of elements has been read.</li>
+  <li><code>abortEmitting()</code> and <code>abortReading()</code> which will cancel an ongoing emit or read</li>
+</ul>
+<p>Note that since the above methods are implemented by temporarily replacing the handlers of the operator you should never call <code>setHandler</code> while they are running <code>emit</code> or <code>read</code> as that interferes with how they are implemented. The following methods are safe to call after invoking <code>emit</code> and <code>read</code> (and will lead to actually running the operation when those are done): <code>complete(out)</code>, <code>completeStage()</code>, <code>emit</code>, <code>emitMultiple</code>, <code>abortEmitting()</code> and <code>abortReading()</code></p>
+<p>An example of how this API simplifies an operator can be found below in the second version of the <code>Duplicator</code>.</p>
+<h3><a href="#custom-linear-operators-using-graphstage" name="custom-linear-operators-using-graphstage" class="anchor"><span class="anchor-link"></span></a>Custom linear operators using GraphStage</h3>
+<p>To define custom linear operators, you should extend <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> using <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/FlowShape.html" title="org.apache.pekko.stream.FlowShape"><code>FlowShape</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/FlowShape.html" title="org.apache.pekko.stream.FlowShape"><code>FlowShape</code></a></span> which has one input and one output.</p>
+<p>Such an operator can be illustrated as a box with two flows as it is seen in the illustration below. Demand flowing upstream leading to elements flowing downstream.</p>
+<p><img src="../images/graph_stage_conceptual.png" alt="graph_stage_conceptual.png" /></p>
+<p>To illustrate these concepts we create a small <code>GraphStage</code> that implements the <code>map</code> transformation.</p>
+<p><img src="../images/graph_stage_map.png" alt="graph_stage_map.png" /></p>
+<p>Map calls <code>push(out)</code> from the <code>onPush()</code> handler and it also calls <code>pull()</code> from the <code>onPull</code> handler resulting in the conceptual wiring above, and fully expressed in code below:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L135-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Map[A, B](f: A =&gt; B) extends GraphStage[FlowShape[A, B]] {
+
+  val in = Inlet[A](&quot;Map.in&quot;)
+  val out = Outlet[B](&quot;Map.out&quot;)
+
+  override val shape = FlowShape.of(in, out)
+
+  override def createLogic(attr: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            push(out, f(grab(in)))
+          }
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            pull(in)
+          }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L170-L212" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Map&lt;A, B&gt; extends GraphStage&lt;FlowShape&lt;A, B&gt;&gt; {
+
+  private final Function&lt;A, B&gt; f;
+
+  public Map(Function&lt;A, B&gt; f) {
+    this.f = f;
+  }
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;Map.in&quot;);
+  public final Outlet&lt;B&gt; out = Outlet.create(&quot;Map.out&quot;);
+
+  private final FlowShape&lt;A, B&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, B&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                push(out, f.apply(grab(in)));
+              }
+            });
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>Map is a typical example of a one-to-one transformation of a stream where demand is passed along upstream elements passed on downstream.</p>
+<p>To demonstrate a many-to-one operator we will implement filter. The conceptual wiring of <code>Filter</code> looks like this:</p>
+<p><img src="../images/graph_stage_filter.png" alt="graph_stage_filter.png" /></p>
+<p>As we see above, if the given predicate matches the current element we are propagating it downwards, otherwise we return the “ball” to our upstream so that we get the new element. This is achieved by modifying the map example by adding a conditional in the <code>onPush</code> handler and decide between a <code>pull(in)</code> or <code>push(out)</code> call (and not having a mapping <code>f</code> function).</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L171-L195" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Filter[A](p: A =&gt; Boolean) extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;Filter.in&quot;)
+  val out = Outlet[A](&quot;Filter.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            if (p(elem)) push(out, elem)
+            else pull(in)
+          }
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            pull(in)
+          }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L237-L283" target="_blank" title="Go to snippet source">source</a><code class="language-java">public final class Filter&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  private final Predicate&lt;A&gt; p;
+
+  public Filter(Predicate&lt;A&gt; p) {
+    this.p = p;
+  }
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;Filter.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;Filter.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                A elem = grab(in);
+                if (p.test(elem)) {
+                  push(out, elem);
+                } else {
+                  pull(in);
+                }
+              }
+            });
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>To complete the picture we define a one-to-many transformation as the next step. We chose a straightforward example operator that emits every upstream element twice downstream. The conceptual wiring of this operator looks like this:</p>
+<p><img src="../images/graph_stage_duplicate.png" alt="graph_stage_duplicate.png" /></p>
+<p>This is an operator that has state: an option with the last element it has seen indicating if it has duplicated this last element already or not. We must also make sure to emit the extra element if the upstream completes.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L210-L249" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Duplicator[A] extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;Duplicator.in&quot;)
+  val out = Outlet[A](&quot;Duplicator.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+      // Again: note that all mutable state
+      // MUST be inside the GraphStageLogic
+      var lastElem: Option[A] = None
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            lastElem = Some(elem)
+            push(out, elem)
+          }
+
+          override def onUpstreamFinish(): Unit = {
+            if (lastElem.isDefined) emit(out, lastElem.get)
+            complete(out)
+          }
+
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            if (lastElem.isDefined) {
+              push(out, lastElem.get)
+              lastElem = None
+            } else {
+              pull(in)
+            }
+          }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L302-L356" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Duplicator&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;Duplicator.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;Duplicator.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+      // Again: note that all mutable state
+      // MUST be inside the GraphStageLogic
+      Option&lt;A&gt; lastElem = Option.none();
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                A elem = grab(in);
+                lastElem = Option.some(elem);
+                push(out, elem);
+              }
+
+              @Override
+              public void onUpstreamFinish() {
+                if (lastElem.isDefined()) {
+                  emit(out, lastElem.get());
+                }
+                complete(out);
+              }
+            });
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                if (lastElem.isDefined()) {
+                  push(out, lastElem.get());
+                  lastElem = Option.none();
+                } else {
+                  pull(in);
+                }
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>In this case a pull from downstream might be consumed by the operator itself rather than passed along upstream as the operator might contain an element it wants to push. Note that we also need to handle the case where the upstream closes while the operator still has elements it wants to push downstream. This is done by overriding <code>onUpstreamFinish</code> in the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/InHandler.html" title="pekko.stream.stage.InHandler"><code>InHandler</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractInHandler.html" title="pekko.stream.stage.AbstractInHandler"><code>AbstractInHandler</code></a></span> and provide custom logic that should happen when the upstream has been finished.</p>
+<p>This example can be simplified by replacing the usage of a mutable state with calls to <code>emitMultiple</code> which will replace the handlers, emit each of multiple elements and then reinstate the original handlers:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L264-L290" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Duplicator[A] extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;Duplicator.in&quot;)
+  val out = Outlet[A](&quot;Duplicator.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            // this will temporarily suspend this handler until the two elems
+            // are emitted and then reinstates it
+            emitMultiple(out, Iterable(elem, elem))
+          }
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            pull(in)
+          }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L372-L412" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Duplicator2&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;Duplicator.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;Duplicator.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                A elem = grab(in);
+                // this will temporarily suspend this handler until the two elems
+                // are emitted and then reinstates it
+                emitMultiple(out, Arrays.asList(elem, elem).iterator());
+              }
+            });
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>Finally, to demonstrate all of the operators above, we put them together into a processing chain, which conceptually would correspond to the following structure:</p>
+<p><img src="../images/graph_stage_chain.png" alt="graph_stage_chain.png" /></p>
+<p>In code this is only a few lines, using the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#via(org.apache.pekko.stream.Graph)" title="org.apache.pekko.stream.javadsl.Source"><code>via</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#via[T,Mat2](flow:org.apache.pekko.stream.Graph[org.apache.pekko.stream.FlowShape[Out,T],Mat2]):Source.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>via</code></a></span> use our custom operators in a stream:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L307-L309" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val resultFuture =
+  Source(1 to 5).via(new Filter(_ % 2 == 0)).via(new Duplicator()).via(new Map(_ / 2)).runWith(sink)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L433-L439" target="_blank" title="Go to snippet source">source</a><code class="language-java">CompletionStage&lt;String&gt; resultFuture =
+    Source.from(Arrays.asList(1, 2, 3, 4, 5))
+        .via(new Filter&lt;Integer&gt;((n) -&gt; n % 2 == 0))
+        .via(new Duplicator&lt;Integer&gt;())
+        .via(new Map&lt;Integer, Integer&gt;((n) -&gt; n / 2))
+        .runWith(sink, system);
+</code></pre></dd>
+</dl>
+<p>If we attempt to draw the sequence of events, it shows that there is one &ldquo;event token&rdquo; in circulation in a potential chain of operators, just like our conceptual &ldquo;railroad tracks&rdquo; representation predicts.</p>
+<p><img src="../images/graph_stage_tracks_1.png" alt="graph_stage_tracks_1.png" /></p>
+<h3><a href="#completion" name="completion" class="anchor"><span class="anchor-link"></span></a>Completion</h3>
+<p>Completion handling usually (but not exclusively) comes into the picture when operators need to emit a few more elements after their upstream source has been completed. We have seen an example of this in our first <code>Duplicator</code> implementation where the last element needs to be doubled even after the upstream neighbor operator has been completed. This can be done by overriding the <code>onUpstreamFinish</code> method in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/InHandler.html" title="pekko.stream.stage.InHandler"><code>InHandler</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractInHandler.html" title="pekko.stream.stage.AbstractInHandler"><code>AbstractInHandler</code></a></span>.</p>
+<p>Operators by default automatically stop once all of their ports (input and output) have been closed externally or internally. It is possible to opt out from this behavior by invoking <code>setKeepGoing(true)</code> (which is not supported from the operator’s constructor and usually done in <code>preStart</code>). In this case the operator <strong>must</strong> be explicitly closed by calling <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#completeStage():Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>completeStage()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#completeStage()" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>completeStage()</code></a></span> or `<span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#failStage(ex:Throwable):Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>failStage(exception)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#failStage(java.lang.Throwable)" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>failStage(exception)</code></a></span>. This feature carries the risk of leaking streams and actors, therefore it should be used with care.</p>
+<h3><a href="#logging-inside-graphstages" name="logging-inside-graphstages" class="anchor"><span class="anchor-link"></span></a>Logging inside GraphStages</h3>
+<p>Logging debug or other important information in your operators is often a very good idea, especially when developing more advanced operators which may need to be debugged at some point.</p><div class="group-scala">
+<p>The helper trait <a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/StageLogging.html" title="StageLogging"><code>stream.stage.StageLogging</code></a> is provided to enable you to obtain a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/LoggingAdapter.html" title="org.apache.pekko.event.LoggingAdapter"><code>LoggingAdapter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/LoggingAdapter.html" title="org.apache.pekko.event.LoggingAdapter"><code>LoggingAdapter</code></a></span> inside of a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStage.html" title="org.apache.pekko.stream.stage.GraphStage"><code>GraphStage</code></a></span> as long as the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span> you&rsquo;re using is able to provide you with a logger. In that sense, it serves a very similar purpose as <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorLogging.html" title="org.apache.pekko.actor.ActorLogging"><code>ActorLogging</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorLogging.html" title="org.apache.pekko.actor.ActorLogging"><code>ActorLogging</code></a></span> does for Actors. </p></div><div class="group-java">
+<p>You can extend the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogicWithLogging.html" title="org.apache.pekko.stream.stage.GraphStageLogicWithLogging"><code>GraphStageLogicWithLogging</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogicWithLogging.html" title="org.apache.pekko.stream.stage.GraphStageLogicWithLogging"><code>GraphStageLogicWithLogging</code></a></span> or <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/TimerGraphStageLogicWithLogging.html" title="org.apache.pekko.stream.stage.TimerGraphStageLogicWithLogging"><code>TimerGraphStageLogicWithLogging</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/TimerGraphStageLogicWithLogging.html" title="org.apache.pekko.stream.stage.TimerGraphStageLogicWithLogging"><code>TimerGraphStageLogicWithLogging</code></a></span> classes instead of the usual <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span> to enable you to obtain a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/LoggingAdapter.html" title="org.apache.pekko.event.LoggingAdapter"><code>LoggingAdapter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/event/LoggingAdapter.html" title="org.apache.pekko.event.LoggingAdapter"><code>LoggingAdapter</code></a></span> inside your operator as long as the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span> you&rsquo;re using is able to provide you with a logger.</p></div><div class="callout note "><div class="callout-title">Note</div>
+<p>Please note that you can always use a logging library directly inside an operator. Make sure to use an asynchronous appender however, to not accidentally block the operator when writing to files etc. See <a href="../logging.html#slf4j-directly">Using the SLF4J API directly</a> for more details on setting up async appenders in SLF4J.</p></div>
+<p>The operator then gets access to the <code>log</code> field which it can safely use from any <code>GraphStage</code> callbacks:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageLoggingDocSpec.scala#L28-L51" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.stream.stage.{ GraphStage, GraphStageLogic, OutHandler, StageLogging }
+
+final class RandomLettersSource extends GraphStage[SourceShape[String]] {
+  val out = Outlet[String](&quot;RandomLettersSource.out&quot;)
+  override val shape: SourceShape[String] = SourceShape(out)
+
+  override def createLogic(inheritedAttributes: Attributes) =
+    new GraphStageLogic(shape) with StageLogging {
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            val c = nextChar() // ASCII lower case letters
+
+            // `log` is obtained from materializer automatically (via StageLogging)
+            log.debug(&quot;Randomly generated: [{}]&quot;, c)
+
+            push(out, c.toString)
+          }
+        })
+    }
+
+  def nextChar(): Char =
+    ThreadLocalRandom.current().nextInt(&#39;a&#39;, &#39;z&#39;.toInt + 1).toChar
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageLoggingDocTest.java#L41-L77" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class RandomLettersSource extends GraphStage&lt;SourceShape&lt;String&gt;&gt; {
+  public final Outlet&lt;String&gt; out = Outlet.create(&quot;RandomLettersSource.in&quot;);
+
+  private final SourceShape&lt;String&gt; shape = SourceShape.of(out);
+
+  @Override
+  public SourceShape&lt;String&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogicWithLogging(shape()) {
+
+      {
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                final String s = nextChar(); // ASCII lower case letters
+
+                // `log` is obtained from materializer automatically (via StageLogging)
+                log().debug(&quot;Randomly generated: [{}]&quot;, s);
+
+                push(out, s);
+              }
+
+              private String nextChar() {
+                final char i = (char) ThreadLocalRandom.current().nextInt(&#39;a&#39;, &#39;z&#39; + 1);
+                return String.valueOf(i);
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p><strong>SPI Note:</strong> If you&rsquo;re implementing a Materializer, you can add this ability to your materializer by implementing <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/MaterializerLoggingProvider.html" title="org.apache.pekko.stream.MaterializerLoggingProvider"><code>MaterializerLoggingProvider</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/MaterializerLoggingProvider.html" title="org.apache.pekko.stream.MaterializerLoggingProvider"><code>MaterializerLoggingProvider</code></a></span> in your <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span>.</p></div>
+<h3><a href="#using-timers" name="using-timers" class="anchor"><span class="anchor-link"></span></a>Using timers</h3>
+<p>It is possible to use timers in <code>GraphStages</code> by using <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/TimerGraphStageLogic.html" title="org.apache.pekko.stream.stage.TimerGraphStageLogic"><code>TimerGraphStageLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/TimerGraphStageLogic.html" title="org.apache.pekko.stream.stage.TimerGraphStageLogic"><code>TimerGraphStageLogic</code></a></span> as the base class for the returned logic. Timers can be scheduled by calling one of <code>scheduleOnce(timerKey,delay)</code>, <code>scheduleAtFixedRate(timerKey,initialDelay,interval)</code> or <code>scheduleWithFixedDelay(timerKey,initialDelay,interval)</code> and passing an object as a key for that timer (can be any object, for example a <code>String</code>). The <code>onTimer(timerKey)</code> method needs to be overridden, and it will be called once the timer of <code>timerKey</code> fires. It is possible to cancel a timer using <code>cancelTimer(timerKey)</code> and check the status of a timer with <code>isTimerActive(timerKey)</code>. Timers will be automatically cleaned up when the operator completes.</p>
+<p>Timers can not be scheduled from the constructor of the logic, but it is possible to schedule them from the <code>preStart()</code> lifecycle hook.</p>
+<p>In this sample the operator toggles between open and closed, where open means no elements are passed through. The operator starts out as closed but as soon as an element is pushed downstream the gate becomes open for a duration of time during which it will consume and drop upstream messages:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L381-L415" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// each time an event is pushed through it will trigger a period of silence
+class TimedGate[A](silencePeriod: FiniteDuration) extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;TimedGate.in&quot;)
+  val out = Outlet[A](&quot;TimedGate.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new TimerGraphStageLogic(shape) {
+
+      var open = false
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            if (open) pull(in)
+            else {
+              push(out, elem)
+              open = true
+              scheduleOnce(None, silencePeriod)
+            }
+          }
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = { pull(in) }
+        })
+
+      override protected def onTimer(timerKey: Any): Unit = {
+        open = false
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L531-L589" target="_blank" title="Go to snippet source">source</a><code class="language-java">// each time an event is pushed through it will trigger a period of silence
+public class TimedGate&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  private final int silencePeriodInSeconds;
+
+  public TimedGate(int silencePeriodInSeconds) {
+    this.silencePeriodInSeconds = silencePeriodInSeconds;
+  }
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;TimedGate.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;TimedGate.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new TimerGraphStageLogic(shape) {
+
+      private boolean open = false;
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() throws Exception {
+                A elem = grab(in);
+                if (open) pull(in);
+                else {
+                  push(out, elem);
+                  open = true;
+                  scheduleOnce(&quot;key&quot;, java.time.Duration.ofSeconds(silencePeriodInSeconds));
+                }
+              }
+            });
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+      }
+
+      @Override
+      public void onTimer(Object key) {
+        if (key.equals(&quot;key&quot;)) {
+          open = false;
+        }
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#using-asynchronous-side-channels" name="using-asynchronous-side-channels" class="anchor"><span class="anchor-link"></span></a>Using asynchronous side-channels</h3>
+<p>In order to receive asynchronous events that are not arriving as stream elements (for example a completion of a future or a callback from a 3rd party API) one must acquire a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/AsyncCallback.html" title="org.apache.pekko.stream.stage.AsyncCallback"><code>AsyncCallback</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/AsyncCallback.html" title="org.apache.pekko.stream.stage.AsyncCallback"><code>AsyncCallback</code></a></span> by calling <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#getAsyncCallback[T](handler:T=%3EUnit):org.apache.pekko.stream.stage.AsyncCallback[T]" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>getAsyncCallback()</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#getAsyncCallback(scala.Function1)" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>getAsyncCallback()</code></a></span> from the operator logic. The method <code>getAsyncCallback</code> takes as a parameter a callback that will be called once the asynchronous event fires. It is important to <strong>not call the callback directly</strong>, instead, the external API must call the <code>invoke(event)</code> method on the returned <code>AsyncCallback</code>. The execution engine will take care of calling the provided callback in a thread-safe way. The callback can safely access the state of the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic</code></a></span> implementation.</p>
+<p>Sharing the AsyncCallback from the constructor risks race conditions, therefore it is recommended to use the <code>preStart()</code> lifecycle hook instead.</p>
+<p>This example shows an asynchronous side channel operator that starts dropping elements when a future completes:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L318-L346" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// will close upstream in all materializations of the graph stage instance
+// when the future completes
+class KillSwitch[A](switch: Future[Unit]) extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;KillSwitch.in&quot;)
+  val out = Outlet[A](&quot;KillSwitch.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+
+      override def preStart(): Unit = {
+        val callback = getAsyncCallback[Unit] { _ =&gt;
+          completeStage()
+        }
+        switch.foreach(callback.invoke)
+      }
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = { push(out, grab(in)) }
+        })
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = { pull(in) }
+        })
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L446-L505" target="_blank" title="Go to snippet source">source</a><code class="language-java">// will close upstream in all materializations of the stage instance
+// when the completion stage completes
+public class KillSwitch&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  private final CompletionStage&lt;Done&gt; switchF;
+
+  public KillSwitch(CompletionStage&lt;Done&gt; switchF) {
+    this.switchF = switchF;
+  }
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;KillSwitch.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;KillSwitch.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                push(out, grab(in));
+              }
+            });
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                pull(in);
+              }
+            });
+      }
+
+      @Override
+      public void preStart() {
+        AsyncCallback&lt;Done&gt; callback =
+            createAsyncCallback(
+                new Procedure&lt;Done&gt;() {
+                  @Override
+                  public void apply(Done param) throws Exception {
+                    completeStage();
+                  }
+                });
+
+        ExecutionContext ec = system.dispatcher();
+        switchF.thenAccept(callback::invoke);
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#integration-with-actors" name="integration-with-actors" class="anchor"><span class="anchor-link"></span></a>Integration with actors</h3>
+<p><strong>This section is a stub and will be extended in the next release</strong> <strong>This is a <a href="../common/may-change.html">may change</a> feature</strong>*</p>
+<p>It is possible to acquire an ActorRef that can be addressed from the outside of the operator, similarly how <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/AsyncCallback.html" title="org.apache.pekko.stream.stage.AsyncCallback"><code>AsyncCallback</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/AsyncCallback.html" title="org.apache.pekko.stream.stage.AsyncCallback"><code>AsyncCallback</code></a></span> allows injecting asynchronous events into an operator logic. This reference can be obtained by calling <code>getStageActor(receive)</code> passing in a function that takes a <code>Pair</code> of the sender <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> and the received message. This reference can be used to watch other actors by calling its <code>watch(ref)</code> or <code>unwatch(ref)</code> methods. The reference can be also watched by external actors. The current limitations of this <code>ActorRef</code> are:</p>
+<ul>
+  <li>they are not location transparent, they cannot be accessed via remoting.</li>
+  <li>they cannot be returned as materialized values.</li>
+  <li>they cannot be accessed from the constructor of the <code>GraphStageLogic</code>, but they can be accessed from the <code>preStart()</code> method.</li>
+</ul>
+<h3><a href="#custom-materialized-values" name="custom-materialized-values" class="anchor"><span class="anchor-link"></span></a>Custom materialized values</h3>
+<p>Custom operators can return materialized values instead of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/NotUsed.html" title="org.apache.pekko.NotUsed"><code>NotUsed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/NotUsed.html" title="org.apache.pekko.NotUsed"><code>NotUsed</code></a></span> by inheriting from <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/GraphStageWithMaterializedValue.html" title="pekko.stream.stage.GraphStageWithMaterializedValue"><code>GraphStageWithMaterializedValue</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractGraphStageWithMaterializedValue.html" title="pekko.stream.stage.AbstractGraphStageWithMaterializedValue"><code>AbstractGraphStageWithMaterializedValue</code></a></span> instead of the simpler <code>GraphStage</code>. The difference is that in this case the method <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/GraphStageWithMaterializedValue.html#createLogicAndMaterializedValue(inheritedAttributes:org.apache.pekko.stream.Attributes):(org.apache.pekko.stream.stage.GraphStageLogic,M)" title="pekko.stream.stage.GraphStageWithMaterializedValue"><code>createLogicAndMaterializedValue(inheritedAttributes)</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractGraphStageWithMaterializedValue.html#createLogicAndMaterializedValue(org.apache.pekko.stream.Attributes)" title="pekko.stream.stage.AbstractGraphStageWithMaterializedValue"><code>createLogicAndMaterializedValue(inheritedAttributes</code></a></span> needs to be overridden, and in addition to the operator logic the materialized value must be provided</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>There is no built-in synchronization of accessing this value from both of the thread where the logic runs and the thread that got hold of the materialized value. It is the responsibility of the programmer to add the necessary (non-blocking) synchronization and visibility guarantees to this shared object.</p></div>
+<p>In this sample the materialized value is a future containing the first element to go through the stream:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L431-L470" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class FirstValue[A] extends GraphStageWithMaterializedValue[FlowShape[A, A], Future[A]] {
+
+  val in = Inlet[A](&quot;FirstValue.in&quot;)
+  val out = Outlet[A](&quot;FirstValue.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogicAndMaterializedValue(inheritedAttributes: Attributes): (GraphStageLogic, Future[A]) = {
+    val promise = Promise[A]()
+    val logic = new GraphStageLogic(shape) {
+
+      setHandler(in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            promise.success(elem)
+            push(out, elem)
+
+            // replace handler with one that only forwards elements
+            setHandler(in,
+              new InHandler {
+                override def onPush(): Unit = {
+                  push(out, grab(in))
+                }
+              })
+          }
+        })
+
+      setHandler(out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            pull(in)
+          }
+        })
+
+    }
+
+    (logic, promise.future)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L604-L659" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class FirstValue&lt;A&gt;
+    extends AbstractGraphStageWithMaterializedValue&lt;FlowShape&lt;A, A&gt;, CompletionStage&lt;A&gt;&gt; {
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;FirstValue.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;FirstValue.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public Pair&lt;GraphStageLogic, CompletionStage&lt;A&gt;&gt; createLogicAndMaterializedValuePair(
+      Attributes inheritedAttributes) {
+    CompletableFuture&lt;A&gt; promise = new CompletableFuture&lt;&gt;();
+
+    GraphStageLogic logic =
+        new GraphStageLogic(shape) {
+          {
+            setHandler(
+                in,
+                new AbstractInHandler() {
+                  @Override
+                  public void onPush() {
+                    A elem = grab(in);
+                    promise.complete(elem);
+                    push(out, elem);
+
+                    // replace handler with one that only forwards elements
+                    setHandler(
+                        in,
+                        new AbstractInHandler() {
+                          @Override
+                          public void onPush() {
+                            push(out, grab(in));
+                          }
+                        });
+                  }
+                });
+
+            setHandler(
+                out,
+                new AbstractOutHandler() {
+                  @Override
+                  public void onPull() throws Exception {
+                    pull(in);
+                  }
+                });
+          }
+        };
+
+    return new Pair&lt;&gt;(logic, promise);
+  }
+}</code></pre></dd>
+</dl>
+<h3><a href="#using-attributes-to-affect-the-behavior-of-an-operator" name="using-attributes-to-affect-the-behavior-of-an-operator" class="anchor"><span class="anchor-link"></span></a>Using attributes to affect the behavior of an operator</h3>
+<p><strong>This section is a stub and will be extended in the next release</strong></p>
+<p>Operators can access the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Attributes.html" title="org.apache.pekko.stream.Attributes"><code>Attributes</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Attributes.html" title="org.apache.pekko.stream.Attributes"><code>Attributes</code></a></span> object created by the materializer. This contains all the applied (inherited) attributes applying to the operator, ordered from least specific (outermost) towards the most specific (innermost) attribute. It is the responsibility of the operator to decide how to reconcile this inheritance chain to a final effective decision.</p>
+<p>See <a href="stream-composition.html">Modularity, Composition and Hierarchy</a> for an explanation on how attributes work.</p>
+<h3><a href="#rate-decoupled-operators" name="rate-decoupled-operators" class="anchor"><span class="anchor-link"></span></a>Rate decoupled operators</h3>
+<p>Sometimes, it is desirable to <em>decouple</em> the rate of the upstream and downstream of an operator, synchronizing only when needed.</p>
+<p>This is achieved in the model by representing a <code>GraphStage</code> as a <em>boundary</em> between two regions where the demand sent upstream is decoupled from the demand that arrives from downstream. One immediate consequence of this difference is that an <code>onPush</code> call does not always lead to calling <code>push</code> and an <code>onPull</code> call does not always lead to calling <code>pull</code>.</p>
+<p>One of the important use-case for this is to build buffer-like entities, that allow independent progress of upstream and downstream operators when the buffer is not full or empty, and slowing down the appropriate side if the buffer becomes empty or full.</p>
+<p>The next diagram illustrates the event sequence for a buffer with capacity of two elements in a setting where the downstream demand is slow to start and the buffer will fill up with upstream elements before any demand is seen from downstream.</p>
+<p><img src="../images/graph_stage_detached_tracks_1.png" alt="graph_stage_detached_tracks_1.png" /></p>
+<p>Another scenario would be where the demand from downstream starts coming in before any element is pushed into the buffer operator.</p>
+<p><img src="../images/graph_stage_detached_tracks_2.png" alt="graph_stage_detached_tracks_2.png" /></p>
+<p>The first difference we can notice is that our <code>Buffer</code> operator is automatically pulling its upstream on initialization. The buffer has demand for up to two elements without any downstream demand.</p>
+<p>The following code example demonstrates a buffer class corresponding to the message sequence chart above.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L485-L547" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class TwoBuffer[A] extends GraphStage[FlowShape[A, A]] {
+
+  val in = Inlet[A](&quot;TwoBuffer.in&quot;)
+  val out = Outlet[A](&quot;TwoBuffer.out&quot;)
+
+  val shape = FlowShape.of(in, out)
+
+  override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =
+    new GraphStageLogic(shape) {
+
+      val buffer = mutable.Queue[A]()
+      def bufferFull = buffer.size == 2
+      var downstreamWaiting = false
+
+      override def preStart(): Unit = {
+        // a detached stage needs to start upstream demand
+        // itself as it is not triggered by downstream demand
+        pull(in)
+      }
+
+      setHandler(
+        in,
+        new InHandler {
+          override def onPush(): Unit = {
+            val elem = grab(in)
+            buffer.enqueue(elem)
+            if (downstreamWaiting) {
+              downstreamWaiting = false
+              val bufferedElem = buffer.dequeue()
+              push(out, bufferedElem)
+            }
+            if (!bufferFull) {
+              pull(in)
+            }
+          }
+
+          override def onUpstreamFinish(): Unit = {
+            if (buffer.nonEmpty) {
+              // emit the rest if possible
+              emitMultiple(out, buffer.toIterator)
+            }
+            completeStage()
+          }
+        })
+
+      setHandler(
+        out,
+        new OutHandler {
+          override def onPull(): Unit = {
+            if (buffer.isEmpty) {
+              downstreamWaiting = true
+            } else {
+              val elem = buffer.dequeue()
+              push(out, elem)
+            }
+            if (!bufferFull &amp;&amp; !hasBeenPulled(in)) {
+              pull(in)
+            }
+          }
+        })
+    }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/stream/GraphStageDocTest.java#L675-L753" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class TwoBuffer&lt;A&gt; extends GraphStage&lt;FlowShape&lt;A, A&gt;&gt; {
+
+  public final Inlet&lt;A&gt; in = Inlet.create(&quot;TwoBuffer.in&quot;);
+  public final Outlet&lt;A&gt; out = Outlet.create(&quot;TwoBuffer.out&quot;);
+
+  private final FlowShape&lt;A, A&gt; shape = FlowShape.of(in, out);
+
+  @Override
+  public FlowShape&lt;A, A&gt; shape() {
+    return shape;
+  }
+
+  @Override
+  public GraphStageLogic createLogic(Attributes inheritedAttributes) {
+    return new GraphStageLogic(shape) {
+
+      private final int SIZE = 2;
+      private Queue&lt;A&gt; buffer = new ArrayDeque&lt;&gt;(SIZE);
+      private boolean downstreamWaiting = false;
+
+      private boolean isBufferFull() {
+        return buffer.size() == SIZE;
+      }
+
+      @Override
+      public void preStart() {
+        // a detached stage needs to start upstream demand
+        // itself as it is not triggered by downstream demand
+        pull(in);
+      }
+
+      {
+        setHandler(
+            in,
+            new AbstractInHandler() {
+              @Override
+              public void onPush() {
+                A elem = grab(in);
+                buffer.add(elem);
+                if (downstreamWaiting) {
+                  downstreamWaiting = false;
+                  A bufferedElem = buffer.poll();
+                  push(out, bufferedElem);
+                }
+                if (!isBufferFull()) {
+                  pull(in);
+                }
+              }
+
+              @Override
+              public void onUpstreamFinish() {
+                if (!buffer.isEmpty()) {
+                  // emit the rest if possible
+                  emitMultiple(out, buffer.iterator());
+                }
+                completeStage();
+              }
+            });
+
+        setHandler(
+            out,
+            new AbstractOutHandler() {
+              @Override
+              public void onPull() throws Exception {
+                if (buffer.isEmpty()) {
+                  downstreamWaiting = true;
+                } else {
+                  A elem = buffer.poll();
+                  push(out, elem);
+                }
+                if (!isBufferFull() &amp;&amp; !hasBeenPulled(in)) {
+                  pull(in);
+                }
+              }
+            });
+      }
+    };
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#thread-safety-of-custom-operators" name="thread-safety-of-custom-operators" class="anchor"><span class="anchor-link"></span></a>Thread safety of custom operators</h2>
+<dl>
+  <dt>All of the above custom operators (linear or graph) provide a few simple guarantees that implementors can rely on.
+  </dt>
+  <dd></dd>
+</dl>
+<ul>
+  <li>The callbacks exposed by all of these classes are never called concurrently.</li>
+  <li>The state encapsulated by these classes can be safely modified from the provided callbacks, without any further synchronization.</li>
+</ul>
+<p>In essence, the above guarantees are similar to what <code>Actor</code> s provide, if one thinks of the state of a custom operator as state of an actor, and the callbacks as the <code>receive</code> block of the actor.</p><div class="callout warning "><div class="callout-title">Warning</div>
+<p>It is <strong>not safe</strong> to access the state of any custom operator outside of the callbacks that it provides, just like it is unsafe to access the state of an actor from the outside. This means that Future callbacks should <strong>not close over</strong> internal state of custom operators because such access can be concurrent with the provided callbacks, leading to undefined behavior.</p></div>
+<h2><a href="#resources-and-the-operator-lifecycle" name="resources-and-the-operator-lifecycle" class="anchor"><span class="anchor-link"></span></a>Resources and the operator lifecycle</h2>
+<p>If an operator manages a resource with a lifecycle, for example objects that need to be shutdown when they are not used anymore it is important to make sure this will happen in all circumstances when the operator shuts down.</p>
+<p>Cleaning up resources should be done in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#postStop():Unit" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic.postStop</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/stage/GraphStageLogic.html#postStop()" title="org.apache.pekko.stream.stage.GraphStageLogic"><code>GraphStageLogic.postStop</code></a></span> and not in the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/InHandler.html" title="pekko.stream.stage.InHandler"><code>InHandler</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractInHandler.html" title="pekko.stream.stage.AbstractInHandler"><code>AbstractInHandler</code></a></span> and <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/stage/OutHandler.html" title="pekko.stream.stage.OutHandler"><code>OutHandler</code></a></span> <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/stream/stage/AbstractOutHandler.html" title="pekko.stream.stage.AbstractOutHandler"><code>AbstractOutHandler</code></a></span> callbacks. The reason for this is that when the operator itself completes or is failed there is no signal from the upstreams or the downstreams. Even for operators that do not complete or fail in this manner, this can happen when the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/Materializer.html" title="org.apache.pekko.stream.Materializer"><code>Materializer</code></a></span> is shutdown or the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSystem.html" title="org.apache.pekko.actor.ActorSystem"><code>ActorSystem</code></a></span> is terminated while a stream is still running, what is called an &ldquo;abrupt termination&rdquo;.</p><div class="group-scala">
+<h2><a href="#extending-flow-operators-with-custom-operators" name="extending-flow-operators-with-custom-operators" class="anchor"><span class="anchor-link"></span></a>Extending Flow Operators with Custom Operators</h2>
+<p>The most general way of extending any <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html" title="org.apache.pekko.stream.javadsl.Source"><code>Source</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html" title="org.apache.pekko.stream.scaladsl.Source"><code>Source</code></a></span>, <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Flow.html" title="org.apache.pekko.stream.javadsl.Flow"><code>Flow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Flow.html" title="org.apache.pekko.stream.scaladsl.Flow"><code>Flow</code></a></span> or <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/SubFlow.html" title="org.apache.pekko.stream.javadsl.SubFlow"><code>SubFlow</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/SubFlow.html" title="org.apache.pekko.stream.scaladsl.SubFlow"><code>SubFlow</code></a></span> (e.g. from <code>groupBy</code>) is demonstrated above: create an operator of flow-shape like the <code>Duplicator</code> example given above and use the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/javadsl/Source.html#via(org.apache.pekko.stream.Graph)" title="org.apache.pekko.stream.javadsl.Source"><code>.via(...)</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/stream/scaladsl/Source.html#via[T,Mat2](flow:org.apache.pekko.stream.Graph[org.apache.pekko.stream.FlowShape[Out,T],Mat2]):Source.this.Repr[T]" title="org.apache.pekko.stream.scaladsl.Source"><code>.via(...)</code></a></span> operator to integrate it into your stream topology. This works with all <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/stream/scaladsl/FlowOps.html" title="pekko.stream.scaladsl.FlowOps"><code>FlowOps</code></a> sub-types, including the ports that you connect with the graph DSL.</p>
+<p>Advanced Scala users may wonder whether it is possible to write extension methods that enrich <code>FlowOps</code> to allow nicer syntax. The short answer is that Scala 2 does not support this in a fully generic fashion, the problem is that it is impossible to abstract over the kind of stream that is being extended because <code>Source</code>, <code>Flow</code> and <code>SubFlow</code> differ in the number and kind of their type parameters. While it would be possible to write an implicit class that enriches them generically, this class would require explicit instantiation with all type parameters due to <a href="https://github.com/scala/bug/issues/2712">SI-2712</a>. For a partial workaround that unifies extensions to <code>Source</code> and <code>Flow</code> see <a href="https://gist.github.com/rkuhn/2870fcee4937dda2cad5">this sketch by R. Kuhn</a>.</p>
+<p>A lot simpler is the task of adding an extension method to <code>Source</code> as shown below:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L574-L580" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit class SourceDuplicator[Out, Mat](s: Source[Out, Mat]) {
+  def duplicateElements: Source[Out, Mat] = s.via(new Duplicator)
+}
+
+val s = Source(1 to 3).duplicateElements
+
+s.runWith(Sink.seq).futureValue should ===(Seq(1, 1, 2, 2, 3, 3))</code></pre>
+<p>The analog works for <code>Flow</code> as well:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/stream/GraphStageDocSpec.scala#L586-L592" target="_blank" title="Go to snippet source">source</a><code class="language-scala">implicit class FlowDuplicator[In, Out, Mat](s: Flow[In, Out, Mat]) {
+  def duplicateElements: Flow[In, Out, Mat] = s.via(new Duplicator)
+}
+
+val f = Flow[Int].duplicateElements
+
+Source(1 to 3).via(f).runWith(Sink.seq).futureValue should ===(Seq(1, 1, 2, 2, 3, 3))</code></pre>
+<p>If you try to write this for <code>SubFlow</code>, though, you will run into the same issue as when trying to unify the two solutions above, only on a higher level (the type constructors needed for that unification would have rank two, meaning that some of their type arguments are type constructors themselves—when trying to extend the solution shown in the linked sketch the author encountered such a density of compiler StackOverflowErrors and IDE failures that he gave up).</p>
+<p>It is interesting to note that a simplified form of this problem has found its way into the <a href="https://github.com/lampepfl/dotty/pull/1186/files">dotty test suite</a>. Dotty is the development version of Scala on its way to Scala 3.</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/stream/stream-customize.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../stream/stream-dynamic.html" title="Dynamic stream handling" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Dynamic stream handling
+</span>
+</div>
+</a>
+<a href="../stream/futures-interop.html" title="Futures interop" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Futures interop
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

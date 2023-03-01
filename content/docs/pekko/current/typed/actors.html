@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="The Actor model, managing internal state and changing behavior in Apache Pekko Actors.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="The Actor model, managing internal state and changing behavior in Apache Pekko Actors.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Introduction to Actors · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Introduction to Actors
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html#introduction-to-actors" class="active page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/actors.html#introduction-to-actors" class="header">Introduction to Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/actors.html#pekko-actors" class="header">Pekko Actors</a></li>
+    <li><a href="../typed/actors.html#first-example" class="header">First example</a></li>
+    <li><a href="../typed/actors.html#a-more-complex-example" class="header">A More Complex Example</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/actors.html#introduction-to-actors" class="header">Introduction to Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/actors.html#pekko-actors" class="header">Pekko Actors</a></li>
+    <li><a href="../typed/actors.html#first-example" class="header">First example</a></li>
+    <li><a href="../typed/actors.html#a-more-complex-example" class="header">A More Complex Example</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#introduction-to-actors" name="introduction-to-actors" class="anchor"><span class="anchor-link"></span></a>Introduction to Actors</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../actors.html">Classic Actors</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Pekko Actors, add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "org.apache.pekko" %% "pekko-actor-typed" % PekkoVersion,
+  "org.apache.pekko" %% "pekko-actor-testkit-typed" % PekkoVersion % Test
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor-testkit-typed_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor-typed_${versions.ScalaBinary}"
+  testImplementation "org.apache.pekko:pekko-actor-testkit-typed_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>Both the Java and Scala DSLs of Pekko modules are bundled in the same JAR. For a smooth development experience, when using an IDE such as Eclipse or IntelliJ, you can disable the auto-importer from suggesting <code>javadsl</code> imports when working in Scala, or viceversa. See <a href="../additional/ide.html">IDE Tips</a>. </p>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Actors (typed)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-actor-typed</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.actor.typed</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/actor/typed/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/actor/typed/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#pekko-actors" name="pekko-actors" class="anchor"><span class="anchor-link"></span></a>Pekko Actors</h2>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a> provides a higher level of abstraction for writing concurrent and distributed systems. It alleviates the developer from having to deal with explicit locking and thread management, making it easier to write correct concurrent and parallel systems. Actors were defined in the 1973 paper by Carl Hewitt but have been popularized by the Erlang language, and used for example at Ericsson with great success to build highly concurrent and reliable telecom systems. The API of Pekko’s Actors has borrowed some of its syntax from Erlang.</p>
+
+<h2><a href="#first-example" name="first-example" class="anchor"><span class="anchor-link"></span></a>First example</h2>
+
+<p>If you are new to Pekko you might want to start with reading the <a href="guide/introduction.html">Getting Started Guide</a> and then come back here to learn more. </p>
+
+<p>It is helpful to become familiar with the foundational, external and internal ecosystem of your Actors, to see what you can leverage and customize as needed, see <a href="../general/actor-systems.html">Actor Systems</a> and <a href="../general/addressing.html">Actor References, Paths and Addresses</a>.</p>
+
+<p>As discussed in <a href="../general/actor-systems.html">Actor Systems</a> Actors are about sending messages between independent units of computation, but what does that look like?</p>
+
+<p>In all of the following these imports are assumed:</p>
+
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L18-L21" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.scaladsl.LoggerOps
+import pekko.actor.typed.{ ActorRef, ActorSystem, Behavior }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L17-L24" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.actor.typed.ActorRef;
+import org.apache.pekko.actor.typed.ActorSystem;
+import org.apache.pekko.actor.typed.Behavior;
+import org.apache.pekko.actor.typed.javadsl.AbstractBehavior;
+import org.apache.pekko.actor.typed.javadsl.ActorContext;
+import org.apache.pekko.actor.typed.javadsl.Behaviors;
+import org.apache.pekko.actor.typed.javadsl.Receive;
+</code></pre></dd>
+</dl>
+<p>With these in place we can define our first Actor, and it will say hello!</p>
+<p><img src="./images/hello-world1.png" alt="hello-world1.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L41-L55" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object HelloWorld {
+  final case class Greet(whom: String, replyTo: ActorRef[Greeted])
+  final case class Greeted(whom: String, from: ActorRef[Greet])
+
+  def apply(): Behavior[Greet] = Behaviors.receive { (context, message) =&gt;
+    context.log.info(&quot;Hello {}!&quot;, message.whom)
+    message.replyTo ! Greeted(message.whom, context.self)
+    Behaviors.same
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L40-L80" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class HelloWorld extends AbstractBehavior&lt;HelloWorld.Greet&gt; {
+
+  public static final class Greet {
+    public final String whom;
+    public final ActorRef&lt;Greeted&gt; replyTo;
+
+    public Greet(String whom, ActorRef&lt;Greeted&gt; replyTo) {
+      this.whom = whom;
+      this.replyTo = replyTo;
+    }
+  }
+
+  public static final class Greeted {
+    public final String whom;
+    public final ActorRef&lt;Greet&gt; from;
+
+    public Greeted(String whom, ActorRef&lt;Greet&gt; from) {
+      this.whom = whom;
+      this.from = from;
+    }
+  }
+
+  public static Behavior&lt;Greet&gt; create() {
+    return Behaviors.setup(HelloWorld::new);
+  }
+
+  private HelloWorld(ActorContext&lt;Greet&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;Greet&gt; createReceive() {
+    return newReceiveBuilder().onMessage(Greet.class, this::onGreet).build();
+  }
+
+  private Behavior&lt;Greet&gt; onGreet(Greet command) {
+    getContext().getLog().info(&quot;Hello {}!&quot;, command.whom);
+    command.replyTo.tell(new Greeted(command.whom, getContext().getSelf()));
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>This small piece of code defines two message types, one for commanding the Actor to greet someone and one that the Actor will use to confirm that it has done so. The <code>Greet</code> type contains not only the information of whom to greet, it also holds an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that the sender of the message supplies so that the <code>HelloWorld</code> Actor can send back the confirmation message.</p>
+<p>The behavior of the Actor is defined as the <code>Greeter</code> with the help of the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2,org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>receive</code></a></span> behavior factory. Processing the next message then results in a new behavior that can potentially be different from this one. State is updated by returning a new behavior that holds the new immutable state. In this case we don&rsquo;t need to update any state, so we return <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#same()" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>same</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#same[T]:org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>same</code></a></span>, which means the next behavior is &ldquo;the same as the current one&rdquo;.</p>
+<p>The type of the messages handled by this behavior is declared to be of class <code>Greet</code><span class="group-java">.</span><span class="group-scala">, meaning that <code>message</code> argument is also typed as such. This is why we can access the <code>whom</code> and <code>replyTo</code> members without needing to use a pattern match.</span> Typically, an actor handles more than one specific message type where all of them directly or indirectly <span class="group-scala"><code>extend</code></span><span class="group-java"><code>implement</code></span> a common <span class="group-scala"><code>trait</code></span><span class="group-java"><code>interface</code></span>.</p>
+<p>On the last line we see the <code>HelloWorld</code> Actor send a message to another Actor, which is done using the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/ActorRef.html#tell(msg:T):Unit" title="pekko.actor.typed.ActorRef"><code>!</code></a> operator (pronounced “bang” or “tell”)</span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/ActorRef.html#tell(T)" title="pekko.actor.typed.ActorRef"><code>tell</code></a> method</span>. It is an asynchronous operation that doesn&rsquo;t block the caller&rsquo;s thread.</p>
+<p>Since the <code>replyTo</code> address is declared to be of type <span class="group-scala"><code>ActorRef[Greeted]</code></span><span class="group-java"><code>ActorRef&lt;Greeted&gt;</code></span>, the compiler will only permit us to send messages of this type, other usage will be a compiler error.</p>
+<p>The accepted message types of an Actor together with all reply types defines the protocol spoken by this Actor; in this case it is a simple request–reply protocol but Actors can model arbitrarily complex protocols when needed. The protocol is bundled together with the behavior that implements it in a nicely wrapped scope—the <code>HelloWorld</code> <span class="group-scala">object</span><span class="group-java">class</span>.</p>
+<p>As Carl Hewitt said, one Actor is no Actor — it would be quite lonely with nobody to talk to. We need another Actor that interacts with the <code>Greeter</code>. Let&rsquo;s make a <code>HelloWorldBot</code> that receives the reply from the <code>Greeter</code> and sends a number of additional greeting messages and collect the replies until a given max number of messages have been reached.</p>
+<p><img src="./images/hello-world2.png" alt="hello-world2.png" /></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L59-L81" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object HelloWorldBot {
+
+  def apply(max: Int): Behavior[HelloWorld.Greeted] = {
+    bot(0, max)
+  }
+
+  private def bot(greetingCounter: Int, max: Int): Behavior[HelloWorld.Greeted] =
+    Behaviors.receive { (context, message) =&gt;
+      val n = greetingCounter + 1
+      context.log.info2(&quot;Greeting {} for {}&quot;, n, message.whom)
+      if (n == max) {
+        Behaviors.stopped
+      } else {
+        message.from ! HelloWorld.Greet(message.whom, context.self)
+        bot(n, max)
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L84-L113" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class HelloWorldBot extends AbstractBehavior&lt;HelloWorld.Greeted&gt; {
+
+  public static Behavior&lt;HelloWorld.Greeted&gt; create(int max) {
+    return Behaviors.setup(context -&gt; new HelloWorldBot(context, max));
+  }
+
+  private final int max;
+  private int greetingCounter;
+
+  private HelloWorldBot(ActorContext&lt;HelloWorld.Greeted&gt; context, int max) {
+    super(context);
+    this.max = max;
+  }
+
+  @Override
+  public Receive&lt;HelloWorld.Greeted&gt; createReceive() {
+    return newReceiveBuilder().onMessage(HelloWorld.Greeted.class, this::onGreeted).build();
+  }
+
+  private Behavior&lt;HelloWorld.Greeted&gt; onGreeted(HelloWorld.Greeted message) {
+    greetingCounter++;
+    getContext().getLog().info(&quot;Greeting {} for {}&quot;, greetingCounter, message.whom);
+    if (greetingCounter == max) {
+      return Behaviors.stopped();
+    } else {
+      message.from.tell(new HelloWorld.Greet(message.whom, getContext().getSelf()));
+      return this;
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p><span class="group-scala">Note how this Actor manages the counter by changing the behavior for each <code>Greeted</code> reply rather than using any variables.</span><span class="group-java">Note how this Actor manages the counter with an instance variable.</span> No concurrency guards such as <code>synchronized</code> or <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="java.util.concurrent.atomic.AtomicInteger"><code>AtomicInteger</code></a> are needed since an actor instance processes one message at a time.</p>
+<p>A third actor spawns the <code>Greeter</code> and the <code>HelloWorldBot</code> and starts the interaction between those.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L85-L109" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object HelloWorldMain {
+
+  final case class SayHello(name: String)
+
+  def apply(): Behavior[SayHello] =
+    Behaviors.setup { context =&gt;
+      val greeter = context.spawn(HelloWorld(), &quot;greeter&quot;)
+
+      Behaviors.receiveMessage { message =&gt;
+        val replyTo = context.spawn(HelloWorldBot(max = 3), message.name)
+        greeter ! HelloWorld.Greet(message.name, replyTo)
+        Behaviors.same
+      }
+    }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L118-L154" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class HelloWorldMain extends AbstractBehavior&lt;HelloWorldMain.SayHello&gt; {
+
+  public static class SayHello {
+    public final String name;
+
+    public SayHello(String name) {
+      this.name = name;
+    }
+  }
+
+  public static Behavior&lt;SayHello&gt; create() {
+    return Behaviors.setup(HelloWorldMain::new);
+  }
+
+  private final ActorRef&lt;HelloWorld.Greet&gt; greeter;
+
+  private HelloWorldMain(ActorContext&lt;SayHello&gt; context) {
+    super(context);
+    greeter = context.spawn(HelloWorld.create(), &quot;greeter&quot;);
+  }
+
+  @Override
+  public Receive&lt;SayHello&gt; createReceive() {
+    return newReceiveBuilder().onMessage(SayHello.class, this::onStart).build();
+  }
+
+  private Behavior&lt;SayHello&gt; onStart(SayHello command) {
+    ActorRef&lt;HelloWorld.Greeted&gt; replyTo =
+        getContext().spawn(HelloWorldBot.create(3), command.name);
+    greeter.tell(new HelloWorld.Greet(command.name, replyTo));
+    return this;
+  }
+}</code></pre></dd>
+</dl>
+<p>Now we want to try out this Actor, so we must start an ActorSystem to host it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L258-L264" target="_blank" title="Go to snippet source">source</a><code class="language-scala"><br/>val system: ActorSystem[HelloWorldMain.SayHello] =
+  ActorSystem(HelloWorldMain(), &quot;hello&quot;)
+
+system ! HelloWorldMain.SayHello(&quot;World&quot;)
+system ! HelloWorldMain.SayHello(&quot;Pekko&quot;)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L200-L204" target="_blank" title="Go to snippet source">source</a><code class="language-java">final ActorSystem&lt;HelloWorldMain.SayHello&gt; system =
+    ActorSystem.create(HelloWorldMain.create(), &quot;hello&quot;);
+
+system.tell(new HelloWorldMain.SayHello(&quot;World&quot;));
+system.tell(new HelloWorldMain.SayHello(&quot;Pekko&quot;));</code></pre></dd>
+</dl>
+<p>We start an Actor system from the defined <code>HelloWorldMain</code> behavior and send two <code>SayHello</code> messages that will kick-off the interaction between two separate <code>HelloWorldBot</code> actors and the single <code>Greeter</code> actor.</p>
+<p>An application normally consists of a single <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span>, running many actors, per JVM. </p>
+<p>The console output may look like this:</p>
+<pre><code>[INFO] [03/13/2018 15:50:05.814] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/greeter] Hello World!
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/greeter] Hello Pekko!
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-2] [pekko://hello/user/World] Greeting 1 for World
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/Pekko] Greeting 1 for Pekko
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-5] [pekko://hello/user/greeter] Hello World!
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-5] [pekko://hello/user/greeter] Hello Pekko!
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/World] Greeting 2 for World
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-5] [pekko://hello/user/greeter] Hello World!
+[INFO] [03/13/2018 15:50:05.815] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/Pekko] Greeting 2 for Pekko
+[INFO] [03/13/2018 15:50:05.816] [hello-pekko.actor.default-dispatcher-5] [pekko://hello/user/greeter] Hello Pekko!
+[INFO] [03/13/2018 15:50:05.816] [hello-pekko.actor.default-dispatcher-4] [pekko://hello/user/World] Greeting 3 for World
+[INFO] [03/13/2018 15:50:05.816] [hello-pekko.actor.default-dispatcher-6] [pekko://hello/user/Pekko] Greeting 3 for Pekko
+</code></pre>
+<p>You will also need to add a <a href="logging.html">logging dependency</a> to see that output when running.</p><div class="group-scala">
+<h4><a href="#here-is-another-example-that-you-can-edit-and-run-in-the-browser-" name="here-is-another-example-that-you-can-edit-and-run-in-the-browser-" class="anchor"><span class="anchor-link"></span></a>Here is another example that you can edit and run in the browser:</h4>
+
+        <div data-scalafiddle="true"    data-template="Pekko"   data-minheight="400px"  data-layout="v75" >
+          <pre class="prettyprint"><code class="language-scala">import org.apache.pekko
+import pekko.actor.typed.scaladsl.Behaviors
+import pekko.actor.typed.scaladsl.LoggerOps
+import pekko.actor.typed.{ ActorRef, ActorSystem, Behavior }
+
+object HelloWorld {
+  final case class Greet(whom: String, replyTo: ActorRef[Greeted])
+  final case class Greeted(whom: String, from: ActorRef[Greet])
+
+  def apply(): Behavior[Greet] = Behaviors.receive { (context, message) =>
+    println(s"Hello ${message.whom}!")
+    message.replyTo ! Greeted(message.whom, context.self)
+    Behaviors.same
+  }
+}
+
+object HelloWorldBot {
+
+  def apply(max: Int): Behavior[HelloWorld.Greeted] = {
+    bot(0, max)
+  }
+
+  private def bot(greetingCounter: Int, max: Int): Behavior[HelloWorld.Greeted] =
+    Behaviors.receive { (context, message) =>
+      val n = greetingCounter + 1
+      println(s"Greeting $n for ${message.whom}")
+      if (n == max) {
+        Behaviors.stopped
+      } else {
+        message.from ! HelloWorld.Greet(message.whom, context.self)
+        bot(n, max)
+      }
+    }
+}
+
+object HelloWorldMain {
+
+  final case class SayHello(name: String)
+
+  def apply(): Behavior[SayHello] =
+    Behaviors.setup { context =>
+      val greeter = context.spawn(HelloWorld(), "greeter")
+
+      Behaviors.receiveMessage { message =>
+        val replyTo = context.spawn(HelloWorldBot(max = 3), message.name)
+        greeter ! HelloWorld.Greet(message.name, replyTo)
+        Behaviors.same
+      }
+    }
+
+  def main(args: Array[String]): Unit = {
+    val system: ActorSystem[HelloWorldMain.SayHello] =
+      ActorSystem(HelloWorldMain(), "hello")
+
+    system ! HelloWorldMain.SayHello("World")
+    system ! HelloWorldMain.SayHello("Pekko")
+  }
+}
+
+// This is run by ScalaFiddle
+HelloWorldMain.main(Array.empty)</code></pre>
+        </div>
+        <script defer="true" src="https://embed.scalafiddle.io/integration.js"></script>
+        </div>
+<h2><a href="#a-more-complex-example" name="a-more-complex-example" class="anchor"><span class="anchor-link"></span></a>A More Complex Example</h2>
+<p>The next example is more realistic and demonstrates some important patterns:</p>
+<ul>
+  <li>Using <span class="group-scala">a sealed trait and case class/objects</span><span class="group-java">an interface and classes implementing that interface</span> to represent multiple messages an actor can receive</li>
+  <li>Handle sessions by using child actors</li>
+  <li>Handling state by changing behavior</li>
+  <li>Using multiple actors to represent different parts of a protocol in a type safe way</li>
+</ul>
+<p><img src="./images/chat-room.png" alt="chat-room.png" /></p>
+<h3><a href="#functional-style" name="functional-style" class="anchor"><span class="anchor-link"></span></a>Functional Style</h3>
+<p>First we will show this example in a functional style, and then the same example is shown with an <a href="actors.html#object-oriented-style">Object-oriented style</a>. Which style you choose to use is a matter of taste and both styles can be mixed depending on which is best for a specific actor. Considerations for the choice is provided in the <a href="style-guide.html#functional-versus-object-oriented-style">Style Guide</a>.</p>
+<p>Consider an Actor that runs a chat room: client Actors may connect by sending a message that contains their screen name and then they can post messages. The chat room Actor will disseminate all posted messages to all currently connected client Actors. The protocol definition could look like the following:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L143-L199" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object ChatRoom {
+  sealed trait RoomCommand
+  final case class GetSession(screenName: String, replyTo: ActorRef[SessionEvent]) extends RoomCommand
+
+  sealed trait SessionEvent
+  final case class SessionGranted(handle: ActorRef[PostMessage]) extends SessionEvent
+  final case class SessionDenied(reason: String) extends SessionEvent
+  final case class MessagePosted(screenName: String, message: String) extends SessionEvent
+
+  sealed trait SessionCommand
+  final case class PostMessage(message: String) extends SessionCommand
+  private final case class NotifyClient(message: MessagePosted) extends SessionCommand
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L216-L285" target="_blank" title="Go to snippet source">source</a><code class="language-java">static interface RoomCommand {}
+
+public static final class GetSession implements RoomCommand {
+  public final String screenName;
+  public final ActorRef&lt;SessionEvent&gt; replyTo;
+
+  public GetSession(String screenName, ActorRef&lt;SessionEvent&gt; replyTo) {
+    this.screenName = screenName;
+    this.replyTo = replyTo;
+  }
+}
+
+interface SessionEvent {}
+
+public static final class SessionGranted implements SessionEvent {
+  public final ActorRef&lt;PostMessage&gt; handle;
+
+  public SessionGranted(ActorRef&lt;PostMessage&gt; handle) {
+    this.handle = handle;
+  }
+}
+
+public static final class SessionDenied implements SessionEvent {
+  public final String reason;
+
+  public SessionDenied(String reason) {
+    this.reason = reason;
+  }
+}
+
+public static final class MessagePosted implements SessionEvent {
+  public final String screenName;
+  public final String message;
+
+  public MessagePosted(String screenName, String message) {
+    this.screenName = screenName;
+    this.message = message;
+  }
+}
+
+interface SessionCommand {}
+
+public static final class PostMessage implements SessionCommand {
+  public final String message;
+
+  public PostMessage(String message) {
+    this.message = message;
+  }
+}
+
+private static final class NotifyClient implements SessionCommand {
+  final MessagePosted message;
+
+  NotifyClient(MessagePosted message) {
+    this.message = message;
+  }
+}</code></pre></dd>
+</dl>
+<p>Initially the client Actors only get access to an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef[GetSession]</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef&lt;GetSession&gt;</code></a></span> which allows them to make the first step. Once a client’s session has been established it gets a <code>SessionGranted</code> message that contains a <code>handle</code> to unlock the next protocol step, posting messages. The <code>PostMessage</code> command will need to be sent to this particular address that represents the session that has been added to the chat room. The other aspect of a session is that the client has revealed its own address, via the <code>replyTo</code> argument, so that subsequent <code>MessagePosted</code> events can be sent to it.</p>
+<p>This illustrates how Actors can express more than just the equivalent of method calls on Java objects. The declared message types and their contents describe a full protocol that can involve multiple Actors and that can evolve over multiple steps. Here&rsquo;s the implementation of the chat room protocol:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L143-L199" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object ChatRoom {
+  private final case class PublishSessionMessage(screenName: String, message: String) extends RoomCommand
+
+  def apply(): Behavior[RoomCommand] =
+    chatRoom(List.empty)
+
+  private def chatRoom(sessions: List[ActorRef[SessionCommand]]): Behavior[RoomCommand] =
+    Behaviors.receive { (context, message) =&gt;
+      message match {
+        case GetSession(screenName, client) =&gt;
+          // create a child actor for further interaction with the client
+          val ses = context.spawn(
+            session(context.self, screenName, client),
+            name = URLEncoder.encode(screenName, StandardCharsets.UTF_8.name))
+          client ! SessionGranted(ses)
+          chatRoom(ses :: sessions)
+        case PublishSessionMessage(screenName, message) =&gt;
+          val notification = NotifyClient(MessagePosted(screenName, message))
+          sessions.foreach(_ ! notification)
+          Behaviors.same
+      }
+    }
+
+  private def session(
+      room: ActorRef[PublishSessionMessage],
+      screenName: String,
+      client: ActorRef[SessionEvent]): Behavior[SessionCommand] =
+    Behaviors.receiveMessage {
+      case PostMessage(message) =&gt;
+        // from client, publish to others via the room
+        room ! PublishSessionMessage(screenName, message)
+        Behaviors.same
+      case NotifyClient(message) =&gt;
+        // published from the room
+        client ! message
+        Behaviors.same
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L212-L353" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ChatRoom {
+  private static final class PublishSessionMessage implements RoomCommand {
+    public final String screenName;
+    public final String message;
+
+    public PublishSessionMessage(String screenName, String message) {
+      this.screenName = screenName;
+      this.message = message;
+    }
+  }
+
+  public static Behavior&lt;RoomCommand&gt; create() {
+    return Behaviors.setup(
+        ctx -&gt; new ChatRoom(ctx).chatRoom(new ArrayList&lt;ActorRef&lt;SessionCommand&gt;&gt;()));
+  }
+
+  private final ActorContext&lt;RoomCommand&gt; context;
+
+  private ChatRoom(ActorContext&lt;RoomCommand&gt; context) {
+    this.context = context;
+  }
+
+  private Behavior&lt;RoomCommand&gt; chatRoom(List&lt;ActorRef&lt;SessionCommand&gt;&gt; sessions) {
+    return Behaviors.receive(RoomCommand.class)
+        .onMessage(GetSession.class, getSession -&gt; onGetSession(sessions, getSession))
+        .onMessage(PublishSessionMessage.class, pub -&gt; onPublishSessionMessage(sessions, pub))
+        .build();
+  }
+
+  private Behavior&lt;RoomCommand&gt; onGetSession(
+      List&lt;ActorRef&lt;SessionCommand&gt;&gt; sessions, GetSession getSession)
+      throws UnsupportedEncodingException {
+    ActorRef&lt;SessionEvent&gt; client = getSession.replyTo;
+    ActorRef&lt;SessionCommand&gt; ses =
+        context.spawn(
+            Session.create(context.getSelf(), getSession.screenName, client),
+            URLEncoder.encode(getSession.screenName, StandardCharsets.UTF_8.name()));
+    // narrow to only expose PostMessage
+    client.tell(new SessionGranted(ses.narrow()));
+    List&lt;ActorRef&lt;SessionCommand&gt;&gt; newSessions = new ArrayList&lt;&gt;(sessions);
+    newSessions.add(ses);
+    return chatRoom(newSessions);
+  }
+
+  private Behavior&lt;RoomCommand&gt; onPublishSessionMessage(
+      List&lt;ActorRef&lt;SessionCommand&gt;&gt; sessions, PublishSessionMessage pub) {
+    NotifyClient notification =
+        new NotifyClient((new MessagePosted(pub.screenName, pub.message)));
+    sessions.forEach(s -&gt; s.tell(notification));
+    return Behaviors.same();
+  }
+
+  static class Session {
+    static Behavior&lt;ChatRoom.SessionCommand&gt; create(
+        ActorRef&lt;RoomCommand&gt; room, String screenName, ActorRef&lt;SessionEvent&gt; client) {
+      return Behaviors.receive(ChatRoom.SessionCommand.class)
+          .onMessage(PostMessage.class, post -&gt; onPostMessage(room, screenName, post))
+          .onMessage(NotifyClient.class, notification -&gt; onNotifyClient(client, notification))
+          .build();
+    }
+
+    private static Behavior&lt;SessionCommand&gt; onPostMessage(
+        ActorRef&lt;RoomCommand&gt; room, String screenName, PostMessage post) {
+      // from client, publish to others via the room
+      room.tell(new PublishSessionMessage(screenName, post.message));
+      return Behaviors.same();
+    }
+
+    private static Behavior&lt;SessionCommand&gt; onNotifyClient(
+        ActorRef&lt;SessionEvent&gt; client, NotifyClient notification) {
+      // published from the room
+      client.tell(notification.message);
+      return Behaviors.same();
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>The state is managed by changing behavior rather than using any variables.</p>
+<p>When a new <code>GetSession</code> command comes in we add that client to the list that is in the returned behavior. Then we also need to create the session’s <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that will be used to post messages. In this case we want to create a very simple Actor that repackages the <code>PostMessage</code> command into a <code>PublishSessionMessage</code> command which also includes the screen name.</p>
+<p>The behavior that we declare here can handle both subtypes of <code>RoomCommand</code>. <code>GetSession</code> has been explained already and the <code>PublishSessionMessage</code> commands coming from the session Actors will trigger the dissemination of the contained chat room message to all connected clients. But we do not want to give the ability to send <code>PublishSessionMessage</code> commands to arbitrary clients, we reserve that right to the internal session actors we create—otherwise clients could pose as completely different screen names (imagine the <code>GetSession</code> protocol to include authentication information to further secure this). Therefore <code>PublishSessionMessage</code> has <code>private</code> visibility and can&rsquo;t be created outside the <code>ChatRoom</code> <span class="group-scala">object</span><span class="group-java">class</span>.</p>
+<p>If we did not care about securing the correspondence between a session and a screen name then we could change the protocol such that <code>PostMessage</code> is removed and all clients just get an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> to send to. In this case no session actor would be needed and we could use <span class="group-scala"><code>context.self</code></span><span class="group-java"><code>context.getSelf()</code></span>. The type-checks work out in that case because <span class="group-scala"><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef[-T]</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef&lt;-T&gt;</code></a></span></span><span class="group-java"><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef&lt;T&gt;</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef&lt;T&gt;</code></a></span></span> is contravariant in its type parameter, meaning that we can use a <span class="group-scala"><code>ActorRef[RoomCommand]</code></span><span class="group-java"><code>ActorRef&lt;RoomCommand&gt;</code></span> wherever an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> is needed—this makes sense because the former simply speaks more languages than the latter. The opposite would be problematic, so passing an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> where <span class="group-scala"><code>ActorRef[RoomCommand]</code></span><span class="group-java"><code>ActorRef&lt;RoomCommand&gt;</code></span> is required will lead to a type error.</p>
+<h4><a href="#trying-it-out" name="trying-it-out" class="anchor"><span class="anchor-link"></span></a>Trying it out</h4>
+<p>In order to see this chat room in action we need to write a client Actor that can use it:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L204-L224" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Gabbler {
+  import ChatRoom._
+
+  def apply(): Behavior[SessionEvent] =
+    Behaviors.setup { context =&gt;
+      Behaviors.receiveMessage {
+        case SessionGranted(handle) =&gt;
+          handle ! PostMessage(&quot;Hello World!&quot;)
+          Behaviors.same
+        case MessagePosted(screenName, message) =&gt;
+          context.log.info2(&quot;message has been posted by &#39;{}&#39;: {}&quot;, screenName, message)
+          Behaviors.stopped
+      }
+    }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L357-L392" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Gabbler {
+  public static Behavior&lt;ChatRoom.SessionEvent&gt; create() {
+    return Behaviors.setup(ctx -&gt; new Gabbler(ctx).behavior());
+  }
+
+  private final ActorContext&lt;ChatRoom.SessionEvent&gt; context;
+
+  private Gabbler(ActorContext&lt;ChatRoom.SessionEvent&gt; context) {
+    this.context = context;
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; behavior() {
+    return Behaviors.receive(ChatRoom.SessionEvent.class)
+        .onMessage(ChatRoom.SessionDenied.class, this::onSessionDenied)
+        .onMessage(ChatRoom.SessionGranted.class, this::onSessionGranted)
+        .onMessage(ChatRoom.MessagePosted.class, this::onMessagePosted)
+        .build();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onSessionDenied(ChatRoom.SessionDenied message) {
+    context.getLog().info(&quot;cannot start chat room session: {}&quot;, message.reason);
+    return Behaviors.stopped();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onSessionGranted(ChatRoom.SessionGranted message) {
+    message.handle.tell(new ChatRoom.PostMessage(&quot;Hello World!&quot;));
+    return Behaviors.same();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onMessagePosted(ChatRoom.MessagePosted message) {
+    context
+        .getLog()
+        .info(&quot;message has been posted by &#39;{}&#39;: {}&quot;, message.screenName, message.message);
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p>From this behavior we can create an Actor that will accept a chat room session, post a message, wait to see it published, and then terminate. The last step requires the ability to change behavior, we need to transition from the normal running behavior into the terminated state. This is why here we do not return <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#same()" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>same</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#same[T]:org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>same</code></a></span>, as above, but another special value <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#stopped()" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>stopped</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#stopped[T]:org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>stopped</code></a></span>.</p><div class="group-scala">
+<p>Since <code>SessionEvent</code> is a sealed trait the Scala compiler will warn us if we forget to handle one of the subtypes; in this case it reminded us that alternatively to <code>SessionGranted</code> we may also receive a <code>SessionDenied</code> event.</p></div>
+<p>Now to try things out we must start both a chat room and a gabbler and of course we do this inside an Actor system. Since there can be only one user guardian we could either start the chat room from the gabbler (which we don’t want—it complicates its logic) or the gabbler from the chat room (which is nonsensical) or we start both of them from a third Actor—our only sensible choice:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/IntroSpec.scala#L228-L246" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Main {
+  def apply(): Behavior[NotUsed] =
+    Behaviors.setup { context =&gt;
+      val chatRoom = context.spawn(ChatRoom(), &quot;chatroom&quot;)
+      val gabblerRef = context.spawn(Gabbler(), &quot;gabbler&quot;)
+      context.watch(gabblerRef)
+      chatRoom ! ChatRoom.GetSession(&quot;ol’ Gabbler&quot;, gabblerRef)
+
+      Behaviors.receiveSignal {
+        case (_, Terminated(_)) =&gt;
+          Behaviors.stopped
+      }
+    }
+
+  def main(args: Array[String]): Unit = {
+    ActorSystem(Main(), &quot;ChatRoomDemo&quot;)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/IntroTest.java#L396-L414" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Main {
+  public static Behavior&lt;Void&gt; create() {
+    return Behaviors.setup(
+        context -&gt; {
+          ActorRef&lt;ChatRoom.RoomCommand&gt; chatRoom = context.spawn(ChatRoom.create(), &quot;chatRoom&quot;);
+          ActorRef&lt;ChatRoom.SessionEvent&gt; gabbler = context.spawn(Gabbler.create(), &quot;gabbler&quot;);
+          context.watch(gabbler);
+          chatRoom.tell(new ChatRoom.GetSession(&quot;ol’ Gabbler&quot;, gabbler));
+
+          return Behaviors.receive(Void.class)
+              .onSignal(Terminated.class, sig -&gt; Behaviors.stopped())
+              .build();
+        });
+  }
+
+  public static void main(String[] args) {
+    ActorSystem.create(Main.create(), &quot;ChatRoomDemo&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<p>In good tradition we call the <code>Main</code> Actor what it is, it directly corresponds to the <code>main</code> method in a traditional Java application. This Actor will perform its job on its own accord, we do not need to send messages from the outside, so we declare it to be of type <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/NotUsed.html" title="pekko.NotUsed"><code>NotUsed</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Void.html" title="java.lang.Void"><code>Void</code></a></span>. Actors receive not only external messages, they also are notified of certain system events, so-called Signals. In order to get access to those we choose to implement this particular one using the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>receive</code></a></span> behavior decorator. The provided <code>onSignal</code> function will be invoked for signals (subclasses of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Signal.html" title="org.apache.pekko.actor.typed.Signal"><code>Signal</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Signal.html" title="org.apache.pekko.actor.typed.Signal"><code>Signal</code></a></span>) or the <code>onMessage</code> function for user messages.</p>
+<p>This particular <code>Main</code> Actor is created using <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span>, which is like a factory for a behavior. Creation of the behavior instance is deferred until the actor is started, as opposed to <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.receive</code></a></span> that creates the behavior instance immediately before the actor is running. The factory function in <code>setup</code> is passed the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span> as parameter and that can for example be used for spawning child actors. This <code>Main</code> Actor creates the chat room and the gabbler and the session between them is initiated, and when the gabbler is finished we will receive the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span> event due to having called <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#watch(org.apache.pekko.actor.typed.ActorRef)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>context.watch</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#watch[U](other:org.apache.pekko.actor.typed.ActorRef[U]):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>context.watch</code></a></span> for it. This allows us to shut down the Actor system: when the <code>Main</code> Actor terminates there is nothing more to do.</p>
+<p>Therefore after creating the Actor system with the <code>Main</code> Actor’s <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> we can let the <code>main</code> method return, the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> will continue running and the JVM alive until the root actor stops.</p>
+<h3><a href="#object-oriented-style" name="object-oriented-style" class="anchor"><span class="anchor-link"></span></a>Object-oriented style</h3>
+<p>The above sample used the functional programming style where you pass a function to a factory which then constructs a behavior, for stateful actors this means passing immutable state around as parameters and switching to a new behavior whenever you need to act on a changed state. An alternative way to express the same is a more object oriented style where a concrete class for the actor behavior is defined and mutable state is kept inside of it as fields.</p>
+<p>Which style you choose to use is a matter of taste and both styles can be mixed depending on which is best for a specific actor. Considerations for the choice is provided in the <a href="style-guide.html#functional-versus-object-oriented-style">Style Guide</a>.</p>
+<h4><a href="#abstractbehavior-api" name="abstractbehavior-api" class="anchor"><span class="anchor-link"></span></a>AbstractBehavior API</h4>
+<p>Defining a class based actor behavior starts with extending <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.javadsl.AbstractBehavior"><code>AbstractBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.scaladsl.AbstractBehavior"><code>AbstractBehavior</code></a></span><span class="group-java"><code>&lt;T&gt;</code></span><span class="group-scala"><code>[T]</code></span> where <code>T</code> is the type of messages the behavior will accept.</p>
+<p>Let&rsquo;s repeat the chat room sample from <a href="actors.html#a-more-complex-example">A more complex example above</a> but implemented using <code>AbstractBehavior</code>. The protocol for interacting with the actor looks the same:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/OOIntroSpec.scala#L37-L110" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object ChatRoom {
+  sealed trait RoomCommand
+  final case class GetSession(screenName: String, replyTo: ActorRef[SessionEvent]) extends RoomCommand
+
+  sealed trait SessionEvent
+  final case class SessionGranted(handle: ActorRef[PostMessage]) extends SessionEvent
+  final case class SessionDenied(reason: String) extends SessionEvent
+  final case class MessagePosted(screenName: String, message: String) extends SessionEvent
+
+  sealed trait SessionCommand
+  final case class PostMessage(message: String) extends SessionCommand
+  private final case class NotifyClient(message: MessagePosted) extends SessionCommand
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/OOIntroTest.java#L42-L111" target="_blank" title="Go to snippet source">source</a><code class="language-java">static interface RoomCommand {}
+
+public static final class GetSession implements RoomCommand {
+  public final String screenName;
+  public final ActorRef&lt;SessionEvent&gt; replyTo;
+
+  public GetSession(String screenName, ActorRef&lt;SessionEvent&gt; replyTo) {
+    this.screenName = screenName;
+    this.replyTo = replyTo;
+  }
+}
+
+static interface SessionEvent {}
+
+public static final class SessionGranted implements SessionEvent {
+  public final ActorRef&lt;PostMessage&gt; handle;
+
+  public SessionGranted(ActorRef&lt;PostMessage&gt; handle) {
+    this.handle = handle;
+  }
+}
+
+public static final class SessionDenied implements SessionEvent {
+  public final String reason;
+
+  public SessionDenied(String reason) {
+    this.reason = reason;
+  }
+}
+
+public static final class MessagePosted implements SessionEvent {
+  public final String screenName;
+  public final String message;
+
+  public MessagePosted(String screenName, String message) {
+    this.screenName = screenName;
+    this.message = message;
+  }
+}
+
+static interface SessionCommand {}
+
+public static final class PostMessage implements SessionCommand {
+  public final String message;
+
+  public PostMessage(String message) {
+    this.message = message;
+  }
+}
+
+private static final class NotifyClient implements SessionCommand {
+  final MessagePosted message;
+
+  NotifyClient(MessagePosted message) {
+    this.message = message;
+  }
+}</code></pre></dd>
+</dl>
+<p>Initially the client Actors only get access to an <span class="group-scala"><code>ActorRef[GetSession]</code></span><span class="group-java"><code>ActorRef&lt;GetSession&gt;</code></span> which allows them to make the first step. Once a client’s session has been established it gets a <code>SessionGranted</code> message that contains a <code>handle</code> to unlock the next protocol step, posting messages. The <code>PostMessage</code> command will need to be sent to this particular address that represents the session that has been added to the chat room. The other aspect of a session is that the client has revealed its own address, via the <code>replyTo</code> argument, so that subsequent <code>MessagePosted</code> events can be sent to it.</p>
+<p>This illustrates how Actors can express more than just the equivalent of method calls on Java objects. The declared message types and their contents describe a full protocol that can involve multiple Actors and that can evolve over multiple steps. Here&rsquo;s the <code>AbstractBehavior</code> implementation of the chat room protocol:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/OOIntroSpec.scala#L37-L110" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object ChatRoom {
+  private final case class PublishSessionMessage(screenName: String, message: String) extends RoomCommand
+
+  def apply(): Behavior[RoomCommand] =
+    Behaviors.setup(context =&gt; new ChatRoomBehavior(context))
+
+  class ChatRoomBehavior(context: ActorContext[RoomCommand]) extends AbstractBehavior[RoomCommand](context) {
+    private var sessions: List[ActorRef[SessionCommand]] = List.empty
+
+    override def onMessage(message: RoomCommand): Behavior[RoomCommand] = {
+      message match {
+        case GetSession(screenName, client) =&gt;
+          // create a child actor for further interaction with the client
+          val ses = context.spawn(
+            SessionBehavior(context.self, screenName, client),
+            name = URLEncoder.encode(screenName, StandardCharsets.UTF_8.name))
+          client ! SessionGranted(ses)
+          sessions = ses :: sessions
+          this
+        case PublishSessionMessage(screenName, message) =&gt;
+          val notification = NotifyClient(MessagePosted(screenName, message))
+          sessions.foreach(_ ! notification)
+          this
+      }
+    }
+  }
+
+  private object SessionBehavior {
+    def apply(
+        room: ActorRef[PublishSessionMessage],
+        screenName: String,
+        client: ActorRef[SessionEvent]): Behavior[SessionCommand] =
+      Behaviors.setup(ctx =&gt; new SessionBehavior(ctx, room, screenName, client))
+  }
+
+  private class SessionBehavior(
+      context: ActorContext[SessionCommand],
+      room: ActorRef[PublishSessionMessage],
+      screenName: String,
+      client: ActorRef[SessionEvent])
+      extends AbstractBehavior[SessionCommand](context) {
+
+    override def onMessage(msg: SessionCommand): Behavior[SessionCommand] =
+      msg match {
+        case PostMessage(message) =&gt;
+          // from client, publish to others via the room
+          room ! PublishSessionMessage(screenName, message)
+          Behaviors.same
+        case NotifyClient(message) =&gt;
+          // published from the room
+          client ! message
+          Behaviors.same
+      }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/OOIntroTest.java#L39-L199" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class ChatRoom {
+  private static final class PublishSessionMessage implements RoomCommand {
+    public final String screenName;
+    public final String message;
+
+    public PublishSessionMessage(String screenName, String message) {
+      this.screenName = screenName;
+      this.message = message;
+    }
+  }
+
+  public static Behavior&lt;RoomCommand&gt; create() {
+    return Behaviors.setup(ChatRoomBehavior::new);
+  }
+
+  public static class ChatRoomBehavior extends AbstractBehavior&lt;RoomCommand&gt; {
+    final List&lt;ActorRef&lt;SessionCommand&gt;&gt; sessions = new ArrayList&lt;&gt;();
+
+    private ChatRoomBehavior(ActorContext&lt;RoomCommand&gt; context) {
+      super(context);
+    }
+
+    @Override
+    public Receive&lt;RoomCommand&gt; createReceive() {
+      ReceiveBuilder&lt;RoomCommand&gt; builder = newReceiveBuilder();
+
+      builder.onMessage(GetSession.class, this::onGetSession);
+      builder.onMessage(PublishSessionMessage.class, this::onPublishSessionMessage);
+
+      return builder.build();
+    }
+
+    private Behavior&lt;RoomCommand&gt; onGetSession(GetSession getSession)
+        throws UnsupportedEncodingException {
+      ActorRef&lt;SessionEvent&gt; client = getSession.replyTo;
+      ActorRef&lt;SessionCommand&gt; ses =
+          getContext()
+              .spawn(
+                  SessionBehavior.create(getContext().getSelf(), getSession.screenName, client),
+                  URLEncoder.encode(getSession.screenName, StandardCharsets.UTF_8.name()));
+      // narrow to only expose PostMessage
+      client.tell(new SessionGranted(ses.narrow()));
+      sessions.add(ses);
+      return this;
+    }
+
+    private Behavior&lt;RoomCommand&gt; onPublishSessionMessage(PublishSessionMessage pub) {
+      NotifyClient notification =
+          new NotifyClient((new MessagePosted(pub.screenName, pub.message)));
+      sessions.forEach(s -&gt; s.tell(notification));
+      return this;
+    }
+  }
+
+  static class SessionBehavior extends AbstractBehavior&lt;ChatRoom.SessionCommand&gt; {
+    private final ActorRef&lt;RoomCommand&gt; room;
+    private final String screenName;
+    private final ActorRef&lt;SessionEvent&gt; client;
+
+    public static Behavior&lt;ChatRoom.SessionCommand&gt; create(
+        ActorRef&lt;RoomCommand&gt; room, String screenName, ActorRef&lt;SessionEvent&gt; client) {
+      return Behaviors.setup(context -&gt; new SessionBehavior(context, room, screenName, client));
+    }
+
+    private SessionBehavior(
+        ActorContext&lt;ChatRoom.SessionCommand&gt; context,
+        ActorRef&lt;RoomCommand&gt; room,
+        String screenName,
+        ActorRef&lt;SessionEvent&gt; client) {
+      super(context);
+      this.room = room;
+      this.screenName = screenName;
+      this.client = client;
+    }
+
+    @Override
+    public Receive&lt;SessionCommand&gt; createReceive() {
+      return newReceiveBuilder()
+          .onMessage(PostMessage.class, this::onPostMessage)
+          .onMessage(NotifyClient.class, this::onNotifyClient)
+          .build();
+    }
+
+    private Behavior&lt;SessionCommand&gt; onPostMessage(PostMessage post) {
+      // from client, publish to others via the room
+      room.tell(new PublishSessionMessage(screenName, post.message));
+      return Behaviors.same();
+    }
+
+    private Behavior&lt;SessionCommand&gt; onNotifyClient(NotifyClient notification) {
+      // published from the room
+      client.tell(notification.message);
+      return Behaviors.same();
+    }
+  }
+}</code></pre></dd>
+</dl>
+<p>The state is managed through fields in the class, just like with a regular object oriented class. As the state is mutable, we never return a different behavior from the message logic, but can return the <code>AbstractBehavior</code> instance itself (<code>this</code>) as a behavior to use for processing the next message coming in. We could also return <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#same()" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.same</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#same[T]:org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.same</code></a></span> to achieve the same.</p>
+<p><span class="group-java">In this sample we make separate statements for creating the behavior builder, but it also returns the builder itself from each step so a more fluent behavior definition style is also possible. What you should prefer depends on how big the set of messages the actor accepts is.</span></p>
+<p>It is also possible to return a new different <code>AbstractBehavior</code>, for example to represent a different state in a finite state machine (FSM), or use one of the functional behavior factories to combine the object oriented with the functional style for different parts of the lifecycle of the same Actor behavior.</p>
+<p>When a new <code>GetSession</code> command comes in we add that client to the list of current sessions. Then we also need to create the session’s <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span> that will be used to post messages. In this case we want to create a very simple Actor that repackages the <code>PostMessage</code> command into a <code>PublishSessionMessage</code> command which also includes the screen name.</p>
+<p>To implement the logic where we spawn a child for the session we need access to the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span>. This is injected as a constructor parameter upon creation of the behavior, note how we combine the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.javadsl.AbstractBehavior"><code>AbstractBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/AbstractBehavior.html" title="org.apache.pekko.actor.typed.scaladsl.AbstractBehavior"><code>AbstractBehavior</code></a></span> with <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span> to do this in the <span class="group-scala"><code>apply</code></span><span class="group-java"><code>create</code></span> factory method.</p>
+<p>The behavior that we declare here can handle both subtypes of <code>RoomCommand</code>. <code>GetSession</code> has been explained already and the <code>PublishSessionMessage</code> commands coming from the session Actors will trigger the dissemination of the contained chat room message to all connected clients. But we do not want to give the ability to send <code>PublishSessionMessage</code> commands to arbitrary clients, we reserve that right to the internal session actors we create—otherwise clients could pose as completely different screen names (imagine the <code>GetSession</code> protocol to include authentication information to further secure this). Therefore <code>PublishSessionMessage</code> has <code>private</code> visibility and can&rsquo;t be created outside the <code>ChatRoom</code> <span class="group-scala">object</span><span class="group-java">class</span>.</p>
+<p>If we did not care about securing the correspondence between a session and a screen name then we could change the protocol such that <code>PostMessage</code> is removed and all clients just get an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> to send to. In this case no session actor would be needed and we could use <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#self:org.apache.pekko.actor.typed.ActorRef[T]" title="pekko.actor.typed.scaladsl.ActorContext"><code>context.self</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/actor/typed/javadsl/ActorContext.html#getSelf()" title="pekko.actor.typed.javadsl.ActorContext"><code>context.getSelf()</code></a></span>. The type-checks work out in that case because <span class="group-scala"><code>ActorRef[-T]</code></span><span class="group-java"><code>ActorRef&lt;T&gt;</code></span> is contravariant in its type parameter, meaning that we can use a <span class="group-scala"><code>ActorRef[RoomCommand]</code></span><span class="group-java"><code>ActorRef&lt;RoomCommand&gt;</code></span> wherever an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> is needed—this makes sense because the former simply speaks more languages than the latter. The opposite would be problematic, so passing an <span class="group-scala"><code>ActorRef[PublishSessionMessage]</code></span><span class="group-java"><code>ActorRef&lt;PublishSessionMessage&gt;</code></span> where <span class="group-scala"><code>ActorRef[RoomCommand]</code></span><span class="group-java"><code>ActorRef&lt;RoomCommand&gt;</code></span> is required will lead to a type error.</p>
+<h4><a href="#try-it-out" name="try-it-out" class="anchor"><span class="anchor-link"></span></a>Try it out</h4>
+<p>In order to see this chat room in action we need to write a client Actor that can use it <span class="group-scala">, for this stateless actor it doesn&rsquo;t make much sense to use the <code>AbstractBehavior</code> so let&rsquo;s just reuse the functional style gabbler from the sample above</span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/OOIntroSpec.scala#L115-L131" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Gabbler {
+  import ChatRoom._
+
+  def apply(): Behavior[SessionEvent] =
+    Behaviors.setup { context =&gt;
+      Behaviors.receiveMessage {
+        case SessionDenied(reason) =&gt;
+          context.log.info(&quot;cannot start chat room session: {}&quot;, reason)
+          Behaviors.stopped
+        case SessionGranted(handle) =&gt;
+          handle ! PostMessage(&quot;Hello World!&quot;)
+          Behaviors.same
+        case MessagePosted(screenName, message) =&gt;
+          context.log.info2(&quot;message has been posted by &#39;{}&#39;: {}&quot;, screenName, message)
+          Behaviors.stopped
+      }
+    }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/OOIntroTest.java#L203-L238" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Gabbler extends AbstractBehavior&lt;ChatRoom.SessionEvent&gt; {
+  public static Behavior&lt;ChatRoom.SessionEvent&gt; create() {
+    return Behaviors.setup(Gabbler::new);
+  }
+
+  private Gabbler(ActorContext&lt;ChatRoom.SessionEvent&gt; context) {
+    super(context);
+  }
+
+  @Override
+  public Receive&lt;ChatRoom.SessionEvent&gt; createReceive() {
+    ReceiveBuilder&lt;ChatRoom.SessionEvent&gt; builder = newReceiveBuilder();
+    return builder
+        .onMessage(ChatRoom.SessionDenied.class, this::onSessionDenied)
+        .onMessage(ChatRoom.SessionGranted.class, this::onSessionGranted)
+        .onMessage(ChatRoom.MessagePosted.class, this::onMessagePosted)
+        .build();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onSessionDenied(ChatRoom.SessionDenied message) {
+    getContext().getLog().info(&quot;cannot start chat room session: {}&quot;, message.reason);
+    return Behaviors.stopped();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onSessionGranted(ChatRoom.SessionGranted message) {
+    message.handle.tell(new ChatRoom.PostMessage(&quot;Hello World!&quot;));
+    return Behaviors.same();
+  }
+
+  private Behavior&lt;ChatRoom.SessionEvent&gt; onMessagePosted(ChatRoom.MessagePosted message) {
+    getContext()
+        .getLog()
+        .info(&quot;message has been posted by &#39;{}&#39;: {}&quot;, message.screenName, message.message);
+    return Behaviors.stopped();
+  }
+}</code></pre></dd>
+</dl>
+<p>Now to try things out we must start both a chat room and a gabbler and of course we do this inside an Actor system. Since there can be only one user guardian we could either start the chat room from the gabbler (which we don’t want—it complicates its logic) or the gabbler from the chat room (which is nonsensical) or we start both of them from a third Actor—our only sensible choice:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/scala/docs/org/apache/pekko/typed/OOIntroSpec.scala#L136-L154" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object Main {
+  def apply(): Behavior[NotUsed] =
+    Behaviors.setup { context =&gt;
+      val chatRoom = context.spawn(ChatRoom(), &quot;chatroom&quot;)
+      val gabblerRef = context.spawn(Gabbler(), &quot;gabbler&quot;)
+      context.watch(gabblerRef)
+      chatRoom ! ChatRoom.GetSession(&quot;ol’ Gabbler&quot;, gabblerRef)
+
+      Behaviors.receiveSignal {
+        case (_, Terminated(_)) =&gt;
+          Behaviors.stopped
+      }
+    }
+
+  def main(args: Array[String]): Unit = {
+    ActorSystem(Main(), &quot;ChatRoomDemo&quot;)
+  }
+
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-typed-tests/src/test/java/jdocs/org/apache/pekko/typed/OOIntroTest.java#L242-L260" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class Main {
+  public static Behavior&lt;Void&gt; create() {
+    return Behaviors.setup(
+        context -&gt; {
+          ActorRef&lt;ChatRoom.RoomCommand&gt; chatRoom = context.spawn(ChatRoom.create(), &quot;chatRoom&quot;);
+          ActorRef&lt;ChatRoom.SessionEvent&gt; gabbler = context.spawn(Gabbler.create(), &quot;gabbler&quot;);
+          context.watch(gabbler);
+          chatRoom.tell(new ChatRoom.GetSession(&quot;ol’ Gabbler&quot;, gabbler));
+
+          return Behaviors.receive(Void.class)
+              .onSignal(Terminated.class, sig -&gt; Behaviors.stopped())
+              .build();
+        });
+  }
+
+  public static void main(String[] args) {
+    ActorSystem.create(Main.create(), &quot;ChatRoomDemo&quot;);
+  }
+}</code></pre></dd>
+</dl>
+<p>In good tradition we call the <code>Main</code> Actor what it is, it directly corresponds to the <code>main</code> method in a traditional Java application. This Actor will perform its job on its own accord, we do not need to send messages from the outside, so we declare it to be of type <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/NotUsed.html" title="pekko.NotUsed"><code>NotUsed</code></a></span><span class="group-java"><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Void.html" title="java.lang.Void"><code>Void</code></a></span>. Actors receive not only external messages, they also are notified of certain system events, so-called Signals. In order to get access to those we choose to implement this particular one using the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>receive</code></a></span> behavior decorator. The provided <code>onSignal</code> function will be invoked for signals (subclasses of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Signal.html" title="org.apache.pekko.actor.typed.Signal"><code>Signal</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Signal.html" title="org.apache.pekko.actor.typed.Signal"><code>Signal</code></a></span>) or the <code>onMessage</code> function for user messages.</p>
+<p>This particular <code>Main</code> Actor is created using <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span>, which is like a factory for a behavior. Creation of the behavior instance is deferred until the actor is started, as opposed to <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#receive(org.apache.pekko.japi.function.Function2)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.receive</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#receive[T](onMessage:(org.apache.pekko.actor.typed.scaladsl.ActorContext[T],T)=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.scaladsl.Behaviors.Receive[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.receive</code></a></span> that creates the behavior instance immediately before the actor is running. The factory function in <code>setup</code> is passed the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span> as parameter and that can for example be used for spawning child actors. This <code>Main</code> Actor creates the chat room and the gabbler and the session between them is initiated, and when the gabbler is finished we will receive the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Terminated.html" title="org.apache.pekko.actor.typed.Terminated"><code>Terminated</code></a></span> event due to having called <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html#watch(org.apache.pekko.actor.typed.ActorRef)" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>context.watch</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html#watch[U](other:org.apache.pekko.actor.typed.ActorRef[U]):Unit" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>context.watch</code></a></span> for it. This allows us to shut down the Actor system: when the <code>Main</code> Actor terminates there is nothing more to do.</p>
+<p>Therefore after creating the Actor system with the <code>Main</code> Actor’s <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> we can let the <code>main</code> method return, the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorSystem.html" title="org.apache.pekko.actor.typed.ActorSystem"><code>ActorSystem</code></a></span> will continue running and the JVM alive until the root actor stops.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/actors.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/index.html" title="Actors" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Actors
+</span>
+</div>
+</a>
+<a href="../typed/actor-lifecycle.html" title="Actor lifecycle" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Actor lifecycle
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

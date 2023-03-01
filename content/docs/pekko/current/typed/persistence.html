@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Event Sourcing with Apache Pekko Persistence enables actors to persist your events for recovery on failure or when migrated within a cluster.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Event Sourcing with Apache Pekko Persistence enables actors to persist your events for recovery on failure or when migrated within a cluster.">
+<link rel="shortcut icon" href="../assets/images/pekko_favicon.png">
+<title>Event Sourcing · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="../assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Event Sourcing
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="../assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="../index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="../security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="../security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="../security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="../security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="../typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="../typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="../typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="../typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="../typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="../typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="../typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="../typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="../typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="../typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="../typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="../general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="../general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="../general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="../general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="../general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="../general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="../general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="../general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="../general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="../general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="../general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="../typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="../typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="../typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="../typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="../typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="../typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="../typed/routers.html" class="page">Routers</a></li>
+    <li><a href="../typed/stash.html" class="page">Stash</a></li>
+    <li><a href="../typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="../coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="../typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="../typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="../typed/testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="../typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="../typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="../typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="../typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="../typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="../typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="../typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="../typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="../typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="../typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="../typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="../typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="../typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="../typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="../typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="../serialization.html" class="page">Serialization</a></li>
+    <li><a href="../serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="../multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="../multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="../remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="../remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="../split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="../coordination.html" class="page">Coordination</a></li>
+    <li><a href="../typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="../typed/persistence.html#event-sourcing" class="active page">Event Sourcing</a></li>
+    <li><a href="../typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="../typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="../typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="../typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="../persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="../persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="../persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="../persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="../persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="../typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="../typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="../typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="../typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="../typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="../durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="../stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="../stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="../stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="../general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="../stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="../stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="../stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="../stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="../stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="../stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="../stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="../stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="../stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="../stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="../stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="../stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="../stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="../stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="../stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="../stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="../stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="../general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="../stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="../discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="../discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="../discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="../discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="../discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="../discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="../discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="../index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="../typed/logging.html" class="page">Logging</a></li>
+    <li><a href="../common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="../futures.html" class="page">Futures patterns</a></li>
+    <li><a href="../typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="../common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="../common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="../additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="../additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="../additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="../additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="../additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="../project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="../common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="../project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="../project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="../common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="../additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="../project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="../additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="../project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="../project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="../project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="../project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="../additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="../additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="../project/examples.html" class="page">Example projects</a></li>
+    <li><a href="../project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="../index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="../index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="../index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="../index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="../index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/persistence.html#event-sourcing" class="header">Event Sourcing</a>
+  <ul>
+    <li><a href="../typed/persistence.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/persistence.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/persistence.html#example-and-core-api" class="header">Example and core API</a></li>
+    <li><a href="../typed/persistence.html#effects-and-side-effects" class="header">Effects and Side Effects</a></li>
+    <li><a href="../typed/persistence.html#cluster-sharding-and-eventsourcedbehavior" class="header">Cluster Sharding and EventSourcedBehavior</a></li>
+    <li><a href="../typed/persistence.html#accessing-the-actorcontext" class="header">Accessing the ActorContext</a></li>
+    <li><a href="../typed/persistence.html#changing-behavior" class="header">Changing Behavior</a></li>
+    <li><a href="../typed/persistence.html#replies" class="header">Replies</a></li>
+    <li><a href="../typed/persistence.html#serialization" class="header">Serialization</a></li>
+    <li><a href="../typed/persistence.html#recovery" class="header">Recovery</a></li>
+    <li><a href="../typed/persistence.html#tagging" class="header">Tagging</a></li>
+    <li><a href="../typed/persistence.html#event-adapters" class="header">Event adapters</a></li>
+    <li><a href="../typed/persistence.html#wrapping-eventsourcedbehavior" class="header">Wrapping EventSourcedBehavior</a></li>
+    <li><a href="../typed/persistence.html#journal-failures" class="header">Journal failures</a></li>
+    <li><a href="../typed/persistence.html#stash" class="header">Stash</a></li>
+    <li><a href="../typed/persistence.html#scaling-out" class="header">Scaling out</a></li>
+    <li><a href="../typed/persistence.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/persistence.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../typed/persistence.html#event-sourcing" class="header">Event Sourcing</a>
+  <ul>
+    <li><a href="../typed/persistence.html#module-info" class="header">Module info</a></li>
+    <li><a href="../typed/persistence.html#introduction" class="header">Introduction</a></li>
+    <li><a href="../typed/persistence.html#example-and-core-api" class="header">Example and core API</a></li>
+    <li><a href="../typed/persistence.html#effects-and-side-effects" class="header">Effects and Side Effects</a></li>
+    <li><a href="../typed/persistence.html#cluster-sharding-and-eventsourcedbehavior" class="header">Cluster Sharding and EventSourcedBehavior</a></li>
+    <li><a href="../typed/persistence.html#accessing-the-actorcontext" class="header">Accessing the ActorContext</a></li>
+    <li><a href="../typed/persistence.html#changing-behavior" class="header">Changing Behavior</a></li>
+    <li><a href="../typed/persistence.html#replies" class="header">Replies</a></li>
+    <li><a href="../typed/persistence.html#serialization" class="header">Serialization</a></li>
+    <li><a href="../typed/persistence.html#recovery" class="header">Recovery</a></li>
+    <li><a href="../typed/persistence.html#tagging" class="header">Tagging</a></li>
+    <li><a href="../typed/persistence.html#event-adapters" class="header">Event adapters</a></li>
+    <li><a href="../typed/persistence.html#wrapping-eventsourcedbehavior" class="header">Wrapping EventSourcedBehavior</a></li>
+    <li><a href="../typed/persistence.html#journal-failures" class="header">Journal failures</a></li>
+    <li><a href="../typed/persistence.html#stash" class="header">Stash</a></li>
+    <li><a href="../typed/persistence.html#scaling-out" class="header">Scaling out</a></li>
+    <li><a href="../typed/persistence.html#configuration" class="header">Configuration</a></li>
+    <li><a href="../typed/persistence.html#example-project" class="header">Example project</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#event-sourcing" name="event-sourcing" class="anchor"><span class="anchor-link"></span></a>Event Sourcing</h1>
+<p>You are viewing the documentation for the new actor APIs, to view the Pekko Classic documentation, see <a href="../persistence.html">Classic Pekko Persistence</a>.</p>
+<h2><a href="#module-info" name="module-info" class="anchor"><span class="anchor-link"></span></a>Module info</h2>
+<p>To use Pekko Persistence, add the module to your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies ++= Seq(
+  "org.apache.pekko" %% "pekko-persistence-typed" % PekkoVersion,
+  "org.apache.pekko" %% "pekko-persistence-testkit" % PekkoVersion % Test
+)</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-typed_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-persistence-testkit_${scala.binary.version}&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-persistence-typed_${versions.ScalaBinary}"
+  testImplementation "org.apache.pekko:pekko-persistence-testkit_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<p>You also have to select journal plugin and optionally snapshot store plugin, see <a href="../persistence-plugins.html">Persistence Plugins</a>.</p>
+<table class="project-info">
+<tr><th colspan="2">Project Info: Pekko Event Sourcing (typed)</th></tr>
+  <tr><th>Artifact</th><td><div>org.apache.pekko</div>
+  <div>pekko-persistence-typed</div>
+  <div>0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT</div>
+  <div><a href="https://pekko.apache.org/docs/pekko/current/project/links.html#snapshots-repository">Snapshots are available</a></div>
+  </td></tr>
+  <tr><th>JDK versions</th><td><div>Adopt OpenJDK 8</div><div>Adopt OpenJDK 11</div></td></tr>
+  <tr><th>Scala versions</th><td>2.13.8, 2.12.16, 3.1.2</td></tr>
+  <tr><th>JPMS module name</th><td>pekko.persistence.typed</td></tr>
+  <tr><th>License</th><td><div><a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank" rel="noopener noreferrer">Apache-2.0</a></div>
+  </td></tr>
+  
+  <tr><th>Home page</th><td><a href="https://pekko.apache.org/">https://pekko.apache.org/</a></td></tr>
+  <tr><th>API documentation</th><td>
+  <div><a href="https://pekko.apache.org/api/pekko/snapshot/pekko/persistence/typed/index.html" target="_blank" rel="noopener noreferrer">API (Scaladoc)</a></div>
+  <div><a href="https://pekko.apache.org/japi/pekko/snapshot/pekko/persistence/typed/package-summary.html" target="_blank" rel="noopener noreferrer">API (Javadoc)</a></div>
+  </td></tr>
+  <tr><th>Forums</th><td>
+  <div><a href="https://lists.apache.org/list.html?dev@pekko.apache.org" target="_blank" rel="noopener noreferrer">Apache Pekko Dev mailing list</a></div>
+  <div><a href="https://github.com/apache/incubator-pekko/discussions" target="_blank" rel="noopener noreferrer">apache/incubator-pekko discussion</a></div>
+  </td></tr>
+  <tr><th>Release notes</th><td><a href="https://akka.io/blog/news-archive.html">akka.io blog</a></td></tr>
+  <tr><th>Issues</th><td><a href="https://github.com/apache/incubator-pekko/issues" target="_blank" rel="noopener noreferrer">Github issues</a></td></tr>
+  <tr><th>Sources</th><td><a href="https://github.com/apache/incubator-pekko" target="_blank" rel="noopener noreferrer">https://github.com/apache/incubator-pekko</a></td></tr>
+</table>
+
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+
+<p>Pekko Persistence enables stateful actors to persist their state so that it can be recovered when an actor is either restarted, such as after a JVM crash, by a supervisor or a manual stop-start, or migrated within a cluster. The key concept behind Pekko Persistence is that only the <em>events</em> that are persisted by the actor are stored, not the actual state of the actor (although actor state snapshot support is available). The events are persisted by appending to storage (nothing is ever mutated) which allows for very high transaction rates and efficient replication. A stateful actor is recovered by replaying the stored events to the actor, allowing it to rebuild its state. This can be either the full history of changes or starting from a checkpoint in a snapshot, which can dramatically reduce recovery times. </p>
+
+<p>Pekko Persistence also supports <a href="durable-state/persistence.html">Durable State Behaviors</a>, which is based on persistence of the latest state of the actor. In this implementation, the <em>latest</em> state is persisted, instead of events. Hence this is more similar to CRUD based applications.</p>
+
+<p>The <a href="https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/">Microservices with Pekko tutorial</a> illustrates how to implement an Event Sourced CQRS application with Pekko Persistence and Pekko Projections.</p>
+<div class="callout note "><div class="callout-title">Note</div>
+<p>The General Data Protection Regulation (GDPR) requires that personal information must be deleted at the request of users. Deleting or modifying events that carry personal information would be difficult. Data shredding can be used to forget information instead of deleting or modifying it. This is achieved by encrypting the data with a key for a given data subject id (person) and deleting the key when that data subject is to be forgotten.</p></div>
+<h3><a href="#event-sourcing-concepts" name="event-sourcing-concepts" class="anchor"><span class="anchor-link"></span></a>Event Sourcing concepts</h3>
+<p>See an <a href="https://docs.microsoft.com/en-us/previous-versions/msp-n-p/jj591559%28v=pandp.10%29">introduction to Event Sourcing</a> at MSDN.</p>
+<p>Another excellent article about &ldquo;thinking in Events&rdquo; is <a href="https://hackernoon.com/events-as-first-class-citizens-8633e8479493">Events As First-Class Citizens</a> by Randy Shoup. It is a short and recommended read if you&rsquo;re starting developing Events based applications.</p>
+<p>What follows is Pekko&rsquo;s implementation via event sourced actors. </p>
+<p>An event sourced actor (also known as a persistent actor) receives a (non-persistent) command which is first validated if it can be applied to the current state. Here validation can mean anything, from simple inspection of a command message&rsquo;s fields up to a conversation with several external services, for example. If validation succeeds, events are generated from the command, representing the effect of the command. These events are then persisted and, after successful persistence, used to change the actor&rsquo;s state. When the event sourced actor needs to be recovered, only the persisted events are replayed of which we know that they can be successfully applied. In other words, events cannot fail when being replayed to a persistent actor, in contrast to commands. Event sourced actors may also process commands that do not change application state such as query commands for example.</p>
+<h2><a href="#example-and-core-api" name="example-and-core-api" class="anchor"><span class="anchor-link"></span></a>Example and core API</h2>
+<p>Let&rsquo;s start with a simple example. The minimum required for a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> is:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L31-L117" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.persistence.typed.scaladsl.EventSourcedBehavior
+import pekko.persistence.typed.PersistenceId
+
+object MyPersistentBehavior {
+  sealed trait Command
+  sealed trait Event
+  final case class State()
+
+  def apply(): Behavior[Command] =
+    EventSourcedBehavior[Command, Event, State](
+      persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+      emptyState = State(),
+      commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+      eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L48-L84" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        MyPersistentBehavior.Command, MyPersistentBehavior.Event, MyPersistentBehavior.State&gt; {
+
+  interface Command {}
+
+  interface Event {}
+
+  public static class State {}
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return new MyPersistentBehavior(persistenceId);
+  }
+
+  private MyPersistentBehavior(PersistenceId persistenceId) {
+    super(persistenceId);
+  }
+
+  @Override
+  public State emptyState() {
+    return new State();
+  }
+
+  @Override
+  public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+    return (state, command) -&gt; {
+      throw new RuntimeException(&quot;TODO: process the command &amp; return an Effect&quot;);
+    };
+  }
+
+  @Override
+  public EventHandler&lt;State, Event&gt; eventHandler() {
+    return (state, event) -&gt; {
+      throw new RuntimeException(&quot;TODO: process the event return the next state&quot;);
+    };
+  }
+}</code></pre></dd>
+</dl>
+<p>The first important thing to notice is the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> of a persistent actor is typed to the type of the <code>Command</code> because this is the type of message a persistent actor should receive. In Pekko, this is now enforced by the type system.</p>
+<p>The components that make up an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> are:</p>
+<ul>
+  <li><code>persistenceId</code> is the stable unique identifier for the persistent actor.</li>
+  <li><code>emptyState</code> defines the <code>State</code> when the entity is first created e.g. a Counter would start with 0 as state.</li>
+  <li><code>commandHandler</code> defines how to handle command by producing Effects e.g. persisting events, stopping the persistent actor.</li>
+  <li><code>eventHandler</code> returns the new state given the current state when an event has been persisted.</li>
+</ul><div class="group-java">
+<p>Note that the concrete class does not contain any fields with state like a regular POJO. All state of the <code>EventSourcedBehavior</code> must be represented in the <code>State</code> or else they will not be persisted and therefore be lost when the actor is stopped or restarted. Updates to the State are always performed in the eventHandler based on the events.</p></div>
+<p>Next we&rsquo;ll discuss each of these in detail.</p>
+<h3><a href="#persistenceid" name="persistenceid" class="anchor"><span class="anchor-link"></span></a>PersistenceId</h3>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span> is the stable unique identifier for the persistent actor in the backend event journal and snapshot store.</p>
+<p><a href="cluster-sharding.html">Cluster Sharding</a> is typically used together with <code>EventSourcedBehavior</code> to ensure that there is only one active entity for each <code>PersistenceId</code> (<code>entityId</code>). There are techniques to ensure this uniqueness, an example of which can be found in the <a href="cluster-sharding.html#persistence-example">Persistence example in the Cluster Sharding documentation</a>. This illustrates how to construct the <code>PersistenceId</code> from the <code>entityTypeKey</code> and <code>entityId</code> provided by the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/javadsl/EntityContext.html" title="org.apache.pekko.cluster.sharding.typed.javadsl.EntityContext"><code>EntityContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/cluster/sharding/typed/scaladsl/EntityContext.html" title="org.apache.pekko.cluster.sharding.typed.scaladsl.EntityContext"><code>EntityContext</code></a></span>.</p>
+<p>The <code>entityId</code> in Cluster Sharding is the business domain identifier of the entity. The <code>entityId</code> might not be unique enough to be used as the <code>PersistenceId</code> by itself. For example two different types of entities may have the same <code>entityId</code>. To create a unique <code>PersistenceId</code> the <code>entityId</code> should be prefixed with a stable name of the entity type, which typically is the same as the <code>EntityTypeKey.name</code> that is used in Cluster Sharding. There are <span class="group-scala"><code>PersistenceId.apply</code></span><span class="group-java"><code>PersistenceId.of</code></span> factory methods to help with constructing such <code>PersistenceId</code> from an <code>entityTypeHint</code> and <code>entityId</code>.</p>
+<p>The default separator when concatenating the <code>entityTypeHint</code> and <code>entityId</code> is <code>|</code>, but a custom separator is supported.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The <code>|</code> separator is also used in Lagom&rsquo;s <code>scaladsl.PersistentEntity</code> but no separator is used in Lagom&rsquo;s <code>javadsl.PersistentEntity</code>. For compatibility with Lagom&rsquo;s <code>javadsl.PersistentEntity</code> you should use <code>&quot;&quot;</code> as the separator.</p></div>
+<p>A custom identifier can be created with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId$.html#ofUniqueId(id:String):org.apache.pekko.persistence.typed.PersistenceId" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId.ofUniqueId</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId$.html#ofUniqueId(java.lang.String)" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId.ofUniqueId</code></a></span>. </p>
+<h3><a href="#command-handler" name="command-handler" class="anchor"><span class="anchor-link"></span></a>Command handler</h3>
+<p>The command handler is a function with 2 parameters, the current <code>State</code> and the incoming <code>Command</code>.</p>
+<p>A command handler returns an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect.html" title="pekko.persistence.typed.scaladsl.Effect"><code>Effect</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/Effect.html" title="pekko.persistence.typed.javadsl.Effect"><code>Effect</code></a></span> directive that defines what event or events, if any, to persist. Effects are created using <span class="group-java">a factory that is returned via the <code>Effect()</code> method</span> <span class="group-scala">the <code>Effect</code> factory</span>.</p>
+<p>The two most commonly used effects are: </p>
+<ul>
+  <li><code>persist</code> will persist one single event or several events atomically, i.e. all events  are stored or none of them are stored if there is an error</li>
+  <li><code>none</code> no events are to be persisted, for example a read-only command</li>
+</ul>
+<p>More effects are explained in <a href="persistence.html#effects-and-side-effects">Effects and Side Effects</a>.</p>
+<p>In addition to returning the primary <code>Effect</code> for the command <code>EventSourcedBehavior</code>s can also chain side effects that are to be performed after successful persist which is achieved with the <code>thenRun</code> function e.g. <span class="group-scala"><code>Effect.persist(..).thenRun</code></span><span class="group-java"><code>Effect().persist(..).thenRun</code></span>.</p>
+<h3><a href="#event-handler" name="event-handler" class="anchor"><span class="anchor-link"></span></a>Event handler</h3>
+<p>When an event has been persisted successfully the new state is created by applying the event to the current state with the <code>eventHandler</code>. In the case of multiple persisted events, the <code>eventHandler</code> is called with each event in the same order as they were passed to <span class="group-scala"><code>Effect.persist(..)</code></span><span class="group-java"><code>Effect().persist(..)</code></span>.</p>
+<p>The state is typically defined as an immutable class and then the event handler returns a new instance of the state. You may choose to use a mutable class for the state, and then the event handler may update the state instance and return the same instance. Both immutable and mutable state is supported.</p>
+<p>The same event handler is also used when the entity is started up to recover its state from the stored events.</p>
+<p>The event handler must only update the state and never perform side effects, as those would also be executed during recovery of the persistent actor. Side effects should be performed in <code>thenRun</code> from the <a href="persistence.html#command-handler">command handler</a> after persisting the event or from the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span> after <a href="persistence.html#recovery">Recovery</a>.</p>
+<h3><a href="#completing-the-example" name="completing-the-example" class="anchor"><span class="anchor-link"></span></a>Completing the example</h3>
+<p>Let&rsquo;s fill in the details of the example.</p>
+<p>Command and event:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L50-L56" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+final case class Add(data: String) extends Command
+case object Clear extends Command
+
+sealed trait Event
+final case class Added(data: String) extends Event
+case object Cleared extends Event</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L97-L123" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface Command {}
+
+public static class Add implements Command {
+  public final String data;
+
+  public Add(String data) {
+    this.data = data;
+  }
+}
+
+public enum Clear implements Command {
+  INSTANCE
+}
+
+interface Event {}
+
+public static class Added implements Event {
+  public final String data;
+
+  public Added(String data) {
+    this.data = data;
+  }
+}
+
+public enum Cleared implements Event {
+  INSTANCE
+}</code></pre></dd>
+</dl>
+<p>State is a List containing the 5 latest items:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L60" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class State(history: List[String] = Nil)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L127-L145" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class State {
+  private final List&lt;String&gt; items;
+
+  private State(List&lt;String&gt; items) {
+    this.items = items;
+  }
+
+  public State() {
+    this.items = new ArrayList&lt;&gt;();
+  }
+
+  public State addItem(String data) {
+    List&lt;String&gt; newItems = new ArrayList&lt;&gt;(items);
+    newItems.add(0, data);
+    // keep 5 items
+    List&lt;String&gt; latest = newItems.subList(0, Math.min(5, newItems.size()));
+    return new State(latest);
+  }
+}</code></pre></dd>
+</dl>
+<p>The command handler persists the <code>Add</code> payload in an <code>Added</code> event:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L64-L71" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.persistence.typed.scaladsl.Effect
+
+val commandHandler: (State, Command) =&gt; Effect[Event, State] = { (state, command) =&gt;
+  command match {
+    case Add(data) =&gt; Effect.persist(Added(data))
+    case Clear     =&gt; Effect.persist(Cleared)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L165-L172" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+  return newCommandHandlerBuilder()
+      .forAnyState()
+      .onCommand(Add.class, command -&gt; Effect().persist(new Added(command.data)))
+      .onCommand(Clear.class, command -&gt; Effect().persist(Cleared.INSTANCE))
+      .build();
+}</code></pre></dd>
+</dl>
+<p>The event handler appends the item to the state and keeps 5 items. This is called after successfully persisting the event in the database:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L86-L91" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val eventHandler: (State, Event) =&gt; State = { (state, event) =&gt;
+  event match {
+    case Added(data) =&gt; state.copy((data :: state.history).take(5))
+    case Cleared     =&gt; State(Nil)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L176-L183" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public EventHandler&lt;State, Event&gt; eventHandler() {
+  return newEventHandlerBuilder()
+      .forAnyState()
+      .onEvent(Added.class, (state, event) -&gt; state.addItem(event.data))
+      .onEvent(Cleared.class, () -&gt; new State())
+      .build();
+}</code></pre></dd>
+</dl>
+<p><span class="group-scala">These are used to create an <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a>:</span> <span class="group-java">These are defined in an <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a>:</span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L31-L100" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.persistence.typed.scaladsl.EventSourcedBehavior
+import pekko.persistence.typed.PersistenceId
+
+def apply(id: String): Behavior[Command] =
+  EventSourcedBehavior[Command, Event, State](
+    persistenceId = PersistenceId.ofUniqueId(id),
+    emptyState = State(Nil),
+    commandHandler = commandHandler,
+    eventHandler = eventHandler)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L31-L185" target="_blank" title="Go to snippet source">source</a><code class="language-java">import org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior;
+import org.apache.pekko.persistence.typed.PersistenceId;
+
+public class MyPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        MyPersistentBehavior.Command, MyPersistentBehavior.Event, MyPersistentBehavior.State&gt; {
+
+  // commands, events and state defined here
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return new MyPersistentBehavior(persistenceId);
+  }
+
+  private MyPersistentBehavior(PersistenceId persistenceId) {
+    super(persistenceId);
+  }
+
+  @Override
+  public State emptyState() {
+    return new State();
+  }
+
+  @Override
+  public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+    return newCommandHandlerBuilder()
+        .forAnyState()
+        .onCommand(Add.class, command -&gt; Effect().persist(new Added(command.data)))
+        .onCommand(Clear.class, command -&gt; Effect().persist(Cleared.INSTANCE))
+        .build();
+  }
+
+  @Override
+  public EventHandler&lt;State, Event&gt; eventHandler() {
+    return newEventHandlerBuilder()
+        .forAnyState()
+        .onEvent(Added.class, (state, event) -&gt; state.addItem(event.data))
+        .onEvent(Cleared.class, () -&gt; new State())
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#effects-and-side-effects" name="effects-and-side-effects" class="anchor"><span class="anchor-link"></span></a>Effects and Side Effects</h2>
+<p>A command handler returns an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/Effect.html" title="org.apache.pekko.persistence.typed.javadsl.Effect"><code>Effect</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/Effect.html" title="org.apache.pekko.persistence.typed.scaladsl.Effect"><code>Effect</code></a></span> directive that defines what event or events, if any, to persist. Effects are created using <span class="group-java">a factory that is returned via the <code>Effect()</code> method</span> <span class="group-scala">the <code>Effect</code> factory</span> and can be one of: </p>
+<ul>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#persist[Event,State](events:Seq[Event]):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>persist</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#persist(java.util.List)" title="pekko.persistence.typed.javadsl.EffectFactories"><code>persist</code></a></span> will persist one single event or several events atomically, i.e. all events  are stored or none of them are stored if there is an error</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#none[Event,State]:org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>none</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#none()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>none</code></a></span> no events are to be persisted, for example a read-only command</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#unhandled[Event,State]:org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>unhandled</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#unhandled()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>unhandled</code></a></span> the command is unhandled (not supported) in current state</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#stop[Event,State]():org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>stop</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#stop()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>stop</code></a></span> stop this actor</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#stash[Event,State]():org.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>stash</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#stash()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>stash</code></a></span> the current command is stashed</li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#unstashAll[Event,State]():org.apache.pekko.persistence.typed.scaladsl.Effect[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>unstashAll</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#unstashAll()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>unstashAll</code></a></span> process the commands that were stashed with <span class="group-scala"><code>Effect.stash</code></span><span class="group-java"><code>Effect().stash</code></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#reply[ReplyMessage,Event,State](replyTo:org.apache.pekko.actor.typed.ActorRef[ReplyMessage])(replyWithMessage:ReplyMessage):org.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>reply</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#reply(org.apache.pekko.actor.typed.ActorRef,ReplyMessage)" title="pekko.persistence.typed.javadsl.EffectFactories"><code>reply</code></a></span> send a reply message to the given <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span></li>
+</ul>
+<p>Note that only one of those can be chosen per incoming command. It is not possible to both persist and say none/unhandled.</p>
+<p>In addition to returning the primary <code>Effect</code> for the command <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>s can also chain side effects that are to be performed after successful persist which is achieved with the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenRun(org.apache.pekko.japi.function.Effect)" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenRun</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenRun(callback:State=%3EUnit):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenRun</code></a></span> function e.g. <span class="group-scala"><code>Effect.persist(..).thenRun</code></span><span class="group-java"><code>Effect().persist(..).thenRun</code></span>.</p>
+<p>In the example below the state is sent to the <code>subscriber</code> ActorRef. Note that the new state after applying the event is passed as parameter of the <code>thenRun</code> function. In the case where multiple events have been persisted, the state passed to <code>thenRun</code> is the updated state after all events have been handled.</p>
+<p>All <code>thenRun</code> registered callbacks are executed sequentially after successful execution of the persist statement (or immediately, in case of <code>none</code> and <code>unhandled</code>).</p>
+<p>In addition to <code>thenRun</code> the following actions can also be performed after successful persist:</p>
+<ul>
+  <li><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenStop()" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenStop</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenStop():org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenStop</code></a></span> the actor will be stopped</li>
+  <li><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenUnstashAll()" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenUnstashAll</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenUnstashAll():org.apache.pekko.persistence.typed.scaladsl.Effect[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenUnstashAll</code></a></span> process the commands that were stashed with <span class="group-scala"><code>Effect.stash</code></span><span class="group-java"><code>Effect().stash</code></span></li>
+  <li><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenReply(org.apache.pekko.actor.typed.ActorRef,org.apache.pekko.japi.function.Function)" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenReply</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenReply[ReplyMessage](replyTo:org.apache.pekko.actor.typed.ActorRef[ReplyMessage])(replyWithMessage:State=%3EReplyMessage):org.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenReply</code></a></span> send a reply message to the given <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span></li>
+</ul>
+<p>Example of effects:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L75-L82" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def onCommand(subscriber: ActorRef[State], state: State, command: Command): Effect[Event, State] = {
+  command match {
+    case Add(data) =&gt;
+      Effect.persist(Added(data)).thenRun(newState =&gt; subscriber ! newState)
+    case Clear =&gt;
+      Effect.persist(Cleared).thenRun((newState: State) =&gt; subscriber ! newState).thenStop()
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L259-L282" target="_blank" title="Go to snippet source">source</a><code class="language-java">private final ActorRef&lt;State&gt; subscriber;
+
+@Override
+public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+  return newCommandHandlerBuilder()
+      .forAnyState()
+      .onCommand(Add.class, this::onAdd)
+      .onCommand(Clear.class, this::onClear)
+      .build();
+}
+
+private Effect&lt;Event, State&gt; onAdd(Add command) {
+  return Effect()
+      .persist(new Added(command.data))
+      .thenRun(newState -&gt; subscriber.tell(newState));
+}
+
+private Effect&lt;Event, State&gt; onClear(Clear command) {
+  return Effect()
+      .persist(Cleared.INSTANCE)
+      .thenRun(newState -&gt; subscriber.tell(newState))
+      .thenStop();
+}
+</code></pre></dd>
+</dl>
+<p>Most of the time this will be done with the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenRun(function.Effect)" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenRun</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenRun(callback:State=%3EUnit):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenRun</code></a></span> method on the <code>Effect</code> above. You can factor out common side effects into functions and reuse for several commands. For example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/org/apache/pekko/persistence/typed/scaladsl/PersistentActorCompileOnlyTest.scala#L250-L255" target="_blank" title="Go to snippet source">source</a><code class="language-scala">// Example factoring out a chained effect to use in several places with `thenRun`
+val commonChainedEffects: Mood =&gt; Unit = _ =&gt; println(&quot;Command processed&quot;)
+// Then in a command handler:
+Effect
+  .persist(Remembered(&quot;Yep&quot;)) // persist event
+  .thenRun(commonChainedEffects) // add on common chained effect</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/org/apache/pekko/persistence/typed/javadsl/PersistentActorCompileOnlyTest.java#L217-L244" target="_blank" title="Go to snippet source">source</a><code class="language-java">// Example factoring out a chained effect to use in several places with `thenRun`
+static final Procedure&lt;ExampleState&gt; commonChainedEffect =
+    state -&gt; System.out.println(&quot;Command handled!&quot;);
+
+      @Override
+      public CommandHandler&lt;MyCommand, MyEvent, ExampleState&gt; commandHandler() {
+        return newCommandHandlerBuilder()
+            .forStateType(ExampleState.class)
+            .onCommand(
+                Cmd.class,
+                (state, cmd) -&gt;
+                    Effect()
+                        .persist(new Evt(cmd.data))
+                        .thenRun(() -&gt; cmd.replyTo.tell(new Ack()))
+                        .thenRun(commonChainedEffect))
+            .build();
+      }</code></pre></dd>
+</dl>
+<h3><a href="#side-effects-ordering-and-guarantees" name="side-effects-ordering-and-guarantees" class="anchor"><span class="anchor-link"></span></a>Side effects ordering and guarantees</h3>
+<p>Any side effects are executed on an at-most-once basis and will not be executed if the persist fails.</p>
+<p>Side effects are not run when the actor is restarted or started again after being stopped. You may inspect the state when receiving the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span> signal and execute side effects that have not been acknowledged at that point. That may possibly result in executing side effects more than once.</p>
+<p>The side effects are executed sequentially, it is not possible to execute side effects in parallel, unless they call out to something that is running concurrently (for example sending a message to another actor).</p>
+<p>It&rsquo;s possible to execute a side effects before persisting the event, but that can result in that the side effect is performed but the event is not stored if the persist fails.</p>
+<h3><a href="#atomic-writes" name="atomic-writes" class="anchor"><span class="anchor-link"></span></a>Atomic writes</h3>
+<p>It is possible to store several events atomically by using the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#persist[Event,State](events:Seq[Event]):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>persist</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#persist(java.util.List)" title="pekko.persistence.typed.javadsl.EffectFactories"><code>persist</code></a></span> effect with a list of events. That means that all events passed to that method are stored or none of them are stored if there is an error.</p>
+<p>The recovery of a persistent actor will therefore never be done partially with only a subset of events persisted by a single <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#persist[Event,State](event:Event):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>persist</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#persist(Event)" title="pekko.persistence.typed.javadsl.EffectFactories"><code>persist</code></a></span> effect.</p>
+<p>Some journals may not support atomic writes of several events and they will then reject the <code>persist</code> with multiple events. This is signalled to an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> via an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventRejectedException.html" title="org.apache.pekko.persistence.typed.EventRejectedException"><code>EventRejectedException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventRejectedException.html" title="org.apache.pekko.persistence.typed.EventRejectedException"><code>EventRejectedException</code></a></span> (typically with a <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="java.lang.UnsupportedOperationException"><code>UnsupportedOperationException</code></a>) and can be handled with a <a href="fault-tolerance.html">supervisor</a>.</p>
+<h2><a href="#cluster-sharding-and-eventsourcedbehavior" name="cluster-sharding-and-eventsourcedbehavior" class="anchor"><span class="anchor-link"></span></a>Cluster Sharding and EventSourcedBehavior</h2>
+<p><a href="cluster-sharding.html">Cluster Sharding</a> is an excellent fit to spread persistent actors over a cluster, addressing them by id. It makes it possible to have more persistent actors exist in the cluster than what would fit in the memory of one node. Cluster sharding improves the resilience of the cluster. If a node crashes, the persistent actors are quickly started on a new node and can resume operations.</p>
+<p>The <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> can then be run as with any plain actor as described in <a href="actors.html">actors documentation</a>, but since Pekko Persistence is based on the single-writer principle the persistent actors are typically used together with Cluster Sharding. For a particular <code>persistenceId</code> only one persistent actor instance should be active at one time. If multiple instances were to persist events at the same time, the events would be interleaved and might not be interpreted correctly on replay. Cluster Sharding ensures that there is only one active entity for each id. The <a href="cluster-sharding.html#persistence-example">Cluster Sharding example</a> illustrates this common combination.</p>
+<h2><a href="#accessing-the-actorcontext" name="accessing-the-actorcontext" class="anchor"><span class="anchor-link"></span></a>Accessing the ActorContext</h2>
+<p>If the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> needs to use the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span>, for example to spawn child actors, it can be obtained by wrapping construction with <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L219-L235" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.persistence.typed.scaladsl.Effect
+import pekko.persistence.typed.scaladsl.EventSourcedBehavior.CommandHandler
+
+def apply(): Behavior[String] =
+  Behaviors.setup { context =&gt;
+    EventSourcedBehavior[String, String, State](
+      persistenceId = PersistenceId.ofUniqueId(&quot;myPersistenceId&quot;),
+      emptyState = State(),
+      commandHandler = CommandHandler.command { cmd =&gt;
+        context.log.info(&quot;Got command {}&quot;, cmd)
+        Effect.none
+      },
+      eventHandler = {
+        case (state, _) =&gt; state
+      })
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L587-L631" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        MyPersistentBehavior.Command, MyPersistentBehavior.Event, MyPersistentBehavior.State&gt; {
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return Behaviors.setup(ctx -&gt; new MyPersistentBehavior(persistenceId, ctx));
+  }
+
+  // this makes the context available to the command handler etc.
+  private final ActorContext&lt;Command&gt; context;
+
+  // optionally if you only need `ActorContext.getSelf()`
+  private final ActorRef&lt;Command&gt; self;
+
+  public MyPersistentBehavior(PersistenceId persistenceId, ActorContext&lt;Command&gt; ctx) {
+    super(persistenceId);
+    this.context = ctx;
+    this.self = ctx.getSelf();
+  }
+
+}</code></pre></dd>
+</dl>
+<h2><a href="#changing-behavior" name="changing-behavior" class="anchor"><span class="anchor-link"></span></a>Changing Behavior</h2>
+<p>After processing a message, actors are able to return the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/Behavior.html" title="org.apache.pekko.actor.typed.Behavior"><code>Behavior</code></a></span> that is used for the next message.</p>
+<p>As you can see in the above examples this is not supported by persistent actors. Instead, the state is returned by <code>eventHandler</code>. The reason a new behavior can&rsquo;t be returned is that behavior is part of the actor&rsquo;s state and must also carefully be reconstructed during recovery. If it would have been supported it would mean that the behavior must be restored when replaying events and also encoded in the state anyway when snapshots are used. That would be very prone to mistakes and thus not allowed in Pekko Persistence.</p>
+<p>For basic actors you can use the same set of command handlers independent of what state the entity is in, as shown in above example. For more complex actors it&rsquo;s useful to be able to change the behavior in the sense that different functions for processing commands may be defined depending on what state the actor is in. This is useful when implementing finite state machine (FSM) like entities.</p>
+<p>The next example demonstrates how to define different behavior based on the current <code>State</code>. It shows an actor that represents the state of a blog post. Before a post is started the only command it can process is to <code>AddPost</code>. Once it is started then one can look it up with <code>GetPost</code>, modify it with <code>ChangeBody</code> or publish it with <code>Publish</code>.</p>
+<p>The state is captured by:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L41-L54" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait State
+
+case object BlankState extends State
+
+final case class DraftState(content: PostContent) extends State {
+  def withBody(newBody: String): DraftState =
+    copy(content = content.copy(body = newBody))
+
+  def postId: String = content.postId
+}
+
+final case class PublishedState(content: PostContent) extends State {
+  def postId: String = content.postId
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L64-L108" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface State {}
+
+enum BlankState implements State {
+  INSTANCE
+}
+
+static class DraftState implements State {
+  final PostContent content;
+
+  DraftState(PostContent content) {
+    this.content = content;
+  }
+
+  DraftState withContent(PostContent newContent) {
+    return new DraftState(newContent);
+  }
+
+  DraftState withBody(String newBody) {
+    return withContent(new PostContent(postId(), content.title, newBody));
+  }
+
+  String postId() {
+    return content.postId;
+  }
+}
+
+static class PublishedState implements State {
+  final PostContent content;
+
+  PublishedState(PostContent content) {
+    this.content = content;
+  }
+
+  PublishedState withContent(PostContent newContent) {
+    return new PublishedState(newContent);
+  }
+
+  PublishedState withBody(String newBody) {
+    return withContent(new PostContent(postId(), content.title, newBody));
+  }
+
+  String postId() {
+    return content.postId;
+  }
+}</code></pre></dd>
+</dl>
+<p>The commands, of which only a subset are valid depending on the state:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L58-L66" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command
+final case class AddPost(content: PostContent, replyTo: ActorRef[StatusReply[AddPostDone]]) extends Command
+final case class AddPostDone(postId: String)
+final case class GetPost(replyTo: ActorRef[PostContent]) extends Command
+final case class ChangeBody(newBody: String, replyTo: ActorRef[Done]) extends Command
+final case class Publish(replyTo: ActorRef[Done]) extends Command
+final case class PostContent(postId: String, title: String, body: String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L112-L168" target="_blank" title="Go to snippet source">source</a><code class="language-java">public interface Command {}
+public static class AddPost implements Command {
+  final PostContent content;
+  final ActorRef&lt;AddPostDone&gt; replyTo;
+
+  public AddPost(PostContent content, ActorRef&lt;AddPostDone&gt; replyTo) {
+    this.content = content;
+    this.replyTo = replyTo;
+  }
+}
+
+public static class AddPostDone implements Command {
+  final String postId;
+
+  public AddPostDone(String postId) {
+    this.postId = postId;
+  }
+}
+public static class GetPost implements Command {
+  final ActorRef&lt;PostContent&gt; replyTo;
+
+  public GetPost(ActorRef&lt;PostContent&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+public static class ChangeBody implements Command {
+  final String newBody;
+  final ActorRef&lt;Done&gt; replyTo;
+
+  public ChangeBody(String newBody, ActorRef&lt;Done&gt; replyTo) {
+    this.newBody = newBody;
+    this.replyTo = replyTo;
+  }
+}
+
+public static class Publish implements Command {
+  final ActorRef&lt;Done&gt; replyTo;
+
+  public Publish(ActorRef&lt;Done&gt; replyTo) {
+    this.replyTo = replyTo;
+  }
+}
+
+public static class PostContent implements Command {
+  final String postId;
+  final String title;
+  final String body;
+
+  public PostContent(String postId, String title, String body) {
+    this.postId = postId;
+    this.title = title;
+    this.body = body;
+  }
+}</code></pre></dd>
+</dl>
+<p><span class="group-java">The command handler to process each command is decided by the state class (or state predicate) that is given to the <code>forStateType</code> of the <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/CommandHandlerBuilder.html" title="pekko.persistence.typed.javadsl.CommandHandlerBuilder"><code>CommandHandlerBuilder</code></a> and the match cases in the builders.</span> <span class="group-scala">The command handler to process each command is decided by first looking at the state and then the command. It typically becomes two levels of pattern matching, first on the state and then on the command.</span> Delegating to methods is a good practice because the one-line cases give a nice overview of the message dispatch.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L79-L139" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private val commandHandler: (State, Command) =&gt; Effect[Event, State] = { (state, command) =&gt;
+  state match {
+
+    case BlankState =&gt;
+      command match {
+        case cmd: AddPost =&gt; addPost(cmd)
+        case _            =&gt; Effect.unhandled
+      }
+
+    case draftState: DraftState =&gt;
+      command match {
+        case cmd: ChangeBody  =&gt; changeBody(draftState, cmd)
+        case Publish(replyTo) =&gt; publish(draftState, replyTo)
+        case GetPost(replyTo) =&gt; getPost(draftState, replyTo)
+        case AddPost(_, replyTo) =&gt;
+          Effect.unhandled.thenRun(_ =&gt; replyTo ! StatusReply.Error(&quot;Cannot add post while in draft state&quot;))
+      }
+
+    case publishedState: PublishedState =&gt;
+      command match {
+        case GetPost(replyTo) =&gt; getPost(publishedState, replyTo)
+        case AddPost(_, replyTo) =&gt;
+          Effect.unhandled.thenRun(_ =&gt; replyTo ! StatusReply.Error(&quot;Cannot add post, already published&quot;))
+        case _ =&gt; Effect.unhandled
+      }
+  }
+}
+
+private def addPost(cmd: AddPost): Effect[Event, State] = {
+  val evt = PostAdded(cmd.content.postId, cmd.content)
+  Effect.persist(evt).thenRun { _ =&gt;
+    // After persist is done additional side effects can be performed
+    cmd.replyTo ! StatusReply.Success(AddPostDone(cmd.content.postId))
+  }
+}
+
+private def changeBody(state: DraftState, cmd: ChangeBody): Effect[Event, State] = {
+  val evt = BodyChanged(state.postId, cmd.newBody)
+  Effect.persist(evt).thenRun { _ =&gt;
+    cmd.replyTo ! Done
+  }
+}
+
+private def publish(state: DraftState, replyTo: ActorRef[Done]): Effect[Event, State] = {
+  Effect.persist(Published(state.postId)).thenRun { _ =&gt;
+    println(s&quot;Blog post ${state.postId} was published&quot;)
+    replyTo ! Done
+  }
+}
+
+private def getPost(state: DraftState, replyTo: ActorRef[PostContent]): Effect[Event, State] = {
+  replyTo ! state.content
+  Effect.none
+}
+
+private def getPost(state: PublishedState, replyTo: ActorRef[PostContent]): Effect[Event, State] = {
+  replyTo ! state.content
+  Effect.none
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L192-L251" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+  CommandHandlerBuilder&lt;Command, Event, State&gt; builder = newCommandHandlerBuilder();
+
+  builder.forStateType(BlankState.class).onCommand(AddPost.class, this::onAddPost);
+
+  builder
+      .forStateType(DraftState.class)
+      .onCommand(ChangeBody.class, this::onChangeBody)
+      .onCommand(Publish.class, this::onPublish)
+      .onCommand(GetPost.class, this::onGetPost);
+
+  builder
+      .forStateType(PublishedState.class)
+      .onCommand(ChangeBody.class, this::onChangeBody)
+      .onCommand(GetPost.class, this::onGetPost);
+
+  builder.forAnyState().onCommand(AddPost.class, (state, cmd) -&gt; Effect().unhandled());
+
+  return builder.build();
+}
+
+private Effect&lt;Event, State&gt; onAddPost(AddPost cmd) {
+  PostAdded event = new PostAdded(cmd.content.postId, cmd.content);
+  return Effect()
+      .persist(event)
+      .thenRun(() -&gt; cmd.replyTo.tell(new AddPostDone(cmd.content.postId)));
+}
+
+private Effect&lt;Event, State&gt; onChangeBody(DraftState state, ChangeBody cmd) {
+  BodyChanged event = new BodyChanged(state.postId(), cmd.newBody);
+  return Effect().persist(event).thenRun(() -&gt; cmd.replyTo.tell(Done.getInstance()));
+}
+
+private Effect&lt;Event, State&gt; onChangeBody(PublishedState state, ChangeBody cmd) {
+  BodyChanged event = new BodyChanged(state.postId(), cmd.newBody);
+  return Effect().persist(event).thenRun(() -&gt; cmd.replyTo.tell(Done.getInstance()));
+}
+
+private Effect&lt;Event, State&gt; onPublish(DraftState state, Publish cmd) {
+  return Effect()
+      .persist(new Published(state.postId()))
+      .thenRun(
+          () -&gt; {
+            System.out.println(&quot;Blog post published: &quot; + state.postId());
+            cmd.replyTo.tell(Done.getInstance());
+          });
+}
+
+private Effect&lt;Event, State&gt; onGetPost(DraftState state, GetPost cmd) {
+  cmd.replyTo.tell(state.content);
+  return Effect().none();
+}
+
+private Effect&lt;Event, State&gt; onGetPost(PublishedState state, GetPost cmd) {
+  cmd.replyTo.tell(state.content);
+  return Effect().none();
+}</code></pre></dd>
+</dl>
+<p>The event handler:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L143-L169" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private val eventHandler: (State, Event) =&gt; State = { (state, event) =&gt;
+  state match {
+
+    case BlankState =&gt;
+      event match {
+        case PostAdded(_, content) =&gt;
+          DraftState(content)
+        case _ =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [$state]&quot;)
+      }
+
+    case draftState: DraftState =&gt;
+      event match {
+
+        case BodyChanged(_, newBody) =&gt;
+          draftState.withBody(newBody)
+
+        case Published(_) =&gt;
+          PublishedState(draftState.content)
+
+        case _ =&gt; throw new IllegalStateException(s&quot;unexpected event [$event] in state [$state]&quot;)
+      }
+
+    case _: PublishedState =&gt;
+      // no more changes after published
+      throw new IllegalStateException(s&quot;unexpected event [$event] in state [$state]&quot;)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L255-L274" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public EventHandler&lt;State, Event&gt; eventHandler() {
+
+  EventHandlerBuilder&lt;State, Event&gt; builder = newEventHandlerBuilder();
+
+  builder
+      .forStateType(BlankState.class)
+      .onEvent(PostAdded.class, event -&gt; new DraftState(event.content));
+
+  builder
+      .forStateType(DraftState.class)
+      .onEvent(BodyChanged.class, (state, chg) -&gt; state.withBody(chg.newBody))
+      .onEvent(Published.class, (state, event) -&gt; new PublishedState(state.content));
+
+  builder
+      .forStateType(PublishedState.class)
+      .onEvent(BodyChanged.class, (state, chg) -&gt; state.withBody(chg.newBody));
+
+  return builder.build();
+}</code></pre></dd>
+</dl>
+<p>And finally the behavior is created <span class="group-scala">from the <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior$.html#apply[Command,Event,State](persistenceId:org.apache.pekko.persistence.typed.PersistenceId,emptyState:State,commandHandler:(State,Command)=%3Eorg.apache.pekko.persistence.typed.scaladsl.Effect[Event,State],eventHandler:(State,Event)=%3EState):org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior[Command,Event,State]" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior.apply</code></a></span>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L27-L175" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object BlogPostEntity {
+  // commands, events, state defined here
+
+  def apply(entityId: String, persistenceId: PersistenceId): Behavior[Command] = {
+    Behaviors.setup { context =&gt;
+      context.log.info(&quot;Starting BlogPostEntity {}&quot;, entityId)
+      EventSourcedBehavior[Command, Event, State](persistenceId, emptyState = BlankState, commandHandler, eventHandler)
+    }
+  }
+
+  // commandHandler and eventHandler defined here
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L24-L279" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class BlogPostEntity
+    extends EventSourcedBehavior&lt;
+        BlogPostEntity.Command, BlogPostEntity.Event, BlogPostEntity.State&gt; {
+  // commands, events and state as in above snippets
+
+  public static Behavior&lt;Command&gt; create(String entityId, PersistenceId persistenceId) {
+    return Behaviors.setup(
+        context -&gt; {
+          context.getLog().info(&quot;Starting BlogPostEntity {}&quot;, entityId);
+          return new BlogPostEntity(persistenceId);
+        });
+  }
+
+  private BlogPostEntity(PersistenceId persistenceId) {
+    super(persistenceId);
+  }
+
+  @Override
+  public State emptyState() {
+    return BlankState.INSTANCE;
+  }
+
+  // commandHandler, eventHandler as in above snippets
+}</code></pre></dd>
+</dl>
+<p>This can be taken one or two steps further by defining the event and command handlers in the state class as illustrated in <a href="persistence-style.html#event-handlers-in-the-state">event handlers in the state</a> and <a href="persistence-style.html#command-handlers-in-the-state">command handlers in the state</a>.</p>
+<p>There is also an example illustrating an <a href="persistence-style.html#optional-initial-state">optional initial state</a>.</p>
+<h2><a href="#replies" name="replies" class="anchor"><span class="anchor-link"></span></a>Replies</h2>
+<p>The <a href="interaction-patterns.html#request-response">Request-Response interaction pattern</a> is very common for persistent actors, because you typically want to know if the command was rejected due to validation errors and when accepted you want a confirmation when the events have been successfully stored.</p>
+<p>Therefore you typically include a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-scala"><code>[ReplyMessageType]</code></span><span class="group-java"><code>&lt;ReplyMessageType&gt;</code></span>. If the command can either have a successful response or a validation error returned, the generic response type <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/StatusReply.html" title="org.apache.pekko.pattern.StatusReply"><code>StatusReply</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/StatusReply.html" title="org.apache.pekko.pattern.StatusReply"><code>StatusReply</code></a></span><span class="group-scala"><code>[ReplyType]</code></span> <span class="group-java"><code>&lt;ReplyType&gt;</code></span> can be used. If the successful reply does not contain a value but is more of an acknowledgement a pre defined <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/pattern/StatusReply$.html#Ack:org.apache.pekko.pattern.StatusReply[org.apache.pekko.Done]" title="pekko.pattern.StatusReply"><code>StatusReply.Ack</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/pattern/StatusReply$.html#ack():org.apache.pekko.pattern.StatusReply[org.apache.pekko.Done]" title="pekko.pattern.StatusReply"><code>StatusReply.ack()</code></a></span> of type <span class="group-scala"><code>StatusReply[Done]</code></span><span class="group-java"><code>StatusReply&lt;Done&gt;</code></span> can be used.</p>
+<p>After validation errors or after persisting events, using a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenRun(org.apache.pekko.japi.function.Effect)" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenRun</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenRun(callback:State=%3EUnit):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenRun</code></a></span> side effect, the reply message can be sent to the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L60-L61" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class AddPost(content: PostContent, replyTo: ActorRef[StatusReply[AddPostDone]]) extends Command
+final case class AddPostDone(postId: String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L114-L130" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class AddPost implements Command {
+  final PostContent content;
+  final ActorRef&lt;AddPostDone&gt; replyTo;
+
+  public AddPost(PostContent content, ActorRef&lt;AddPostDone&gt; replyTo) {
+    this.content = content;
+    this.replyTo = replyTo;
+  }
+}
+
+public static class AddPostDone implements Command {
+  final String postId;
+
+  public AddPostDone(String postId) {
+    this.postId = postId;
+  }
+}</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BlogPostEntity.scala#L109-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val evt = PostAdded(cmd.content.postId, cmd.content)
+Effect.persist(evt).thenRun { _ =&gt;
+  // After persist is done additional side effects can be performed
+  cmd.replyTo ! StatusReply.Success(AddPostDone(cmd.content.postId))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BlogPostEntity.java#L216-L219" target="_blank" title="Go to snippet source">source</a><code class="language-java">PostAdded event = new PostAdded(cmd.content.postId, cmd.content);
+return Effect()
+    .persist(event)
+    .thenRun(() -&gt; cmd.replyTo.tell(new AddPostDone(cmd.content.postId)));</code></pre></dd>
+</dl>
+<p>Since this is such a common pattern there is a reply effect for this purpose. It has the nice property that it can be used to enforce that replies are not forgotten when implementing the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>. If it&rsquo;s defined with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior$.html#withEnforcedReplies[Command,Event,State](persistenceId:org.apache.pekko.persistence.typed.PersistenceId,emptyState:State,commandHandler:(State,Command)=%3Eorg.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State],eventHandler:(State,Event)=%3EState):org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior[Command,Event,State]" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior.withEnforcedReplies</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehaviorWithEnforcedReplies.html" title="pekko.persistence.typed.javadsl.EventSourcedBehaviorWithEnforcedReplies"><code>EventSourcedBehaviorWithEnforcedReplies</code></a></span> there will be compilation errors if the returned effect isn&rsquo;t a <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/ReplyEffect.html" title="org.apache.pekko.persistence.typed.javadsl.ReplyEffect"><code>ReplyEffect</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/ReplyEffect.html" title="org.apache.pekko.persistence.typed.scaladsl.ReplyEffect"><code>ReplyEffect</code></a></span>, which can be created with <span class="group-scala"><code>Effect.reply</code></span><span class="group-java"><code>Effect().reply</code></span>, <span class="group-scala"><code>Effect.noReply</code></span><span class="group-java"><code>Effect().noReply</code></span>, <span class="group-scala"><code>Effect.thenReply</code></span><span class="group-java"><code>Effect().thenReply</code></span>, or <span class="group-scala"><code>Effect.thenNoReply</code></span><span class="group-java"><code>Effect().thenNoReply</code></span>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.scala#L104-L106" target="_blank" title="Go to snippet source">source</a><code class="language-scala">def apply(accountNumber: String, persistenceId: PersistenceId): Behavior[Command] = {
+  EventSourcedBehavior.withEnforcedReplies(persistenceId, EmptyAccount, commandHandler(accountNumber), eventHandler)
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.java#L42-L44" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class AccountEntity
+    extends EventSourcedBehaviorWithEnforcedReplies&lt;
+        AccountEntity.Command, AccountEntity.Event, AccountEntity.Account&gt; {</code></pre></dd>
+</dl>
+<p>The commands must have a field of <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/ActorRef.html" title="org.apache.pekko.actor.typed.ActorRef"><code>ActorRef</code></a></span><span class="group-scala"><code>[ReplyMessageType]</code></span><span class="group-java"><code>&lt;ReplyMessageType&gt;</code></span> that can then be used to send a reply.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.scala#L42-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sealed trait Command extends CborSerializable
+final case class Withdraw(amount: BigDecimal, replyTo: ActorRef[StatusReply[Done]]) extends Command</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.java#L52" target="_blank" title="Go to snippet source">source</a><code class="language-java">interface Command extends CborSerializable {}</code></pre></dd>
+</dl>
+<p>The <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/ReplyEffect.html" title="org.apache.pekko.persistence.typed.javadsl.ReplyEffect"><code>ReplyEffect</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/ReplyEffect.html" title="org.apache.pekko.persistence.typed.scaladsl.ReplyEffect"><code>ReplyEffect</code></a></span> is created with <span class="group-scala"><code>Effect.reply</code></span><span class="group-java"><code>Effect().reply</code></span>, <span class="group-scala"><code>Effect.noReply</code></span><span class="group-java"><code>Effect().noReply</code></span>, <span class="group-scala"><code>Effect.thenReply</code></span><span class="group-java"><code>Effect().thenReply</code></span>, or <span class="group-scala"><code>Effect.thenNoReply</code></span><span class="group-java"><code>Effect().thenNoReply</code></span>.</p>
+<p><span class="group-java">Note that command handlers are defined with <code>newCommandHandlerWithReplyBuilder</code> when using <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehaviorWithEnforcedReplies.html" title="pekko.persistence.typed.javadsl.EventSourcedBehaviorWithEnforcedReplies"><code>EventSourcedBehaviorWithEnforcedReplies</code></a>, as opposed to <code>newCommandHandlerBuilder</code> when using <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a>.</span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/scala/docs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.scala#L163-L169" target="_blank" title="Go to snippet source">source</a><code class="language-scala">private def withdraw(acc: OpenedAccount, cmd: Withdraw): ReplyEffect[Event, Account] = {
+  if (acc.canWithdraw(cmd.amount))
+    Effect.persist(Withdrawn(cmd.amount)).thenReply(cmd.replyTo)(_ =&gt; StatusReply.Ack)
+  else
+    Effect.reply(cmd.replyTo)(
+      StatusReply.Error(s&quot;Insufficient balance ${acc.balance} to be able to withdraw ${cmd.amount}&quot;))
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/cluster-sharding-typed/src/test/java/jdocs/org/apache/pekko/cluster/sharding/typed/AccountExampleWithEventHandlersInState.java#L227-L238" target="_blank" title="Go to snippet source">source</a><code class="language-java">private ReplyEffect&lt;Event, Account&gt; withdraw(OpenedAccount account, Withdraw command) {
+  if (!account.canWithdraw(command.amount)) {
+    return Effect()
+        .reply(
+            command.replyTo,
+            StatusReply.error(&quot;not enough funds to withdraw &quot; + command.amount));
+  } else {
+    return Effect()
+        .persist(new Withdrawn(command.amount))
+        .thenReply(command.replyTo, account2 -&gt; StatusReply.ack());
+  }
+}</code></pre></dd>
+</dl>
+<p>These effects will send the reply message even when <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior$.html#withEnforcedReplies[Command,Event,State](persistenceId:org.apache.pekko.persistence.typed.PersistenceId,emptyState:State,commandHandler:(State,Command)=%3Eorg.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State],eventHandler:(State,Event)=%3EState):org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior[Command,Event,State]" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior.withEnforcedReplies</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehaviorWithEnforcedReplies.html" title="pekko.persistence.typed.javadsl.EventSourcedBehaviorWithEnforcedReplies"><code>EventSourcedBehaviorWithEnforcedReplies</code></a></span> is not used, but then there will be no compilation errors if the reply decision is left out.</p>
+<p>Note that the <code>noReply</code> is a way of making conscious decision that a reply shouldn&rsquo;t be sent for a specific command or the reply will be sent later, perhaps after some asynchronous interaction with other actors or services.</p>
+<h2><a href="#serialization" name="serialization" class="anchor"><span class="anchor-link"></span></a>Serialization</h2>
+<p>The same <a href="../serialization.html">serialization</a> mechanism as for actor messages is also used for persistent actors. When picking a serialization solution for the events you should also consider that it must be possible to read old events when the application has evolved. Strategies for that can be found in the <a href="../persistence-schema-evolution.html">schema evolution</a>.</p>
+<p>You need to enable <a href="../serialization.html">serialization</a> for your commands (messages), events, and state (snapshot). <a href="../serialization-jackson.html">Serialization with Jackson</a> is a good choice in many cases and our recommendation if you don&rsquo;t have other preference.</p>
+<h2><a href="#recovery" name="recovery" class="anchor"><span class="anchor-link"></span></a>Recovery</h2>
+<p>An event sourced actor is automatically recovered on start and on restart by replaying journaled events. New messages sent to the actor during recovery do not interfere with replayed events. They are stashed and received by the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> after the recovery phase completes.</p>
+<p>The number of concurrent recoveries that can be in progress at the same time is limited to not overload the system and the backend data store. When exceeding the limit the actors will wait until other recoveries have been completed. This is configured by:</p>
+<pre><code>pekko.persistence.max-concurrent-recoveries = 50
+</code></pre>
+<p>The <a href="persistence.html#event-handler">event handler</a> is used for updating the state when replaying the journaled events.</p>
+<p>It is strongly discouraged to perform side effects in the event handler, so side effects should be performed once recovery has completed as a reaction to the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryCompleted.html" title="org.apache.pekko.persistence.typed.RecoveryCompleted"><code>RecoveryCompleted</code></a></span> signal <span class="group-scala">in the <a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html#receiveSignal(signalHandler:PartialFunction[(State,org.apache.pekko.actor.typed.Signal),Unit]):org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior[Command,Event,State]" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>receiveSignal</code></a> handler</span> <span class="group-java">by overriding <a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/SignalHandlerBuilder.html#onSignal(java.lang.Class,java.util.function.BiConsumer)" title="pekko.persistence.typed.javadsl.SignalHandlerBuilder"><code>receiveSignal</code></a></span></p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L125-L133" target="_blank" title="Go to snippet source">source</a><code class="language-scala">EventSourcedBehavior[Command, Event, State](
+  persistenceId = persistenceId,
+  emptyState = State(),
+  commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+  eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+  .receiveSignal {
+    case (state, RecoveryCompleted) =&gt;
+      throw new NotImplementedError(&quot;TODO: add some end-of-recovery side-effect here&quot;)
+  }</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L344-L354" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>@Override
+public SignalHandler&lt;State&gt; signalHandler() {
+  return newSignalHandlerBuilder()
+      .onSignal(
+          RecoveryCompleted.instance(),
+          state -&gt; {
+            throw new RuntimeException(&quot;TODO: add some end-of-recovery side-effect here&quot;);
+          })
+      .build();
+}</code></pre></dd>
+</dl>
+<p>The <code>RecoveryCompleted</code> contains the current <code>State</code>.</p>
+<p>The actor will always receive a <code>RecoveryCompleted</code> signal, even if there are no events in the journal and the snapshot store is empty, or if it&rsquo;s a new persistent actor with a previously unused <code>PersistenceId</code>.</p>
+<p><a href="persistence-snapshot.html">Snapshots</a> can be used for optimizing recovery times.</p>
+<h3><a href="#replay-filter" name="replay-filter" class="anchor"><span class="anchor-link"></span></a>Replay filter</h3>
+<p>There could be cases where event streams are corrupted and multiple writers (i.e. multiple persistent actor instances) journaled different messages with the same sequence number. In such a case, you can configure how you filter replayed messages from multiple writers, upon recovery.</p>
+<p>In your configuration, under the <code>pekko.persistence.journal.xxx.replay-filter</code> section (where <code>xxx</code> is your journal plugin id), you can select the replay filter <code>mode</code> from one of the following values:</p>
+<ul>
+  <li>repair-by-discard-old</li>
+  <li>fail</li>
+  <li>warn</li>
+  <li>off</li>
+</ul>
+<p>For example, if you configure the replay filter for leveldb plugin, it looks like this:</p>
+<pre><code># The replay filter can detect a corrupt event stream by inspecting
+# sequence numbers and writerUuid when replaying events.
+pekko.persistence.journal.leveldb.replay-filter {
+  # What the filter should do when detecting invalid events.
+  # Supported values:
+  # `repair-by-discard-old` : discard events from old writers,
+  #                           warning is logged
+  # `fail` : fail the replay, error is logged
+  # `warn` : log warning but emit events untouched
+  # `off` : disable this feature completely
+  mode = repair-by-discard-old
+}
+</code></pre>
+<h3><a href="#disable-recovery" name="disable-recovery" class="anchor"><span class="anchor-link"></span></a>Disable recovery</h3>
+<p>You can also completely disable the recovery of events and snapshots:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L140-L145" target="_blank" title="Go to snippet source">source</a><code class="language-scala">EventSourcedBehavior[Command, Event, State](
+  persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+  emptyState = State(),
+  commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+  eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+  .withRecovery(Recovery.disabled)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L358-L361" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Recovery recovery() {
+  return Recovery.disabled();
+}</code></pre></dd>
+</dl>
+<p>Please refer to <a href="persistence-snapshot.html#snapshots">snapshots</a> if you need to disable only the snapshot recovery, or you need to select specific snapshots.</p>
+<p>In any case, the highest sequence number will always be recovered so you can keep persisting new events without corrupting your event log.</p>
+<h2><a href="#tagging" name="tagging" class="anchor"><span class="anchor-link"></span></a>Tagging</h2>
+<p>Persistence allows you to use event tags without using an <a href="../persistence.html#event-adapters"><code>EventAdapter</code></a>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L152-L157" target="_blank" title="Go to snippet source">source</a><code class="language-scala">EventSourcedBehavior[Command, Event, State](
+  persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+  emptyState = State(),
+  commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+  eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+  .withTagger(_ =&gt; Set(&quot;tag1&quot;, &quot;tag2&quot;))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L365-L371" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public Set&lt;String&gt; tagsFor(Event event) {
+  Set&lt;String&gt; tags = new HashSet&lt;&gt;();
+  tags.add(&quot;tag1&quot;);
+  tags.add(&quot;tag2&quot;);
+  return tags;
+}</code></pre></dd>
+</dl>
+<h2><a href="#event-adapters" name="event-adapters" class="anchor"><span class="anchor-link"></span></a>Event adapters</h2>
+<p>Event adapters can be programmatically added to your <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>s that can convert from your <code>Event</code> type to another type that is then passed to the journal.</p>
+<p>Defining an event adapter is done by extending an EventAdapter:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L320-L325" target="_blank" title="Go to snippet source">source</a><code class="language-scala">case class Wrapper[T](event: T)
+class WrapperEventAdapter[T] extends EventAdapter[T, Wrapper[T]] {
+  override def toJournal(e: T): Wrapper[T] = Wrapper(e)
+  override def fromJournal(p: Wrapper[T], manifest: String): EventSeq[T] = EventSeq.single(p.event)
+  override def manifest(event: T): String = &quot;&quot;
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/org/apache/pekko/persistence/typed/javadsl/PersistentActorCompileOnlyTest.java#L36-L65" target="_blank" title="Go to snippet source">source</a><code class="language-java">public static class Wrapper&lt;T&gt; {
+  private final T event;
+
+  public Wrapper(T event) {
+    this.event = event;
+  }
+
+  public T getEvent() {
+    return event;
+  }
+}
+
+public static class EventAdapterExample
+    extends EventAdapter&lt;SimpleEvent, Wrapper&lt;SimpleEvent&gt;&gt; {
+  @Override
+  public Wrapper&lt;SimpleEvent&gt; toJournal(SimpleEvent simpleEvent) {
+    return new Wrapper&lt;&gt;(simpleEvent);
+  }
+
+  @Override
+  public String manifest(SimpleEvent event) {
+    return &quot;&quot;;
+  }
+
+  @Override
+  public EventSeq&lt;SimpleEvent&gt; fromJournal(
+      Wrapper&lt;SimpleEvent&gt; simpleEventWrapper, String manifest) {
+    return EventSeq.single(simpleEventWrapper.getEvent());
+  }
+}</code></pre></dd>
+</dl>
+<p>Then install it on an <code>EventSourcedBehavior</code>:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L329-L334" target="_blank" title="Go to snippet source">source</a><code class="language-scala">EventSourcedBehavior[Command, Event, State](
+  persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+  emptyState = State(),
+  commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+  eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+  .eventAdapter(new WrapperEventAdapter[Event])</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/org/apache/pekko/persistence/typed/javadsl/PersistentActorCompileOnlyTest.java#L125-L128" target="_blank" title="Go to snippet source">source</a><code class="language-java">@Override
+public EventAdapter&lt;SimpleEvent, Wrapper&lt;SimpleEvent&gt;&gt; eventAdapter() {
+  return new EventAdapterExample();
+}</code></pre></dd>
+</dl>
+<h2><a href="#wrapping-eventsourcedbehavior" name="wrapping-eventsourcedbehavior" class="anchor"><span class="anchor-link"></span></a>Wrapping EventSourcedBehavior</h2>
+<p>When creating an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span>, it is possible to wrap <code>EventSourcedBehavior</code> in other behaviors such as <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/Behaviors$.html#setup(org.apache.pekko.japi.function.Function)" title="org.apache.pekko.actor.typed.javadsl.Behaviors"><code>Behaviors.setup</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/Behaviors$.html#setup[T](factory:org.apache.pekko.actor.typed.scaladsl.ActorContext[T]=%3Eorg.apache.pekko.actor.typed.Behavior[T]):org.apache.pekko.actor.typed.Behavior[T]" title="org.apache.pekko.actor.typed.scaladsl.Behaviors"><code>Behaviors.setup</code></a></span> in order to access the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/javadsl/ActorContext.html" title="org.apache.pekko.actor.typed.javadsl.ActorContext"><code>ActorContext</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/scaladsl/ActorContext.html" title="org.apache.pekko.actor.typed.scaladsl.ActorContext"><code>ActorContext</code></a></span> object. For instance to access the actor logging upon taking snapshots for debug purpose.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L189-L200" target="_blank" title="Go to snippet source">source</a><code class="language-scala">Behaviors.setup[Command] { context =&gt;
+  EventSourcedBehavior[Command, Event, State](
+    persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+    emptyState = State(),
+    commandHandler =
+      (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+    eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+    .snapshotWhen((state, _, _) =&gt; {
+      context.log.info2(&quot;Snapshot actor {} =&gt; state: {}&quot;, context.self.path.name, state)
+      true
+    })
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L381-L436" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        MyPersistentBehavior.Command, MyPersistentBehavior.Event, MyPersistentBehavior.State&gt; {
+
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return Behaviors.setup(context -&gt; new MyPersistentBehavior(persistenceId, context));
+  }
+
+  private final ActorContext&lt;Command&gt; context;
+
+  private MyPersistentBehavior(PersistenceId persistenceId, ActorContext&lt;Command&gt; context) {
+    super(
+        persistenceId,
+        SupervisorStrategy.restartWithBackoff(
+            Duration.ofSeconds(10), Duration.ofSeconds(30), 0.2));
+    this.context = context;
+  }
+
+  @Override
+  public boolean shouldSnapshot(State state, Event event, long sequenceNr) {
+    context
+        .getLog()
+        .info(&quot;Snapshot actor {} =&gt; state: {}&quot;, context.getSelf().path().name(), state);
+    return true;
+  }
+}</code></pre></dd>
+</dl>
+<h2><a href="#journal-failures" name="journal-failures" class="anchor"><span class="anchor-link"></span></a>Journal failures</h2>
+<p>By default an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> will stop if an exception is thrown from the journal. It is possible to override this with any <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/BackoffSupervisorStrategy.html" title="org.apache.pekko.actor.typed.BackoffSupervisorStrategy"><code>BackoffSupervisorStrategy</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/typed/BackoffSupervisorStrategy.html" title="org.apache.pekko.actor.typed.BackoffSupervisorStrategy"><code>BackoffSupervisorStrategy</code></a></span>. It is not possible to use the normal supervision wrapping for this as it isn&rsquo;t valid to <code>resume</code> a behavior on a journal failure as it is not known if the event was persisted.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorCompileOnly.scala#L207-L213" target="_blank" title="Go to snippet source">source</a><code class="language-scala">EventSourcedBehavior[Command, Event, State](
+  persistenceId = PersistenceId.ofUniqueId(&quot;abc&quot;),
+  emptyState = State(),
+  commandHandler = (state, cmd) =&gt; throw new NotImplementedError(&quot;TODO: process the command &amp; return an Effect&quot;),
+  eventHandler = (state, evt) =&gt; throw new NotImplementedError(&quot;TODO: process the event return the next state&quot;))
+  .onPersistFailure(
+    SupervisorStrategy.restartWithBackoff(minBackoff = 10.seconds, maxBackoff = 60.seconds, randomFactor = 0.1))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/BasicPersistentBehaviorTest.java#L299-L374" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class MyPersistentBehavior
+    extends EventSourcedBehavior&lt;
+        MyPersistentBehavior.Command, MyPersistentBehavior.Event, MyPersistentBehavior.State&gt; {
+
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return new MyPersistentBehavior(persistenceId);
+  }
+
+  private MyPersistentBehavior(PersistenceId persistenceId) {
+    super(
+        persistenceId,
+        SupervisorStrategy.restartWithBackoff(
+            Duration.ofSeconds(10), Duration.ofSeconds(30), 0.2));
+  }
+
+}</code></pre></dd>
+</dl>
+<p>If there is a problem with recovering the state of the actor from the journal, a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryFailed.html" title="org.apache.pekko.persistence.typed.RecoveryFailed"><code>RecoveryFailed</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/RecoveryFailed.html" title="org.apache.pekko.persistence.typed.RecoveryFailed"><code>RecoveryFailed</code></a></span> signal is emitted to the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html#receiveSignal(signalHandler:PartialFunction[(State,org.apache.pekko.actor.typed.Signal),Unit]):org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior[Command,Event,State]" title="pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>receiveSignal</code></a> handler</span> <span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/SignalHandlerBuilder.html#onSignal(java.lang.Class,java.util.function.BiConsumer)" title="pekko.persistence.typed.javadsl.SignalHandlerBuilder"><code>receiveSignal</code></a> method</span> and the actor will be stopped (or restarted with backoff).</p>
+<h3><a href="#journal-rejections" name="journal-rejections" class="anchor"><span class="anchor-link"></span></a>Journal rejections</h3>
+<p>Journals can reject events. The difference from a failure is that the journal must decide to reject an event before trying to persist it e.g. because of a serialization exception. If an event is rejected it definitely won&rsquo;t be in the journal. This is signalled to an <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> via an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventRejectedException.html" title="org.apache.pekko.persistence.typed.EventRejectedException"><code>EventRejectedException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/EventRejectedException.html" title="org.apache.pekko.persistence.typed.EventRejectedException"><code>EventRejectedException</code></a></span> and can be handled with a <a href="fault-tolerance.html">supervisor</a>. Not all journal implementations use rejections and treat these kind of problems also as journal failures. </p>
+<h2><a href="#stash" name="stash" class="anchor"><span class="anchor-link"></span></a>Stash</h2>
+<p>When persisting events with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#persist[Event,State](events:Seq[Event]):org.apache.pekko.persistence.typed.scaladsl.EffectBuilder[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>persist</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#persist(java.util.List)" title="pekko.persistence.typed.javadsl.EffectFactories"><code>persist</code></a></span> it is guaranteed that the <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> will not receive further commands until after the events have been confirmed to be persisted and additional side effects have been run. Incoming messages are stashed automatically until the <code>persist</code> is completed.</p>
+<p>Commands are also stashed during recovery and will not interfere with replayed events. Commands will be received when recovery has been completed.</p>
+<p>The stashing described above is handled automatically, but there is also a possibility to stash commands when they are received to defer processing of them until later. One example could be waiting for some external condition or interaction to complete before processing additional commands. That is accomplished by returning a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#stash[Event,State]():org.apache.pekko.persistence.typed.scaladsl.ReplyEffect[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>stash</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#stash()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>stash</code></a></span> effect and later use <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EffectBuilder.html#thenUnstashAll()" title="org.apache.pekko.persistence.typed.javadsl.EffectBuilder"><code>thenUnstashAll</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EffectBuilder.html#thenUnstashAll():org.apache.pekko.persistence.typed.scaladsl.Effect[Event,State]" title="org.apache.pekko.persistence.typed.scaladsl.EffectBuilder"><code>thenUnstashAll</code></a></span>.</p>
+<p>Let&rsquo;s use an example of a task manager to illustrate how the stashing effects can be used. It handles three commands; <code>StartTask</code>, <code>NextStep</code> and <code>EndTask</code>. Those commands are associated with a given <code>taskId</code> and the manager processes one <code>taskId</code> at a time. A task is started when receiving <code>StartTask</code>, and continues when receiving <code>NextStep</code> commands until the final <code>EndTask</code> is received. Commands with another <code>taskId</code> than the one in progress are deferred by stashing them. When <code>EndTask</code> is processed a new task can start and the stashed commands are processed.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/scala/docs/org/apache/pekko/persistence/typed/StashingExample.scala#L28-L93" target="_blank" title="Go to snippet source">source</a><code class="language-scala">object TaskManager {
+
+  sealed trait Command
+  final case class StartTask(taskId: String) extends Command
+  final case class NextStep(taskId: String, instruction: String) extends Command
+  final case class EndTask(taskId: String) extends Command
+
+  sealed trait Event
+  final case class TaskStarted(taskId: String) extends Event
+  final case class TaskStep(taskId: String, instruction: String) extends Event
+  final case class TaskCompleted(taskId: String) extends Event
+
+  final case class State(taskIdInProgress: Option[String])
+
+  def apply(persistenceId: PersistenceId): Behavior[Command] =
+    EventSourcedBehavior[Command, Event, State](
+      persistenceId = persistenceId,
+      emptyState = State(None),
+      commandHandler = (state, command) =&gt; onCommand(state, command),
+      eventHandler = (state, event) =&gt; applyEvent(state, event))
+      .onPersistFailure(SupervisorStrategy.restartWithBackoff(1.second, 30.seconds, 0.2))
+
+  private def onCommand(state: State, command: Command): Effect[Event, State] = {
+    state.taskIdInProgress match {
+      case None =&gt;
+        command match {
+          case StartTask(taskId) =&gt;
+            Effect.persist(TaskStarted(taskId))
+          case _ =&gt;
+            Effect.unhandled
+        }
+
+      case Some(inProgress) =&gt;
+        command match {
+          case StartTask(taskId) =&gt;
+            if (inProgress == taskId)
+              Effect.none // duplicate, already in progress
+            else
+              // other task in progress, wait with new task until later
+              Effect.stash()
+
+          case NextStep(taskId, instruction) =&gt;
+            if (inProgress == taskId)
+              Effect.persist(TaskStep(taskId, instruction))
+            else
+              // other task in progress, wait with new task until later
+              Effect.stash()
+
+          case EndTask(taskId) =&gt;
+            if (inProgress == taskId)
+              Effect.persist(TaskCompleted(taskId)).thenUnstashAll() // continue with next task
+            else
+              // other task in progress, wait with new task until later
+              Effect.stash()
+        }
+    }
+  }
+
+  private def applyEvent(state: State, event: Event): State = {
+    event match {
+      case TaskStarted(taskId) =&gt; State(Option(taskId))
+      case TaskStep(_, _)      =&gt; state
+      case TaskCompleted(_)    =&gt; State(None)
+    }
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/persistence-typed/src/test/java/jdocs/org/apache/pekko/persistence/typed/StashingExample.java#L30-L164" target="_blank" title="Go to snippet source">source</a><code class="language-java">public class TaskManager
+    extends EventSourcedBehavior&lt;TaskManager.Command, TaskManager.Event, TaskManager.State&gt; {
+
+  public interface Command {}
+
+  public static final class StartTask implements Command {
+    public final String taskId;
+
+    public StartTask(String taskId) {
+      this.taskId = taskId;
+    }
+  }
+
+  public static final class NextStep implements Command {
+    public final String taskId;
+    public final String instruction;
+
+    public NextStep(String taskId, String instruction) {
+      this.taskId = taskId;
+      this.instruction = instruction;
+    }
+  }
+
+  public static final class EndTask implements Command {
+    public final String taskId;
+
+    public EndTask(String taskId) {
+      this.taskId = taskId;
+    }
+  }
+
+  public interface Event {}
+
+  public static final class TaskStarted implements Event {
+    public final String taskId;
+
+    public TaskStarted(String taskId) {
+      this.taskId = taskId;
+    }
+  }
+
+  public static final class TaskStep implements Event {
+    public final String taskId;
+    public final String instruction;
+
+    public TaskStep(String taskId, String instruction) {
+      this.taskId = taskId;
+      this.instruction = instruction;
+    }
+  }
+
+  public static final class TaskCompleted implements Event {
+    public final String taskId;
+
+    public TaskCompleted(String taskId) {
+      this.taskId = taskId;
+    }
+  }
+
+  public static class State {
+    public final Optional&lt;String&gt; taskIdInProgress;
+
+    public State(Optional&lt;String&gt; taskIdInProgress) {
+      this.taskIdInProgress = taskIdInProgress;
+    }
+  }
+
+  public static Behavior&lt;Command&gt; create(PersistenceId persistenceId) {
+    return new TaskManager(persistenceId);
+  }
+
+  public TaskManager(PersistenceId persistenceId) {
+    super(
+        persistenceId,
+        SupervisorStrategy.restartWithBackoff(
+            Duration.ofSeconds(1), Duration.ofSeconds(30), 0.2));
+  }
+
+  @Override
+  public State emptyState() {
+    return new State(Optional.empty());
+  }
+
+  @Override
+  public CommandHandler&lt;Command, Event, State&gt; commandHandler() {
+    return newCommandHandlerBuilder()
+        .forAnyState()
+        .onCommand(StartTask.class, this::onStartTask)
+        .onCommand(NextStep.class, this::onNextStep)
+        .onCommand(EndTask.class, this::onEndTask)
+        .build();
+  }
+
+  private Effect&lt;Event, State&gt; onStartTask(State state, StartTask command) {
+    if (state.taskIdInProgress.isPresent()) {
+      if (state.taskIdInProgress.get().equals(command.taskId))
+        return Effect().none(); // duplicate, already in progress
+      else return Effect().stash(); // other task in progress, wait with new task until later
+    } else {
+      return Effect().persist(new TaskStarted(command.taskId));
+    }
+  }
+
+  private Effect&lt;Event, State&gt; onNextStep(State state, NextStep command) {
+    if (state.taskIdInProgress.isPresent()) {
+      if (state.taskIdInProgress.get().equals(command.taskId))
+        return Effect().persist(new TaskStep(command.taskId, command.instruction));
+      else return Effect().stash(); // other task in progress, wait with new task until later
+    } else {
+      return Effect().unhandled();
+    }
+  }
+
+  private Effect&lt;Event, State&gt; onEndTask(State state, EndTask command) {
+    if (state.taskIdInProgress.isPresent()) {
+      if (state.taskIdInProgress.get().equals(command.taskId))
+        return Effect()
+            .persist(new TaskCompleted(command.taskId))
+            .thenUnstashAll(); // continue with next task
+      else return Effect().stash(); // other task in progress, wait with new task until later
+    } else {
+      return Effect().unhandled();
+    }
+  }
+
+  @Override
+  public EventHandler&lt;State, Event&gt; eventHandler() {
+    return newEventHandlerBuilder()
+        .forAnyState()
+        .onEvent(TaskStarted.class, (state, event) -&gt; new State(Optional.of(event.taskId)))
+        .onEvent(TaskStep.class, (state, event) -&gt; state)
+        .onEvent(TaskCompleted.class, (state, event) -&gt; new State(Optional.empty()))
+        .build();
+  }
+}</code></pre></dd>
+</dl>
+<p>You should be careful to not send more messages to a persistent actor than it can keep up with, otherwise the stash buffer will fill up and when reaching its maximum capacity the commands will be dropped. The capacity can be configured with:</p>
+<pre><code>pekko.persistence.typed.stash-capacity = 10000
+</code></pre>
+<p>Note that the stashed commands are kept in an in-memory buffer, so in case of a crash they will not be processed.</p>
+<ul>
+  <li>Stashed commands are discarded in case the actor (entity) is passivated or rebalanced by Cluster Sharding.</li>
+  <li>Stashed commands are discarded in case the actor is restarted (or stopped) due to a thrown exception while processing a command or side effect after persisting.</li>
+  <li>Stashed commands are preserved and processed later in case of a failure while storing events but only if an <code>onPersistFailure</code> backoff supervisor strategy is defined.</li>
+</ul>
+<p>It&rsquo;s allowed to stash messages while unstashing. Those newly added commands will not be processed by the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/persistence/typed/scaladsl/Effect$.html#unstashAll[Event,State]():org.apache.pekko.persistence.typed.scaladsl.Effect[Event,State]" title="pekko.persistence.typed.scaladsl.Effect"><code>unstashAll</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/persistence/typed/javadsl/EffectFactories.html#unstashAll()" title="pekko.persistence.typed.javadsl.EffectFactories"><code>unstashAll</code></a></span> effect that was in progress and have to be unstashed by another <code>unstashAll</code>.</p>
+<h2><a href="#scaling-out" name="scaling-out" class="anchor"><span class="anchor-link"></span></a>Scaling out</h2>
+<p>In a use case where the number of persistent actors needed is higher than what would fit in the memory of one node or where resilience is important so that if a node crashes the persistent actors are quickly started on a new node and can resume operations <a href="cluster-sharding.html">Cluster Sharding</a> is an excellent fit to spread persistent actors over a cluster and address them by id.</p>
+<p>Pekko Persistence is based on the single-writer principle. For a particular <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/PersistenceId.html" title="org.apache.pekko.persistence.typed.PersistenceId"><code>PersistenceId</code></a></span> only one <span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/javadsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.javadsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/persistence/typed/scaladsl/EventSourcedBehavior.html" title="org.apache.pekko.persistence.typed.scaladsl.EventSourcedBehavior"><code>EventSourcedBehavior</code></a></span> instance should be active at one time. If multiple instances were to persist events at the same time, the events would be interleaved and might not be interpreted correctly on replay. Cluster Sharding ensures that there is only one active entity (<code>EventSourcedBehavior</code>) for each id within a data center. <a href="replicated-eventsourcing.html">Replicated Event Sourcing</a> supports active-active persistent entities across data centers.</p>
+<h2><a href="#configuration" name="configuration" class="anchor"><span class="anchor-link"></span></a>Configuration</h2>
+<p>There are several configuration properties for the persistence module, please refer to the <a href="../general/configuration-reference.html#config-pekko-persistence">reference configuration</a>.</p>
+<p>The <a href="../persistence-plugins.html">journal and snapshot store plugins</a> have specific configuration, see reference documentation of the chosen plugin.</p>
+<h2><a href="#example-project" name="example-project" class="anchor"><span class="anchor-link"></span></a>Example project</h2>
+<p><span class="group-java"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-persistence-java">Persistence example project</a></span> <span class="group-scala"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-persistence-scala">Persistence example project</a></span> is an example project that can be downloaded, and with instructions of how to run. This project contains a Shopping Cart sample illustrating how to use Pekko Persistence.</p>
+<p>The Shopping Cart sample is expanded further in the <a href="https://developer.lightbend.com/docs/akka-platform-guide/microservices-tutorial/">Microservices with Pekko tutorial</a>. In that sample the events are tagged to be consumed by even processors to build other representations from the events, or publish the events to other services.</p>
+<p><span class="group-java"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-persistence-dc-java">Multi-DC Persistence example project</a></span> <span class="group-scala"><a href="https://developer.lightbend.com/start/?group=akka&amp;project=pekko-samples-persistence-dc-scala">Multi-DC Persistence example project</a></span> illustrates how to use <a href="replicated-eventsourcing.html">Replicated Event Sourcing</a> that supports active-active persistent entities across data centers.</p>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/typed/persistence.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../typed/index-persistence.html" title="Persistence (Event Sourcing)" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Persistence (Event Sourcing)
+</span>
+</div>
+</a>
+<a href="../typed/replicated-eventsourcing.html" title="Replicated Event Sourcing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Replicated Event Sourcing
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

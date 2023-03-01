@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="Apache Pekko is a toolkit for building highly concurrent, distributed, and resilient message-driven applications for Java and Scala.">
+<link rel="shortcut icon" href="assets/images/pekko_favicon.png">
+<title>Classic Routing · Apache Pekko Documentation</title>
+<link rel="stylesheet" href="assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="assets/stylesheets/application-palette.22915126.css">
+<link rel="stylesheet" href="lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="lib/prettify/prettify.css">
+<script src="assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="assets/fonts/material-icons.css">
+<link rel="stylesheet" href="assets/stylesheets/paradox-material-theme.css">
+<link rel="stylesheet" href="assets/stylesheets/pekko-theme.css">
+</head>
+<body
+data-md-color-primary="white"
+data-md-color-accent="orange"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="index.html" title="Apache Pekko Documentation" class="md-header-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Apache Pekko Documentation
+</span>
+<span class="md-header-nav__topic">
+Classic Routing
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="index.html" title="Apache Pekko Documentation" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<img src="assets/images/pekko_logo.png" width="24" height="24">
+</a>
+<a href="index.html" title="Apache Pekko Documentation">
+Apache Pekko Documentation
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/apache/incubator-pekko"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+apache/incubator-pekko
+</div>
+</a>
+
+</div>
+<select class="supergroup" name="Language"><option class="group" value="group-scala">Scala</option><option class="group" value="group-java">Java</option></select>
+<ul>
+  <li><a href="security/index.html" class="page">Security Announcements</a>
+  <ul>
+    <li><a href="security/index.html#receiving-security-advisories" class="header">Receiving Security Advisories</a></li>
+    <li><a href="security/index.html#reporting-vulnerabilities" class="header">Reporting Vulnerabilities</a></li>
+    <li><a href="security/index.html#security-related-documentation" class="header">Security Related Documentation</a></li>
+  </ul></li>
+  <li><a href="typed/guide/index.html" class="page">Getting Started Guide</a>
+  <ul>
+    <li><a href="typed/guide/introduction.html" class="page">Introduction to Apache Pekko</a></li>
+    <li><a href="typed/guide/actors-motivation.html" class="page">Why modern systems need a new programming model</a></li>
+    <li><a href="typed/guide/actors-intro.html" class="page">How the Actor Model Meets the Needs of Modern, Distributed Systems</a></li>
+    <li><a href="typed/guide/modules.html" class="page">Overview of Apache Pekko libraries and modules</a></li>
+    <li><a href="typed/guide/tutorial.html" class="page">Introduction to the Example</a></li>
+    <li><a href="typed/guide/tutorial_1.html" class="page">Part 1: Actor Architecture</a></li>
+    <li><a href="typed/guide/tutorial_2.html" class="page">Part 2: Creating the First Actor</a></li>
+    <li><a href="typed/guide/tutorial_3.html" class="page">Part 3: Working with Device Actors</a></li>
+    <li><a href="typed/guide/tutorial_4.html" class="page">Part 4: Working with Device Groups</a></li>
+    <li><a href="typed/guide/tutorial_5.html" class="page">Part 5: Querying Device Groups</a></li>
+  </ul></li>
+  <li><a href="general/index.html" class="page">General Concepts</a>
+  <ul>
+    <li><a href="general/terminology.html" class="page">Terminology, Concepts</a></li>
+    <li><a href="general/actor-systems.html" class="page">Actor Systems</a></li>
+    <li><a href="general/actors.html" class="page">What is an Actor?</a></li>
+    <li><a href="general/supervision.html" class="page">Supervision and Monitoring</a></li>
+    <li><a href="general/addressing.html" class="page">Actor References, Paths and Addresses</a></li>
+    <li><a href="general/remoting.html" class="page">Location Transparency</a></li>
+    <li><a href="general/jmm.html" class="page">Apache Pekko and the Java Memory Model</a></li>
+    <li><a href="general/message-delivery-reliability.html" class="page">Message Delivery Reliability</a></li>
+    <li><a href="general/configuration.html" class="page">Configuration</a></li>
+    <li><a href="general/configuration-reference.html" class="page">Default configuration</a></li>
+  </ul></li>
+  <li><a href="typed/index.html" class="page">Actors</a>
+  <ul>
+    <li><a href="typed/actors.html" class="page">Introduction to Actors</a></li>
+    <li><a href="typed/actor-lifecycle.html" class="page">Actor lifecycle</a></li>
+    <li><a href="typed/interaction-patterns.html" class="page">Interaction Patterns</a></li>
+    <li><a href="typed/fault-tolerance.html" class="page">Fault Tolerance</a></li>
+    <li><a href="typed/actor-discovery.html" class="page">Actor discovery</a></li>
+    <li><a href="typed/routers.html" class="page">Routers</a></li>
+    <li><a href="typed/stash.html" class="page">Stash</a></li>
+    <li><a href="typed/fsm.html" class="page">Behaviors as finite state machines</a></li>
+    <li><a href="coordinated-shutdown.html" class="page">Coordinated Shutdown</a></li>
+    <li><a href="typed/dispatchers.html" class="page">Dispatchers</a></li>
+    <li><a href="typed/mailboxes.html" class="page">Mailboxes</a></li>
+    <li><a href="typed/testing.html" class="page">Testing</a></li>
+    <li><a href="typed/coexisting.html" class="page">Coexistence</a></li>
+    <li><a href="typed/style-guide.html" class="page">Style guide</a></li>
+    <li><a href="typed/from-classic.html" class="page">Learning Pekko Typed from Classic</a></li>
+  </ul></li>
+  <li><a href="typed/index-cluster.html" class="page">Cluster</a>
+  <ul>
+    <li><a href="typed/cluster.html" class="page">Cluster Usage</a></li>
+    <li><a href="typed/cluster-concepts.html" class="page">Cluster Specification</a></li>
+    <li><a href="typed/cluster-membership.html" class="page">Cluster Membership Service</a></li>
+    <li><a href="typed/failure-detector.html" class="page">Phi Accrual Failure Detector</a></li>
+    <li><a href="typed/distributed-data.html" class="page">Distributed Data</a></li>
+    <li><a href="typed/cluster-singleton.html" class="page">Cluster Singleton</a></li>
+    <li><a href="typed/cluster-sharding.html" class="page">Cluster Sharding</a></li>
+    <li><a href="typed/cluster-sharding-concepts.html" class="page">Cluster Sharding concepts</a></li>
+    <li><a href="typed/cluster-sharded-daemon-process.html" class="page">Sharded Daemon Process</a></li>
+    <li><a href="typed/cluster-dc.html" class="page">Multi-DC Cluster</a></li>
+    <li><a href="typed/distributed-pub-sub.html" class="page">Distributed Publish Subscribe in Cluster</a></li>
+    <li><a href="typed/reliable-delivery.html" class="page">Reliable delivery</a></li>
+    <li><a href="serialization.html" class="page">Serialization</a></li>
+    <li><a href="serialization-jackson.html" class="page">Serialization with Jackson</a></li>
+    <li><a href="multi-jvm-testing.html" class="page">Multi JVM Testing</a></li>
+    <li><a href="multi-node-testing.html" class="page">Multi Node Testing</a></li>
+    <li><a href="remoting-artery.html" class="page">Artery Remoting</a></li>
+    <li><a href="remoting.html" class="page">Classic Remoting (Deprecated)</a></li>
+    <li><a href="split-brain-resolver.html" class="page">Split Brain Resolver</a></li>
+    <li><a href="coordination.html" class="page">Coordination</a></li>
+    <li><a href="typed/choosing-cluster.html" class="page">Choosing Pekko Cluster</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence.html" class="page">Persistence (Event Sourcing)</a>
+  <ul>
+    <li><a href="typed/persistence.html" class="page">Event Sourcing</a></li>
+    <li><a href="typed/replicated-eventsourcing.html" class="page">Replicated Event Sourcing</a></li>
+    <li><a href="typed/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="typed/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/persistence-snapshot.html" class="page">Snapshotting</a></li>
+    <li><a href="typed/persistence-testing.html" class="page">Testing</a></li>
+    <li><a href="typed/persistence-fsm.html" class="page">EventSourced behaviors as finite state machines</a></li>
+    <li><a href="persistence-schema-evolution.html" class="page">Schema Evolution for Event Sourced Actors</a></li>
+    <li><a href="persistence-query.html" class="page">Apache Persistence Query</a></li>
+    <li><a href="persistence-query-leveldb.html" class="page">Persistence Query for LevelDB</a></li>
+    <li><a href="persistence-plugins.html" class="page">Persistence Plugins</a></li>
+    <li><a href="persistence-journals.html" class="page">Persistence - Building a storage backend</a></li>
+    <li><a href="typed/replicated-eventsourcing-examples.html" class="page">Replicated Event Sourcing Examples</a></li>
+  </ul></li>
+  <li><a href="typed/index-persistence-durable-state.html" class="page">Persistence (Durable State)</a>
+  <ul>
+    <li><a href="typed/durable-state/persistence.html" class="page">Durable State</a></li>
+    <li><a href="typed/durable-state/persistence-style.html" class="page">Style Guide</a></li>
+    <li><a href="typed/durable-state/cqrs.html" class="page">CQRS</a></li>
+    <li><a href="durable-state/persistence-query.html" class="page">Persistence Query</a></li>
+  </ul></li>
+  <li><a href="stream/index.html" class="page">Streams</a>
+  <ul>
+    <li><a href="stream/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="stream/stream-introduction.html" class="page">Introduction</a></li>
+    <li><a href="stream/stream-quickstart.html" class="page">Streams Quickstart Guide</a></li>
+    <li><a href="general/stream/stream-design.html" class="page">Design Principles behind Apache Pekko Streams</a></li>
+    <li><a href="stream/stream-flows-and-basics.html" class="page">Basics and working with Flows</a></li>
+    <li><a href="stream/stream-graphs.html" class="page">Working with Graphs</a></li>
+    <li><a href="stream/stream-composition.html" class="page">Modularity, Composition and Hierarchy</a></li>
+    <li><a href="stream/stream-rate.html" class="page">Buffers and working with rate</a></li>
+    <li><a href="stream/stream-context.html" class="page">Context Propagation</a></li>
+    <li><a href="stream/stream-dynamic.html" class="page">Dynamic stream handling</a></li>
+    <li><a href="stream/stream-customize.html" class="page">Custom stream processing</a></li>
+    <li><a href="stream/futures-interop.html" class="page">Futures interop</a></li>
+    <li><a href="stream/actor-interop.html" class="page">Actors interop</a></li>
+    <li><a href="stream/reactive-streams-interop.html" class="page">Reactive Streams Interop</a></li>
+    <li><a href="stream/stream-error.html" class="page">Error Handling in Streams</a></li>
+    <li><a href="stream/stream-io.html" class="page">Working with streaming IO</a></li>
+    <li><a href="stream/stream-refs.html" class="page">StreamRefs - Reactive Streams over the network</a></li>
+    <li><a href="stream/stream-parallelism.html" class="page">Pipelining and Parallelism</a></li>
+    <li><a href="stream/stream-testkit.html" class="page">Testing streams</a></li>
+    <li><a href="stream/stream-substream.html" class="page">Substreams</a></li>
+    <li><a href="stream/stream-cookbook.html" class="page">Streams Cookbook</a></li>
+    <li><a href="general/stream/stream-configuration.html" class="page">Configuration</a></li>
+    <li><a href="stream/operators/index.html" class="page">Operators</a></li>
+  </ul></li>
+  <li><a href="discovery/index.html" class="page">Discovery</a>
+  <ul>
+    <li><a href="discovery/index.html#module-info" class="header">Module info</a></li>
+    <li><a href="discovery/index.html#how-it-works" class="header">How it works</a></li>
+    <li><a href="discovery/index.html#discovery-method-dns" class="header">Discovery Method: DNS</a></li>
+    <li><a href="discovery/index.html#discovery-method-configuration" class="header">Discovery Method: Configuration</a></li>
+    <li><a href="discovery/index.html#discovery-method-aggregate-multiple-discovery-methods" class="header">Discovery Method: Aggregate multiple discovery methods</a></li>
+    <li><a href="discovery/index.html#migrating-from-pekko-management-discovery-before-1-0-0-" class="header">Migrating from Pekko Management Discovery (before 1.0.0)</a></li>
+  </ul></li>
+  <li><a href="index-utilities.html" class="page">Utilities</a>
+  <ul>
+    <li><a href="typed/logging.html" class="page">Logging</a></li>
+    <li><a href="common/circuitbreaker.html" class="page">Circuit Breaker</a></li>
+    <li><a href="futures.html" class="page">Futures patterns</a></li>
+    <li><a href="typed/extending.html" class="page">Extending Apache Pekko</a></li>
+  </ul></li>
+  <li><a href="common/other-modules.html" class="page">Other Apache Pekko modules</a>
+  <ul>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-http/current/">Pekko HTTP</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-grpc/current/">Pekko gRPC</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors/current/">Pekko Connectors</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-connectors-kafka/current/">Pekko Kafka Connector</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-projection/current/">Pekko Projections</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-cassandra/current/">Cassandra Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-jdbc/current/">JDBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/">R2DBC Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#" class="header"><a href="https://pekko.apache.org/docs/pekko-persistence-spanner/current/">Google Cloud Spanner Plugin for Pekko Persistence</a></a></li>
+    <li><a href="common/other-modules.html#apache-pekko-management" class="header">Apache Pekko Management</a></li>
+  </ul></li>
+  <li><a href="additional/deploy.html" class="page">Package, Deploy and Run</a>
+  <ul>
+    <li><a href="additional/packaging.html" class="page">Packaging</a></li>
+    <li><a href="additional/operations.html" class="page">Operating a Cluster</a></li>
+    <li><a href="additional/deploying.html" class="page">Deploying</a></li>
+    <li><a href="additional/rolling-updates.html" class="page">Rolling Updates</a></li>
+  </ul></li>
+  <li><a href="project/index.html" class="page">Project Information</a>
+  <ul>
+    <li><a href="common/binary-compatibility-rules.html" class="page">Binary Compatibility Rules</a></li>
+    <li><a href="project/scala3.html" class="page">Scala 3 support</a></li>
+    <li><a href="project/downstream-upgrade-strategy.html" class="page">Downstream upgrade strategy</a></li>
+    <li><a href="common/may-change.html" class="page">Modules marked &ldquo;May Change&rdquo;</a></li>
+    <li><a href="additional/ide.html" class="page">IDE Tips</a></li>
+    <li><a href="project/immutable.html" class="page">Immutability using Lombok</a></li>
+    <li><a href="additional/osgi.html" class="page">Apache Pekko in OSGi</a></li>
+    <li><a href="project/migration-guides.html" class="page">Migration Guides</a></li>
+    <li><a href="project/rolling-update.html" class="page">Rolling Updates and Versions</a></li>
+    <li><a href="project/issue-tracking.html" class="page">Issue Tracking</a></li>
+    <li><a href="project/licenses.html" class="page">Licenses</a></li>
+    <li><a href="additional/faq.html" class="page">Frequently Asked Questions</a></li>
+    <li><a href="additional/books.html" class="page">Books and Videos</a></li>
+    <li><a href="project/examples.html" class="page">Example projects</a></li>
+    <li><a href="project/links.html" class="page">Project</a></li>
+  </ul></li>
+  <li><a href="index-classic.html" class="page">Pekko Classic</a>
+  <ul>
+    <li><a href="index-actors.html" class="page">Classic Actors</a></li>
+    <li><a href="index-cluster.html" class="page">Classic Clustering</a></li>
+    <li><a href="index-network.html" class="page">Classic Networking</a></li>
+    <li><a href="index-utilities-classic.html" class="page">Classic Utilities</a></li>
+  </ul></li>
+</ul>
+
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="routing.html#classic-routing" class="header">Classic Routing</a>
+  <ul>
+    <li><a href="routing.html#dependency" class="header">Dependency</a></li>
+    <li><a href="routing.html#introduction" class="header">Introduction</a></li>
+    <li><a href="routing.html#a-simple-router" class="header">A Simple Router</a></li>
+    <li><a href="routing.html#a-router-actor" class="header">A Router Actor</a></li>
+    <li><a href="routing.html#router-usage" class="header">Router usage</a></li>
+    <li><a href="routing.html#specially-handled-messages" class="header">Specially Handled Messages</a></li>
+    <li><a href="routing.html#dynamically-resizable-pool" class="header">Dynamically Resizable Pool</a></li>
+    <li><a href="routing.html#how-routing-is-designed-within-pekko" class="header">How Routing is Designed within Pekko</a></li>
+    <li><a href="routing.html#custom-router" class="header">Custom Router</a></li>
+    <li><a href="routing.html#configuring-dispatchers" class="header">Configuring Dispatchers</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+
+<ul class="md-nav__list md-nav__links">
+<li class="md-nav__item"><a href="https://apache.org"><i class="md-icon">link</i> Apache Software Foundation</a></li>
+<li class="md-nav__item"><a href="https://apache.org/licenses/"><i class="md-icon">link</i>&nbsp;License</a></li>
+<li class="md-nav__item"><a href="https://apache.org/security/"><i class="md-icon">link</i>&nbsp;Security</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/sponsorship.html"><i class="md-icon">link</i>&nbsp;Donate</a></li>
+<li class="md-nav__item"><a href="https://www.apache.org/foundation/thanks.html"><i class="md-icon">link</i>&nbsp;Thanks</a></li>
+</ul>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 0.0.0+26605-0f20b284+20230301-2309*
+</label>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="routing.html#classic-routing" class="header">Classic Routing</a>
+  <ul>
+    <li><a href="routing.html#dependency" class="header">Dependency</a></li>
+    <li><a href="routing.html#introduction" class="header">Introduction</a></li>
+    <li><a href="routing.html#a-simple-router" class="header">A Simple Router</a></li>
+    <li><a href="routing.html#a-router-actor" class="header">A Router Actor</a></li>
+    <li><a href="routing.html#router-usage" class="header">Router usage</a></li>
+    <li><a href="routing.html#specially-handled-messages" class="header">Specially Handled Messages</a></li>
+    <li><a href="routing.html#dynamically-resizable-pool" class="header">Dynamically Resizable Pool</a></li>
+    <li><a href="routing.html#how-routing-is-designed-within-pekko" class="header">How Routing is Designed within Pekko</a></li>
+    <li><a href="routing.html#custom-router" class="header">Custom Router</a></li>
+    <li><a href="routing.html#configuring-dispatchers" class="header">Configuring Dispatchers</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#classic-routing" name="classic-routing" class="anchor"><span class="anchor-link"></span></a>Classic Routing</h1><div class="callout note "><div class="callout-title">Note</div>
+<p>Pekko Classic pertains to the original Actor APIs, which have been improved by more type safe and guided Actor APIs. Pekko Classic is still fully supported and existing applications can continue to use the classic APIs. It is also possible to use the new Actor APIs together with classic actors in the same ActorSystem, see <a href="typed/coexisting.html">coexistence</a>. For new projects we recommend using <a href="typed/actors.html">the new Actor API</a>.</p></div>
+<p>For the documentation of the new API of this feature and for new projects see <a href="typed/routers.html">routers</a>.</p>
+<h2><a href="#dependency" name="dependency" class="anchor"><span class="anchor-link"></span></a>Dependency</h2>
+<p>To use Routing, you must add the following dependency in your project:</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">val PekkoVersion = "0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT"
+libraryDependencies += "org.apache.pekko" %% "pekko-actor" % PekkoVersion</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;properties&gt;
+  &lt;scala.binary.version&gt;2.13&lt;/scala.binary.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+      &lt;artifactId&gt;pekko-bom_${scala.binary.version}&lt;/artifactId&gt;
+      &lt;version&gt;0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.pekko&lt;/groupId&gt;
+    &lt;artifactId&gt;pekko-actor_${scala.binary.version}&lt;/artifactId&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">def versions = [
+  ScalaBinary: "2.13"
+]
+dependencies {
+  implementation platform("org.apache.pekko:pekko-bom_${versions.ScalaBinary}:0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT")
+
+  implementation "org.apache.pekko:pekko-actor_${versions.ScalaBinary}"
+}</code></pre></dd></dl>
+<h2><a href="#introduction" name="introduction" class="anchor"><span class="anchor-link"></span></a>Introduction</h2>
+<p>Messages can be sent via a router to efficiently route them to destination actors, known as its <em>routees</em>. A <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html" title="org.apache.pekko.routing.Router"><code>Router</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html" title="org.apache.pekko.routing.Router"><code>Router</code></a></span> can be used inside or outside of an actor, and you can manage the routees yourselves or use a self contained router actor with configuration capabilities.</p>
+<p>Different routing strategies can be used, according to your application&rsquo;s needs. Pekko comes with several useful routing strategies right out of the box. But, as you will see in this chapter, it is also possible to <a href="routing.html#custom-router">create your own</a>.</p>
+<a id="simple-router"></a>
+<h2><a href="#a-simple-router" name="a-simple-router" class="anchor"><span class="anchor-link"></span></a>A Simple Router</h2>
+<p>The following example illustrates how to use a <code>Router</code> and manage the routees from within an actor.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L306-L327" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.routing.{ ActorRefRoutee, RoundRobinRoutingLogic, Router }
+
+class Master extends Actor {
+  var router = {
+    val routees = Vector.fill(5) {
+      val r = context.actorOf(Props[Worker]())
+      context.watch(r)
+      ActorRefRoutee(r)
+    }
+    Router(RoundRobinRoutingLogic(), routees)
+  }
+
+  def receive = {
+    case w: Work =&gt;
+      router.route(w, sender())
+    case Terminated(a) =&gt;
+      router = router.removeRoutee(a)
+      val r = context.actorOf(Props[Worker]())
+      context.watch(r)
+      router = router.addRoutee(r)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L87-L132" target="_blank" title="Go to snippet source">source</a><code class="language-java">static final class Work implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final String payload;
+
+  public Work(String payload) {
+    this.payload = payload;
+  }
+}
+
+static class Master extends AbstractActor {
+
+  Router router;
+
+  {
+    List&lt;Routee&gt; routees = new ArrayList&lt;Routee&gt;();
+    for (int i = 0; i &lt; 5; i++) {
+      ActorRef r = getContext().actorOf(Props.create(Worker.class));
+      getContext().watch(r);
+      routees.add(new ActorRefRoutee(r));
+    }
+    router = new Router(new RoundRobinRoutingLogic(), routees);
+  }
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Work.class,
+            message -&gt; {
+              router.route(message, getSender());
+            })
+        .match(
+            Terminated.class,
+            message -&gt; {
+              router = router.removeRoutee(message.actor());
+              ActorRef r = getContext().actorOf(Props.create(Worker.class));
+              getContext().watch(r);
+              router = router.addRoutee(new ActorRefRoutee(r));
+            })
+        .build();
+  }
+}
+</code></pre></dd>
+</dl>
+<p>We create a <code>Router</code> and specify that it should use <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span> when routing the messages to the routees.</p>
+<p>The routing logic shipped with Pekko are:</p>
+<ul>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RandomRoutingLogic.html" title="org.apache.pekko.routing.RandomRoutingLogic"><code>RandomRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RandomRoutingLogic.html" title="org.apache.pekko.routing.RandomRoutingLogic"><code>RandomRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/SmallestMailboxRoutingLogic.html" title="org.apache.pekko.routing.SmallestMailboxRoutingLogic"><code>SmallestMailboxRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/SmallestMailboxRoutingLogic.html" title="org.apache.pekko.routing.SmallestMailboxRoutingLogic"><code>SmallestMailboxRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/BroadcastRoutingLogic.html" title="org.apache.pekko.routing.BroadcastRoutingLogic"><code>BroadcastRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/BroadcastRoutingLogic.html" title="org.apache.pekko.routing.BroadcastRoutingLogic"><code>BroadcastRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ScatterGatherFirstCompletedRoutingLogic.html" title="org.apache.pekko.routing.ScatterGatherFirstCompletedRoutingLogic"><code>ScatterGatherFirstCompletedRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ScatterGatherFirstCompletedRoutingLogic.html" title="org.apache.pekko.routing.ScatterGatherFirstCompletedRoutingLogic"><code>ScatterGatherFirstCompletedRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/TailChoppingRoutingLogic.html" title="org.apache.pekko.routing.TailChoppingRoutingLogic"><code>TailChoppingRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/TailChoppingRoutingLogic.html" title="org.apache.pekko.routing.TailChoppingRoutingLogic"><code>TailChoppingRoutingLogic</code></a></span></li>
+  <li><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRoutingLogic.html" title="org.apache.pekko.routing.ConsistentHashingRoutingLogic"><code>ConsistentHashingRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRoutingLogic.html" title="org.apache.pekko.routing.ConsistentHashingRoutingLogic"><code>ConsistentHashingRoutingLogic</code></a></span></li>
+</ul>
+<p>We create the routees as ordinary child actors wrapped in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ActorRefRoutee.html" title="org.apache.pekko.routing.ActorRefRoutee"><code>ActorRefRoutee</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ActorRefRoutee.html" title="org.apache.pekko.routing.ActorRefRoutee"><code>ActorRefRoutee</code></a></span>. We watch the routees to be able to replace them if they are terminated.</p>
+<p>Sending messages via the router is done with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html#route(message:Any,sender:org.apache.pekko.actor.ActorRef):Unit" title="org.apache.pekko.routing.Router"><code>route</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html#route(java.lang.Object,org.apache.pekko.actor.ActorRef)" title="org.apache.pekko.routing.Router"><code>route</code></a></span> method, as is done for the <code>Work</code> messages in the example above.</p>
+<p>The <code>Router</code> is immutable and the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoutingLogic.html" title="org.apache.pekko.routing.RoutingLogic"><code>RoutingLogic</code></a></span> is thread safe; meaning that they can also be used outside of actors. </p><div class="callout note "><div class="callout-title">Note</div>
+<p>In general, any message sent to a router will be sent onwards to its routees, but there is one exception. The special <a href="routing.html#broadcast-messages">Broadcast Messages</a> will send to <em>all</em> of a router&rsquo;s routees. However, do not use <a href="routing.html#broadcast-messages">Broadcast Messages</a> when you use <a href="routing.html#balancing-pool">BalancingPool</a> for routees as described in <a href="routing.html#router-special-messages">Specially Handled Messages</a>.</p></div>
+<h2><a href="#a-router-actor" name="a-router-actor" class="anchor"><span class="anchor-link"></span></a>A Router Actor</h2>
+<p>A router can also be created as a self contained actor that manages the routees itself and loads routing logic and other settings from configuration.</p>
+<p>This type of router actor comes in two distinct flavors:</p>
+<ul>
+  <li>Pool - The router creates routees as child actors and removes them from the router if they terminate.</li>
+  <li>Group - The routee actors are created externally to the router and the router sends messages to the specified path using actor selection, without watching for termination.</li>
+</ul>
+<p>The settings for a router actor can be defined in configuration or programmatically. In order to make an actor to make use of an externally configurable router the <code>FromConfig</code> props wrapper must be used to denote that the actor accepts routing settings from configuration. This is in contrast with Remote Deployment where such marker props is not necessary. If the props of an actor is NOT wrapped in <code>FromConfig</code> it will ignore the router section of the deployment configuration.</p>
+<p>You send messages to the routees via the router actor in the same way as for ordinary actors, i.e. via its <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span>. The router actor forwards messages onto its routees without changing the original sender. When a routee replies to a routed message, the reply will be sent to the original sender, not to the router actor.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>In general, any message sent to a router will be sent onwards to its routees, but there are a few exceptions. These are documented in the <a href="routing.html#router-special-messages">Specially Handled Messages</a> section below.</p></div>
+<h3><a href="#pool" name="pool" class="anchor"><span class="anchor-link"></span></a>Pool</h3>
+<p>The following code and configuration snippets show how to create a <a href="routing.html#round-robin-router">round-robin</a> router that forwards messages to five <code>Worker</code> routees. The routees will be created as the router&rsquo;s children.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L42-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router1 {
+    router = round-robin-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L356-L357" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router1: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router1&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L192-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router1 =
+    getContext().actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router1&quot;);</code></pre></dd>
+</dl>
+<p>Here is the same example, but with the router configuration provided programmatically instead of from configuration.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L361-L362" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router2: ActorRef =
+  context.actorOf(RoundRobinPool(5).props(Props[Worker]()), &quot;router2&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L197-L198" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router2 =
+    getContext().actorOf(new RoundRobinPool(5).props(Props.create(Worker.class)), &quot;router2&quot;);</code></pre></dd>
+</dl>
+<h4><a href="#remote-deployed-routees" name="remote-deployed-routees" class="anchor"><span class="anchor-link"></span></a>Remote Deployed Routees</h4>
+<p>In addition to being able to create local actors as routees, you can instruct the router to deploy its created children on a set of remote hosts. Routees will be deployed in round-robin fashion. In order to deploy routees remotely, wrap the router configuration in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/remote/routing/RemoteRouterConfig.html" title="org.apache.pekko.remote.routing.RemoteRouterConfig"><code>RemoteRouterConfig</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/remote/routing/RemoteRouterConfig.html" title="org.apache.pekko.remote.routing.RemoteRouterConfig"><code>RemoteRouterConfig</code></a></span>, attaching the remote addresses of the nodes to deploy to. Remote deployment requires the <code>pekko-remote</code> module to be included in the classpath.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L608-L613" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.{ Address, AddressFromURIString }
+import pekko.remote.routing.RemoteRouterConfig
+val addresses =
+  Seq(Address(&quot;pekko&quot;, &quot;remotesys&quot;, &quot;otherhost&quot;, 1234), AddressFromURIString(&quot;pekko://othersys@anotherhost:1234&quot;))
+val routerRemote = system.actorOf(RemoteRouterConfig(RoundRobinPool(5), addresses).props(Props[Echo]()))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L462-L469" target="_blank" title="Go to snippet source">source</a><code class="language-java">Address[] addresses = {
+  new Address(&quot;pekko&quot;, &quot;remotesys&quot;, &quot;otherhost&quot;, 1234),
+  AddressFromURIString.parse(&quot;pekko://othersys@anotherhost:1234&quot;)
+};
+ActorRef routerRemote =
+    system.actorOf(
+        new RemoteRouterConfig(new RoundRobinPool(5), addresses)
+            .props(Props.create(Echo.class)));</code></pre></dd>
+</dl>
+<h4><a href="#senders" name="senders" class="anchor"><span class="anchor-link"></span></a>Senders</h4>
+<p>By default, when a routee sends a message, it will <a href="actors.html#actors-tell-sender">implicitly set itself as the sender </a>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/ActorDocSpec.scala#L720" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sender() ! x // replies will go to this actor</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L156" target="_blank" title="Go to snippet source">source</a><code class="language-java">getSender().tell(&quot;reply&quot;, getSelf());</code></pre></dd>
+</dl>
+<p>However, it is often useful for routees to set the <em>router</em> as a sender. For example, you might want to set the router as the sender if you want to hide the details of the routees behind the router. The following code snippet shows how to set the parent router as sender.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/actor/ActorDocSpec.scala#L715-L716" target="_blank" title="Go to snippet source">source</a><code class="language-scala">sender().tell(&quot;reply&quot;, context.parent) // replies will go back to parent
+sender().!(&quot;reply&quot;)(context.parent) // alternative syntax</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L160" target="_blank" title="Go to snippet source">source</a><code class="language-java">getSender().tell(&quot;reply&quot;, getContext().getParent());</code></pre></dd>
+</dl>
+<h4><a href="#supervision" name="supervision" class="anchor"><span class="anchor-link"></span></a>Supervision</h4>
+<p>Routees that are created by a pool router will be created as the router&rsquo;s children. The router is therefore also the children&rsquo;s supervisor.</p>
+<p>The supervision strategy of the router actor can be configured with the <code>supervisorStrategy</code> property of the Pool. If no configuration is provided, routers default to a strategy of “always escalate”. This means that errors are passed up to the router&rsquo;s supervisor for handling. The router&rsquo;s supervisor will decide what to do about any errors.</p>
+<p>Note the router&rsquo;s supervisor will treat the error as an error with the router itself. Therefore a directive to stop or restart will cause the router <em>itself</em> to stop or restart. The router, in turn, will cause its children to stop and restart.</p>
+<p>It should be mentioned that the router&rsquo;s restart behavior has been overridden so that a restart, while still re-creating the children, will still preserve the same number of actors in the pool.</p>
+<p>This means that if you have not specified <code>supervisorStrategy</code> of the router or its parent a failure in a routee will escalate to the parent of the router, which will by default restart the router, which will restart all routees (it uses Escalate and does not stop routees during restart). The reason is to make the default behave such that adding <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html#withRouter(r:org.apache.pekko.routing.RouterConfig):org.apache.pekko.actor.Props" title="org.apache.pekko.actor.Props"><code>withRouter</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html#withRouter(org.apache.pekko.routing.RouterConfig)" title="org.apache.pekko.actor.Props"><code>withRouter</code></a></span> to a child’s definition does not change the supervision strategy applied to the child. This might be an inefficiency that you can avoid by specifying the strategy when defining the router.</p>
+<p>Setting the strategy is done like this:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/actor-tests/src/test/scala/org/apache/pekko/routing/RoutingSpec.scala#L150-L156" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val escalator = OneForOneStrategy() {
+  case e =&gt; testActor ! e; SupervisorStrategy.Escalate
+}
+val router =
+  system.actorOf(RoundRobinPool(1, supervisorStrategy = escalator).props(routeeProps = Props[TestActor]()))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L490-L497" target="_blank" title="Go to snippet source">source</a><code class="language-java">final SupervisorStrategy strategy =
+    new OneForOneStrategy(
+        5,
+        Duration.ofMinutes(1),
+        Collections.&lt;Class&lt;? extends Throwable&gt;&gt;singletonList(Exception.class));
+final ActorRef router =
+    system.actorOf(
+        new RoundRobinPool(5).withSupervisorStrategy(strategy).props(Props.create(Echo.class)));</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>If the child of a pool router terminates, the pool router will not automatically spawn a new child. In the event that all children of a pool router have terminated the router will terminate itself unless it is a dynamic router, e.g. using a resizer.</p></div>
+<h3><a href="#group" name="group" class="anchor"><span class="anchor-link"></span></a>Group</h3>
+<p>Sometimes, rather than having the router actor create its routees, it is desirable to create routees separately and provide them to the router for its use. You can do this by passing in paths of the routees to the router&rsquo;s configuration. Messages will be sent with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorSelection.html" title="org.apache.pekko.actor.ActorSelection"><code>ActorSelection</code></a></span> to these paths, wildcards can be and will result in the same semantics as explicitly using <code>ActorSelection</code>.</p>
+<p>The example below shows how to create a router by providing it with the path strings of three routee actors. </p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L51-L56" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router3 {
+    router = round-robin-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L366-L367" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router3: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router3&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L202" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router3 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router3&quot;);</code></pre></dd>
+</dl>
+<p>Here is the same example, but with the router configuration provided programmatically instead of from configuration.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router4: ActorRef =
+  context.actorOf(RoundRobinGroup(paths).props(), &quot;router4&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+ActorRef router4 = getContext().actorOf(new RoundRobinGroup(paths).props(), &quot;router4&quot;);</code></pre></dd>
+</dl>
+<p>The routee actors are created externally from the router:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L540" target="_blank" title="Go to snippet source">source</a><code class="language-scala">system.actorOf(Props[Workers](), &quot;workers&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L371" target="_blank" title="Go to snippet source">source</a><code class="language-java">system.actorOf(Props.create(Workers.class), &quot;workers&quot;);</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L337-L341" target="_blank" title="Go to snippet source">source</a><code class="language-scala">class Workers extends Actor {
+  context.actorOf(Props[Worker](), name = &quot;w1&quot;)
+  context.actorOf(Props[Worker](), name = &quot;w2&quot;)
+  context.actorOf(Props[Worker](), name = &quot;w3&quot;)
+  // ...</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L169-L176" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Workers extends AbstractActor {
+  @Override
+  public void preStart() {
+    getContext().actorOf(Props.create(Worker.class), &quot;w1&quot;);
+    getContext().actorOf(Props.create(Worker.class), &quot;w2&quot;);
+    getContext().actorOf(Props.create(Worker.class), &quot;w3&quot;);
+  }
+  // ...</code></pre></dd>
+</dl>
+<p>The paths may contain protocol and address information for actors running on remote hosts. Remoting requires the <code>pekko-remote</code> module to be included in the classpath.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L238-L246" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/remoteGroup {
+    router = round-robin-group
+    routees.paths = [
+      &quot;pekko://app@10.0.0.1:2552/user/workers/w1&quot;,
+      &quot;pekko://app@10.0.0.2:2552/user/workers/w1&quot;,
+      &quot;pekko://app@10.0.0.3:2552/user/workers/w1&quot;]
+  }
+}</code></pre>
+<h2><a href="#router-usage" name="router-usage" class="anchor"><span class="anchor-link"></span></a>Router usage</h2>
+<p>In this section we will describe how to create the different types of router actors.</p>
+<p>The router actors in this section are created from within a top level actor named <code>parent</code>. Note that deployment paths in the configuration starts with <code>/parent/</code> followed by the name of the router actor. </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L544" target="_blank" title="Go to snippet source">source</a><code class="language-scala">system.actorOf(Props[Parent](), &quot;parent&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L375" target="_blank" title="Go to snippet source">source</a><code class="language-java">system.actorOf(Props.create(Parent.class), &quot;parent&quot;);</code></pre></dd>
+</dl>
+<a id="round-robin-router"></a>
+<h3><a href="#roundrobinpool-and-roundrobingroup" name="roundrobinpool-and-roundrobingroup" class="anchor"><span class="anchor-link"></span></a>RoundRobinPool and RoundRobinGroup</h3>
+<p>Routes in a <a href="https://en.wikipedia.org/wiki/Round-robin">round-robin</a> fashion to its routees.</p>
+<p>RoundRobinPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L42-L47" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router1 {
+    router = round-robin-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L356-L357" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router1: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router1&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L192-L193" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router1 =
+    getContext().actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router1&quot;);</code></pre></dd>
+</dl>
+<p>RoundRobinPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L361-L362" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router2: ActorRef =
+  context.actorOf(RoundRobinPool(5).props(Props[Worker]()), &quot;router2&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L197-L198" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router2 =
+    getContext().actorOf(new RoundRobinPool(5).props(Props.create(Worker.class)), &quot;router2&quot;);</code></pre></dd>
+</dl>
+<p>RoundRobinGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L51-L56" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router3 {
+    router = round-robin-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L366-L367" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router3: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router3&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L202" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router3 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router3&quot;);</code></pre></dd>
+</dl>
+<p>RoundRobinGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router4: ActorRef =
+  context.actorOf(RoundRobinGroup(paths).props(), &quot;router4&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+ActorRef router4 = getContext().actorOf(new RoundRobinGroup(paths).props(), &quot;router4&quot;);</code></pre></dd>
+</dl>
+<h3><a href="#randompool-and-randomgroup" name="randompool-and-randomgroup" class="anchor"><span class="anchor-link"></span></a>RandomPool and RandomGroup</h3>
+<p>This router type selects one of its routees randomly for each message.</p>
+<p>RandomPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L60-L65" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router5 {
+    router = random-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L376-L377" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router5: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router5&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L210-L211" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router5 =
+    getContext().actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router5&quot;);</code></pre></dd>
+</dl>
+<p>RandomPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L381-L382" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router6: ActorRef =
+  context.actorOf(RandomPool(5).props(Props[Worker]()), &quot;router6&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L215-L216" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router6 =
+    getContext().actorOf(new RandomPool(5).props(Props.create(Worker.class)), &quot;router6&quot;);</code></pre></dd>
+</dl>
+<p>RandomGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L69-L74" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router7 {
+    router = random-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L386-L387" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router7: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router7&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L220" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router7 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router7&quot;);</code></pre></dd>
+</dl>
+<p>RandomGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router8: ActorRef =
+  context.actorOf(RandomGroup(paths).props(), &quot;router8&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+ActorRef router8 = getContext().actorOf(new RandomGroup(paths).props(), &quot;router8&quot;);</code></pre></dd>
+</dl>
+<a id="balancing-pool"></a>
+<h3><a href="#balancingpool" name="balancingpool" class="anchor"><span class="anchor-link"></span></a>BalancingPool</h3>
+<p>A Router that will try to redistribute work from busy routees to idle routees. All routees share the same mailbox.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>The BalancingPool has the property that its routees do not have truly distinct identity: they have different names, but talking to them will not end up at the right actor in most cases. Therefore you cannot use it for workflows that require state to be kept within the routee, you would in this case have to include the whole state in the messages.</p>
+<p>With a <a href="routing.html#smallestmailboxpool">SmallestMailboxPool</a> you can have a vertically scaling service that can interact in a stateful fashion with other services in the back-end before replying to the original client. The other advantage is that it does not place a restriction on the message queue implementation as BalancingPool does.</p></div><div class="callout note "><div class="callout-title">Note</div>
+<p>Do not use <a href="routing.html#broadcast-messages">Broadcast Messages</a> when you use <a href="routing.html#balancing-pool">BalancingPool</a> for routers, as described in <a href="routing.html#router-special-messages">Specially Handled Messages</a>.</p></div>
+<p>BalancingPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L78-L83" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router9 {
+    router = balancing-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L396-L397" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router9: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router9&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L228-L229" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router9 =
+    getContext().actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router9&quot;);</code></pre></dd>
+</dl>
+<p>BalancingPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L401-L402" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router10: ActorRef =
+  context.actorOf(BalancingPool(5).props(Props[Worker]()), &quot;router10&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L233-L234" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router10 =
+    getContext().actorOf(new BalancingPool(5).props(Props.create(Worker.class)), &quot;router10&quot;);</code></pre></dd>
+</dl>
+<p>Addition configuration for the balancing dispatcher, which is used by the pool, can be configured in the <code>pool-dispatcher</code> section of the router deployment configuration.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L87-L95" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router9b {
+    router = balancing-pool
+    nr-of-instances = 5
+    pool-dispatcher {
+      attempt-teamwork = off
+    }
+  }
+}</code></pre>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/BalancingPool.html" title="org.apache.pekko.routing.BalancingPool"><code>BalancingPool</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/BalancingPool.html" title="org.apache.pekko.routing.BalancingPool"><code>BalancingPool</code></a></span> automatically uses a special <code>BalancingDispatcher</code> for its routees - disregarding any dispatcher that is set on the routee Props object. This is needed in order to implement the balancing semantics via sharing the same mailbox by all the routees.</p>
+<p>While it is not possible to change the dispatcher used by the routees, it is possible to fine tune the used <em>executor</em>. By default the <code>fork-join-dispatcher</code> is used and can be configured as explained in <a href="dispatchers.html">Dispatchers</a>. In situations where the routees are expected to perform blocking operations it may be useful to replace it with a <code>thread-pool-executor</code> hinting the number of allocated threads explicitly:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L99-L113" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router10b {
+    router = balancing-pool
+    nr-of-instances = 5
+    pool-dispatcher {
+      executor = &quot;thread-pool-executor&quot;
+
+      # allocate exactly 5 threads for this pool
+      thread-pool-executor {
+        core-pool-size-min = 5
+        core-pool-size-max = 5
+      }
+    }
+  }
+}</code></pre>
+<p>It is also possible to change the <code>mailbox</code> used by the balancing dispatcher for scenarios where the default unbounded mailbox is not well suited. An example of such a scenario could arise whether there exists the need to manage priority for each message. You can then implement a priority mailbox and configure your dispatcher:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L117-L125" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router10c {
+    router = balancing-pool
+    nr-of-instances = 5
+    pool-dispatcher {
+      mailbox = myapp.myprioritymailbox
+    }
+  }
+}</code></pre><div class="callout note "><div class="callout-title">Note</div>
+<p>Bear in mind that <code>BalancingDispatcher</code> requires a message queue that must be thread-safe for multiple concurrent consumers. So it is mandatory for the message queue backing a custom mailbox for this kind of dispatcher to implement org.apache.pekko.dispatch.MultipleConsumerSemantics. See details on how to implement your custom mailbox in <a href="mailboxes.html">Mailboxes</a>.</p></div>
+<p>There is no Group variant of the BalancingPool.</p>
+<h3><a href="#smallestmailboxpool" name="smallestmailboxpool" class="anchor"><span class="anchor-link"></span></a>SmallestMailboxPool</h3>
+<p>A Router that tries to send to the non-suspended child routee with fewest messages in mailbox. The selection is done in this order:</p>
+<ul>
+  <li>pick any idle routee (not processing message) with empty mailbox</li>
+  <li>pick any routee with empty mailbox</li>
+  <li>pick routee with fewest pending messages in mailbox</li>
+  <li>pick any remote routee, remote actors are consider lowest priority, since their mailbox size is unknown</li>
+</ul>
+<p>SmallestMailboxPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L129-L134" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router11 {
+    router = smallest-mailbox-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L417-L418" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router11: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router11&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L238-L240" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router11 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router11&quot;);</code></pre></dd>
+</dl>
+<p>SmallestMailboxPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L422-L423" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router12: ActorRef =
+  context.actorOf(SmallestMailboxPool(5).props(Props[Worker]()), &quot;router12&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L244-L246" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router12 =
+    getContext()
+        .actorOf(new SmallestMailboxPool(5).props(Props.create(Worker.class)), &quot;router12&quot;);</code></pre></dd>
+</dl>
+<p>There is no Group variant of the SmallestMailboxPool because the size of the mailbox and the internal dispatching state of the actor is not practically available from the paths of the routees.</p>
+<h3><a href="#broadcastpool-and-broadcastgroup" name="broadcastpool-and-broadcastgroup" class="anchor"><span class="anchor-link"></span></a>BroadcastPool and BroadcastGroup</h3>
+<p>A broadcast router forwards the message it receives to <em>all</em> its routees.</p>
+<p>BroadcastPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L138-L143" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router13 {
+    router = broadcast-pool
+    nr-of-instances = 5
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L427-L428" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router13: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router13&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L250-L252" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router13 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router13&quot;);</code></pre></dd>
+</dl>
+<p>BroadcastPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L432-L433" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router14: ActorRef =
+  context.actorOf(BroadcastPool(5).props(Props[Worker]()), &quot;router14&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L256-L257" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router14 =
+    getContext().actorOf(new BroadcastPool(5).props(Props.create(Worker.class)), &quot;router14&quot;);</code></pre></dd>
+</dl>
+<p>BroadcastGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L147-L152" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router15 {
+    router = broadcast-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L437-L438" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router15: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router15&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L261" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router15 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router15&quot;);</code></pre></dd>
+</dl>
+<p>BroadcastGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router16: ActorRef =
+  context.actorOf(BroadcastGroup(paths).props(), &quot;router16&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+ActorRef router16 = getContext().actorOf(new BroadcastGroup(paths).props(), &quot;router16&quot;);</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>Broadcast routers always broadcast <em>every</em> message to their routees. If you do not want to broadcast every message, then you can use a non-broadcasting router and use <a href="#broadcast-messages">Broadcast Messages</a> as needed.</p></div>
+<h3><a href="#scattergatherfirstcompletedpool-and-scattergatherfirstcompletedgroup" name="scattergatherfirstcompletedpool-and-scattergatherfirstcompletedgroup" class="anchor"><span class="anchor-link"></span></a>ScatterGatherFirstCompletedPool and ScatterGatherFirstCompletedGroup</h3>
+<p>The ScatterGatherFirstCompletedRouter will send the message on to all its routees. It then waits for first reply it gets back. This result will be sent back to original sender. Other replies are discarded.</p>
+<p>It is expecting at least one reply within a configured duration, otherwise it will reply with <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/AskTimeoutException.html" title="org.apache.pekko.pattern.AskTimeoutException"><code>AskTimeoutException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/pattern/AskTimeoutException.html" title="org.apache.pekko.pattern.AskTimeoutException"><code>AskTimeoutException</code></a></span> in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Status$$Failure.html" title="org.apache.pekko.actor.Status.Failure"><code>Status.Failure</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Status$$Failure.html" title="org.apache.pekko.actor.Status.Failure"><code>Status.Failure</code></a></span>.</p>
+<p>ScatterGatherFirstCompletedPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L156-L162" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router17 {
+    router = scatter-gather-pool
+    nr-of-instances = 5
+    within = 10 seconds
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L447-L448" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router17: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router17&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L269-L271" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router17 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router17&quot;);</code></pre></dd>
+</dl>
+<p>ScatterGatherFirstCompletedPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L452-L453" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router18: ActorRef =
+  context.actorOf(ScatterGatherFirstCompletedPool(5, within = 10.seconds).props(Props[Worker]()), &quot;router18&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L275-L280" target="_blank" title="Go to snippet source">source</a><code class="language-java">Duration within = Duration.ofSeconds(10);
+ActorRef router18 =
+    getContext()
+        .actorOf(
+            new ScatterGatherFirstCompletedPool(5, within).props(Props.create(Worker.class)),
+            &quot;router18&quot;);</code></pre></dd>
+</dl>
+<p>ScatterGatherFirstCompletedGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L166-L172" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router19 {
+    router = scatter-gather-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+    within = 10 seconds
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L457-L458" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router19: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router19&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L284" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router19 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router19&quot;);</code></pre></dd>
+</dl>
+<p>ScatterGatherFirstCompletedGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router20: ActorRef =
+  context.actorOf(ScatterGatherFirstCompletedGroup(paths, within = 10.seconds).props(), &quot;router20&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+Duration within2 = Duration.ofSeconds(10);
+ActorRef router20 =
+    getContext()
+        .actorOf(new ScatterGatherFirstCompletedGroup(paths, within2).props(), &quot;router20&quot;);</code></pre></dd>
+</dl>
+<h3><a href="#tailchoppingpool-and-tailchoppinggroup" name="tailchoppingpool-and-tailchoppinggroup" class="anchor"><span class="anchor-link"></span></a>TailChoppingPool and TailChoppingGroup</h3>
+<p>The TailChoppingRouter will first send the message to one, randomly picked, routee and then after a small delay to a second routee (picked randomly from the remaining routees) and so on. It waits for first reply it gets back and forwards it back to original sender. Other replies are discarded.</p>
+<p>The goal of this router is to decrease latency by performing redundant queries to multiple routees, assuming that one of the other actors may still be faster to respond than the initial one.</p>
+<p>This optimisation was described nicely in a blog post by Peter Bailis: <a href="http://www.bailis.org/blog/doing-redundant-work-to-speed-up-distributed-queries/">Doing redundant work to speed up distributed queries</a>.</p>
+<p>TailChoppingPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L176-L183" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router21 {
+    router = tail-chopping-pool
+    nr-of-instances = 5
+    within = 10 seconds
+    tail-chopping-router.interval = 20 milliseconds
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L467-L468" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router21: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router21&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L295-L297" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router21 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router21&quot;);</code></pre></dd>
+</dl>
+<p>TailChoppingPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L472-L473" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router22: ActorRef =
+  context.actorOf(TailChoppingPool(5, within = 10.seconds, interval = 20.millis).props(Props[Worker]()), &quot;router22&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L301-L307" target="_blank" title="Go to snippet source">source</a><code class="language-java">Duration within3 = Duration.ofSeconds(10);
+Duration interval = Duration.ofMillis(20);
+ActorRef router22 =
+    getContext()
+        .actorOf(
+            new TailChoppingPool(5, within3, interval).props(Props.create(Worker.class)),
+            &quot;router22&quot;);</code></pre></dd>
+</dl>
+<p>TailChoppingGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L187-L194" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router23 {
+    router = tail-chopping-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+    within = 10 seconds
+    tail-chopping-router.interval = 20 milliseconds
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L477-L478" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router23: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router23&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L311" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router23 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router23&quot;);</code></pre></dd>
+</dl>
+<p>TailChoppingGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router24: ActorRef =
+  context.actorOf(TailChoppingGroup(paths, within = 10.seconds, interval = 20.millis).props(), &quot;router24&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+Duration within4 = Duration.ofSeconds(10);
+Duration interval2 = Duration.ofMillis(20);
+ActorRef router24 =
+    getContext().actorOf(new TailChoppingGroup(paths, within4, interval2).props(), &quot;router24&quot;);</code></pre></dd>
+</dl>
+<h3><a href="#consistenthashingpool-and-consistenthashinggroup" name="consistenthashingpool-and-consistenthashinggroup" class="anchor"><span class="anchor-link"></span></a>ConsistentHashingPool and ConsistentHashingGroup</h3>
+<p>The ConsistentHashingPool uses <a href="https://en.wikipedia.org/wiki/Consistent_hashing">consistent hashing</a> to select a routee based on the sent message. This <a href="https://tom-e-white.com/2007/11/consistent-hashing.html">article</a> gives good insight into how consistent hashing is implemented.</p>
+<p>There is 3 ways to define what data to use for the consistent hash key.</p>
+<ul>
+  <li>You can define <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/current/org/apache/pekko/routing/ConsistentHashingPool.html#hashMapping:org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashMapping" title="pekko.routing.ConsistentHashingPool"><code>hashMapping</code></a></span><span class="group-java"><a href="https://pekko.apache.org/japi/pekko/current/org/apache/pekko/routing/ConsistentHashingRoutingLogic.html#withHashMapper(org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashMapper)" title="pekko.routing.ConsistentHashingRoutingLogic"><code>withHashMapper</code></a></span> of the router to map incoming messages to their consistent hash key. This makes the decision transparent for the sender.</li>
+  <li>The messages may implement <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRouter$$ConsistentHashable.html" title="org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashable"><code>ConsistentHashingRouter.ConsistentHashable</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRouter$$ConsistentHashable.html" title="org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashable"><code>ConsistentHashingRouter.ConsistentHashable</code></a></span>. The key is part of the message and it&rsquo;s convenient to define it together with the message definition.</li>
+  <li>The messages can be wrapped in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRouter$$ConsistentHashableEnvelope.html" title="org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashableEnvelope"><code>ConsistentHashingRouter.ConsistentHashableEnvelope</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/ConsistentHashingRouter$$ConsistentHashableEnvelope.html" title="org.apache.pekko.routing.ConsistentHashingRouter.ConsistentHashableEnvelope"><code>ConsistentHashingRouter.ConsistentHashableEnvelope</code></a></span> to define what data to use for the consistent hash key. The sender knows the key to use.</li>
+</ul>
+<p>These ways to define the consistent hash key can be use together and at the same time for one router. The <span class="group-scala"><code>hashMapping</code></span><span class="group-java"><code>withHashMapper</code></span> is tried first.</p>
+<p>Code example:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/ConsistentHashingRouterDocSpec.scala#L24-L44" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.Actor
+import pekko.routing.ConsistentHashingRouter.ConsistentHashable
+
+class Cache extends Actor {
+  var cache = Map.empty[String, String]
+
+  def receive = {
+    case Entry(key, value) =&gt; cache += (key -&gt; value)
+    case Get(key)          =&gt; sender() ! cache.get(key)
+    case Evict(key)        =&gt; cache -= key
+  }
+}
+
+final case class Evict(key: String)
+
+final case class Get(key: String) extends ConsistentHashable {
+  override def consistentHashKey: Any = key
+}
+
+final case class Entry(key: String, value: String)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/ConsistentHashingRouterDocTest.java#L52-L123" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class Cache extends AbstractActor {
+  Map&lt;String, String&gt; cache = new HashMap&lt;String, String&gt;();
+
+  @Override
+  public Receive createReceive() {
+    return receiveBuilder()
+        .match(
+            Entry.class,
+            entry -&gt; {
+              cache.put(entry.key, entry.value);
+            })
+        .match(
+            Get.class,
+            get -&gt; {
+              Object value = cache.get(get.key);
+              getSender().tell(value == null ? NOT_FOUND : value, getSelf());
+            })
+        .match(
+            Evict.class,
+            evict -&gt; {
+              cache.remove(evict.key);
+            })
+        .build();
+  }
+}
+
+static final class Evict implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final String key;
+
+  public Evict(String key) {
+    this.key = key;
+  }
+}
+
+static final class Get implements Serializable, ConsistentHashable {
+  private static final long serialVersionUID = 1L;
+  public final String key;
+
+  public Get(String key) {
+    this.key = key;
+  }
+
+  public Object consistentHashKey() {
+    return key;
+  }
+}
+
+static final class Entry implements Serializable {
+  private static final long serialVersionUID = 1L;
+  public final String key;
+  public final String value;
+
+  public Entry(String key, String value) {
+    this.key = key;
+    this.value = value;
+  }
+}
+
+static final String NOT_FOUND = &quot;NOT_FOUND&quot;;</code></pre></dd>
+</dl>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/ConsistentHashingRouterDocSpec.scala#L58-L83" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.Props
+import pekko.routing.ConsistentHashingPool
+import pekko.routing.ConsistentHashingRouter.ConsistentHashMapping
+import pekko.routing.ConsistentHashingRouter.ConsistentHashableEnvelope
+
+def hashMapping: ConsistentHashMapping = {
+  case Evict(key) =&gt; key
+}
+
+val cache: ActorRef =
+  context.actorOf(ConsistentHashingPool(10, hashMapping = hashMapping).props(Props[Cache]()), name = &quot;cache&quot;)
+
+cache ! ConsistentHashableEnvelope(message = Entry(&quot;hello&quot;, &quot;HELLO&quot;), hashKey = &quot;hello&quot;)
+cache ! ConsistentHashableEnvelope(message = Entry(&quot;hi&quot;, &quot;HI&quot;), hashKey = &quot;hi&quot;)
+
+cache ! Get(&quot;hello&quot;)
+expectMsg(Some(&quot;HELLO&quot;))
+
+cache ! Get(&quot;hi&quot;)
+expectMsg(Some(&quot;HI&quot;))
+
+cache ! Evict(&quot;hi&quot;)
+cache ! Get(&quot;hi&quot;)
+expectMsg(None)
+</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/ConsistentHashingRouterDocTest.java#L133-L165" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>final ConsistentHashMapper hashMapper =
+    new ConsistentHashMapper() {
+      @Override
+      public Object hashKey(Object message) {
+        if (message instanceof Evict) {
+          return ((Evict) message).key;
+        } else {
+          return null;
+        }
+      }
+    };
+
+ActorRef cache =
+    system.actorOf(
+        new ConsistentHashingPool(10)
+            .withHashMapper(hashMapper)
+            .props(Props.create(Cache.class)),
+        &quot;cache&quot;);
+
+cache.tell(new ConsistentHashableEnvelope(new Entry(&quot;hello&quot;, &quot;HELLO&quot;), &quot;hello&quot;), getRef());
+cache.tell(new ConsistentHashableEnvelope(new Entry(&quot;hi&quot;, &quot;HI&quot;), &quot;hi&quot;), getRef());
+
+cache.tell(new Get(&quot;hello&quot;), getRef());
+expectMsgEquals(&quot;HELLO&quot;);
+
+cache.tell(new Get(&quot;hi&quot;), getRef());
+expectMsgEquals(&quot;HI&quot;);
+
+cache.tell(new Evict(&quot;hi&quot;), getRef());
+cache.tell(new Get(&quot;hi&quot;), getRef());
+expectMsgEquals(NOT_FOUND);
+</code></pre></dd>
+</dl>
+<p>In the above example you see that the <code>Get</code> message implements <code>ConsistentHashable</code> itself, while the <code>Entry</code> message is wrapped in a <code>ConsistentHashableEnvelope</code>. The <code>Evict</code> message is handled by the <code>hashMapping</code> partial function.</p>
+<p>ConsistentHashingPool defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L198-L204" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router25 {
+    router = consistent-hashing-pool
+    nr-of-instances = 5
+    virtual-nodes-factor = 10
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L487-L488" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router25: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router25&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L322-L324" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router25 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router25&quot;);</code></pre></dd>
+</dl>
+<p>ConsistentHashingPool defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L492-L493" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router26: ActorRef =
+  context.actorOf(ConsistentHashingPool(5).props(Props[Worker]()), &quot;router26&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L328-L330" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router26 =
+    getContext()
+        .actorOf(new ConsistentHashingPool(5).props(Props.create(Worker.class)), &quot;router26&quot;);</code></pre></dd>
+</dl>
+<p>ConsistentHashingGroup defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L208-L214" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router27 {
+    router = consistent-hashing-group
+    routees.paths = [&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;]
+    virtual-nodes-factor = 10
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L497-L498" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router27: ActorRef =
+  context.actorOf(FromConfig.props(), &quot;router27&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L334" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router27 = getContext().actorOf(FromConfig.getInstance().props(), &quot;router27&quot;);</code></pre></dd>
+</dl>
+<p>ConsistentHashingGroup defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L352" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val paths = List(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;)
+val router28: ActorRef =
+  context.actorOf(ConsistentHashingGroup(paths).props(), &quot;router28&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L188" target="_blank" title="Go to snippet source">source</a><code class="language-java">List&lt;String&gt; paths = Arrays.asList(&quot;/user/workers/w1&quot;, &quot;/user/workers/w2&quot;, &quot;/user/workers/w3&quot;);
+ActorRef router28 = getContext().actorOf(new ConsistentHashingGroup(paths).props(), &quot;router28&quot;);</code></pre></dd>
+</dl>
+<p><code>virtual-nodes-factor</code> is the number of virtual nodes per routee that is used in the consistent hash node ring to make the distribution more uniform.</p>
+<a id="router-special-messages"></a>
+<h2><a href="#specially-handled-messages" name="specially-handled-messages" class="anchor"><span class="anchor-link"></span></a>Specially Handled Messages</h2>
+<p>Most messages sent to router actors will be forwarded according to the routers&rsquo; routing logic. However there are a few types of messages that have special behavior.</p>
+<p>Note that these special messages, except for the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Broadcast.html" title="org.apache.pekko.routing.Broadcast"><code>Broadcast</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Broadcast.html" title="org.apache.pekko.routing.Broadcast"><code>Broadcast</code></a></span> message, are only handled by self contained router actors and not by the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html" title="org.apache.pekko.routing.Router"><code>Router</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Router.html" title="org.apache.pekko.routing.Router"><code>Router</code></a></span> component described in <a href="routing.html#simple-router">A Simple Router</a>.</p>
+<h3><a href="#broadcast-messages" name="broadcast-messages" class="anchor"><span class="anchor-link"></span></a>Broadcast Messages</h3>
+<p>A <code>Broadcast</code> message can be used to send a message to <em>all</em> of a router&rsquo;s routees. When a router receives a <code>Broadcast</code> message, it will broadcast that message&rsquo;s <em>payload</em> to all routees, no matter how that router would normally route its messages.</p>
+<p>The example below shows how you would use a <code>Broadcast</code> message to send a very important message to every routee of a router.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L560-L561" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.routing.Broadcast
+router ! Broadcast(&quot;Watch out for Davy Jones&#39; locker&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L396" target="_blank" title="Go to snippet source">source</a><code class="language-java">router.tell(new Broadcast(&quot;Watch out for Davy Jones&#39; locker&quot;), getTestActor());</code></pre></dd>
+</dl>
+<p>In this example the router receives the <code>Broadcast</code> message, extracts its payload (<code>&quot;Watch out for Davy Jones&#39; locker&quot;</code>), and then sends the payload on to all of the router&rsquo;s routees. It is up to each routee actor to handle the received payload message.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Do not use <a href="routing.html#broadcast-messages">Broadcast Messages</a> when you use <a href="routing.html#balancing-pool">BalancingPool</a> for routers. Routees on <a href="routing.html#balancing-pool">BalancingPool</a> shares the same mailbox instance, thus some routees can possibly get the broadcast message multiple times, while other routees get no broadcast message.</p></div>
+<h3><a href="#poisonpill-messages" name="poisonpill-messages" class="anchor"><span class="anchor-link"></span></a>PoisonPill Messages</h3>
+<p>A <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span> message has special handling for all actors, including for routers. When any actor receives a <code>PoisonPill</code> message, that actor will be stopped. See the <a href="actors.html#poison-pill">PoisonPill</a> documentation for details.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L569-L570" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.PoisonPill
+router ! PoisonPill</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L410" target="_blank" title="Go to snippet source">source</a><code class="language-java">router.tell(PoisonPill.getInstance(), getTestActor());</code></pre></dd>
+</dl>
+<p>For a router, which normally passes on messages to routees, it is important to realise that <code>PoisonPill</code> messages are processed by the router only. <code>PoisonPill</code> messages sent to a router will <em>not</em> be sent on to routees.</p>
+<p>However, a <code>PoisonPill</code> message sent to a router may still affect its routees, because it will stop the router and when the router stops it also stops its children. Stopping children is normal actor behavior. The router will stop routees that it has created as children. Each child will process its current message and then stop. This may lead to some messages being unprocessed. See the documentation on <a href="actors.html#stopping-actors">Stopping actors</a> for more information.</p>
+<p>If you wish to stop a router and its routees, but you would like the routees to first process all the messages currently in their mailboxes, then you should not send a <code>PoisonPill</code> message to the router. Instead you should wrap a <code>PoisonPill</code> message inside a <code>Broadcast</code> message so that each routee will receive the <code>PoisonPill</code> message. Note that this will stop all routees, even if the routees aren&rsquo;t children of the router, i.e. even routees programmatically provided to the router.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L578-L581" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.PoisonPill
+import pekko.routing.Broadcast
+router ! Broadcast(PoisonPill)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L424" target="_blank" title="Go to snippet source">source</a><code class="language-java">router.tell(new Broadcast(PoisonPill.getInstance()), getTestActor());</code></pre></dd>
+</dl>
+<p>With the code shown above, each routee will receive a <code>PoisonPill</code> message. Each routee will continue to process its messages as normal, eventually processing the <code>PoisonPill</code>. This will cause the routee to stop. After all routees have stopped the router will itself be stopped automatically unless it is a dynamic router, e.g. using a resizer.</p>
+<h3><a href="#kill-messages" name="kill-messages" class="anchor"><span class="anchor-link"></span></a>Kill Messages</h3>
+<p><span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Kill.html" title="org.apache.pekko.actor.Kill"><code>Kill</code></a></span> messages are another type of message that has special handling. See <a href="actors.html#killing-actors">Killing an Actor</a> for general information about how actors handle <code>Kill</code> messages.</p>
+<p>When a <code>Kill</code> message is sent to a router the router processes the message internally, and does <em>not</em> send it on to its routees. The router will throw an <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorKilledException.html" title="org.apache.pekko.actor.ActorKilledException"><code>ActorKilledException</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorKilledException.html" title="org.apache.pekko.actor.ActorKilledException"><code>ActorKilledException</code></a></span> and fail. It will then be either resumed, restarted or terminated, depending how it is supervised.</p>
+<p>Routees that are children of the router will also be suspended, and will be affected by the supervision directive that is applied to the router. Routees that are not the routers children, i.e. those that were created externally to the router, will not be affected.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L589-L590" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko.actor.Kill
+router ! Kill</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L438" target="_blank" title="Go to snippet source">source</a><code class="language-java">router.tell(Kill.getInstance(), getTestActor());</code></pre></dd>
+</dl>
+<p>As with the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/PoisonPill.html" title="org.apache.pekko.actor.PoisonPill"><code>PoisonPill</code></a></span> message, there is a distinction between killing a router, which indirectly kills its children (who happen to be routees), and killing routees directly (some of whom may not be children.) To kill routees directly the router should be sent a <code>Kill</code> message wrapped in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Broadcast.html" title="org.apache.pekko.routing.Broadcast"><code>Broadcast</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Broadcast.html" title="org.apache.pekko.routing.Broadcast"><code>Broadcast</code></a></span> message.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L598-L601" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.actor.Kill
+import pekko.routing.Broadcast
+router ! Broadcast(Kill)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L452" target="_blank" title="Go to snippet source">source</a><code class="language-java">router.tell(new Broadcast(Kill.getInstance()), getTestActor());</code></pre></dd>
+</dl>
+<h3><a href="#management-messages" name="management-messages" class="anchor"><span class="anchor-link"></span></a>Management Messages</h3>
+<ul>
+  <li>Sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/GetRoutees.html" title="org.apache.pekko.routing.GetRoutees"><code>GetRoutees</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/GetRoutees.html" title="org.apache.pekko.routing.GetRoutees"><code>GetRoutees</code></a></span> to a router actor will make it send back its currently used routees in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Routees.html" title="org.apache.pekko.routing.Routees"><code>Routees</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Routees.html" title="org.apache.pekko.routing.Routees"><code>Routees</code></a></span> message.</li>
+  <li>Sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/AddRoutee.html" title="org.apache.pekko.routing.AddRoutee"><code>AddRoutee</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/AddRoutee.html" title="org.apache.pekko.routing.AddRoutee"><code>AddRoutee</code></a></span> to a router actor will add that routee to its collection of routees.</li>
+  <li>Sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RemoveRoutee.html" title="org.apache.pekko.routing.RemoveRoutee"><code>RemoveRoutee</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RemoveRoutee.html" title="org.apache.pekko.routing.RemoveRoutee"><code>RemoveRoutee</code></a></span> to a router actor will remove that routee to its collection of routees.</li>
+  <li>Sending <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/AdjustPoolSize.html" title="org.apache.pekko.routing.AdjustPoolSize"><code>AdjustPoolSize</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/AdjustPoolSize.html" title="org.apache.pekko.routing.AdjustPoolSize"><code>AdjustPoolSize</code></a></span> to a pool router actor will add or remove that number of routees to its collection of routees.</li>
+</ul>
+<p>These management messages may be handled after other messages, so if you send <code>AddRoutee</code> immediately followed by an ordinary message you are not guaranteed that the routees have been changed when the ordinary message is routed. If you need to know when the change has been applied you can send <code>AddRoutee</code> followed by <code>GetRoutees</code> and when you receive the <code>Routees</code> reply you know that the preceding change has been applied.</p>
+<a id="resizable-routers"></a>
+<h2><a href="#dynamically-resizable-pool" name="dynamically-resizable-pool" class="anchor"><span class="anchor-link"></span></a>Dynamically Resizable Pool</h2>
+<p><span class="group-scala">Most</span><span class="group-java">All</span> pools can be used with a fixed number of routees or with a resize strategy to adjust the number of routees dynamically.</p>
+<p>There are two types of resizers: the default <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Resizer.html" title="org.apache.pekko.routing.Resizer"><code>Resizer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Resizer.html" title="org.apache.pekko.routing.Resizer"><code>Resizer</code></a></span> and the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/OptimalSizeExploringResizer.html" title="org.apache.pekko.routing.OptimalSizeExploringResizer"><code>OptimalSizeExploringResizer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/OptimalSizeExploringResizer.html" title="org.apache.pekko.routing.OptimalSizeExploringResizer"><code>OptimalSizeExploringResizer</code></a></span>.</p>
+<h3><a href="#default-resizer" name="default-resizer" class="anchor"><span class="anchor-link"></span></a>Default Resizer</h3>
+<p>The default resizer ramps up and down pool size based on pressure, measured by the percentage of busy routees in the pool. It ramps up pool size if the pressure is higher than a certain threshold and backs off if the pressure is lower than certain threshold. Both thresholds are configurable.</p>
+<p>Pool with default resizer defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L262-L271" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router29 {
+    router = round-robin-pool
+    resizer {
+      lower-bound = 2
+      upper-bound = 15
+      messages-per-resize = 100
+    }
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L507-L508" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router29: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router29&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L342-L344" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router29 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router29&quot;);</code></pre></dd>
+</dl>
+<p>Several more configuration options are available and described in <code>pekko.actor.deployment.default.resizer</code> section of the reference <a href="general/configuration.html">configuration</a>.</p>
+<p>Pool with resizer defined in code:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L512-L514" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val resizer = DefaultResizer(lowerBound = 2, upperBound = 15)
+val router30: ActorRef =
+  context.actorOf(RoundRobinPool(5, Some(resizer)).props(Props[Worker]()), &quot;router30&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L348-L353" target="_blank" title="Go to snippet source">source</a><code class="language-java">DefaultResizer resizer = new DefaultResizer(2, 15);
+ActorRef router30 =
+    getContext()
+        .actorOf(
+            new RoundRobinPool(5).withResizer(resizer).props(Props.create(Worker.class)),
+            &quot;router30&quot;);</code></pre></dd>
+</dl>
+<p><em>It is also worth pointing out that if you define the <code>router</code> in the configuration file then this value will be used instead of any programmatically sent parameters.</em></p>
+<h3><a href="#optimal-size-exploring-resizer" name="optimal-size-exploring-resizer" class="anchor"><span class="anchor-link"></span></a>Optimal Size Exploring Resizer</h3>
+<p>The <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/OptimalSizeExploringResizer.html" title="org.apache.pekko.routing.OptimalSizeExploringResizer"><code>OptimalSizeExploringResizer</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/OptimalSizeExploringResizer.html" title="org.apache.pekko.routing.OptimalSizeExploringResizer"><code>OptimalSizeExploringResizer</code></a></span> resizes the pool to an optimal size that provides the most message throughput.</p>
+<p>This resizer works best when you expect the pool size to performance function to be a convex function. For example, when you have a CPU bound tasks, the optimal size is bound to the number of CPU cores. When your task is IO bound, the optimal size is bound to optimal number of concurrent connections to that IO service - e.g. a 4 node elastic search cluster may handle 4-8 concurrent requests at optimal speed.</p>
+<p>It achieves this by keeping track of message throughput at each pool size and performing the following three resizing operations (one at a time) periodically:</p>
+<ul>
+  <li>Downsize if it hasn&rsquo;t seen all routees ever fully utilized for a period of time.</li>
+  <li>Explore to a random nearby pool size to try and collect throughput metrics.</li>
+  <li>Optimize to a nearby pool size with a better (than any other nearby sizes) throughput metrics.</li>
+</ul>
+<p>When the pool is fully-utilized (i.e. all routees are busy), it randomly choose between exploring and optimizing. When the pool has not been fully-utilized for a period of time, it will downsize the pool to the last seen max utilization multiplied by a configurable ratio.</p>
+<p>By constantly exploring and optimizing, the resizer will eventually walk to the optimal size and remain nearby. When the optimal size changes it will start walking towards the new one.</p>
+<p>It keeps a performance log so it&rsquo;s stateful as well as having a larger memory footprint than the default <code>Resizer</code>. The memory usage is O(n) where n is the number of sizes you allow, i.e. upperBound - lowerBound.</p>
+<p>Pool with <code>OptimalSizeExploringResizer</code> defined in configuration:</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L275-L284" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /parent/router31 {
+    router = round-robin-pool
+    optimal-size-exploring-resizer {
+      enabled = on
+      action-interval = 5s
+      downsize-after-underutilized-for = 72h
+    }
+  }
+}</code></pre>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L518-L519" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router31: ActorRef =
+  context.actorOf(FromConfig.props(Props[Worker]()), &quot;router31&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L357-L359" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef router31 =
+    getContext()
+        .actorOf(FromConfig.getInstance().props(Props.create(Worker.class)), &quot;router31&quot;);</code></pre></dd>
+</dl>
+<p>Several more configuration options are available and described in <code>pekko.actor.deployment.default.optimal-size-exploring-resizer</code> section of the reference <a href="general/configuration.html">configuration</a>.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>Resizing is triggered by sending messages to the actor pool, but it is not completed synchronously; instead a message is sent to the “head” <code>RouterActor</code> to perform the size change. Thus you cannot rely on resizing to instantaneously create new workers when all others are busy, because the message just sent will be queued to the mailbox of a busy actor. To remedy this, configure the pool to use a balancing dispatcher, see <a href="#configuring-dispatchers">Configuring Dispatchers</a> for more information.</p></div>
+<a id="router-design"></a>
+<h2><a href="#how-routing-is-designed-within-pekko" name="how-routing-is-designed-within-pekko" class="anchor"><span class="anchor-link"></span></a>How Routing is Designed within Pekko</h2>
+<p>On the surface routers look like normal actors, but they are actually implemented differently. Routers are designed to be extremely efficient at receiving messages and passing them quickly on to routees.</p>
+<p>A normal actor can be used for routing messages, but an actor&rsquo;s single-threaded processing can become a bottleneck. Routers can achieve much higher throughput with an optimization to the usual message-processing pipeline that allows concurrent routing. This is achieved by embedding routers&rsquo; routing logic directly in their <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/ActorRef.html" title="org.apache.pekko.actor.ActorRef"><code>ActorRef</code></a></span> rather than in the router actor. Messages sent to a router&rsquo;s <code>ActorRef</code> can be immediately routed to the routee, bypassing the single-threaded router actor entirely.</p>
+<p>The cost to this is that the internals of routing code are more complicated than if routers were implemented with normal actors. Fortunately all of this complexity is invisible to consumers of the routing API. However, it is something to be aware of when implementing your own routers.</p>
+<h2><a href="#custom-router" name="custom-router" class="anchor"><span class="anchor-link"></span></a>Custom Router</h2>
+<p>You can create your own router should you not find any of the ones provided by Pekko sufficient for your needs. In order to roll your own router you have to fulfill certain criteria which are explained in this section.</p>
+<p>Before creating your own router you should consider whether a normal actor with router-like behavior might do the job just as well as a full-blown router. As explained <a href="#router-design">above</a>, the primary benefit of routers over normal actors is their higher performance. But they are somewhat more complicated to write than normal actors. Therefore if lower maximum throughput is acceptable in your application you may wish to stick with traditional actors. This section, however, assumes that you wish to get maximum performance and so demonstrates how you can create your own router.</p>
+<p>The router created in this example is replicating each message to a few destinations.</p>
+<p>Start with the routing logic:</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L53-L67" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import scala.collection.immutable
+import java.util.concurrent.ThreadLocalRandom
+import org.apache.pekko
+import pekko.routing.RoundRobinRoutingLogic
+import pekko.routing.RoutingLogic
+import pekko.routing.Routee
+import pekko.routing.SeveralRoutees
+
+class RedundancyRoutingLogic(nbrCopies: Int) extends RoutingLogic {
+  val roundRobin = RoundRobinRoutingLogic()
+  def select(message: Any, routees: immutable.IndexedSeq[Routee]): Routee = {
+    val targets = (1 to nbrCopies).map(_ =&gt; roundRobin.select(message, routees))
+    SeveralRoutees(targets)
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/CustomRouterDocTest.java#L58-L75" target="_blank" title="Go to snippet source">source</a><code class="language-java">static class RedundancyRoutingLogic implements RoutingLogic {
+  private final int nbrCopies;
+
+  public RedundancyRoutingLogic(int nbrCopies) {
+    this.nbrCopies = nbrCopies;
+  }
+
+  RoundRobinRoutingLogic roundRobin = new RoundRobinRoutingLogic();
+
+  @Override
+  public Routee select(Object message, IndexedSeq&lt;Routee&gt; routees) {
+    List&lt;Routee&gt; targets = new ArrayList&lt;Routee&gt;();
+    for (int i = 0; i &lt; nbrCopies; i++) {
+      targets.add(roundRobin.select(message, routees));
+    }
+    return new SeveralRoutees(targets);
+  }
+}</code></pre></dd>
+</dl>
+<p><code>select</code> will be called for each message and in this example pick a few destinations by round-robin, by reusing the existing <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RoundRobinRoutingLogic.html" title="org.apache.pekko.routing.RoundRobinRoutingLogic"><code>RoundRobinRoutingLogic</code></a></span> and wrap the result in a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/SeveralRoutees.html" title="org.apache.pekko.routing.SeveralRoutees"><code>SeveralRoutees</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/SeveralRoutees.html" title="org.apache.pekko.routing.SeveralRoutees"><code>SeveralRoutees</code></a></span> instance. <code>SeveralRoutees</code> will send the message to all of the supplied routes.</p>
+<p>The implementation of the routing logic must be thread safe, since it might be used outside of actors.</p>
+<p>A unit test of the routing logic: </p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L77-L124" target="_blank" title="Go to snippet source">source</a><code class="language-scala">final case class TestRoutee(n: Int) extends Routee {
+  override def send(message: Any, sender: ActorRef): Unit = ()
+}
+
+  val logic = new RedundancyRoutingLogic(nbrCopies = 3)
+
+  val routees = for (n &lt;- 1 to 7) yield TestRoutee(n)
+
+  val r1 = logic.select(&quot;msg&quot;, routees)
+  r1.asInstanceOf[SeveralRoutees].routees should be(Vector(TestRoutee(1), TestRoutee(2), TestRoutee(3)))
+
+  val r2 = logic.select(&quot;msg&quot;, routees)
+  r2.asInstanceOf[SeveralRoutees].routees should be(Vector(TestRoutee(4), TestRoutee(5), TestRoutee(6)))
+
+  val r3 = logic.select(&quot;msg&quot;, routees)
+  r3.asInstanceOf[SeveralRoutees].routees should be(Vector(TestRoutee(7), TestRoutee(1), TestRoutee(2)))</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/CustomRouterDocTest.java#L80-L140" target="_blank" title="Go to snippet source">source</a><code class="language-java">static final class TestRoutee implements Routee {
+  public final int n;
+
+  public TestRoutee(int n) {
+    this.n = n;
+  }
+
+  @Override
+  public void send(Object message, ActorRef sender) {}
+
+  @Override
+  public int hashCode() {
+    return n;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return (obj instanceof TestRoutee) &amp;&amp; n == ((TestRoutee) obj).n;
+  }
+}
+
+  RedundancyRoutingLogic logic = new RedundancyRoutingLogic(3);
+
+  List&lt;Routee&gt; routeeList = new ArrayList&lt;Routee&gt;();
+  for (int n = 1; n &lt;= 7; n++) {
+    routeeList.add(new TestRoutee(n));
+  }
+  IndexedSeq&lt;Routee&gt; routees = immutableIndexedSeq(routeeList);
+
+  SeveralRoutees r1 = (SeveralRoutees) logic.select(&quot;msg&quot;, routees);
+  assertEquals(r1.getRoutees().get(0), routeeList.get(0));
+  assertEquals(r1.getRoutees().get(1), routeeList.get(1));
+  assertEquals(r1.getRoutees().get(2), routeeList.get(2));
+
+  SeveralRoutees r2 = (SeveralRoutees) logic.select(&quot;msg&quot;, routees);
+  assertEquals(r2.getRoutees().get(0), routeeList.get(3));
+  assertEquals(r2.getRoutees().get(1), routeeList.get(4));
+  assertEquals(r2.getRoutees().get(2), routeeList.get(5));
+
+  SeveralRoutees r3 = (SeveralRoutees) logic.select(&quot;msg&quot;, routees);
+  assertEquals(r3.getRoutees().get(0), routeeList.get(6));
+  assertEquals(r3.getRoutees().get(1), routeeList.get(0));
+  assertEquals(r3.getRoutees().get(2), routeeList.get(1));
+</code></pre></dd>
+</dl>
+<p>You could stop here and use the <code>RedundancyRoutingLogic</code> with a <code>org.apache.pekko.routing.Router</code> as described in <a href="routing.html#simple-router">A Simple Router</a>.</p>
+<p>Let us continue and make this into a self contained, configurable, router actor.</p>
+<p>Create a class that extends <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Pool.html" title="org.apache.pekko.routing.Pool"><code>Pool</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Pool.html" title="org.apache.pekko.routing.Pool"><code>Pool</code></a></span>, <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Group.html" title="org.apache.pekko.routing.Group"><code>Group</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/Group.html" title="org.apache.pekko.routing.Group"><code>Group</code></a></span> or <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/CustomRouterConfig.html" title="org.apache.pekko.routing.CustomRouterConfig"><code>CustomRouterConfig</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/CustomRouterConfig.html" title="org.apache.pekko.routing.CustomRouterConfig"><code>CustomRouterConfig</code></a></span>. That class is a factory for the routing logic and holds the configuration for the router. Here we make it a <code>Group</code>.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L85-L103" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import org.apache.pekko
+import pekko.dispatch.Dispatchers
+import pekko.routing.Group
+import pekko.routing.Router
+import pekko.japi.Util.immutableSeq
+import com.typesafe.config.Config
+
+final case class RedundancyGroup(routeePaths: immutable.Iterable[String], nbrCopies: Int) extends Group {
+
+  def this(config: Config) =
+    this(routeePaths = immutableSeq(config.getStringList(&quot;routees.paths&quot;)), nbrCopies = config.getInt(&quot;nbr-copies&quot;))
+
+  override def paths(system: ActorSystem): immutable.Iterable[String] = routeePaths
+
+  override def createRouter(system: ActorSystem): Router =
+    new Router(new RedundancyRoutingLogic(nbrCopies))
+
+  override val routerDispatcher: String = Dispatchers.DefaultDispatcherId
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RedundancyGroup.java#L17-L55" target="_blank" title="Go to snippet source">source</a><code class="language-java">import java.util.List;
+
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.dispatch.Dispatchers;
+import org.apache.pekko.routing.Router;
+
+import com.typesafe.config.Config;
+
+import org.apache.pekko.routing.GroupBase;
+import static jdocs.routing.CustomRouterDocTest.RedundancyRoutingLogic;
+
+public class RedundancyGroup extends GroupBase {
+  private final List&lt;String&gt; paths;
+  private final int nbrCopies;
+
+  public RedundancyGroup(List&lt;String&gt; paths, int nbrCopies) {
+    this.paths = paths;
+    this.nbrCopies = nbrCopies;
+  }
+
+  public RedundancyGroup(Config config) {
+    this(config.getStringList(&quot;routees.paths&quot;), config.getInt(&quot;nbr-copies&quot;));
+  }
+
+  @Override
+  public java.lang.Iterable&lt;String&gt; getPaths(ActorSystem system) {
+    return paths;
+  }
+
+  @Override
+  public Router createRouter(ActorSystem system) {
+    return new Router(new RedundancyRoutingLogic(nbrCopies));
+  }
+
+  @Override
+  public String routerDispatcher() {
+    return Dispatchers.DefaultDispatcherId();
+  }
+}</code></pre></dd>
+</dl>
+<p>This can be used exactly as the router actors provided by Pekko.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L131-L136" target="_blank" title="Go to snippet source">source</a><code class="language-scala">for (n &lt;- 1 to 10) system.actorOf(Props[Storage](), &quot;s&quot; + n)
+
+val paths = for (n &lt;- 1 to 10) yield &quot;/user/s&quot; + n
+val redundancy1: ActorRef =
+  system.actorOf(RedundancyGroup(paths, nbrCopies = 3).props(), name = &quot;redundancy1&quot;)
+redundancy1 ! &quot;important&quot;</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/CustomRouterDocTest.java#L149-L159" target="_blank" title="Go to snippet source">source</a><code class="language-java">for (int n = 1; n &lt;= 10; n++) {
+  system.actorOf(Props.create(Storage.class), &quot;s&quot; + n);
+}
+
+List&lt;String&gt; paths = new ArrayList&lt;String&gt;();
+for (int n = 1; n &lt;= 10; n++) {
+  paths.add(&quot;/user/s&quot; + n);
+}
+
+ActorRef redundancy1 = system.actorOf(new RedundancyGroup(paths, 3).props(), &quot;redundancy1&quot;);
+redundancy1.tell(&quot;important&quot;, getTestActor());</code></pre></dd>
+</dl>
+<p>Note that we added a constructor in <code>RedundancyGroup</code> that takes a <a href="https://javadoc.io/doc/com.typesafe/config/latest/com/typesafe/config/Config.html" title="com.typesafe.config.Config"><code>Config</code></a> parameter. That makes it possible to define it in configuration.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L30-L36" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /redundancy2 {
+    router = &quot;jdocs.routing.RedundancyGroup&quot;
+    routees.paths = [&quot;/user/s1&quot;, &quot;/user/s2&quot;, &quot;/user/s3&quot;]
+    nbr-copies = 5
+  }
+}</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L42-L48" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /redundancy2 {
+    router = &quot;jdocs.routing.RedundancyGroup&quot;
+    routees.paths = [&quot;/user/s1&quot;, &quot;/user/s2&quot;, &quot;/user/s3&quot;]
+    nbr-copies = 5
+  }
+}</code></pre></dd>
+</dl>
+<p>Note the fully qualified class name in the <code>router</code> property. The router class must extend <code>org.apache.pekko.routing.RouterConfig</code> (<code>Pool</code>, <code>Group</code> or <code>CustomRouterConfig</code>) and have constructor with one <code>com.typesafe.config.Config</code> parameter. The deployment section of the configuration is passed to the constructor.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/CustomRouterDocSpec.scala#L142-L143" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val redundancy2: ActorRef = system.actorOf(FromConfig.props(), name = &quot;redundancy2&quot;)
+redundancy2 ! &quot;very important&quot;</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/CustomRouterDocTest.java#L167-L168" target="_blank" title="Go to snippet source">source</a><code class="language-java">ActorRef redundancy2 = system.actorOf(FromConfig.getInstance().props(), &quot;redundancy2&quot;);
+redundancy2.tell(&quot;very important&quot;, getTestActor());</code></pre></dd>
+</dl>
+<h2><a href="#configuring-dispatchers" name="configuring-dispatchers" class="anchor"><span class="anchor-link"></span></a>Configuring Dispatchers</h2>
+<p>The dispatcher for created children of the pool will be taken from <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html" title="org.apache.pekko.actor.Props"><code>Props</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html" title="org.apache.pekko.actor.Props"><code>Props</code></a></span> as described in <a href="dispatchers.html">Dispatchers</a>.</p>
+<p>To make it easy to define the dispatcher of the routees of the pool you can define the dispatcher inline in the deployment section of the config.</p>
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L288-L297" target="_blank" title="Go to snippet source">source</a><code class="language-scala">pekko.actor.deployment {
+  /poolWithDispatcher {
+    router = random-pool
+    nr-of-instances = 5
+    pool-dispatcher {
+      fork-join-executor.parallelism-min = 5
+      fork-join-executor.parallelism-max = 5
+    }
+  }
+}</code></pre>
+<p>That is the only thing you need to do enable a dedicated dispatcher for a pool.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>If you use a group of actors and route to their paths, then they will still use the same dispatcher that was configured for them in their <code>Props</code>, it is not possible to change an actors dispatcher after it has been created.</p></div>
+<p>The “head” router cannot always run on the same dispatcher, because it does not process the same type of messages, hence this special actor does not use the dispatcher configured in <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html" title="org.apache.pekko.actor.Props"><code>Props</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/actor/Props.html" title="org.apache.pekko.actor.Props"><code>Props</code></a></span>, but takes the <code>routerDispatcher</code> from the <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RouterConfig.html" title="org.apache.pekko.routing.RouterConfig"><code>RouterConfig</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/routing/RouterConfig.html" title="org.apache.pekko.routing.RouterConfig"><code>RouterConfig</code></a></span> instead, which defaults to the actor system’s default dispatcher. All standard routers allow setting this property in their constructor or factory method, custom routers have to implement the method in a suitable way.</p>
+<dl>
+  <dt>Scala</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/scala/docs/routing/RouterDocSpec.scala#L549-L553" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val router: ActorRef = system.actorOf(
+  // “head” router actor will run on &quot;router-dispatcher&quot; dispatcher
+  // Worker routees will run on &quot;pool-dispatcher&quot; dispatcher
+  RandomPool(5, routerDispatcher = &quot;router-dispatcher&quot;).props(Props[Worker]()),
+  name = &quot;poolWithDispatcher&quot;)</code></pre></dd>
+  <dt>Java</dt>
+  <dd>
+  <pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/apache/incubator-pekko/tree/main/docs/src/test/java/jdocs/routing/RouterDocTest.java#L382-L386" target="_blank" title="Go to snippet source">source</a><code class="language-java">Props props =
+    // “head” router actor will run on &quot;router-dispatcher&quot; dispatcher
+    // Worker routees will run on &quot;pool-dispatcher&quot; dispatcher
+    new RandomPool(5).withDispatcher(&quot;router-dispatcher&quot;).props(Props.create(Worker.class));
+ActorRef router = system.actorOf(props, &quot;poolWithDispatcher&quot;);</code></pre></dd>
+</dl><div class="callout note "><div class="callout-title">Note</div>
+<p>It is not allowed to configure the <code>routerDispatcher</code> to be a <span class="group-scala"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/dispatch/BalancingDispatcherConfigurator.html" title="org.apache.pekko.dispatch.BalancingDispatcherConfigurator"><code>BalancingDispatcherConfigurator</code></a></span><span class="group-java"><a href="https://pekko.apache.org/api/pekko/0.0.0+26605-0f20b284+20230301-2309-SNAPSHOT/org/apache/pekko/dispatch/BalancingDispatcherConfigurator.html" title="org.apache.pekko.dispatch.BalancingDispatcherConfigurator"><code>BalancingDispatcherConfigurator</code></a></span> since the messages meant for the special router actor cannot be processed by any other actor.</p></div>
+</div>
+<div>
+<a href="https://github.com/apache/incubator-pekko/tree/main/docs/src/main/paradox/routing.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+0.0.0+26605-0f20b284+20230301-2309*
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="mailboxes.html" title="Classic Mailboxes" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Classic Mailboxes
+</span>
+</div>
+</a>
+<a href="fsm.html" title="Classic FSM" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Classic FSM
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+Copyright © 2022, 2023 <a href="https://apache.org">The Apache Software Foundation</a>, Licensed under the Apache License, Version 2.0.
+ This product contains significant parts that were originally based on software from Lightbend (<a href="https://akka.io/">Akka</a>).
+ Copyright (C) 2009-2022 Lightbend Inc. &lt;https://www.lightbend.com&gt; Apache Pekko is derived from Akka 2.6.x,
+ the last version that was distributed under the Apache License, Version 2.0 License.
+</div>
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/javascripts/application.583bbe55.js"></script>
+<script src="assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"."}})</script>
+<script type="text/javascript" src="lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="lib/prettify/lang-scala.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javascripts/groups.js"></script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>
