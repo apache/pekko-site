@@ -29,7 +29,6 @@ mkdir -p content/docs/pekko/current/
 mkdir -p content/api/pekko/current/
 mkdir -p content/japi/pekko/current/
 ```
-```
 3c. Remain in `incubator-pekko-site` and run
 ```
 cp -r <path>/incubator-pekko/docs/target/paradox/site/main/ content/docs/pekko/current/
