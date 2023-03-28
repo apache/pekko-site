@@ -17,44 +17,45 @@ Publishing the Apache Pekko web site requires:
 
 1. Clone https://github.com/apache/incubator-pekko-site into a local directory.
 2. Check out the asf-staging branch.
-3a. In `incubator-pekko` repo, run
+3. In `incubator-pekko` repo, run  
 ```
 sbt unidoc docs/paradox
 # next line requires Java 11 or above
 sbt -Dpekko.genjavadoc.enabled=true Javaunidoc/doc
 ```
-3b. Go back to your local copy of `incubator-pekko-site` and run
+4. Go back to your local copy of `incubator-pekko-site` and run 
 ```
 mkdir -p content/docs/pekko/current/
 mkdir -p content/api/pekko/current/
 mkdir -p content/japi/pekko/current/
 ```
-```
-3c. Remain in `incubator-pekko-site` and run
+
+5. Remain in `incubator-pekko-site` and run
+    
 ```
 cp -r <path>/incubator-pekko/docs/target/paradox/site/main/ content/docs/pekko/current/
 cp -r <path>/incubator-pekko/target/scala-2.13/unidoc/ content/api/pekko/current/
 cp -r <path>/incubator-pekko/target/javaunidoc/ content/japi/pekko/current/
 ```
-4a. In `incubator-pekko-http` repo, run
+6. In `incubator-pekko-http` repo, run
 ```
 sbt unidoc docs/paradox
 # next line requires Java 11 or above
 sbt -Dpekko.genjavadoc.enabled=true Javaunidoc/doc 
 ```
-4b. Go back to your local copy of `incubator-pekko-site` and run
+7. Go back to your local copy of `incubator-pekko-site` and run
 ```
 mkdir -p content/docs/pekko-http/current/
 mkdir -p content/api/pekko-http/current/
 mkdir -p content/japi/pekko-http/current/
 ```
-4c. Remain in `incubator-pekko-site` and run
+8. Remain in `incubator-pekko-site` and run
 ```
 cp -r <path>/incubator-pekko-http/docs/target/paradox/site/main/ content/docs/pekko-http/current/
 cp -r <path>/incubator-pekko-http/target/scala-2.13/unidoc/ content/api/pekko-http/current/
 cp -r <path>/incubator-pekko-http/target/javaunidoc/ content/japi/pekko-http/current/
 ```
-5. Perform `git add` on the affected files and `git commit`.
+9. Perform `git add` on the affected files and `git commit`.
 6. Perform `git push`.
 7. After a few minutes review https://pekko.staged.apache.org and make sure the appropriate changes are present.
 8. Once the site has been approved checkout the asf-site branch.
