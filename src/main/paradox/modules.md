@@ -7,5 +7,6 @@ We publish the latest work in progress to Apache [Nightlies site](https://nightl
 
 We occasionally manually update the docs on this site.
 
-* pekko (core) [docs](http://pekko.apache.org/docs/pekko/current/) [api](http://pekko.apache.org/api/pekko/current/) [japi](http://pekko.apache.org/japi/pekko/current/)
-* pekko-http [docs](http://pekko.apache.org/docs/pekko-http/current/) [api](http://pekko.apache.org/api/pekko-http/current/) [japi](http://pekko.apache.org/japi/pekko-http/current/)
+* pekko (core) [docs](https://pekko.apache.org/docs/pekko/current/) [api](https://pekko.apache.org/api/pekko/current/) [japi](https://pekko.apache.org/japi/pekko/current/)
+* pekko-http [docs](https://pekko.apache.org/docs/pekko-http/current/) [api](https://pekko.apache.org/api/pekko-http/current/) [japi](https://pekko.apache.org/japi/pekko-http/current/)
+* pekko-management [docs](https://pekko.apache.org/docs/pekko-management/current/) [api](https://pekko.apache.org/api/pekko-management/current/)
