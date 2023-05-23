@@ -7,6 +7,7 @@
 * pekko-connectors-kafka [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/) [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/)
 * pekko-management [docs](https://pekko.apache.org/docs/pekko-management/current/) [api](https://pekko.apache.org/api/pekko-management/current/)
 * pekko-persistence-cassandra [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/) [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
+* pekko-projection [docs](https://pekko.apache.org/docs/pekko-projection/current/) [api](https://pekko.apache.org/api/pekko-projection/current/)
 
 We haven't yet migrated all the docs for all the Pekko modules. You might also want to look at the following repositories in GitHub.
 
