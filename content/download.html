@@ -139,7 +139,10 @@ apache/incubator-pekko-site
   <ul>
     <li><a href="modules.html#repositories" class="header">Repositories</a></li>
   </ul></li>
-  <li><a href="download.html#download" class="active page">Download</a></li>
+  <li><a href="download.html#download" class="active page">Download</a>
+  <ul>
+    <li><a href="download.html#verifying-downloads" class="header">Verifying Downloads</a></li>
+  </ul></li>
   <li><a href="how-to-contribute.html" class="page">How to Contribute</a>
   <ul>
     <li><a href="how-to-contribute.html#the-apache-pekko-community" class="header">The Apache Pekko Community</a></li>
@@ -148,6 +151,13 @@ apache/incubator-pekko-site
 </ul>
 
 <nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="download.html#download" class="header">Download</a>
+  <ul>
+    <li><a href="download.html#verifying-downloads" class="header">Verifying Downloads</a></li>
+  </ul></li>
+</ul>
 </nav>
 
 
@@ -173,13 +183,43 @@ apache/incubator-pekko-site
 </div>
 </div>
 </div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="download.html#download" class="header">Download</a>
+  <ul>
+    <li><a href="download.html#verifying-downloads" class="header">Verifying Downloads</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#download" name="download" class="anchor"><span class="anchor-link"></span></a>Download</h1>
 <p>This page is a placeholder. When we release Pekko 1.0.0, this page will include links for downloading the official Source Release. It will also provide instructions on how to verify the downloaded files.</p>
 <p>We will also publish jars to Maven Central and we expect that most users will use those for convenience.</p>
-<p>We already publish snapshot jars to <a href="https://repository.apache.org/content/groups/snapshots/org/apache/pekko/">https://repository.apache.org/content/groups/snapshots/org/apache/pekko/</a>. </p>
+<p>We already publish snapshot jars to <a href="https://repository.apache.org/content/groups/snapshots/org/apache/pekko/">https://repository.apache.org/content/groups/snapshots/org/apache/pekko/</a>.</p>
+<h2><a href="#verifying-downloads" name="verifying-downloads" class="anchor"><span class="anchor-link"></span></a>Verifying Downloads</h2>
+<p>It is highly recommended that you verify the files that you download.</p>
+<p>We provide SHA digest files for all the files that we host on the download site. These files are named after the files they relate to but have <code>.sha256</code> and <code>.sha512</code> extensions.</p>
+<p>We also provide PGP signature files that can be verified using PGP or GPG. These files are named after the files they relate to but have <code>.asc</code>.</p>
+<p>To verify the SHA digests, use:</p>
+<pre><code>find . -name &quot;*.sha256&quot; -type f -execdir sha256sum -c {} \;
+find . -name &quot;*.sha512&quot; -type f -execdir sha512sum -c {} \;
+</code></pre>
+<p>To verify the PGP signatures, you will need to get the KEYS file. This will be in the source archive or can be fetched from <a href="https://github.com/apache/incubator-pekko/blob/main/KEYS">https://github.com/apache/incubator-pekko/blob/main/KEYS</a>.</p>
+<pre><code>gpg --import KEYS
+</code></pre>
+<p>To verify the download files, run:</p>
+<pre><code>find . -name &quot;*.asc&quot; -exec gpg --no-secmem-warning --verify {} \;
+</code></pre>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
