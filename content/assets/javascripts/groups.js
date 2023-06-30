@@ -1,5 +1,5 @@
 /*!
- Adopted from original paradox generic theme to work with paradox-material-theme
+ Adapted from original paradox generic theme to work with paradox-material-theme
  https://github.com/lightbend/paradox/blob/8e30c341f1f8351a19b71599219d2f636ba68eb4/themes/generic/src/main/assets/js/groups.js
  licensed under Apache License 2.0.
 */
@@ -45,7 +45,7 @@ $(function() {
     return cookieAttr ? cookieAttr.split("=")[1] : "";
   }
 
-  $("dl").has("dt").each(function() {
+  $("dl").has("dt.mdc-tab").each(function() {
     var dl = $(this);
     dl.addClass("tabbed");
     var dts = dl.find("dt");

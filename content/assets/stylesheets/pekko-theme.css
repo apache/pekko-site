@@ -21,3 +21,42 @@ ul.md-nav__links li a {
     padding:10px;
     width:380px
 }
+
+/* fix paradox snippet links to fit with material docs style */
+
+/* material docs brings its own copy button, remove ours */
+.snippet-button.copy-snippet { display: none; }
+
+/* style our "link to source" similar to material docs one */
+.snippet-button.go-to-source {
+  font-family: "Material Icons";
+  position: absolute;
+  top: 0.6rem;
+  right: 2.6rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.2rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+
+/* remove link text */
+.snippet-button.go-to-source span { display: none; }
+
+/* and replace with button similar to material copy one */
+.snippet-button.go-to-source::before {
+    transition: color   0.25s, opacity 0.25s;
+    color: rgba(0, 0, 0, 0.07);
+    content: "\E157";
+}
+
+pre:hover .snippet-button.go-to-source::before {
+      color: rgba(0, 0, 0, 0.54);
+}
+
+a.snippet-button.go-to-source:hover::before, .snippet-button.go-to-source:active::before {
+  color: #ff9100;
+}
