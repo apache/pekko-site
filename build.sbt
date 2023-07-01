@@ -1,6 +1,6 @@
 enablePlugins(ParadoxPlugin, PekkoParadoxPlugin)
 
-resolvers += "Apache Nexus Snapshots".at("https://repository.apache.org/content/repositories/snapshots/")
+resolvers += Resolver.ApacheMavenSnapshotsRepo
 
 pekkoParadoxGithub := Some("https://github.com/apache/incubator-pekko-site")
 
