@@ -12,14 +12,13 @@ We already publish snapshot jars to https://repository.apache.org/content/groups
 It is highly recommended that you verify the files that you download.
 
 We provide SHA digest files for all the files that we host on the download site. These files 
-are named after the files they relate to but have `.sha256` and `.sha512` extensions.
+are named after the files they relate to but have `.sha512` extensions.
 
 We also provide PGP signature files that can be verified using PGP or GPG. These files
 are named after the files they relate to but have `.asc`.
 
 To verify the SHA digests, use:
 ```
-find . -name "*.sha256" -type f -execdir sha256sum -c {} \;
 find . -name "*.sha512" -type f -execdir sha512sum -c {} \;
 ```
 
