@@ -1,11 +1,18 @@
 # Download
 
-This page is a placeholder. When we release Pekko 1.0.0, this page will include links for downloading
-the official Source Release. It will also provide instructions on how to verify the downloaded files.
+Apache Pekko releases are available under the Apache License, Version 2.0.
+See the NOTICE file contained in each release artifact for applicable copyright attribution notices.
 
-We will also publish jars to Maven Central and we expect that most users will use those for convenience.
+To ensure that you have downloaded the true release, you should [verify](#verifying-downloads) the integrity of the
+files using the signatures and checksums available from this page.
 
-We already publish snapshot jars to https://repository.apache.org/content/groups/snapshots/org/apache/pekko/.
+We also publish jars to Maven Central with the groupId `org.apache.pekko`. These jars relate to the source
+downloads you find linked here.
+
+## Pekko Core
+
+* [incubating-pekko-src-1.0.0-20230629.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.tgz.sha512))            
+* [incubating-pekko-src-1.0.0-20230629.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.0/incubating-pekko-src-1.0.0-20230629.zip.sha512))
 
 ## Verifying Downloads
 
