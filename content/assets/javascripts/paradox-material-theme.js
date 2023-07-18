@@ -1,10 +1,11 @@
 /*!
- Adapted from paradox-material-theme 0.6.0 to simplify switching to a tab.
-
  Paradox Material Theme
  Copyright (c) 2017 Jonas Fonseca
  License: MIT
 */
+
+// Adapted from paradox-material-theme 0.6.0 to simplify switching to a tab.
+// https://github.com/jonas/paradox-material-theme/blob/2d57fe0567ea9fe7e8de14faef4fa777841d505a/theme/src/main/assets/assets/javascripts/paradox-material-theme.js
 
 function initParadoxMaterialTheme() {
   // callout -> ammonition
