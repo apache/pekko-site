@@ -25,7 +25,7 @@ $(function() {
   if(cookieTg != "")
     currentGroups = JSON.parse(cookieTg);
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+  // See https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie for more information
   function setCookie(cookieName, cookieValue, daysToExpire) {
     if (!daysToExpire) daysToExpire = 365;
     const now = new Date();
@@ -37,7 +37,8 @@ $(function() {
     document.cookie = `${cookieName}=${encodeURIComponent(cookieValue)};expires=${now.toUTCString()};path=/;samesite=lax`;
   }
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#Example_2_Get_a_sample_cookie_named_test2
+  // See https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#Example_2_Get_a_sample_cookie_named_test2 for
+  // more information
   function getCookie(cookieName) {
     const cookieAttr = decodeURIComponent(document.cookie)
         .split(";")

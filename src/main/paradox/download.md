@@ -6,8 +6,10 @@ See the NOTICE file contained in each release artifact for applicable copyright 
 To ensure that you have downloaded the true release, you should [verify](#verifying-downloads) the integrity of the
 files using the signatures and checksums available from this page.
 
-We also publish jars to Maven Central with the groupId `org.apache.pekko`. These jars relate to the source
-downloads you find linked here.
+## Jars
+
+We publish jars to Maven Central with the groupId `org.apache.pekko` ([list](https://mvnrepository.com/artifact/org.apache.pekko)).
+These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
