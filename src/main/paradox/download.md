@@ -21,6 +21,11 @@ These jars relate to the source downloads you find linked below.
 * [apache-pekko-http-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.sha512))
 * [apache-pekko-http-1.0.0-incubating-src-20230726.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip.sha512))
 
+## Pekko Connectors Kafka
+
+* [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.sha512))
+* [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip.sha512))
+
 ## Archives
 
 Older releases can be found at https://archive.apache.org/dist/incubator/pekko/
