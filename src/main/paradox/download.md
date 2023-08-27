@@ -14,12 +14,10 @@ These jars relate to the source downloads you find linked below.
 ## Pekko Core
 
 * [apache-pekko-1.0.1-incubating-src-20230718.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.tgz.sha512))            
-* [apache-pekko-1.0.1-incubating-src-20230718.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.1/apache-pekko-1.0.1-incubating-src-20230718.zip.sha512))
 
 ## Pekko HTTP
 
 * [apache-pekko-http-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.sha512))
-* [apache-pekko-http-1.0.0-incubating-src-20230726.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.zip.sha512))
 
 ## Pekko gRPC
 
@@ -32,7 +30,10 @@ These jars relate to the source downloads you find linked below.
 ## Pekko Connectors Kafka
 
 * [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.sha512))
-* [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.zip.sha512))
+
+## Pekko SBT Paradox
+
+* [apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/SBT_PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.sha512))
 
 ## Archives
 
