@@ -35,6 +35,10 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.sha512))
 
+## Pekko Persistence Cassandra
+
+* [apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz.sha512))
+
 ## Pekko Persistence JDBC
 
 * [apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.sha512))
