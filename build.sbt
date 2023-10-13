@@ -25,3 +25,6 @@ pekkoParadoxGithub := Some("https://github.com/apache/incubator-pekko-site")
 inConfig(Assets)(Seq(
   excludeFilter := excludeFilter.value -- ".htaccess"
 ))
+
+// disabled display versioning, in other words: hidden unnecessary version.
+paradoxProperties += ("disabled.versioning.display" -> "true")

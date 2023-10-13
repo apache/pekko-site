@@ -15,4 +15,4 @@
  * limitations under the License.
  */
 
-addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.0")
+addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.1")
