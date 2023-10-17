@@ -21,6 +21,9 @@ resolvers += Resolver.ApacheMavenSnapshotsRepo
 
 pekkoParadoxGithub := Some("https://github.com/apache/incubator-pekko-site")
 
+// disabled display versioning, in other words: hidden unnecessary version.
+paradoxProperties += ("disabled.versioning.display" -> "true")
+
 // By default any hidden files placed inside src/main/public are ignored
 inConfig(Assets)(Seq(
   excludeFilter := excludeFilter.value -- ".htaccess"
