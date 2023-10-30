@@ -43,9 +43,13 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.sha512))
 
+## Pekko Projection
+
+* [apache-pekko-projection-1.0.0-incubating-src-20231012.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.sha512))
+
 ## Pekko SBT Paradox
 
-* [apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/SBT_PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.sha512))
+* [apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.sha512))
 
 ## Archives
 
