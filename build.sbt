@@ -23,6 +23,7 @@ pekkoParadoxGithub := Some("https://github.com/apache/incubator-pekko-site")
 
 // disabled display versioning, in other words: hidden unnecessary version.
 paradoxProperties += ("disabled.versioning.display" -> "true")
+paradoxProperties += ("image.base_url" -> ".../assets/images")
 
 // By default any hidden files placed inside src/main/public are ignored
 inConfig(Assets)(Seq(
