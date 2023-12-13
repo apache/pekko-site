@@ -35,7 +35,11 @@ The Apache Pekko project is broken into several repositories:
 
 In addition to the above, there are also the following QuickStart templates:
 
-- [Scala quickstart](https://github.com/apache/incubator-pekko-quickstart-scala.g8)
-- [Java quickstart](https://github.com/apache/incubator-pekko-quickstart-java.g8)
+- [Quickstart (Scala)](https://github.com/apache/incubator-pekko-quickstart-scala.g8)
+- [Quickstart (Java)](https://github.com/apache/incubator-pekko-quickstart-java.g8)
+- [HTTP Quickstart (Scala)](https://github.com/apache/incubator-pekko-http-quickstart-scala.g8)
+- [HTTP Quickstart (Java)](https://github.com/apache/incubator-pekko-http-quickstart-java.g8)
+- [gRPC Quickstart (Scala)](https://github.com/apache/incubator-pekko-grpc-quickstart-scala.g8)
+- [gRPC Quickstart (Java)](https://github.com/apache/incubator-pekko-grpc-quickstart-java.g8)
 
 [incubator-pekko-sbt-paradox](https://github.com/apache/incubator-pekko-sbt-paradox) contains the documentation functions and theming for Pekko.
