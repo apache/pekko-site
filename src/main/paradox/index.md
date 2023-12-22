@@ -1,5 +1,5 @@
 ---
-layout: home
+material.custom.page-stylesheet: assets/stylesheets/home.css
 ---
 
 @@@ index
