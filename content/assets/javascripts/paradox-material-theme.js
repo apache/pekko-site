@@ -198,7 +198,7 @@ function initParadoxMaterialTheme() {
           tabContent.classList.add('mdc-tab-content--active')
         }
         first = false
-        dt.activate = function() {
+        dt.onclick = event => {
           dl.querySelectorAll(':scope .mdc-tab--active').forEach(active => {
             active.classList.remove('mdc-tab--active')
           })
@@ -207,9 +207,6 @@ function initParadoxMaterialTheme() {
           })
           dt.classList.add('mdc-tab--active')
           tabContent.classList.add('mdc-tab-content--active')
-        }
-        dt.onclick = event => {
-          dt.activate()
         }
       })
 
