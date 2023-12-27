@@ -4,9 +4,6 @@
  License: MIT
 */
 
-// Adapted from paradox-material-theme 0.6.0 to simplify switching to a tab.
-// https://github.com/jonas/paradox-material-theme/blob/2d57fe0567ea9fe7e8de14faef4fa777841d505a/theme/src/main/assets/assets/javascripts/paradox-material-theme.js
-
 function initParadoxMaterialTheme() {
   // callout -> ammonition
   document.querySelectorAll('.callout').forEach(callout => {
@@ -196,7 +193,7 @@ function initParadoxMaterialTheme() {
           tabContent.classList.add('mdc-tab-content--active')
         }
         first = false
-        dt.activate = function() {
+        dt.onclick = event => {
           dl.querySelectorAll(':scope .mdc-tab--active').forEach(active => {
             active.classList.remove('mdc-tab--active')
           })
@@ -205,9 +202,6 @@ function initParadoxMaterialTheme() {
           })
           dt.classList.add('mdc-tab--active')
           tabContent.classList.add('mdc-tab-content--active')
-        }
-        dt.onclick = event => {
-          dt.activate()
         }
       })
 
