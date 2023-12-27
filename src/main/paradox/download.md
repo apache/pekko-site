@@ -47,6 +47,10 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.sha512))
 
+## Pekko Persistence R2DBC
+
+* [apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.sha512))
+
 ## Pekko Projection
 
 * [apache-pekko-projection-1.0.0-incubating-src-20231012.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.sha512))
