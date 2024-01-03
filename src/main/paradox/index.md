@@ -38,7 +38,9 @@ Apache Pekko is a fork of [Akka](https://github.com/akka/akka) 2.6.x, prior to t
 
 @@@ div { .row }
 
-## Getting Started
+@@@@ div {.subtitle}
+Getting Started
+@@@@
 
 * [Apache Pekko Cluster with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-scala/)
 * [Apache Pekko Cluster with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-java/)
@@ -58,7 +60,10 @@ Apache Pekko is a fork of [Akka](https://github.com/akka/akka) 2.6.x, prior to t
 @@@
 
 @@@ div { .row }
-## Modules
+
+@@@@ div {.subtitle}
+Modules
+@@@@
 
 * Apache Pekko Core
     * [Docs](https://pekko.apache.org/docs/pekko/current/)
