@@ -61,37 +61,37 @@ Apache Pekko is a fork of [Akka](https://github.com/akka/akka) 2.6.x, prior to t
 ## Modules
 
 * Apache Pekko Core
-    * [docs](https://pekko.apache.org/docs/pekko/current/)
-    * [api](https://pekko.apache.org/api/pekko/current/)
-    * [japi](https://pekko.apache.org/japi/pekko/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko/current/)
+    * [API](https://pekko.apache.org/api/pekko/current/)
+    * [Java API](https://pekko.apache.org/japi/pekko/current/)
 * Apache Pekko HTTP
-    * [docs](https://pekko.apache.org/docs/pekko-http/current/)
-    * [api](https://pekko.apache.org/api/pekko-http/current/)
-    * [japi](https://pekko.apache.org/japi/pekko-http/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-http/current/)
+    * [API](https://pekko.apache.org/api/pekko-http/current/)
+    * [Java API](https://pekko.apache.org/japi/pekko-http/current/)
 * Apache Pekko gRPC
-    * [docs](https://pekko.apache.org/docs/pekko-grpc/current/)
-    * [api](https://pekko.apache.org/api/pekko-grpc/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-grpc/current/)
+    * [API](https://pekko.apache.org/api/pekko-grpc/current/)
 * Apache Pekko Connectors
-    * [docs](https://pekko.apache.org/docs/pekko-connectors/current/)
-    * [api](https://pekko.apache.org/api/pekko-connectors/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-connectors/current/)
+    * [API](https://pekko.apache.org/api/pekko-connectors/current/)
 * Apache Pekko Connectors Kafka
-    * [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/)
-    * [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/)
+    * [API](https://pekko.apache.org/api/pekko-connectors-kafka/current/)
 * Apache Pekko Management
-    * [docs](https://pekko.apache.org/docs/pekko-management/current/)
-    * [api](https://pekko.apache.org/api/pekko-management/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-management/current/)
+    * [API](https://pekko.apache.org/api/pekko-management/current/)
 * Apache Pekko Cassandra
-    * [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/)
-    * [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/)
+    * [API](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
 * Apache Pekko DynamoDB
     * [GitHub](https://github.com/apache/incubator-pekko-persistence-dynamodb)
 * Apache Pekko JDBC
-    * [docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/)
-    * [api](https://pekko.apache.org/api/pekko-persistence-jdbc/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/)
+    * [API](https://pekko.apache.org/api/pekko-persistence-jdbc/current/)
 * Apache Pekko R2DBC
-    * [docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/)
-    * [api](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/)
+    * [API](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/)
 * Apache Pekko Projection
     * [docs](https://pekko.apache.org/docs/pekko-projection/current/)
-    * [api](https://pekko.apache.org/api/pekko-projection/current/)
+    * [API](https://pekko.apache.org/api/pekko-projection/current/)
 @@@

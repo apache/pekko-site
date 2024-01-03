@@ -4,7 +4,6 @@
  licensed under Apache License 2.0.
 */
 
-
 groupChangeListeners = [];
 
 window.groupChanged = function(callback) {
