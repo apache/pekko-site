@@ -1,4 +1,4 @@
-# Apache Pekko Modules
+# Modules
 
 * pekko (core) [docs](https://pekko.apache.org/docs/pekko/current/) [api](https://pekko.apache.org/api/pekko/current/) [japi](https://pekko.apache.org/japi/pekko/current/)
 * pekko-http [docs](https://pekko.apache.org/docs/pekko-http/current/) [api](https://pekko.apache.org/api/pekko-http/current/) [japi](https://pekko.apache.org/japi/pekko-http/current/)
