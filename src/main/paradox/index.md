@@ -97,6 +97,6 @@ Modules
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/)
 * Apache Pekko Projection
-    * [docs](https://pekko.apache.org/docs/pekko-projection/current/)
+    * [Docs](https://pekko.apache.org/docs/pekko-projection/current/)
     * [API](https://pekko.apache.org/api/pekko-projection/current/)
 @@@
