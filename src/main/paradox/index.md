@@ -65,8 +65,6 @@ Getting Started
 Modules
 @@@@
 
-Test failure
-
 * Apache Pekko Core
     * [Docs](https://pekko.apache.org/docs/pekko/current/)
     * [API](https://pekko.apache.org/api/pekko/current/)
