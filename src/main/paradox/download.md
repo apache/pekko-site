@@ -21,7 +21,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko gRPC
 
-* [apache-pekko-grpc-1.0.1-incubating-src-20231005.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/GRPC-1.0.1/apache-pekko-grpc-1.0.1-incubating-src-20231005.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/GRPC-1.0.1/apache-pekko-grpc-1.0.1-incubating-src-20231005.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/GRPC-1.0.1/apache-pekko-grpc-1.0.1-incubating-src-20231005.tgz.sha512))
+* [apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.sha512))
 
 ## Pekko Management
 
