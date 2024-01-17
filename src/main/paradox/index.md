@@ -62,7 +62,7 @@ Getting Started
 @@@ div { .row }
 
 @@@@ div {.subtitle}
-Modules
+@ref:[Modules](modules.md)
 @@@@
 
 * Apache Pekko Core
@@ -99,4 +99,19 @@ Modules
 * Apache Pekko Projection
     * [Docs](https://pekko.apache.org/docs/pekko-projection/current/)
     * [API](https://pekko.apache.org/api/pekko-projection/current/)
+@@@
+
+@@@ div { .row }
+
+@@@@ div {.subtitle}
+[Apache Software Foundation](https://apache.org/)
+@@@@
+
+* [License](https://apache.org/licenses/)
+* [Security](https://apache.org/security/)
+* [Privacy](https://privacy.apache.org/policies/privacy-policy-public.html)
+* [Events](https://www.apache.org/events/current-event.html)
+* [Donate](https://www.apache.org/foundation/sponsorship.html)
+* [Thanks](https://www.apache.org/foundation/sponsors)
+
 @@@
