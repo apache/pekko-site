@@ -42,6 +42,7 @@ Apache Pekko is a fork of [Akka](https://github.com/akka/akka) 2.6.x, prior to t
 Getting Started
 @@@@
 
+<!--- #samples --->
 * [Apache Pekko Cluster with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-scala/)
 * [Apache Pekko Cluster with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-java/)
 * [Apache Pekko Cluster Docker Compose with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-docker-compose-scala/)
@@ -57,6 +58,7 @@ Getting Started
 * [Apache Pekko Persistence with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-persistence-java/)
 * [Apache Pekko Cluster Sharding with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-sharding-scala/)
 * [Apache Pekko Cluster Sharding with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-sharding-java/)
+<!--- #samples --->
 @@@
 
 @@@ div { .row }
@@ -65,6 +67,7 @@ Getting Started
 @ref:[Modules](modules.md)
 @@@@
 
+<!--- #modules --->
 * Apache Pekko Core
     * [Docs](https://pekko.apache.org/docs/pekko/current/)
     * [API](https://pekko.apache.org/api/pekko/current/)
@@ -99,6 +102,7 @@ Getting Started
 * Apache Pekko Projection
     * [Docs](https://pekko.apache.org/docs/pekko-projection/current/)
     * [API](https://pekko.apache.org/api/pekko-projection/current/)
+<!--- #modules --->
 @@@
 
 @@@ div { .row }
