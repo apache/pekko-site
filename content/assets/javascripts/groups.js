@@ -148,6 +148,37 @@ $(function() {
       });
     });
 
+     // Index Page toc
+     $(".toc").each(function() {
+      var tocRoot = $(this);
+      function findHeaderElements(element) {
+        var headerElements = element.find(".header").filter("a");
+        headerElements.each(function() {
+          var headerElement = $(this);
+          // if header hiding by group switch, hide they li parent
+          // otherwise display there li parent
+          if (headerElement.css("display") === "none" ) {
+            var parentLi = headerElement.closest('li');
+            if (parentLi) {
+              parentLi.hide();
+            }
+          } else {
+            var parentLi = headerElement.closest('li');
+            if (parentLi) {
+              parentLi.show();
+            }
+          }
+        });
+        // just in case there is a nested header
+        element.children().each(function() {
+          var childElement = $(this);
+          findHeaderElements(childElement);
+        });
+      }
+
+      findHeaderElements(tocRoot);
+    })
+
     groupChangeListeners.forEach(listener => listener(group, supergroup, catalog));
   }
 
