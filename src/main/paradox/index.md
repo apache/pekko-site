@@ -85,15 +85,15 @@ Getting Started
 * Apache Pekko Management
     * [Docs](https://pekko.apache.org/docs/pekko-management/current/)
     * [API](https://pekko.apache.org/api/pekko-management/current/)
-* Apache Pekko Cassandra
+* Apache Pekko Persistence Cassandra
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
-* Apache Pekko DynamoDB
+* Apache Pekko Persistence DynamoDB
     * [GitHub](https://github.com/apache/incubator-pekko-persistence-dynamodb)
-* Apache Pekko JDBC
+* Apache Pekko Persistence JDBC
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-jdbc/current/)
-* Apache Pekko R2DBC
+* Apache Pekko Persistence R2DBC
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/)
 * Apache Pekko Projection
