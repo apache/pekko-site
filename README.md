@@ -23,7 +23,7 @@ To browse the site locally, run:
 sbt paradoxBrowse
 ```
 
-** Note that the `content` folder needs to be updated manually with the latest output in the `target/paradox/site/main` folder. **
+**Note that the `content` folder needs to be updated manually with the latest output in the `target/paradox/site/main` folder.**
 
 There are some details about how to deploy the pages associated with this repo in the
 [wiki](https://github.com/apache/incubator-pekko-site/wiki/Manual-Publishing).
