@@ -29,7 +29,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Connectors
 
-* [apache-pekko-connectors-1.0.1-incubating-src-20231028.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-1.0.1/apache-pekko-connectors-1.0.1-incubating-src-20231028.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-1.0.1/apache-pekko-connectors-1.0.1-incubating-src-20231028.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-1.0.1/apache-pekko-connectors-1.0.1-incubating-src-20231028.tgz.sha512))
+* [apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz.sha512))
 
 ## Pekko Connectors Kafka
 
