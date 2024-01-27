@@ -24,7 +24,7 @@ Banner Logo
 @@@@
 
 @@@@ div { .title }
-## Apache Pekko
+# Apache Pekko
 
 Apache Pekko (Incubating) is an open-source framework for building applications that are concurrent, distributed, resilient and elastic.
 Pekko uses the Actor Model to provide more intuitive high-level abstractions for concurrency.
