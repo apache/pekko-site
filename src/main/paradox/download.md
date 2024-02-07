@@ -17,7 +17,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko HTTP
 
-* [apache-pekko-http-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.0/apache-pekko-http-1.0.0-incubating-src-20230726.tgz.sha512))
+* [apache-pekko-http-1.0.1-incubating-src-20240128.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.sha512))
 
 ## Pekko gRPC
 
