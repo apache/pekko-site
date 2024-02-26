@@ -1,6 +1,6 @@
 # How to Contribute
 
-## The Apache Pekko Community
+## The Apache Pekko™ Community
 
 If you have questions about the contribution process or discuss specific issues, please interact with the community using the following resources.
 
