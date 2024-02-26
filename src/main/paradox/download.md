@@ -1,6 +1,6 @@
 # Download
 
-Apache Pekko releases are available under the Apache License, Version 2.0.
+Apache Pekko™ releases are available under the Apache License, Version 2.0.
 See the NOTICE file contained in each release artifact for applicable copyright attribution notices.
 
 To ensure that you have downloaded the true release, you should [verify](#verifying-downloads) the integrity of the
@@ -79,7 +79,7 @@ find . -name "*.sha512" -type f -execdir sha512sum -c {} \;
 ```
 
 To verify the PGP signatures, you will need to get the KEYS file. This will be in the source archive
-or can be fetched from https://github.com/apache/incubator-pekko/blob/main/KEYS.
+or can be fetched from https://dist.apache.org/repos/dist/release/incubator/pekko/KEYS.
 
 ```
 gpg --import KEYS
