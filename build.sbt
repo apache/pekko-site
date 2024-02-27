@@ -19,6 +19,8 @@ enablePlugins(ParadoxPlugin, PekkoParadoxPlugin)
 
 resolvers += Resolver.ApacheMavenSnapshotsRepo
 
+name := "incubator-pekko-site"
+
 pekkoParadoxGithub := None
 
 // disabled display versioning, in other words: hidden unnecessary version.
