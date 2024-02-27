@@ -17,4 +17,4 @@
 
 resolvers += Resolver.ApacheMavenSnapshotsRepo
 
-addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.0+10-9676045b-SNAPSHOT")
+addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.0+36-42777ace-SNAPSHOT")
