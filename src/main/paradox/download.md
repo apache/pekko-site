@@ -15,6 +15,11 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-1.0.2-incubating-src-20231115.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz.sha512))            
 
+There is also a milestone release and is aimed at testing some new support for users who want to add Pekko nodes to an existing Akka cluster. This support is experimental. This release should not be used in production:
+
+* [apache-pekko-1.0.3-M1-incubating-src-20240215.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz.sha512))
+
+
 ## Pekko HTTP
 
 * [apache-pekko-http-1.0.1-incubating-src-20240128.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz) signature: ([asc](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.asc)) checksum: ([sha512](https://dlcdn.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.sha512))
