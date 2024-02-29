@@ -8,7 +8,7 @@ The samples can be download using Git from [incubator-pekko-samples](https://git
 * [Pekko Cluster Docker Compose with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-docker-compose-java/)
 * [Pekko Distributed Data with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-scala/)
 * [Pekko Distributed Data with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-java/)
-* [Pekko Distributed Workers with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-workers-scala/)
+* [Pekko Distributed Workers with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-workers-scala/)
 * [Pekko FSM with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-fsm-scala/)
 * [Pekko FSM with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-fsm-java/)
 * [Pekko gRPC on Kubernetes (Scala)](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-grpc-kubernetes-scala/)

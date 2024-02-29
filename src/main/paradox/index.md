@@ -48,7 +48,7 @@ Getting Started
 * [Apache Pekko Cluster Docker Compose with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-docker-compose-java/)
 * [Apache Pekko Distributed Data with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-scala/)
 * [Apache Pekko Distributed Data with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-java/)
-* [Apache Pekko Distributed Workers with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-data-workers-scala/)
+* [Apache Pekko Distributed Workers with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-distributed-workers-scala/)
 * [Apache Pekko FSM with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-fsm-scala/)
 * [Apache Pekko FSM with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-fsm-java/)
 * [Apache Pekko gRPC on Kubernetes (Scala)](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-grpc-kubernetes-scala/)
