@@ -62,7 +62,7 @@ There is also a milestone release and is aimed at testing some new support for u
 
 ## Pekko SBT Paradox
 
-* [apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/SBT-PARADOX-1.0.0/apache-pekko-sbt-paradox-1.0.0-incubating-src-20230819.tgz.sha512))
+* [apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/SBT-PARADOX-1.0.1/apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/SBT-PARADOX-1.0.1/apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/SBT-PARADOX-1.0.1/apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.sha512))
 
 ## Archives
 
