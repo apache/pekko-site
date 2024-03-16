@@ -17,8 +17,6 @@
 
 enablePlugins(ParadoxPlugin, PekkoParadoxPlugin)
 
-resolvers += Resolver.ApacheMavenSnapshotsRepo
-
 name := "incubator-pekko-site"
 
 pekkoParadoxGithub := None
