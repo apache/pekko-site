@@ -15,6 +15,4 @@
  * limitations under the License.
  */
 
-resolvers += Resolver.ApacheMavenSnapshotsRepo
-
-addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.1-RC1+5-13892678-SNAPSHOT")
+addSbtPlugin("org.apache.pekko" % "pekko-sbt-paradox" % "1.0.1")
