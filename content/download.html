@@ -282,14 +282,39 @@ Apache Pekko™
 <p>It is highly recommended that you verify the files that you download.</p>
 <p>We provide SHA digest files for all the files that we host on the download site. These files are named after the files they relate to but have <code>.sha512</code> extensions.</p>
 <p>We also provide PGP signature files that can be verified using PGP or GPG. These files are named after the files they relate to but have <code>.asc</code>.</p>
-<p>To verify the SHA digests, use:</p>
-<pre><code>find . -name &quot;*.sha512&quot; -type f -execdir sha512sum -c {} \;
+<h3><a href="#verifying-checksums" name="verifying-checksums" class="anchor"><span class="anchor-link"></span></a>Verifying Checksums</h3>
+<p>To verify the SHA digests, you need the <code>.tgz</code> and its associated <code>.tgz.sha512</code> file. An example command:</p>
+<pre><code>sha512sum -c apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.sha512
 </code></pre>
+<p>Returns:</p>
+<pre><code>apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz: OK
+</code></pre>
+<h3><a href="#verifying-signatures" name="verifying-signatures" class="anchor"><span class="anchor-link"></span></a>Verifying Signatures</h3>
 <p>To verify the PGP signatures, you will need to get the KEYS file. This will be in the source archive or can be fetched from <a href="https://downloads.apache.org/incubator/pekko/KEYS">https://downloads.apache.org/incubator/pekko/KEYS</a>.</p>
 <pre><code>gpg --import KEYS
 </code></pre>
-<p>To verify the download files, run:</p>
-<pre><code>find . -name &quot;*.asc&quot; -exec gpg --no-secmem-warning --verify {} \;
+<p>To verify the SHA digests, you need the <code>.tgz</code> and its associated <code>.tgz.asc</code> file. An example command:</p>
+<pre><code>gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc
+</code></pre>
+<p>or</p>
+<pre><code>gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz
+</code></pre>
+<p>Returns:</p>
+<pre><code>gpg: assuming signed data in &#39;apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz&#39;
+gpg: Signature made Tue  5 Mar 11:36:27 2024 CET
+gpg:                using RSA key 3FD458B4420059F1F97C2563F6A21ED3A05F7F7B
+gpg: Good signature from &quot;Matthew de Detrich (CODE SIGNING KEY) &lt;mdedetrich@apache.org&gt;&quot; [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 3FD4 58B4 4200 59F1 F97C  2563 F6A2 1ED3 A05F 7F7B
+</code></pre>
+<p>You should also verify the key using a command like:</p>
+<pre><code>% gpg --fingerprint 3FD458B4420059F1F97C2563F6A21ED3A05F7F7B                                                                            
+pub   rsa4096 2023-06-16 [SC]
+      3FD4 58B4 4200 59F1 F97C  2563 F6A2 1ED3 A05F 7F7B
+uid           [ unknown] Matthew de Detrich (CODE SIGNING KEY) &lt;mdedetrich@apache.org&gt;
+sub   rsa4096 2023-06-16 [E]
+sub   rsa4096 2023-06-16 [A]
 </code></pre>
 </div>
 </article>
