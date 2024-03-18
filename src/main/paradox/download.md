@@ -78,10 +78,18 @@ are named after the files they relate to but have `.sha512` extensions.
 We also provide PGP signature files that can be verified using PGP or GPG. These files
 are named after the files they relate to but have `.asc`.
 
-To verify the SHA digests, use:
+### Verifying Checksums
+
+To verify the SHA digests, you need the `.tgz` and its associated `.tgz.sha512` file. An example command:
 ```
-find . -name "*.sha512" -type f -execdir sha512sum -c {} \;
+sha512sum -c apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.sha512
 ```
+
+Returns:
+```
+apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz: OK
+```
+### Verifying Signatures
 
 To verify the PGP signatures, you will need to get the KEYS file. This will be in the source archive
 or can be fetched from https://downloads.apache.org/incubator/pekko/KEYS.
@@ -90,7 +98,32 @@ or can be fetched from https://downloads.apache.org/incubator/pekko/KEYS.
 gpg --import KEYS
 ```
 
-To verify the download files, run:
+To verify the SHA digests, you need the `.tgz` and its associated `.tgz.asc` file. An example command:
 ```
-find . -name "*.asc" -exec gpg --no-secmem-warning --verify {} \;
+gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc
+```
+or
+```
+gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz
+```
+
+Returns:
+```
+gpg: assuming signed data in 'apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz'
+gpg: Signature made Tue  5 Mar 11:36:27 2024 CET
+gpg:                using RSA key 3FD458B4420059F1F97C2563F6A21ED3A05F7F7B
+gpg: Good signature from "Matthew de Detrich (CODE SIGNING KEY) <mdedetrich@apache.org>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 3FD4 58B4 4200 59F1 F97C  2563 F6A2 1ED3 A05F 7F7B
+```
+You should also verify the key using a command like:
+
+```
+% gpg --fingerprint 3FD458B4420059F1F97C2563F6A21ED3A05F7F7B                                                                            
+pub   rsa4096 2023-06-16 [SC]
+      3FD4 58B4 4200 59F1 F97C  2563 F6A2 1ED3 A05F 7F7B
+uid           [ unknown] Matthew de Detrich (CODE SIGNING KEY) <mdedetrich@apache.org>
+sub   rsa4096 2023-06-16 [E]
+sub   rsa4096 2023-06-16 [A]
 ```
