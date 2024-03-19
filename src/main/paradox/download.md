@@ -100,16 +100,11 @@ gpg --import KEYS
 
 To verify the SHA digests, you need the `.tgz` and its associated `.tgz.asc` file. An example command:
 ```
-gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc
-```
-or
-```
 gpg --verify apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz.asc apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz
 ```
 
 Returns:
 ```
-gpg: assuming signed data in 'apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz'
 gpg: Signature made Tue  5 Mar 11:36:27 2024 CET
 gpg:                using RSA key 3FD458B4420059F1F97C2563F6A21ED3A05F7F7B
 gpg: Good signature from "Matthew de Detrich (CODE SIGNING KEY) <mdedetrich@apache.org>" [unknown]
