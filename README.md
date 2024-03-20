@@ -5,7 +5,7 @@
 This repo is used to publish the home page of the [Apache Pekko website](https://pekko.apache.org). 
 
 Anyone looking to help improve our module specific docs should look at the Git repos
-(eg [incubator-pekko](https://github.com/apache/incubator-pekko)) for the modules.
+(eg [apache/pekko](https://github.com/apache/incubator-pekko)) for the modules.
 
 ## Build
 
