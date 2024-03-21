@@ -19,7 +19,7 @@ Please see the Apache wide [Code of Conduct](https://www.apache.org/foundation/p
 
 ## Committers
 
-The current list of Apache Pekko committers can be found in the Apache [Phonebook](https://people.apache.org/phonebook.html?podling=pekko).
+The current list of Apache Pekko committers can be found in the Apache [Phonebook](https://people.apache.org/phonebook.html?pmc=pekko).
 
 All code merges require approval from at least 1 Pekko committer. Most Pekko committers are also members of the
 PPMC. Releases require that at least 3 Pekko PPMC members approve the release.

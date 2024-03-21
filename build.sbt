@@ -17,7 +17,9 @@
 
 enablePlugins(ParadoxPlugin, PekkoParadoxPlugin)
 
-name := "incubator-pekko-site"
+name := "pekko-site"
+
+pekkoParadoxIncubatorNotice in Global := None
 
 pekkoParadoxGithub := None
 
