@@ -1,6 +1,6 @@
 # Samples
 
-The samples can be download using Git from [pekko-samples](https://github.com/apache/incubator-pekko-samples).
+The samples can be download using Git from [pekko-samples](https://github.com/apache/pekko-samples).
 
 * [Pekko Cluster with Scala](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-scala/)
 * [Pekko Cluster with Java](https://pekko.apache.org/docs/pekko-samples/current/pekko-sample-cluster-java/)
@@ -22,5 +22,5 @@ The samples can be download using Git from [pekko-samples](https://github.com/ap
 
 Migrating the following samples and guides from Akka to Pekko falls under the heading 'Help Wanted'.
 
-* [pekko-connectors-samples](https://github.com/apache/incubator-pekko-connectors-samples)
-* [pekko-platform-guide](https://github.com/apache/incubator-pekko-platform-guide)
+* [pekko-connectors-samples](https://github.com/apache/pekko-connectors-samples)
+* [pekko-platform-guide](https://github.com/apache/pekko-platform-guide)

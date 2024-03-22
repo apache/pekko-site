@@ -90,7 +90,7 @@ Getting Started
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
 * Apache Pekko Persistence DynamoDB
-    * [GitHub](https://github.com/apache/incubator-pekko-persistence-dynamodb)
+    * [GitHub](https://github.com/apache/pekko-persistence-dynamodb)
 * Apache Pekko Persistence JDBC
     * [Docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/)
     * [API](https://pekko.apache.org/api/pekko-persistence-jdbc/current/)
