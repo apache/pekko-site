@@ -92,7 +92,7 @@ apache-pekko-sbt-paradox-1.0.1-incubating-src-20240305.tgz: OK
 ### Verifying Signatures
 
 To verify the PGP signatures, you will need to get the KEYS file. This will be in the source archive
-or can be fetched from https://downloads.apache.org/incubator/pekko/KEYS.
+or can be fetched from https://downloads.apache.org/pekko/KEYS.
 
 ```
 gpg --import KEYS

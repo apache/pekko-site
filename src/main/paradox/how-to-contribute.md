@@ -6,8 +6,8 @@ If you have questions about the contribution process or discuss specific issues,
 
 - [Pekko users mailing list](https://lists.apache.org/list.html?users@pekko.apache.org): for Pekko usage discussions. [Subscribe](mailto:users-subscribe@pekko.apache.org) [Unsubscribe](mailto:users-unsubscribe@pekko.apache.org)
 - [Pekko dev mailing list](https://lists.apache.org/list.html?dev@pekko.apache.org): for Pekko development discussions. [Subscribe](mailto:dev-subscribe@pekko.apache.org) [Unsubscribe](mailto:dev-unsubscribe@pekko.apache.org)
-- [GitHub discussions](https://github.com/apache/incubator-pekko/discussions): for questions and general discussion.
-- [GitHub issues](https://github.com/apache/incubator-pekko/issues): for bug reports and feature requests. Please search the existing issues before creating new ones. If you are unsure whether you have found a bug, consider asking in GitHub discussions or the mailing list first.
+- [GitHub discussions](https://github.com/apache/pekko/discussions): for questions and general discussion.
+- [GitHub issues](https://github.com/apache/pekko/issues): for bug reports and feature requests. Please search the existing issues before creating new ones. If you are unsure whether you have found a bug, consider asking in GitHub discussions or the mailing list first.
 
 With GitHub, the Pekko code is split across @ref:[multiple repositories](modules.md). The links for GitHub discussions and issues
 above are related to the core repository. If you are aware of the right repository, then please use the discussions and issues
