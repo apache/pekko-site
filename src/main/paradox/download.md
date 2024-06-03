@@ -37,6 +37,10 @@ There is also a milestone release. This release should not be used in production
 
 * [apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.sha512))
 
+There is also a milestone release. This release should not be used in production.
+
+* [apache-pekko-grpc-1.1.0-M1-src-20240529.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-1.1.0-M1/apache-pekko-grpc-1.1.0-M1-src-20240529.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-1.1.0-M1/apache-pekko-grpc-1.1.0-M1-src-20240529.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-1.1.0-M1/apache-pekko-grpc-1.1.0-M1-src-20240529.tgz.sha512))
+
 ## Pekko Management
 
 * [apache-pekko-management-1.0.0-incubating-src-20230805.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.sha512))
