@@ -65,6 +65,10 @@ There is also a milestone release. This release should not be used in production
 
 * [apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.sha512))
 
+There is also a milestone release. This release should not be used in production.
+
+* [apache-pekko-persistence-jdbc-1.1.0-M1-src-20240603.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-1.1.0-M1/apache-pekko-persistence-jdbc-1.1.0-M1-src-20240603.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.1.0-M1/apache-pekko-persistence-jdbc-1.1.0-M1-src-20240603.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.1.0-M1/apache-pekko-persistence-jdbc-1.1.0-M1-src-20240603.tgz.sha512))
+
 ## Pekko Persistence R2DBC
 
 * [apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.sha512))
