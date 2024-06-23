@@ -13,17 +13,11 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
-* [apache-pekko-1.0.2-incubating-src-20231115.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/1.0.2/apache-pekko-1.0.2-incubating-src-20231115.tgz.sha512))            
+* [apache-pekko-1.0.3-src-20240619.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.sha512))
 
-There are also 2 milestone releases. These releases should not be used in production.
-
-* [apache-pekko-1.0.3-M1-incubating-src-20240215.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/1.0.3-M1/apache-pekko-1.0.3-M1-incubating-src-20240215.tgz.sha512))
-
-This milestone is aimed at testing some new support for users who want to add Pekko nodes to an existing Akka cluster. This support is experimental.
+There is also a milestone release. This release should not be used in production.
 
 * [apache-pekko-1.1.0-M1-src-20240507.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.1.0-M1/apache-pekko-1.1.0-M1-src-20240507.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.1.0-M1/apache-pekko-1.1.0-M1-src-20240507.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.1.0-M1/apache-pekko-1.1.0-M1-src-20240507.tgz.sha512))
-
-This milestone is aimed at previewing the changes in Pekko 1.1.
 
 ## Pekko HTTP
 
