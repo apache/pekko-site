@@ -13,7 +13,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
-* [apache-pekko-1.0.3-src-20240619.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.sha512))
+* [apache-pekko-1.0.3-src-20240619.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.sha512))
 
 There is also a milestone release. This release should not be used in production.
 
