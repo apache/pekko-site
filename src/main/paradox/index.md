@@ -36,6 +36,33 @@ Apache Pekko™ is a fork of [Akka](https://github.com/akka/akka) 2.6.x, prior t
 
 @@@
 
+@@@ div { .pitch }
+
+@@@@ div {.subtitle}
+Actor model
+@@@@
+
+Make concurrency safe by modeling your application as Actors passing messages among each other:
+
+![Image of actors sending each other messages](assets/images/actor.gif)
+
+@@@@ div {.subtitle}
+Clustering
+@@@@
+
+Easily scale beyond a single machine by serializing those messages:
+
+TODO image
+
+@@@@ div {.subtitle}
+Streaming
+@@@@
+
+Messages with backpressure give you high-performance streaming without overloading the target systems
+
+TODO image
+
+@@@
 
 @@@ div { .row }
 

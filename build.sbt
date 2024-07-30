@@ -30,3 +30,10 @@ paradoxProperties += ("disabled.versioning.display" -> "true")
 inConfig(Assets)(Seq(
   excludeFilter := excludeFilter.value -- ".htaccess"
 ))
+
+lazy val animations = project.settings(
+  scalaVersion := "3.4.1",
+  libraryDependencies ++= Seq(
+    "com.lihaoyi" %% "scalatags" % "0.13.1"
+  )
+)
