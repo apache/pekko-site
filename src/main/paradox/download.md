@@ -95,7 +95,10 @@ There is also a milestone release. This release should not be used in production
 
 ## Archives
 
-Older releases can be found at https://archive.apache.org/dist/incubator/pekko/
+Older releases can be found at:
+
+* https://archive.apache.org/dist/pekko/
+* https://archive.apache.org/dist/incubator/pekko/
 
 ## Verifying Downloads
 
