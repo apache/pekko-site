@@ -22,9 +22,9 @@ Please see the Apache wide [Code of Conduct](https://www.apache.org/foundation/p
 The current list of Apache Pekko committers can be found in the Apache [Phonebook](https://people.apache.org/phonebook.html?pmc=pekko).
 
 All code merges require approval from at least 1 Pekko committer. Most Pekko committers are also members of the
-PPMC. Releases require that at least 3 Pekko PPMC members approve the release.
+PMC. Releases require that at least 3 Pekko PMC members approve the release.
 
-We are looking to build up the number of committers and PPMC members. We will invite people to join the team. This is based
+We are looking to build up the number of committers and PMC members. We will invite people to join the team. This is based
 on meritocracy. Contributors who have become involved in the Pekko community and who have shown a good level of understanding
 of the Pekko code base will be considered.
 We have an outline of the process for becoming a committer on the Apache Pekko project on our [wiki](https://cwiki.apache.org/confluence/display/PEKKO/Becoming+a+Committer).
