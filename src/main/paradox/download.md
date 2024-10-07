@@ -15,7 +15,7 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-1.0.3-src-20240619.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.sha512))
 
-* [apache-pekko-1.1.1-src-20240909.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.1.1/apache-pekko-1.1.1-src-20240909.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.1.1/apache-pekko-1.1.1-src-20240909.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.1.1/apache-pekko-1.1.1-src-20240909.tgz.sha512))
+* [apache-pekko-1.1.2-src-20241004.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.1.2/apache-pekko-1.1.2-src-20241004.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.1.2/apache-pekko-1.1.2-src-20241004.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.1.2/apache-pekko-1.1.2-src-20241004.tgz.sha512))
 
 ## Pekko HTTP
 
