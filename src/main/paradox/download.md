@@ -33,9 +33,7 @@ These jars relate to the source downloads you find linked below.
 
 * [apache-pekko-management-1.0.0-incubating-src-20230805.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.sha512))
 
-There is also a milestone release. This release should not be used in production.
-
-* [apache-pekko-management-1.1.0-M1-src-20240613.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.0-M1/apache-pekko-management-1.1.0-M1-src-20240613.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0-M1/apache-pekko-management-1.1.0-M1-src-20240613.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0-M1/apache-pekko-management-1.1.0-M1-src-20240613.tgz.sha512))
+* [apache-pekko-management-1.1.0-src-20241010.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.sha512))
 
 ## Pekko Connectors
 
