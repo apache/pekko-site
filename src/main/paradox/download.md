@@ -73,6 +73,10 @@ There is also a milestone release. This release should not be used in production
 
 * [apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.sha512))
 
+There is also a milestone release. This release should not be used in production.
+
+* [apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz.sha512))
+
 ## Pekko Projection
 
 * [apache-pekko-projection-1.0.0-incubating-src-20231012.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.sha512))
