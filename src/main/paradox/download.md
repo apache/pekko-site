@@ -13,39 +13,25 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
-* [apache-pekko-1.0.3-src-20240619.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.0.3/apache-pekko-1.0.3-src-20240619.tgz.sha512))
-
 * [apache-pekko-1.1.3-src-20250104.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.1.3/apache-pekko-1.1.3-src-20250104.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.1.3/apache-pekko-1.1.3-src-20250104.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.1.3/apache-pekko-1.1.3-src-20250104.tgz.sha512))
 
 ## Pekko HTTP
-
-* [apache-pekko-http-1.0.1-incubating-src-20240128.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/HTTP-1.0.1/apache-pekko-http-1.0.1-incubating-src-20240128.tgz.sha512))
 
 * [apache-pekko-http-1.1.0-src-20240922.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz.sha512))
 
 ## Pekko gRPC
 
-* [apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/GRPC-1.0.2/apache-pekko-grpc-1.0.2-incubating-src-20231229.tgz.sha512))
-
 * [apache-pekko-grpc-1.1.1-src-20241106.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-1.1.1/apache-pekko-grpc-1.1.1-src-20241106.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-1.1.1/apache-pekko-grpc-1.1.1-src-20241106.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-1.1.1/apache-pekko-grpc-1.1.1-src-20241106.tgz.sha512))
 
 ## Pekko Management
-
-* [apache-pekko-management-1.0.0-incubating-src-20230805.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/MANAGEMENT-1.0.0/apache-pekko-management-1.0.0-incubating-src-20230805.tgz.sha512))
 
 * [apache-pekko-management-1.1.0-src-20241010.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.sha512))
 
 ## Pekko Connectors
 
-* [apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/CONNECTORS-1.0.2/apache-pekko-connectors-1.0.2-incubating-src-20240109.tgz.sha512))
-
-There is also a milestone release. This release should not be used in production.
-
-* [apache-pekko-connectors-1.1.0-M1-src-20240704.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-1.1.0-M1/apache-pekko-connectors-1.1.0-M1-src-20240704.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-1.1.0-M1/apache-pekko-connectors-1.1.0-M1-src-20240704.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-1.1.0-M1/apache-pekko-connectors-1.1.0-M1-src-20240704.tgz.sha512))
+* [apache-pekko-connectors-1.1.0-src-20250110.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-1.1.0/apache-pekko-connectors-1.1.0-src-20250110.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-1.1.0/apache-pekko-connectors-1.1.0-src-20250110.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-1.1.0/apache-pekko-connectors-1.1.0-src-20250110.tgz.sha512))
 
 ## Pekko Connectors Kafka
-
-* [apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/CONNECTORS-KAFKA-1.0.0/apache-pekko-connectors-kafka-1.0.0-incubating-src-20230726.tgz.sha512))
 
 * [apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.sha512))
 
@@ -59,13 +45,9 @@ There is also a milestone release. This release should not be used in production
 
 ## Pekko Persistence DynamoDB
 
-* [apache-pekko-persistence-dynamodb-1.0.0-incubating-src-20231110.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-DYNAMODB-1.0.0/apache-pekko-persistence-dynamodb-1.0.0-incubating-src-20231110.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-DYNAMODB-1.0.0/apache-pekko-persistence-dynamodb-1.0.0-incubating-src-20231110.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-DYNAMODB-1.0.0/apache-pekko-persistence-dynamodb-1.0.0-incubating-src-20231110.tgz.sha512))
-
 * [apache-pekko-persistence-dynamodb-1.1.0-src-20241020.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-DYNAMODB-1.1.0/apache-pekko-persistence-dynamodb-1.1.0-src-20241020.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-DYNAMODB-1.1.0/apache-pekko-persistence-dynamodb-1.1.0-src-20241020.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-DYNAMODB-1.1.0/apache-pekko-persistence-dynamodb-1.1.0-src-20241020.tgz.sha512))
 
 ## Pekko Persistence JDBC
-
-* [apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-JDBC-1.0.0/apache-pekko-persistence-jdbc-1.0.0-incubating-src-20230829.tgz.sha512))
 
 * [apache-pekko-persistence-jdbc-1.1.0-src-20240914.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-1.1.0/apache-pekko-persistence-jdbc-1.1.0-src-20240914.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.1.0/apache-pekko-persistence-jdbc-1.1.0-src-20240914.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.1.0/apache-pekko-persistence-jdbc-1.1.0-src-20240914.tgz.sha512))
 
