@@ -37,11 +37,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Persistence Cassandra
 
-* [apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE_CASSANDRA-1.0.0/apache-pekko-persistence-cassandra-1.0.0-incubating-src-20230916.tgz.sha512))
-
-There is also a milestone release. This release should not be used in production.
-
-* [apache-pekko-persistence-cassandra-1.1.0-M1-src-20240715.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-CASSANDRA-1.1.0-M1/apache-pekko-persistence-cassandra-1.1.0-M1-src-20240715.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0-M1/apache-pekko-persistence-cassandra-1.1.0-M1-src-20240715.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0-M1/apache-pekko-persistence-cassandra-1.1.0-M1-src-20240715.tgz.sha512))
+* [apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz.sha512))
 
 ## Pekko Persistence DynamoDB
 
