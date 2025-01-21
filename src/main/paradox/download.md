@@ -68,11 +68,12 @@ There is also a milestone release. This release should not be used in production
 ## Pekko Projection
 
 * [apache-pekko-projection-1.0.0-incubating-src-20231012.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PROJECTION-1.0.0/apache-pekko-projection-1.0.0-incubating-src-20231012.tgz.sha512))
+* [Release Notes](https://pekko.apache.org/docs/pekko-projection/1.1/release-notes/index.html)
 
 There is also a milestone release. This release should not be used in production.
 
 * [apache-pekko-projection-1.1.0-M1-src-20240823.tgz](https://www.apache.org/dyn/closer.lua/pekko/PROJECTION-1.1.0-M1/apache-pekko-projection-1.1.0-M1-src-20240823.tgz) signature: ([asc](https://downloads.apache.org/pekko/PROJECTION-1.1.0-M1/apache-pekko-projection-1.1.0-M1-src-20240823.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PROJECTION-1.1.0-M1/apache-pekko-projection-1.1.0-M1-src-20240823.tgz.sha512))
-* [Release Notes](https://pekko.apache.org/docs/pekko-projection/1.1/release-notes/index.html)
+
 
 ## Pekko SBT Paradox
 
