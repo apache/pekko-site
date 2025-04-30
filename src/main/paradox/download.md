@@ -33,7 +33,7 @@ There is also a milestone release. This release should not be used in production
 
 ## Pekko Management
 
-* [apache-pekko-management-1.1.0-src-20241010.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.0/apache-pekko-management-1.1.0-src-20241010.tgz.sha512))
+* [apache-pekko-management-1.1.1-src-20250426.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-management/current/release-notes/index.html)
 
 ## Pekko Connectors
