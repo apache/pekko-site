@@ -23,7 +23,7 @@ There is also a milestone release. This release should not be used in production
 
 ## Pekko HTTP
 
-* [apache-pekko-http-1.1.0-src-20240922.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.1.0/apache-pekko-http-1.1.0-src-20240922.tgz.sha512))
+* [apache-pekko-http-1.2.0-src-20250510.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.2.0/apache-pekko-http-1.2.0-src-20250510.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.2.0/apache-pekko-http-1.2.0-src-20250510.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.2.0/apache-pekko-http-1.2.0-src-20250510.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-http/current/release-notes/index.html)
 
 ## Pekko gRPC
