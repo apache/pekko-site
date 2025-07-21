@@ -18,7 +18,7 @@ These jars relate to the source downloads you find linked below.
 
 There is also a milestone release. This release should not be used in production.
 
-* [apache-pekko-1.2.0-M1-src-20250129.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.2.0-M1/apache-pekko-1.2.0-M1-src-20250129.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.2.0-M1/apache-pekko-1.2.0-M1-src-20250129.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.2.0-M1/apache-pekko-1.2.0-M1-src-20250129.tgz.sha512))
+* [apache-pekko-1.2.0-M2-src-20250712.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.2.0-M2/apache-pekko-1.2.0-M2-src-20250712.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.2.0-M2/apache-pekko-1.2.0-M2-src-20250712.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.2.0-M2/apache-pekko-1.2.0-M2-src-20250712.tgz.sha512))
 * [Snapshot Release Notes](https://pekko.apache.org/docs/pekko/snapshot/release-notes/index.html)
 
 ## Pekko HTTP
