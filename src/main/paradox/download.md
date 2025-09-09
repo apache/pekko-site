@@ -58,12 +58,8 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Persistence R2DBC
 
-* [apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz](https://www.apache.org/dyn/closer.lua/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz) signature: ([asc](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/incubator/pekko/PERSISTENCE-R2DBC-1.0.0/apache-pekko-persistence-r2dbc-1.0.0-incubating-src-20231209.tgz.sha512))
+* [apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-persistence-r2dbc/1.1/release-notes/index.html)
-
-There is also a milestone release. This release should not be used in production.
-
-* [apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0-M1/apache-pekko-persistence-r2dbc-1.1.0-M1-src-20241205.tgz.sha512))
 
 ## Pekko Projection
 
