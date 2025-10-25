@@ -11,7 +11,7 @@ Anyone looking to help improve our module specific docs should look at the Git r
 
 The site is built using [Paradox](https://developer.lightbend.com/docs/paradox/current/).
 
-To build the site locally, run:
+Use Java 17 to build the site locally. Try run:
 
 ```
 sbt paradox
