@@ -6,6 +6,7 @@ material.custom.page-stylesheet: assets/stylesheets/home.css
  * [samples](samples.md)
  * [modules](modules.md)
  * [download](download.md)
+ * [version support](version-support.md)
  * [how-to-contribute](how-to-contribute.md)
 @@@
 
@@ -13,6 +14,7 @@ material.custom.page-stylesheet: assets/stylesheets/home.css
 * @ref:[Samples](samples.md)
 * @ref:[Modules](modules.md)
 * @ref:[Downloads](download.md)
+* @ref:[Version Support](version-support.md)
 * @ref:[How to contribute](how-to-contribute.md)
 
 @@@
