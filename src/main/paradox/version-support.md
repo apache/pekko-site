@@ -36,3 +36,17 @@ With 1.x, changes will normally only be made to the most recent 1.x release and 
 generally be backported to previous 1.x minor versions.
 
 We will announce an end of support date in due course.
+
+## Migration Guides
+
+We have pages dedicated to specific Pekko modules. If you are migrating from Akka, it might
+be best to migrate first to Pekko 1.0.x and to then upgrade to a newer version of Pekko
+when you are happy you have things working with 1.0.x.
+
+When migrating between Pekko versions, it is worth checking if you are using deprecated
+code and to try to follow the notice instructions that appear in the Scala and Java docs.
+It is also worthwhile to read the @ref:[Module](modules.md) Release Notes.
+
+* [Pekko Core](https://pekko.apache.org/docs/pekko/current/migration/index.html)
+* [Pekko HTTP](https://pekko.apache.org/docs/pekko-http/current/migration-guide/index.html)
+* [Pekko Management](https://pekko.apache.org/docs/pekko-management/current/migration.html)
