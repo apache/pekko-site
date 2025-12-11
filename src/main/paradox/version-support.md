@@ -16,9 +16,7 @@ are only for testing purposes and to facilitate library maintainers. They are no
 to be used in production.
 
 Due to quite a lot of deprecated code being removed in 2.0.x, it is unlikely that libs
-built against Pekko 1.x jars will work with Pekko 2.0.x. This largely depends on whether
-the lib uses deprecated methods or not. The larger the code base, the more likely that
-there is something that relies on a method that is removed in 2.0.x.
+built against Pekko 1.x jars will work with Pekko 2.0.x.
 
 ## Version 1.x
 
