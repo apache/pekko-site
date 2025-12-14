@@ -30,6 +30,8 @@ Once the Pekko 2.0.0 full release is done, we will end active development in 1.x
 important bug fixes including security fixes will appear in new 1.x releases.
 Dependency upgrades will only be made for important bug fixes including security fixes.
 
+We will backport fixes to the 1.x series on a best-effort basis. More complicated changes may not be possible to apply to 1.x and users who need such changes may need to upgrade to 2.x.
+
 With 1.x, changes will normally only be made to the most recent 1.x release and won't
 generally be backported to previous 1.x minor versions.
 
