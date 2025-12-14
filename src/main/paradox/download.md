@@ -32,7 +32,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 ## Pekko Management
 
-* [apache-pekko-management-1.1.1-src-20250426.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.1.1/apache-pekko-management-1.1.1-src-20250426.tgz.sha512))
+* [apache-pekko-management-1.2.0-src-20251211.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-management/current/release-notes/index.html)
 
 ## Pekko Connectors
