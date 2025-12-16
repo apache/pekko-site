@@ -51,3 +51,4 @@ It is also worthwhile to read the @ref:[Module](modules.md) Release Notes.
 * [Pekko HTTP](https://pekko.apache.org/docs/pekko-http/current/migration-guide/index.html)
 * [Pekko Management](https://pekko.apache.org/docs/pekko-management/current/migration.html)
 * [Pekko Persistence JDBC](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/migration.html)
+* [Pekko Persistence R2DBC](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/migration-guides.html)
