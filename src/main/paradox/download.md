@@ -25,6 +25,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 * [apache-pekko-http-1.3.0-src-20251021.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.3.0/apache-pekko-http-1.3.0-src-20251021.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.3.0/apache-pekko-http-1.3.0-src-20251021.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.3.0/apache-pekko-http-1.3.0-src-20251021.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-http/current/release-notes/index.html)
 
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-http-2.0.0-M1-src-20260114.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-2.0.0-M1/apache-pekko-http-2.0.0-M1-src-20260114.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-2.0.0-M1/apache-pekko-http-2.0.0-M1-src-20260114.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-2.0.0-M1/apache-pekko-http-2.0.0-M1-src-20260114.tgz.sha512))
+
 ## Pekko gRPC
 
 * [apache-pekko-grpc-1.2.0-src-20251018.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz.sha512))
