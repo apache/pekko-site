@@ -34,6 +34,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 * [apache-pekko-grpc-1.2.0-src-20251018.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-1.2.0/apache-pekko-grpc-1.2.0-src-20251018.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-grpc/current/release-notes/index.html)
 
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-grpc-2.0.0-M1-src-20260128.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz.sha512))
+
 ## Pekko Management
 
 * [apache-pekko-management-1.2.0-src-20251211.tgz](https://www.apache.org/dyn/closer.lua/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz) signature: ([asc](https://downloads.apache.org/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/MANAGEMENT-1.2.0/apache-pekko-management-1.2.0-src-20251211.tgz.sha512))
@@ -63,6 +67,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 * [apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/release-notes/index.html)
+
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-persistence-jdbc-2.0.0-M1-src-20260127.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-2.0.0-M1/apache-pekko-persistence-jdbc-2.0.0-M1-src-20260127.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-2.0.0-M1/apache-pekko-persistence-jdbc-2.0.0-M1-src-20260127.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-2.0.0-M1/apache-pekko-persistence-jdbc-2.0.0-M1-src-20260127.tgz.sha512))
 
 ## Pekko Persistence R2DBC
 
