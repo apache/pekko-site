@@ -45,7 +45,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 ## Pekko Connectors
 
-* [apache-pekko-connectors-1.2.0-src-20250915.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-1.2.0/apache-pekko-connectors-1.2.0-src-20250915.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-1.2.0/apache-pekko-connectors-1.2.0-src-20250915.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-1.2.0/apache-pekko-connectors-1.2.0-src-20250915.tgz.sha512))
+* [apache-pekko-connectors-1.3.0-src-20260310.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-1.3.0/apache-pekko-connectors-1.3.0-src-20260310.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-1.3.0/apache-pekko-connectors-1.3.0-src-20260310.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-1.3.0/apache-pekko-connectors-1.3.0-src-20260310.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-connectors/current/release-notes/index.html)
 
 ## Pekko Connectors Kafka
