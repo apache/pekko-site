@@ -61,6 +61,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 * [apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-connectors-kafka/current/release-notes/index.html)
 
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz.sha512))
+
 ## Pekko Persistence Cassandra
 
 * [apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-CASSANDRA-1.1.0/apache-pekko-persistence-cassandra-1.1.0-src-20250116.tgz.sha512))
