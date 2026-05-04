@@ -13,7 +13,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
-* [apache-pekko-1.5.0-src-20260323.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.5.0/apache-pekko-1.5.0-src-20260323.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.5.0/apache-pekko-1.5.0-src-20260323.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.5.0/apache-pekko-1.5.0-src-20260323.tgz.sha512))
+* [apache-pekko-1.6.0-src-20260417.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.6.0/apache-pekko-1.6.0-src-20260417.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.6.0/apache-pekko-1.6.0-src-20260417.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.6.0/apache-pekko-1.6.0-src-20260417.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko/current/release-notes/index.html)
 
 There is also a milestone release, providing a preview for the upcoming major version:
@@ -60,6 +60,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 * [apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-connectors-kafka/current/release-notes/index.html)
+
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-2.0.0-M1/apache-pekko-connectors-kafka-2.0.0-M1-src-20260421.tgz.sha512))
 
 ## Pekko Persistence Cassandra
 
