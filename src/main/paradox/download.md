@@ -89,6 +89,10 @@ There is also a milestone release, providing a preview for the upcoming major ve
 * [apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-1.1.0/apache-pekko-persistence-r2dbc-1.1.0-src-20250902.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-persistence-r2dbc/1.1/release-notes/index.html)
 
+There is also a milestone release, providing a preview for the upcoming major version:
+
+* [apache-pekko-persistence-r2dbc-2.0.0-M1-src-20260523.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-R2DBC-2.0.0-M1/apache-pekko-persistence-r2dbc-2.0.0-M1-src-20260523.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-2.0.0-M1/apache-pekko-persistence-r2dbc-2.0.0-M1-src-20260523.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-R2DBC-2.0.0-M1/apache-pekko-persistence-r2dbc-2.0.0-M1-src-20260523.tgz.sha512))
+
 ## Pekko Projection
 
 * [apache-pekko-projection-1.1.0-src-20250224.tgz](https://www.apache.org/dyn/closer.lua/pekko/PROJECTION-1.1.0/apache-pekko-projection-1.1.0-src-20250224.tgz) signature: ([asc](https://downloads.apache.org/pekko/PROJECTION-1.1.0/apache-pekko-projection-1.1.0-src-20250224.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PROJECTION-1.1.0/apache-pekko-projection-1.1.0-src-20250224.tgz.sha512))
