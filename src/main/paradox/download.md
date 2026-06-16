@@ -36,7 +36,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 There is also a milestone release, providing a preview for the upcoming major version:
 
-* [apache-pekko-grpc-2.0.0-M1-src-20260128.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-2.0.0-M1/apache-pekko-grpc-2.0.0-M1-src-20260128.tgz.sha512))
+* [apache-pekko-grpc-2.0.0-M2-src-20260608.tgz](https://www.apache.org/dyn/closer.lua/pekko/GRPC-2.0.0-M2/apache-pekko-grpc-2.0.0-M2-src-20260608.tgz) signature: ([asc](https://downloads.apache.org/pekko/GRPC-2.0.0-M2/apache-pekko-grpc-2.0.0-M2-src-20260608.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/GRPC-2.0.0-M2/apache-pekko-grpc-2.0.0-M2-src-20260608.tgz.sha512))
 
 ## Pekko Management
 
