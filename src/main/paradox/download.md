@@ -77,7 +77,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 ## Pekko Persistence JDBC
 
-* [apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.2.0/apache-pekko-persistence-jdbc-1.2.0-src-20251216.tgz.sha512))
+* [apache-pekko-persistence-jdbc-1.3.0-src-20260614.tgz](https://www.apache.org/dyn/closer.lua/pekko/PERSISTENCE-JDBC-1.3.0/apache-pekko-persistence-jdbc-1.3.0-src-20260614.tgz) signature: ([asc](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.3.0/apache-pekko-persistence-jdbc-1.3.0-src-20260614.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/PERSISTENCE-JDBC-1.3.0/apache-pekko-persistence-jdbc-1.3.0-src-20260614.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/release-notes/index.html)
 
 There is also a milestone release, providing a preview for the upcoming major version:
