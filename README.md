@@ -9,7 +9,7 @@ Anyone looking to help improve our module specific docs should look at the Git r
 
 ## Build
 
-The site is built using [Paradox](https://developer.lightbend.com/docs/paradox/current/).
+The site is built using [Paradox](https://lightbend.github.io/paradox/).
 
 Use Java 17 to build the site locally. Try run:
 
