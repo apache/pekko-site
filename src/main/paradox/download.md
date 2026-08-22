@@ -18,7 +18,7 @@ These jars relate to the source downloads you find linked below.
 
 There is also a milestone release, providing a preview for the upcoming major version:
 
-* [apache-pekko-2.0.0-M3-src-20260529.tgz](https://www.apache.org/dyn/closer.lua/pekko/2.0.0-M3/apache-pekko-2.0.0-M3-src-20260529.tgz) signature: ([asc](https://downloads.apache.org/pekko/2.0.0-M3/apache-pekko-2.0.0-M3-src-20260529.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/2.0.0-M3/apache-pekko-2.0.0-M3-src-20260529.tgz.sha512))
+* [apache-pekko-2.0.0-M4-src-20260817.tgz](https://www.apache.org/dyn/closer.lua/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz) signature: ([asc](https://downloads.apache.org/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz.sha512))
 
 ## Pekko HTTP
 
@@ -58,7 +58,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 ## Pekko Connectors Kafka
 
-* [apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.1.0/apache-pekko-connectors-kafka-1.1.0-src-20240916.tgz.sha512))
+* [apache-pekko-connectors-kafka-1.2.0-src-20260818.tgz](https://www.apache.org/dyn/closer.lua/pekko/CONNECTORS-KAFKA-1.2.0/apache-pekko-connectors-kafka-1.2.0-src-20260818.tgz) signature: ([asc](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.2.0/apache-pekko-connectors-kafka-1.2.0-src-20260818.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/CONNECTORS-KAFKA-1.2.0/apache-pekko-connectors-kafka-1.2.0-src-20260818.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-connectors-kafka/current/release-notes/index.html)
 
 There is also a milestone release, providing a preview for the upcoming major version:
