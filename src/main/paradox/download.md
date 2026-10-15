@@ -22,7 +22,7 @@ There is also a milestone release, providing a preview for the upcoming major ve
 
 ## Pekko HTTP
 
-* [apache-pekko-http-1.4.1-src-20260906.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.4.1/apache-pekko-http-1.4.1-src-20260906.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.4.1/apache-pekko-http-1.4.1-src-20260906.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.4.1/apache-pekko-http-1.4.1-src-20260906.tgz.sha512))
+* [apache-pekko-http-1.4.2-src-20261010.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-1.4.2/apache-pekko-http-1.4.2-src-20261010.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-1.4.2/apache-pekko-http-1.4.2-src-20261010.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-1.4.2/apache-pekko-http-1.4.2-src-20261010.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-http/current/release-notes/index.html)
 
 There is also a milestone release, providing a preview for the upcoming major version:
