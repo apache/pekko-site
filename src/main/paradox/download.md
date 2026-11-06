@@ -13,12 +13,8 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko Core
 
-* [apache-pekko-1.7.1-src-20260904.tgz](https://www.apache.org/dyn/closer.lua/pekko/1.7.1/apache-pekko-1.7.1-src-20260904.tgz) signature: ([asc](https://downloads.apache.org/pekko/1.7.1/apache-pekko-1.7.1-src-20260904.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/1.7.1/apache-pekko-1.7.1-src-20260904.tgz.sha512))
+* [apache-pekko-2.0.0-src-20261102.tgz](https://www.apache.org/dyn/closer.lua/pekko/2.0.0/apache-pekko-2.0.0-src-20261102.tgz) signature: ([asc](https://downloads.apache.org/pekko/2.0.0/apache-pekko-2.0.0-src-20261102.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/2.0.0/apache-pekko-2.0.0-src-20261102.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko/current/release-notes/index.html)
-
-There is also a milestone release, providing a preview for the upcoming major version:
-
-* [apache-pekko-2.0.0-M4-src-20260817.tgz](https://www.apache.org/dyn/closer.lua/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz) signature: ([asc](https://downloads.apache.org/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/2.0.0-M4/apache-pekko-2.0.0-M4-src-20260817.tgz.sha512))
 
 ## Pekko HTTP
 
