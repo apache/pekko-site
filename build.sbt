@@ -30,3 +30,6 @@ paradoxProperties += ("disabled.versioning.display" -> "true")
 inConfig(Assets)(Seq(
   excludeFilter := excludeFilter.value -- ".htaccess"
 ))
+
+addCommandAlias("applyCodeStyle", "scalafmtAll; scalafmtSbt")
+addCommandAlias("checkCodeStyle", "scalafmtCheckAll; scalafmtSbtCheck")
