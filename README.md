@@ -27,3 +27,9 @@ sbt paradoxBrowse
 
 There are some details about how to deploy the pages associated with this repo in the
 [wiki](https://github.com/apache/pekko-site/wiki/Manual-Publishing).
+
+## Build formatting
+
+The sbt build uses Apache Pekko's Scalafmt configuration. Run `sbt applyCodeStyle`
+to format build files and `sbt checkCodeStyle` to check them. The site has no Java
+sources, so it does not need the Java formatter plugin.
