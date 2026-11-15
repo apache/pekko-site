@@ -173,6 +173,18 @@ function initParadoxMaterialTheme() {
       ? ':scope > dd > pre, :scope > dd > table'
       : ':scope > dd > pre'
     const tabContents = dl.querySelectorAll(tabSelector)
+    if (dl.classList.contains('dependencies')) {
+      // the dependency tree is a bare pre; the theme pads and scrolls pre > code
+      tabContents.forEach(el => {
+        if (el.tagName === 'PRE' && !el.querySelector(':scope > code')) {
+          var code = document.createElement('code')
+          while (el.firstChild) {
+            code.appendChild(el.firstChild)
+          }
+          el.appendChild(code)
+        }
+      })
+    }
     if (tabContents.length > 0) {
       dl.classList.add('mdc-tab-bar')
       var first = true
