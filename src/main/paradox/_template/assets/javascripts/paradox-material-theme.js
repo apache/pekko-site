@@ -168,7 +168,11 @@ function initParadoxMaterialTheme() {
   })
 
   document.querySelectorAll('dl').forEach(dl => {
-    const tabContents = dl.querySelectorAll(':scope > dd > pre')
+    // @@dependencies (sbt-paradox-dependencies) puts a table, not a pre, in its first tab
+    const tabSelector = dl.classList.contains('dependencies')
+      ? ':scope > dd > pre, :scope > dd > table'
+      : ':scope > dd > pre'
+    const tabContents = dl.querySelectorAll(tabSelector)
     if (tabContents.length > 0) {
       dl.classList.add('mdc-tab-bar')
       var first = true
