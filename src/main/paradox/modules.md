@@ -6,17 +6,17 @@ See @ref:[Version Support](version-support.md) for how the 1.x and 2.x release l
 
 | Module | Current release | Latest 1.x release |
 |--------|-----------------|--------------------|
-| pekko (core) | 2.0: [docs](https://pekko.apache.org/docs/pekko/current/) · [api](https://pekko.apache.org/api/pekko/current/) · [japi](https://pekko.apache.org/japi/pekko/current/) | 1.7: [docs](https://pekko.apache.org/docs/pekko/1.x/) · [api](https://pekko.apache.org/api/pekko/1.x/) · [japi](https://pekko.apache.org/japi/pekko/1.x/) |
-| pekko-http | 2.0: [docs](https://pekko.apache.org/docs/pekko-http/current/) · [api](https://pekko.apache.org/api/pekko-http/current/) · [japi](https://pekko.apache.org/japi/pekko-http/current/) | 1.4: [docs](https://pekko.apache.org/docs/pekko-http/1.x/) · [api](https://pekko.apache.org/api/pekko-http/1.x/) · [japi](https://pekko.apache.org/japi/pekko-http/1.x/) |
-| pekko-grpc | 2.0: [docs](https://pekko.apache.org/docs/pekko-grpc/current/) · [api](https://pekko.apache.org/api/pekko-grpc/current/) | 1.2: [docs](https://pekko.apache.org/docs/pekko-grpc/1.x/) · [api](https://pekko.apache.org/api/pekko-grpc/1.x/) |
-| pekko-connectors | 1.3: [docs](https://pekko.apache.org/docs/pekko-connectors/current/) · [api](https://pekko.apache.org/api/pekko-connectors/current/) |  |
-| pekko-connectors-kafka | 1.2: [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/) · [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/) |  |
-| pekko-management | 1.2: [docs](https://pekko.apache.org/docs/pekko-management/current/) · [api](https://pekko.apache.org/api/pekko-management/current/) |  |
-| pekko-persistence-cassandra | 1.1: [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/) · [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/) |  |
+| pekko (core) | 2.x: [docs](https://pekko.apache.org/docs/pekko/current/) · [api](https://pekko.apache.org/api/pekko/current/) · [japi](https://pekko.apache.org/japi/pekko/current/) | [docs](https://pekko.apache.org/docs/pekko/1.x/) · [api](https://pekko.apache.org/api/pekko/1.x/) · [japi](https://pekko.apache.org/japi/pekko/1.x/) |
+| pekko-http | 2.x: [docs](https://pekko.apache.org/docs/pekko-http/current/) · [api](https://pekko.apache.org/api/pekko-http/current/) · [japi](https://pekko.apache.org/japi/pekko-http/current/) | [docs](https://pekko.apache.org/docs/pekko-http/1.x/) · [api](https://pekko.apache.org/api/pekko-http/1.x/) · [japi](https://pekko.apache.org/japi/pekko-http/1.x/) |
+| pekko-grpc | 2.x: [docs](https://pekko.apache.org/docs/pekko-grpc/current/) · [api](https://pekko.apache.org/api/pekko-grpc/current/) | [docs](https://pekko.apache.org/docs/pekko-grpc/1.x/) · [api](https://pekko.apache.org/api/pekko-grpc/1.x/) |
+| pekko-connectors | 1.x: [docs](https://pekko.apache.org/docs/pekko-connectors/current/) · [api](https://pekko.apache.org/api/pekko-connectors/current/) |  |
+| pekko-connectors-kafka | 1.x: [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/) · [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/) |  |
+| pekko-management | 1.x: [docs](https://pekko.apache.org/docs/pekko-management/current/) · [api](https://pekko.apache.org/api/pekko-management/current/) |  |
+| pekko-persistence-cassandra | 1.x: [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/) · [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/) |  |
 | pekko-persistence-dynamodb | [GitHub](https://github.com/apache/pekko-persistence-dynamodb) | |
-| pekko-persistence-jdbc | 1.4: [docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-jdbc/current/) |  |
-| pekko-persistence-r2dbc | 1.2: [docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/) |  |
-| pekko-projection | 1.1: [docs](https://pekko.apache.org/docs/pekko-projection/current/) · [api](https://pekko.apache.org/api/pekko-projection/current/) |  |
+| pekko-persistence-jdbc | 1.x: [docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-jdbc/current/) |  |
+| pekko-persistence-r2dbc | 1.x: [docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/) |  |
+| pekko-projection | 1.x: [docs](https://pekko.apache.org/docs/pekko-projection/current/) · [api](https://pekko.apache.org/api/pekko-projection/current/) |  |
 
 We are still working on fixing up the docs for some Pekko modules. You might also want to look at the following repositories in GitHub.
 
