@@ -28,7 +28,7 @@ The Apache Pekko project is broken into several repositories:
     - [pekko-samples](https://github.com/apache/pekko-samples): various samples
 - [pekko-connectors](https://github.com/apache/pekko-connectors): contains connectors for other systems, such as Kafka, Cassandra, etc.
     - [pekko-connectors-kafka](https://github.com/apache/pekko-connectors-kafka): contains the Kafka connector.
-    - [pekko-connectors-samples](https://github.com/apache/pekko-connectors-samples) (WIP): contains a sample connector.
+    - [pekko-connectors-samples](https://github.com/apache/pekko-connectors-samples): contains a sample connector.
 - [pekko-grpc](https://github.com/apache/pekko-grpc): contains the gRPC server module.
 - [pekko-http](https://github.com/apache/pekko-http): contains the HTTP server module.
 - [pekko-management](https://github.com/apache/pekko-management): contains the tools for operating with Pekko clusters.
