@@ -1,16 +1,22 @@
 # Modules
 
-* pekko (core) [docs](https://pekko.apache.org/docs/pekko/current/) [api](https://pekko.apache.org/api/pekko/current/) [japi](https://pekko.apache.org/japi/pekko/current/)
-* pekko-http [docs](https://pekko.apache.org/docs/pekko-http/current/) [api](https://pekko.apache.org/api/pekko-http/current/) [japi](https://pekko.apache.org/japi/pekko-http/current/)
-* pekko-grpc [docs](https://pekko.apache.org/docs/pekko-grpc/current/) [api](https://pekko.apache.org/api/pekko-grpc/current/)
-* pekko-connectors [docs](https://pekko.apache.org/docs/pekko-connectors/current/) [api](https://pekko.apache.org/api/pekko-connectors/current/)
-* pekko-connectors-kafka [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/) [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/)
-* pekko-management [docs](https://pekko.apache.org/docs/pekko-management/current/) [api](https://pekko.apache.org/api/pekko-management/current/)
-* pekko-persistence-cassandra [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/) [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/)
-* pekko-persistence-dynamodb [GitHub](https://github.com/apache/pekko-persistence-dynamodb)
-* pekko-persistence-jdbc [docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/) [api](https://pekko.apache.org/api/pekko-persistence-jdbc/current/)
-* pekko-persistence-r2dbc [docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/) [api](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/)
-* pekko-projection [docs](https://pekko.apache.org/docs/pekko-projection/current/) [api](https://pekko.apache.org/api/pekko-projection/current/)
+The "Current release" links always point at the docs for the newest release of each module.
+Where that release is a 2.x one, the docs for the latest 1.x release are linked alongside it.
+See @ref:[Version Support](version-support.md) for how the 1.x and 2.x release lines are maintained.
+
+| Module | Current release | Latest 1.x release |
+|--------|-----------------|--------------------|
+| pekko (core) | [docs](https://pekko.apache.org/docs/pekko/current/) · [api](https://pekko.apache.org/api/pekko/current/) · [japi](https://pekko.apache.org/japi/pekko/current/) | [docs](https://pekko.apache.org/docs/pekko/1.x/) · [api](https://pekko.apache.org/api/pekko/1.x/) · [japi](https://pekko.apache.org/japi/pekko/1.x/) |
+| pekko-http | [docs](https://pekko.apache.org/docs/pekko-http/current/) · [api](https://pekko.apache.org/api/pekko-http/current/) · [japi](https://pekko.apache.org/japi/pekko-http/current/) | [docs](https://pekko.apache.org/docs/pekko-http/1.x/) · [api](https://pekko.apache.org/api/pekko-http/1.x/) · [japi](https://pekko.apache.org/japi/pekko-http/1.x/) |
+| pekko-grpc | [docs](https://pekko.apache.org/docs/pekko-grpc/current/) · [api](https://pekko.apache.org/api/pekko-grpc/current/) | [docs](https://pekko.apache.org/docs/pekko-grpc/1.x/) · [api](https://pekko.apache.org/api/pekko-grpc/1.x/) |
+| pekko-connectors | [docs](https://pekko.apache.org/docs/pekko-connectors/current/) · [api](https://pekko.apache.org/api/pekko-connectors/current/) |  |
+| pekko-connectors-kafka | [docs](https://pekko.apache.org/docs/pekko-connectors-kafka/current/) · [api](https://pekko.apache.org/api/pekko-connectors-kafka/current/) |  |
+| pekko-management | [docs](https://pekko.apache.org/docs/pekko-management/current/) · [api](https://pekko.apache.org/api/pekko-management/current/) |  |
+| pekko-persistence-cassandra | [docs](https://pekko.apache.org/docs/pekko-persistence-cassandra/current/) · [api](https://pekko.apache.org/api/pekko-persistence-cassandra/current/) |  |
+| pekko-persistence-dynamodb | [GitHub](https://github.com/apache/pekko-persistence-dynamodb) | |
+| pekko-persistence-jdbc | [docs](https://pekko.apache.org/docs/pekko-persistence-jdbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-jdbc/current/) |  |
+| pekko-persistence-r2dbc | [docs](https://pekko.apache.org/docs/pekko-persistence-r2dbc/current/) · [api](https://pekko.apache.org/api/pekko-persistence-r2dbc/current/) |  |
+| pekko-projection | [docs](https://pekko.apache.org/docs/pekko-projection/current/) · [api](https://pekko.apache.org/api/pekko-projection/current/) |  |
 
 We are still working on fixing up the docs for some Pekko modules. You might also want to look at the following repositories in GitHub.
 
@@ -22,7 +28,7 @@ The Apache Pekko project is broken into several repositories:
     - [pekko-samples](https://github.com/apache/pekko-samples): various samples
 - [pekko-connectors](https://github.com/apache/pekko-connectors): contains connectors for other systems, such as Kafka, Cassandra, etc.
     - [pekko-connectors-kafka](https://github.com/apache/pekko-connectors-kafka): contains the Kafka connector.
-    - [pekko-connectors-samples](https://github.com/apache/pekko-connectors-samples) (WIP): contains a sample connector.
+    - [pekko-connectors-samples](https://github.com/apache/pekko-connectors-samples): contains a sample connector.
 - [pekko-grpc](https://github.com/apache/pekko-grpc): contains the gRPC server module.
 - [pekko-http](https://github.com/apache/pekko-http): contains the HTTP server module.
 - [pekko-management](https://github.com/apache/pekko-management): contains the tools for operating with Pekko clusters.
