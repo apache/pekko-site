@@ -18,7 +18,7 @@ These jars relate to the source downloads you find linked below.
 
 ## Pekko HTTP
 
-* [apache-pekko-http-2.0.0-src-20261109.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-2.0.0/apache-pekko-http-2.0.0-src-20261109.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-2.0.0/apache-pekko-http-2.0.0-src-20261109.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-2.0.0/apache-pekko-http-2.0.0-src-20261109.tgz.sha512))
+* [apache-pekko-http-2.0.1-src-20261121.tgz](https://www.apache.org/dyn/closer.lua/pekko/HTTP-2.0.1/apache-pekko-http-2.0.1-src-20261121.tgz) signature: ([asc](https://downloads.apache.org/pekko/HTTP-2.0.1/apache-pekko-http-2.0.1-src-20261121.tgz.asc)) checksum: ([sha512](https://downloads.apache.org/pekko/HTTP-2.0.1/apache-pekko-http-2.0.1-src-20261121.tgz.sha512))
 * [Release Notes](https://pekko.apache.org/docs/pekko-http/current/release-notes/index.html)
 
 ## Pekko gRPC
